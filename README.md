@@ -71,7 +71,7 @@ OntoPop is a community-driven open source framework released under the [Creative
 
 ## <a name="license"></a>5. License
 
-Distributed under the [Creative Commons Attribution-ShareAlike](https://creativecommons.org/licenses/by-sa/2.0/) license. Please see [LICENSE](LICENSE) for more information.
+Distributed under the [Creative Commons Attribution-ShareAlike 4.0](https://creativecommons.org/licenses/by-sa/4.0/) license. Please see [LICENSE](LICENSE) for more information.
 <br/><br/>
 
 ## <a name="contact"></a>6. Contact and Further Information
