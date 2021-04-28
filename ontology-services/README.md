@@ -11,9 +11,9 @@
     <a href="https://ontopop.com" target="_blank"><strong>OntoPop Website</strong></a>
     <br/>
     <br/>
-    <a href="href="https://ontopop.com" target="_blank"">Website</a>
+    <a href="https://ontopop.com" target="_blank"">Website</a>
     ·
-    <a href="href="https://ontopop.com" target="_blank"">Documentation</a>
+    <a href="https://hyperlearningai.atlassian.net/wiki/spaces/OF" target="_blank"">Documentation</a>
   </p>
 </p>
 <br/>
@@ -64,7 +64,7 @@ Please clone this Git repository onto your local development machine by executin
 
 ### <a name="importing"></a>2.3. Importing
 
-OntoPop services employs a Maven parent-child module hierarchy. Therefore in order to import the OntoPop services parent Maven project into your chosen IDE (for example Eclipse or VSCode), simply import ```ONTOLOGY_BASE/ontology-services```. Thereafter the following Maven child modules will be available:
+OntoPop services employs a Maven parent-child module hierarchy. Therefore in order to import the OntoPop services parent Maven project into your chosen IDE (for example Eclipse or VSCode), simply import ```ONTOPOP_BASE/ontology-services```. Thereafter the following Maven child modules will be available:
 
 * [ontology-api-all](ontology-api-all) - All APIs consolidated into a single module designed for deployment to a single API app
 * [ontology-api-auth](ontology-api-auth) - Authentication APIs including login
@@ -118,7 +118,7 @@ To then deploy the API to an Azure App Service instance using Maven directly, pl
 
 ```
 # Build the project and all inter-dependencies
-> cd ONTOLOGY_BASE/ontology-services
+> cd ONTOPOP_BASE/ontology-services
 > mvn clean install -P [Target Environment Maven Profile Name]
 
 # Login to Azure using the Azure CLI
