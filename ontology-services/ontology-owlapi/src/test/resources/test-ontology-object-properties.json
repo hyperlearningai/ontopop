@@ -1,0 +1,734 @@
+{
+  "OwlObjectProperties" : {
+    "http://webprotege.stanford.edu/R15RMwxh0pmeZADFPUrcpM" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/R15RMwxh0pmeZADFPUrcpM",
+      "rdfsLabel" : "Instantiation of",
+      "skosDefinition" : null,
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Record"
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/R8zMIKp038MgC2umoxwzWBJ" ]
+    },
+    "http://webprotege.stanford.edu/R4I2v4Y7su3Adf0Vcj6TWd" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/R4I2v4Y7su3Adf0Vcj6TWd",
+      "rdfsLabel" : "Proposed in",
+      "skosDefinition" : "Relationship used to specify the stage, document or place where an Entity is offered or suggested for consideration, acceptance, or action.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship used to specify the stage, document or place where an Entity is offered or suggested for consideration, acceptance, or action.",
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Record"
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD" ]
+    },
+    "http://webprotege.stanford.edu/R5u6iRwByXm7q6dOcaVRk8" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/R5u6iRwByXm7q6dOcaVRk8",
+      "rdfsLabel" : "Selected in",
+      "skosDefinition" : "Relationship that specifies when or where another Entity has been chosen.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Causality",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that specifies when or where another Entity has been chosen."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD" ]
+    },
+    "http://webprotege.stanford.edu/R79SeNap6q11kTo4DsroWaC" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/R79SeNap6q11kTo4DsroWaC",
+      "rdfsLabel" : "Measured by",
+      "skosDefinition" : "Relationship used to define the Entity that gathers different values and status information about another Entity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship used to define the Entity that gathers different values and status information about another Entity.",
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Responsibility"
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD" ]
+    },
+    "http://webprotege.stanford.edu/R7I1rNuvyyDwzTcsAAofisu" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/R7I1rNuvyyDwzTcsAAofisu",
+      "rdfsLabel" : "Summarised in",
+      "skosDefinition" : "Relationship specifying the artifact that contains the main points or short statement of another Entity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Record",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship specifying the artifact that contains the main points or short statement of another Entity."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN" ]
+    },
+    "http://webprotege.stanford.edu/R7IaR9YG9mGzOkseoqQ4Rzi" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/R7IaR9YG9mGzOkseoqQ4Rzi",
+      "rdfsLabel" : "Created for",
+      "skosDefinition" : "Relationship that specifies the Entity that caused the creation of another Entity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that specifies the Entity that caused the creation of another Entity.",
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Causality Record"
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD" ]
+    },
+    "http://webprotege.stanford.edu/R7V7p8sdl5TpSs0cd7gZvqr" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/R7V7p8sdl5TpSs0cd7gZvqr",
+      "rdfsLabel" : "Advised by",
+      "skosDefinition" : "Relationship that specifies the Entity that gives guidance and recommendation to other Entities.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Responsibility",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that specifies the Entity that gives guidance and recommendation to other Entities."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD" ]
+    },
+    "http://webprotege.stanford.edu/R7cbyWVOLsYCR1NFY11TBjJ" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/R7cbyWVOLsYCR1NFY11TBjJ",
+      "rdfsLabel" : "Performed by",
+      "skosDefinition" : "Relationship that specifies the Entity (person or system) that carries out an activity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Responsibility",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that specifies the Entity (person or system) that carries out an activity."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF" ]
+    },
+    "http://webprotege.stanford.edu/R7dYrsdk1L1bcLR0A9vS5QP" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/R7dYrsdk1L1bcLR0A9vS5QP",
+      "rdfsLabel" : "Issued through",
+      "skosDefinition" : "Relationship that specifies the means used to sent out or put forth an Entity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Causality Transfer",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that specifies the means used to sent out or put forth an Entity."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN" ]
+    },
+    "http://webprotege.stanford.edu/R7f3MFJaUN2W4LPV62BVWCH" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/R7f3MFJaUN2W4LPV62BVWCH",
+      "rdfsLabel" : "Itemised by",
+      "skosDefinition" : "Relationship that explains how an Entity is broken down into a set of smaller Entities.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Financial",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that explains how an Entity is broken down into a set of smaller Entities."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/R8zMIKp038MgC2umoxwzWBJ" ]
+    },
+    "http://webprotege.stanford.edu/R7hoT86zDXtTKlGVmxqJRio" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/R7hoT86zDXtTKlGVmxqJRio",
+      "rdfsLabel" : "Represented by",
+      "skosDefinition" : "Relationship used to specify the Entity that is an expression of another Entity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Record",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship used to specify the Entity that is an expression of another Entity."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN" ]
+    },
+    "http://webprotege.stanford.edu/R7u5ooQBcC82kgElYnRYvBa" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/R7u5ooQBcC82kgElYnRYvBa",
+      "rdfsLabel" : "Detected by",
+      "skosDefinition" : "Relationship that specifies the Entity that discovers or identifies the presence or existence of another Entity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Causality",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that specifies the Entity that discovers or identifies the presence or existence of another Entity."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF" ]
+    },
+    "http://webprotege.stanford.edu/R7uRVbFaeQ4xCgAEayawrZ3" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/R7uRVbFaeQ4xCgAEayawrZ3",
+      "rdfsLabel" : "Required for",
+      "skosDefinition" : "Relationship that describes the indispensable and necessary existence of one Entity to accomplish another Entity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that describes the indispensable and necessary existence of one Entity to accomplish another Entity.",
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Causality Restriction"
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN" ]
+    },
+    "http://webprotege.stanford.edu/R7xuMweW7v6CbTdPcVpjdp3" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/R7xuMweW7v6CbTdPcVpjdp3",
+      "rdfsLabel" : "Agreed with",
+      "skosDefinition" : "Relationship that defines the Entity responsible for negotiating and accepting the terms of another Entity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Responsibility Participation",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that defines the Entity responsible for negotiating and accepting the terms of another Entity."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF" ]
+    },
+    "http://webprotege.stanford.edu/R83hFPamR9Qma90o0ltJtC7" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/R83hFPamR9Qma90o0ltJtC7",
+      "rdfsLabel" : "Reviewed by",
+      "skosDefinition" : "Relationship that defines the Entity that assesses another Entity formally with the intention of instituting change if necessary.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that defines the Entity that assesses another Entity formally with the intention of instituting change if necessary.",
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Responsibility"
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD" ]
+    },
+    "http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN",
+      "rdfsLabel" : "Affects",
+      "skosDefinition" : "When the 'root' Entity affects, influences, acts upon, advises or has an outgoing Relationship to the 'tail' Entity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://www.w3.org/2004/02/skos/core#definition" : "When the 'root' Entity affects, influences, acts upon, advises or has an outgoing Relationship to the 'tail' Entity."
+      },
+      "rdfsSubPropertyOf" : [ "http://www.w3.org/2002/07/owl#topObjectProperty" ]
+    },
+    "http://webprotege.stanford.edu/R89lHzrBYZLIc1RgkMScjIW" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/R89lHzrBYZLIc1RgkMScjIW",
+      "rdfsLabel" : "Measured at",
+      "skosDefinition" : "Relationship used to identify the location where different values related to an Entity were gathered.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship used to identify the location where different values related to an Entity were gathered.",
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Location"
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/R8zMIKp038MgC2umoxwzWBJ" ]
+    },
+    "http://webprotege.stanford.edu/R8EXGHPfSLDiLihUtTOLFsB" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/R8EXGHPfSLDiLihUtTOLFsB",
+      "rdfsLabel" : "Employed by",
+      "skosDefinition" : "Relationship that describes when an Entity gives work to, and pays, another Entity.",
+      "skosComment" : "\"Employ\" is a homonym meaning it has more than one meaning. This Relationship does not relate to the alternative definition: \"to make use of\".",
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Responsibility",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that describes when an Entity gives work to, and pays, another Entity.",
+        "http://www.w3.org/2004/02/skos/core#comment" : "\"Employ\" is a homonym meaning it has more than one meaning. This Relationship does not relate to the alternative definition: \"to make use of\"."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/R8zMIKp038MgC2umoxwzWBJ" ]
+    },
+    "http://webprotege.stanford.edu/R8Fp5FKHZWgNVNiLcHuAtPf" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/R8Fp5FKHZWgNVNiLcHuAtPf",
+      "rdfsLabel" : "Issued to",
+      "skosDefinition" : "Relationship that specifies the receiver of, and implies a responsibility for, an Entity that has been sent out or put forth.",
+      "skosComment" : "The difference with \"Provided to\" is that \"Issued to\" implies there is a legal or contractural arrangement applied.",
+      "owlAnnotationProperties" : {
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that specifies the receiver of, and implies a responsibility for, an Entity that has been sent out or put forth.",
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Responsibility Transfer",
+        "http://www.w3.org/2004/02/skos/core#comment" : "The difference with \"Provided to\" is that \"Issued to\" implies there is a legal or contractural arrangement applied."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN" ]
+    },
+    "http://webprotege.stanford.edu/R8Pp0U9lbiy2Wpdm6YzyV5m" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/R8Pp0U9lbiy2Wpdm6YzyV5m",
+      "rdfsLabel" : "Created by",
+      "skosDefinition" : "Relationship that specifies the Entity (a role, system or organisation) that brings into existance another Entity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Responsibility",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that specifies the Entity (a role, system or organisation) that brings into existance another Entity."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF" ]
+    },
+    "http://webprotege.stanford.edu/R8UlzVcWWjnYzxJxqtXIIFd" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/R8UlzVcWWjnYzxJxqtXIIFd",
+      "rdfsLabel" : "Managed within",
+      "skosDefinition" : "Relationship used to define the Entity inside which the activities related to other Entities are controlled.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Participation",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship used to define the Entity inside which the activities related to other Entities are controlled."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF" ]
+    },
+    "http://webprotege.stanford.edu/R8XmPwbVWaRiEyUv3kxunaF" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/R8XmPwbVWaRiEyUv3kxunaF",
+      "rdfsLabel" : "Controlled by",
+      "skosDefinition" : "Relationship that specifies the Entity that restraints or exercises direction over another Entity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Responsibility Restriction",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that specifies the Entity that restraints or exercises direction over another Entity."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD" ]
+    },
+    "http://webprotege.stanford.edu/R8fzvBl85R2Nc2SqsikiKp9" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/R8fzvBl85R2Nc2SqsikiKp9",
+      "rdfsLabel" : "Improved through",
+      "skosDefinition" : "Relationship used to specify the Entity that increases the value of another Entity by bringing it into a better condition.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship used to specify the Entity that increases the value of another Entity by bringing it into a better condition.",
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Causality"
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD" ]
+    },
+    "http://webprotege.stanford.edu/R8jWMWKWG5xCyyCGXksUAbL" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/R8jWMWKWG5xCyyCGXksUAbL",
+      "rdfsLabel" : "Included in",
+      "skosDefinition" : "Used to define the activities that are contained within a whole group of activities.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Record",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Used to define the activities that are contained within a whole group of activities."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN" ]
+    },
+    "http://webprotege.stanford.edu/R8zMIKp038MgC2umoxwzWBJ" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/R8zMIKp038MgC2umoxwzWBJ",
+      "rdfsLabel" : "Properties",
+      "skosDefinition" : "Characteristics intrinsically linked to the Entity.",
+      "skosComment" : "These Relationships are likely to become Attributes of Entities in Logical and Physical Models.",
+      "owlAnnotationProperties" : {
+        "http://www.w3.org/2004/02/skos/core#definition" : "Characteristics intrinsically linked to the Entity.",
+        "http://www.w3.org/2004/02/skos/core#comment" : "These Relationships are likely to become Attributes of Entities in Logical and Physical Models."
+      },
+      "rdfsSubPropertyOf" : [ "http://www.w3.org/2002/07/owl#topObjectProperty" ]
+    },
+    "http://webprotege.stanford.edu/R9sQaGD5gjjxCrqX8xatj5I" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/R9sQaGD5gjjxCrqX8xatj5I",
+      "rdfsLabel" : "Updated by",
+      "skosDefinition" : "Relationship used to specify the system or person modifying the information of an Entity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Responsibility Transfer",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship used to specify the system or person modifying the information of an Entity."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF" ]
+    },
+    "http://webprotege.stanford.edu/RB2lnkvVru2pLbt5iOaISSs" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RB2lnkvVru2pLbt5iOaISSs",
+      "rdfsLabel" : "Operated by",
+      "skosDefinition" : "Relationship that specifies the Entity (it can be a person or system) controlling the functioning of another Entity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that specifies the Entity (it can be a person or system) controlling the functioning of another Entity.",
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Responsibility Used"
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF" ]
+    },
+    "http://webprotege.stanford.edu/RB9hSN5JimVLMgBjRg72MWG" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RB9hSN5JimVLMgBjRg72MWG",
+      "rdfsLabel" : "Owned by",
+      "skosDefinition" : "Relationship that defines who possesses or manages another Entity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that defines who possesses or manages another Entity.",
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Responsibility"
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/R8zMIKp038MgC2umoxwzWBJ" ]
+    },
+    "http://webprotege.stanford.edu/RBGj27xJbqpVePdpgjXqeVk" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RBGj27xJbqpVePdpgjXqeVk",
+      "rdfsLabel" : "Completed before",
+      "skosDefinition" : "Relationship that represents a chronological order that the activities need to follow.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that represents a chronological order that the activities need to follow.",
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Causality Time Restriction"
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN" ]
+    },
+    "http://webprotege.stanford.edu/RBXkLIHl4DLxgRus9nf68fU" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RBXkLIHl4DLxgRus9nf68fU",
+      "rdfsLabel" : "Managed by",
+      "skosDefinition" : "Relationship used to define the Entity that takes charge or care of, or coordinates the activities of another Entity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship used to define the Entity that takes charge or care of, or coordinates the activities of another Entity.",
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Responsibility"
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD" ]
+    },
+    "http://webprotege.stanford.edu/RBfzJ6HkijEIMSY3oKjcLay" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RBfzJ6HkijEIMSY3oKjcLay",
+      "rdfsLabel" : "Affected by",
+      "skosDefinition" : "Relationship that describes the impact an Entity can have on other Entities.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that describes the impact an Entity can have on other Entities.",
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Causality"
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD" ]
+    },
+    "http://webprotege.stanford.edu/RBog5Fl0hcK19z2umsYIBzn" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RBog5Fl0hcK19z2umsYIBzn",
+      "rdfsLabel" : "Identified by",
+      "skosDefinition" : "Relationship that describes the Entity used to gather information or understand the current status of another Entity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that describes the Entity used to gather information or understand the current status of another Entity.",
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Responsibility"
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/R8zMIKp038MgC2umoxwzWBJ" ]
+    },
+    "http://webprotege.stanford.edu/RBouRer6kTdZCfCZ4kpk7K3" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RBouRer6kTdZCfCZ4kpk7K3",
+      "rdfsLabel" : "Presented in",
+      "skosDefinition" : "Relationship that specifies the document containing information about an Entity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that specifies the document containing information about an Entity.",
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Record Transfer"
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN" ]
+    },
+    "http://webprotege.stanford.edu/RBzR29uCACOGDcXgx1CeMn1" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RBzR29uCACOGDcXgx1CeMn1",
+      "rdfsLabel" : "Requested by",
+      "skosDefinition" : "Used to specify the Person or Role asking for some sort of information, artefact, service, or Entity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Responsibility",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Used to specify the Person or Role asking for some sort of information, artefact, service, or Entity."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN" ]
+    },
+    "http://webprotege.stanford.edu/RC0fF4cbTcg59fvYtEu1FF0" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RC0fF4cbTcg59fvYtEu1FF0",
+      "rdfsLabel" : "Input into",
+      "skosDefinition" : "Relationship that links the Entities requested in a process for a specific aim and the Entity where they are used.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Record Transfer",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that links the Entities requested in a process for a specific aim and the Entity where they are used."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN" ]
+    },
+    "http://webprotege.stanford.edu/RC1zYYNqqFSlJxIKg4SdBTB" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RC1zYYNqqFSlJxIKg4SdBTB",
+      "rdfsLabel" : "Governed by",
+      "skosDefinition" : "Relationship used to specify the Entity that exercises a directing or restraining influence over another Entity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Responsibility Restriction",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship used to specify the Entity that exercises a directing or restraining influence over another Entity."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD" ]
+    },
+    "http://webprotege.stanford.edu/RC48Hic1INaQShlkSyb6ZIx" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RC48Hic1INaQShlkSyb6ZIx",
+      "rdfsLabel" : "Performed from",
+      "skosDefinition" : "Relationship that defines the location from where another Entity takes place.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that defines the location from where another Entity takes place.",
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Location"
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF" ]
+    },
+    "http://webprotege.stanford.edu/RC9oNNab0poBq3VZzEoHIcM" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RC9oNNab0poBq3VZzEoHIcM",
+      "rdfsLabel" : "Recorded in",
+      "skosDefinition" : "Used to define the activity, system or documentation where an Entity or set of data information is stored.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://www.w3.org/2004/02/skos/core#definition" : "Used to define the activity, system or documentation where an Entity or set of data information is stored.",
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Record"
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN" ]
+    },
+    "http://webprotege.stanford.edu/RCK5ewyfmAkLZWg9Mwb7MY" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RCK5ewyfmAkLZWg9Mwb7MY",
+      "rdfsLabel" : "Triggered by",
+      "skosDefinition" : "Relationship that specifies the Entity responsible for making another Entity taking place.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Causality",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that specifies the Entity responsible for making another Entity taking place."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD" ]
+    },
+    "http://webprotege.stanford.edu/RCO41EY55jxxkXEYAsRnzul" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RCO41EY55jxxkXEYAsRnzul",
+      "rdfsLabel" : "Paid through",
+      "skosDefinition" : "Relationship that specifies the mean used to transfer money for a specific purpose.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Financial Transfer",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that specifies the mean used to transfer money for a specific purpose."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF" ]
+    },
+    "http://webprotege.stanford.edu/RCSHnubpYqLMmQHwcTdreoq" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RCSHnubpYqLMmQHwcTdreoq",
+      "rdfsLabel" : "Issued by",
+      "skosDefinition" : "Relationship that specifies the Entity (it can be a person or system) that sents out or puts forth in any form another Entity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Responsibility",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that specifies the Entity (it can be a person or system) that sents out or puts forth in any form another Entity."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF" ]
+    },
+    "http://webprotege.stanford.edu/RCmUfm0eeBA3SpSDhY4GHOe" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RCmUfm0eeBA3SpSDhY4GHOe",
+      "rdfsLabel" : "Predicted by",
+      "skosDefinition" : "Relationship that specifies the Entity that says or estimates that another Entity will happen in the future or will be a consequence of something.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Responsibility",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that specifies the Entity that says or estimates that another Entity will happen in the future or will be a consequence of something."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD" ]
+    },
+    "http://webprotege.stanford.edu/RCoyoKN6hsec0RfP3VnLQen" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RCoyoKN6hsec0RfP3VnLQen",
+      "rdfsLabel" : "Reconciled by",
+      "skosDefinition" : "Relationship that specifies the Entity used to compare and check financial accounts or amounts.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that specifies the Entity used to compare and check financial accounts or amounts.",
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Financial"
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF" ]
+    },
+    "http://webprotege.stanford.edu/RCptIcn975cERAVUlJOL7sV" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RCptIcn975cERAVUlJOL7sV",
+      "rdfsLabel" : "Provided by",
+      "skosDefinition" : "Relationship that specifies the Entity that makes another Entity available.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that specifies the Entity that makes another Entity available.",
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Responsibility Transfer"
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD" ]
+    },
+    "http://webprotege.stanford.edu/RCt16VHlp30eNXujyqS0ik9" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RCt16VHlp30eNXujyqS0ik9",
+      "rdfsLabel" : "Applied to",
+      "skosDefinition" : "Relationship that specifies the Entity that interacts with the current status or value of another Entity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Causality",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that specifies the Entity that interacts with the current status or value of another Entity."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN" ]
+    },
+    "http://webprotege.stanford.edu/RD0ZcPXhdHrABadmgWvHPLF" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RD0ZcPXhdHrABadmgWvHPLF",
+      "rdfsLabel" : "Caused by",
+      "skosDefinition" : "Relationship used to define the Entity that produces an effect, result, or condition on another Entity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Causality",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship used to define the Entity that produces an effect, result, or condition on another Entity."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD" ]
+    },
+    "http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD",
+      "rdfsLabel" : "is Affected by",
+      "skosDefinition" : "When the 'root' Entity is affected by, influenced by, acted upon, advised by or has an incoming Relationship from the 'tail' Entity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://www.w3.org/2004/02/skos/core#definition" : "When the 'root' Entity is affected by, influenced by, acted upon, advised by or has an incoming Relationship from the 'tail' Entity."
+      },
+      "rdfsSubPropertyOf" : [ "http://www.w3.org/2002/07/owl#topObjectProperty" ]
+    },
+    "http://webprotege.stanford.edu/RDHyoSHFDLL9G8kmD2B11Go" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RDHyoSHFDLL9G8kmD2B11Go",
+      "rdfsLabel" : "Used by",
+      "skosDefinition" : "Relationship that specifies the Entity that puts another Entity to a particular purpose.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Responsibility Participation Used",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that specifies the Entity that puts another Entity to a particular purpose."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD" ]
+    },
+    "http://webprotege.stanford.edu/RDKQk63bgl4QNsF9Hoy84CF" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RDKQk63bgl4QNsF9Hoy84CF",
+      "rdfsLabel" : "Attended by",
+      "skosDefinition" : null,
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Participation Responsibility"
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD" ]
+    },
+    "http://webprotege.stanford.edu/RDPf9CwQ3tGAm44VWzOmbHv" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RDPf9CwQ3tGAm44VWzOmbHv",
+      "rdfsLabel" : "Informed by",
+      "skosDefinition" : "Relationship that defines the Entity that provides the information or knowledge needed by another Entity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that defines the Entity that provides the information or knowledge needed by another Entity.",
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Causality Transfer"
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD" ]
+    },
+    "http://webprotege.stanford.edu/RDWT4jt5mF3fw4zrooDr58g" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RDWT4jt5mF3fw4zrooDr58g",
+      "rdfsLabel" : "Performed on",
+      "skosDefinition" : "Used to specify the place or Entity where an activity takes place.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Location",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Used to specify the place or Entity where an activity takes place."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN" ]
+    },
+    "http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF",
+      "rdfsLabel" : "Operation of",
+      "skosDefinition" : "Relationships required for the Entity to be able to perform its role.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationships required for the Entity to be able to perform its role."
+      },
+      "rdfsSubPropertyOf" : [ "http://www.w3.org/2002/07/owl#topObjectProperty" ]
+    },
+    "http://webprotege.stanford.edu/RDgkQlvQbb2skaXpfhIEAp8" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RDgkQlvQbb2skaXpfhIEAp8",
+      "rdfsLabel" : "Obtained through",
+      "skosDefinition" : "Relationship that specifies the process involved to come into possession of another Entity through an effort or by a request.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Causality Transfer",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that specifies the process involved to come into possession of another Entity through an effort or by a request."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF" ]
+    },
+    "http://webprotege.stanford.edu/RDhasq1hVj3O5iWytoHK065" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RDhasq1hVj3O5iWytoHK065",
+      "rdfsLabel" : "Used in",
+      "skosDefinition" : "It defines the Entities that utilizes other Entities for a specific purpose.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Used",
+        "http://www.w3.org/2004/02/skos/core#definition" : "It defines the Entities that utilizes other Entities for a specific purpose."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN" ]
+    },
+    "http://webprotege.stanford.edu/RDzbWoYkp7g1ljEL076ahtw" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RDzbWoYkp7g1ljEL076ahtw",
+      "rdfsLabel" : "Conducted for",
+      "skosDefinition" : "Used to define the person or object to whom/which an action is performed.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Responsibility Participation",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Used to define the person or object to whom/which an action is performed."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN" ]
+    },
+    "http://webprotege.stanford.edu/RXCmh2J46cqAwwT2c4D7Bx" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RXCmh2J46cqAwwT2c4D7Bx",
+      "rdfsLabel" : "Bounded by",
+      "skosDefinition" : "Relationship that describes the limits where an Entity is enclosed.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that describes the limits where an Entity is enclosed.",
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Location Time"
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/R8zMIKp038MgC2umoxwzWBJ" ]
+    },
+    "http://webprotege.stanford.edu/RXKNigVZSAdET48254gS2w" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RXKNigVZSAdET48254gS2w",
+      "rdfsLabel" : "Monitored by",
+      "skosDefinition" : "Relationship used to specify the  Entity that observes and checks the progress or quality of another Entity over a period of time.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Responsibility",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship used to specify the  Entity that observes and checks the progress or quality of another Entity over a period of time."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD" ]
+    },
+    "http://webprotege.stanford.edu/RXaMAxdkuV5CvgEpovEVvp" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RXaMAxdkuV5CvgEpovEVvp",
+      "rdfsLabel" : "Provided to",
+      "skosDefinition" : "Relationship that specifies the receiver of an Entity that has been sent out or put forth.",
+      "skosComment" : "The difference with \"Issued to\" is that \"Issued to\" implies there is a legal or contractural arrangement applied.",
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Transfer",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that specifies the receiver of an Entity that has been sent out or put forth.",
+        "http://www.w3.org/2004/02/skos/core#comment" : "The difference with \"Issued to\" is that \"Issued to\" implies there is a legal or contractural arrangement applied."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN" ]
+    },
+    "http://webprotege.stanford.edu/RYIoLKdwlygMWF57BNuMib" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RYIoLKdwlygMWF57BNuMib",
+      "rdfsLabel" : "Located at",
+      "skosDefinition" : "Relationship used to identify or establish the position of another Entity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Location",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship used to identify or establish the position of another Entity."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/R8zMIKp038MgC2umoxwzWBJ" ]
+    },
+    "http://webprotege.stanford.edu/RbjcXDTrplTouTeWRoMMe7" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RbjcXDTrplTouTeWRoMMe7",
+      "rdfsLabel" : "Implemented through",
+      "skosDefinition" : "It specifies the Entity used to put in place or put into effect another Entity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Causality",
+        "http://www.w3.org/2004/02/skos/core#definition" : "It specifies the Entity used to put in place or put into effect another Entity."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN" ]
+    },
+    "http://webprotege.stanford.edu/RcNW56SFgi34icUZNpsOET" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RcNW56SFgi34icUZNpsOET",
+      "rdfsLabel" : "Represented within",
+      "skosDefinition" : "Relationship that describes the way an Entity explicitly names another Entity or its state at a particular level of detail.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Record",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that describes the way an Entity explicitly names another Entity or its state at a particular level of detail."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/R8zMIKp038MgC2umoxwzWBJ" ]
+    },
+    "http://webprotege.stanford.edu/RkJSmQ0b8EYQx19ftdEkGF" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RkJSmQ0b8EYQx19ftdEkGF",
+      "rdfsLabel" : "Funded by",
+      "skosDefinition" : "Relationship used to specify the role, organisation or party that will provide resources to finance another Entity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Financial",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship used to specify the role, organisation or party that will provide resources to finance another Entity."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD" ]
+    },
+    "http://webprotege.stanford.edu/RoaVc0YAiyET5nKJSYJAoX" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RoaVc0YAiyET5nKJSYJAoX",
+      "rdfsLabel" : "Associated with",
+      "skosDefinition" : "Relationship that specifies the Entity that is connected to another Entity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that specifies the Entity that is connected to another Entity."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/R8zMIKp038MgC2umoxwzWBJ" ]
+    },
+    "http://webprotege.stanford.edu/RqeoNxhIUKNWDOrBxWFusJ" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RqeoNxhIUKNWDOrBxWFusJ",
+      "rdfsLabel" : "Composed of",
+      "skosDefinition" : "Relationship that describes when one Entity is in some way made up or comprised of another Entity or Entities.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that describes when one Entity is in some way made up or comprised of another Entity or Entities."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/R8zMIKp038MgC2umoxwzWBJ" ]
+    },
+    "http://webprotege.stanford.edu/RuflVNuPASFn75l7LznQc0" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RuflVNuPASFn75l7LznQc0",
+      "rdfsLabel" : "Achieved by",
+      "skosDefinition" : "Relationship that describes the success in bringing about or reaching an Entity by effort, skill, or courage of another Entity.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Participation",
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship that describes the success in bringing about or reaching an Entity by effort, skill, or courage of another Entity."
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF" ]
+    },
+    "http://webprotege.stanford.edu/RvMCpTSGsQmEAyy8Mi6fdN" : {
+      "rdfAbout" : "http://webprotege.stanford.edu/RvMCpTSGsQmEAyy8Mi6fdN",
+      "rdfsLabel" : "Operated from",
+      "skosDefinition" : "Relationship used to specify the place or system from where an Entity is controlled.",
+      "skosComment" : null,
+      "owlAnnotationProperties" : {
+        "http://www.w3.org/2004/02/skos/core#definition" : "Relationship used to specify the place or system from where an Entity is controlled.",
+        "http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs" : "Location"
+      },
+      "rdfsSubPropertyOf" : [ "http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF" ]
+    },
+    "http://www.w3.org/2002/07/owl#topObjectProperty" : {
+      "rdfAbout" : "http://www.w3.org/2002/07/owl#topObjectProperty",
+      "rdfsLabel" : null,
+      "skosDefinition" : null,
+      "skosComment" : null,
+      "owlAnnotationProperties" : { },
+      "rdfsSubPropertyOf" : [ ]
+    }
+  }
+}

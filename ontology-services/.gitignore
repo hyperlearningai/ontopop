@@ -1,0 +1,30 @@
+# Build Resources
+/builds/*
+!/builds/.gitkeep
+/target/
+**/logs/*
+/logs/*
+!/logs/.gitkeep
+
+# Compiled Resources
+__pycache__/
+*.py[cod]
+*.so
+
+# IDE Resources
+/.settings/
+.classpath
+.project
+.pydevproject
+**/.settings/
+**/target/
+**/.classpath
+**/.project
+**/.pydevproject
+
+# Ontology Services Resources
+*.ipynb
+
+# Temporary Resources
+.ipynb_checkpoints/
+/working/

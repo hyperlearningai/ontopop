@@ -1,0 +1,7 @@
+hosts: [<Azure Cosmos DB Account Name>.gremlin.cosmos.azure.com]
+port: 443
+username: /dbs/<Database ID>/colls/<Graph ID>
+password: <Primary or Secondary Key>
+connectionPool: {
+  enableSsl: true}
+serializer: { className: org.apache.tinkerpop.gremlin.driver.ser.GraphSONMessageSerializerV2d0, config: { serializeResultToString: true }}
