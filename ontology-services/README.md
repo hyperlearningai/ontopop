@@ -131,7 +131,7 @@ To then deploy the API to an Azure App Service instance using Maven directly, pl
 
 ## <a name="license"></a>3. License
 
-Distributed under the [Creative Commons Attribution-ShareAlike](https://creativecommons.org/licenses/by-sa/2.0/) license. Please see [LICENSE](../LICENSE) for more information.
+Distributed under the [Creative Commons Attribution-ShareAlike 4.0](https://creativecommons.org/licenses/by-sa/4.0/) license. Please see [LICENSE](../LICENSE) for more information.
 <br/><br/>
 
 ## <a name="contact"></a>4. Contact and Further Information
