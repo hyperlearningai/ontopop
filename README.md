@@ -13,7 +13,7 @@
     <br/>
     <a href="https://ontopop.com" target="_blank"">Website</a>
     ·
-    <a href="https://ontopop.com" target="_blank"">Documentation</a>
+    <a href="https://hyperlearningai.atlassian.net/wiki/spaces/OF" target="_blank"">Documentation</a>
   </p>
 </p>
 <br/>
