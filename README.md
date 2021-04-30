@@ -61,7 +61,7 @@ Service | Description | Primary Frameworks
 Data Pipeline | Ontology ingestion, semantic validation, parsing, modelling and loading | <ul><li>[OpenJDK 11](https://openjdk.java.net/projects/jdk/11/)</li><li>[OWL API](https://github.com/owlcs/owlapi/wiki)</li></ul>
 Graph Computing Services | Graph-based modelling and interfaces | <ul><li>[OpenJDK 11](https://openjdk.java.net/projects/jdk/11/)</li><li>[Apache TinkerPop](https://tinkerpop.apache.org/)</li></ul>
 APIs | Ontology, graph and vocabulary APIs | <ul><li>[OpenJDK 11](https://openjdk.java.net/projects/jdk/11/)</li><li>[Spring Framework](https://spring.io/)</li></ul>
-UI Web App | User-facing ontology visualisation, search and management web application | <ul><li>[React](https://reactjs.org/)</li><li>[NextJs](https://nextjs.org/)</li><li>[Redux-zero](https://github.com/redux-zero/redux-zero)</li></ul>
+UI Web App | User-facing ontology visualisation, search and management web application | <ul><li>[React](https://reactjs.org/)</li><li>[NextJs](https://nextjs.org/)</li><li>[Redux-zero](https://github.com/redux-zero/redux-zero)</li><li>[vis.js](https://visjs.org/)</li></ul>
 <br/>
 
 ## <a name="getting-started"></a>2. Getting Started
@@ -77,12 +77,11 @@ UI Web App | Javascript-based user-facing web application | [Link](https://githu
 Phase | Primary Sponsor | Deliverables | Timelines
 :--- | :--- | :--- | :---
 Minimum Viable Product (MVP) | Highways England | Series of open and scalable web services and APIs, and a user-facing web application, to enable the visualisation, search, exploration, navigation and management of ontologies, pre-loaded with the Highways England ontology in the first instance. | December 2020 - April 2021
-<br/>
 
 ### <a name="mvp"></a>3.1. Minimum Viable Product
 
 The first phase of the OntoPop framework is the development of a minimum viable product (MVP) that delivers a series of open and scalable web services and APIs, and a user-facing web application, to enable the visualisation, search, exploration, navigation and management of ontologies, pre-loaded with the Highways England ontology in the first instance.
-<br/>
+<br/><br/>
 
 ## <a name="contributing"></a>4. Contributing
 
@@ -99,7 +98,7 @@ OntoPop is distributed under the [Creative Commons Attribution-ShareAlike 4.0](h
 For further information and guidance, please contact:
 
 * **Highways England**<br/>Primary Project Sponsor<br/>contactus@ontopop.com<br/><br/>
-* **Jillur Quddus**<br/>Chief Data Scientist and Principal Polyglot Software Engineer<br/>contactus@hyperlearning.ai
+* **Jillur Quddus**<br/>Chief Data Scientist and Principal Polyglot Software Engineer<br/>contactus@hyperlearning.ai<br/><br/>
 
 
 ## <a name="acknowledgements"></a>7. Acknowledgements
