@@ -127,14 +127,14 @@ To then deploy the API to an Azure App Service instance using Maven directly, pl
 ```
 # Build the project and all inter-dependencies
 > cd ONTOPOP_BASE/ontology-services
-> mvn clean install -P [Target Environment Maven Profile Name]
+> mvn clean install -P [Target Environment Maven Profile Name e.g. production]
 
 # Login to Azure using the Azure CLI
 > az login
 
 # Deploy a specific API application to Azure
 > cd [Name of Ontology API Maven Child Module e.g. ontology-api-auth]
-> mvn package azure-webapp:deploy -P [Target Environment Maven Profile Name]
+> mvn package azure-webapp:deploy -P [Target Environment Maven Profile Name e.g. production]
 ```
 <br/>
 
