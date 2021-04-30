@@ -77,6 +77,7 @@ UI Web App | Javascript-based user-facing web application | [Link](https://githu
 Phase | Primary Sponsor | Deliverables | Timelines
 :--- | :--- | :--- | :---
 Minimum Viable Product (MVP) | Highways England | Series of open and scalable web services and APIs, and a user-facing web application, to enable the visualisation, search, exploration, navigation and management of ontologies, pre-loaded with the Highways England ontology in the first instance. | December 2020 - April 2021
+<br/>
 
 ### <a name="mvp"></a>3.1. Minimum Viable Product
 
