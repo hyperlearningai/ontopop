@@ -27,9 +27,10 @@ Java-based backend OntoPop services including the ontology and graph data pipeli
 [2. Getting Started](#getting-started)<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;[2.1. Requirements](#requirements)<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;[2.2. Cloning](#cloning)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;[2.3. Importing](#importing)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;[2.4. Running APIs Locally](#running)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;[2.5. Deploying APIs using Maven](#deploying)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;[2.3. Maven Modules](#modules)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;[2.4. Configuration](#configuration)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;[2.5. Running APIs Locally](#running)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;[2.6. Deploying APIs using Maven](#deploying)<br/>
 [3. License](#license)<br/>
 [4. Contact and Further Information](#contact)<br/>
 <br/>
@@ -42,16 +43,19 @@ OntoPop Java-based backend services include:
 * Graph Computing Services - graph-based modelling, interfaces and abstract classes using the TinkerPop framework
 * APIs - ontology, graph and vocabulary Spring-based APIs
 
+For further information regarding these services, please refer to the [OntoPop Wiki](https://hyperlearningai.atlassian.net/wiki/spaces/OF/).
+<br/><br/>
+
 ## <a name="getting-started"></a>2. Getting Started
 
-The following subsections describe the steps required to clone, develop and build the OntoPop backend services locally.
+The following subsections describe the steps required to clone, develop, build and deploy the OntoPop backend services.
 
 ### <a name="requirements"></a>2.1. Requirements
 
-Please ensure that the following prerequisite software services are installed locally:
+Please ensure that the following prerequisite software services are installed in your local development environment:
 
-* [OpenJDK 11](https://openjdk.java.net/projects/jdk/11/)
-* [Apache Maven](https://maven.apache.org/)
+* [OpenJDK 11](https://openjdk.java.net/projects/jdk/11/) - Open source implementation of JDK 11
+* [Apache Maven](https://maven.apache.org/) - Build automation and management tool for Java
 
 ### <a name="cloning"></a>2.2. Cloning
 
@@ -62,21 +66,21 @@ Please clone this Git repository onto your local development machine by executin
 > cd ontopop
 ```
 
-### <a name="importing"></a>2.3. Importing
+### <a name="modules"></a>2.3. Maven Modules
 
-OntoPop services employs a Maven parent-child module hierarchy. Therefore in order to import the OntoPop services parent Maven project into your chosen IDE (for example Eclipse or VSCode), simply import ```ONTOPOP_BASE/ontology-services```. Thereafter the following Maven child modules will be available:
+OntoPop services employs a Maven parent-child module hierarchy that can be imported into your chosen IDE (for example Eclipse or VSCode) by simply importing ```ONTOPOP_BASE/ontology-services```. The following Maven child modules make up the backend services for OntoPop:
 
-* [ontology-api-all](ontology-api-all) - All APIs consolidated into a single module designed for deployment to a single API app
+* [ontology-api-all](ontology-api-all) - All APIs consolidated into a single module designed for deployment to a single API app for development and testing purposes
 * [ontology-api-auth](ontology-api-auth) - Authentication APIs including login
 * [ontology-api-collaboration](ontology-api-collaboration) - Collaboration APIs including note management
 * [ontology-api-common](ontology-api-common) - Common API classes and helper functions
-* [ontology-api-graph](ontology-api-graph) - Graph APIs such as requesting vertices and edges
+* [ontology-api-graph](ontology-api-graph) - Graph APIs such as requesting graph traversal queries
 * [ontology-api-ontology](ontology-api-ontology) - Ontology APIs such as requesting classes and semantic triples
 * [ontology-api-ui](ontology-api-ui) - UI APIs including UI styling management
 * [ontology-common](ontology-common) - Common static resources used across the project
 * [ontology-etl](ontology-etl) - ETL pipelines including ontology and graph processing
 * [ontology-graphdb](ontology-graphdb) - TinkerPop-compliant graph database services
-* [ontology-jpa](ontology-jpa) - Java Persistence API
+* [ontology-jpa](ontology-jpa) - Java Persistence API repositories
 * [ontology-model](ontology-model) - Foundational entities and ontology-specific models
 * [ontology-owlapi](ontology-owlapi) - OWL processing including semantic validation and parsing
 * [ontology-search](ontology-search) - Search indexing services
@@ -84,15 +88,19 @@ OntoPop services employs a Maven parent-child module hierarchy. Therefore in ord
 * [ontology-ui](ontology-ui) - Custom response models for UI visualisation libraries
 * [ontology-utils](ontology-utils) - Common utility functions
 
-### <a name="running"></a>2.4. Running APIs Locally
+### <a name="running"></a>2.4. Configuration
+
+All global and service-specific configuration can be found in the [ontology-common](ontology-common) Maven child module, and specifically in ```src/main/resources/conf/environments```. Please refer to the [OntoPop Wiki](https://hyperlearningai.atlassian.net/wiki/spaces/OF/pages/184976100/10.1.1.+Configuration) for a list of configuration property keys and possible values. When relevant API applications are built and deployed, Maven is configured such that configuration files from the relevant environment directory are included in the packaged JARs.
+
+### <a name="running"></a>2.5. Running APIs Locally
 
 To run a specific API locally for development and testing purposes, please navigate into the relevant Maven child module and run the ```ai.hyperlearning.ontology.services.api.<name>.apps.StartAPIApplication``` Spring Boot application. For example to run the Ontology Authentication API locally, navigate into the ```ontology-api-auth``` Maven child module and run ```ai.hyperlearning.ontology.services.api.auth.apps.StartAPIApplication```.
 
 HTTP port numbers for each of the API services are defined in the ```ontology-common``` Maven child module and in ```src/main/java/resources/conf/environment/<environment>/ontology-framework.properties```.
 
-### <a name="deploying"></a>2.5. Deploying APIs using Maven
+### <a name="deploying"></a>2.6. Deploying APIs using Maven
 
-The online OntoPop service is currently deployed to the Microsoft Azure cloud computing platform. In order to deploy specific APIs to Azure App Service instances using Maven directly, please update the ```pom.xml``` file in the relevant Maven child module and specifically the Azure deployment properties for the relevant target deployment environment profile. For example:
+The current MVP phase of OntoPop has only been tested using deployment to local development environments and the [Microsoft Azure](https://azure.microsoft.com/en-gb/) cloud computing platform. Furthermore, the current community-hosted instance of OntoPop available via https://ontopop.com is also deployed to the Microsoft Azure cloud computing platform. In order to deploy specific APIs to Azure App Service instances using Maven directly, please update the ```pom.xml``` file in the relevant Maven child module and specifically the Azure deployment properties for the relevant target deployment environment profile. For example:
 
 ```
 <!-- Production Environment -->
@@ -128,14 +136,16 @@ To then deploy the API to an Azure App Service instance using Maven directly, pl
 > cd [Name of Ontology API Maven Child Module e.g. ontology-api-auth]
 > mvn package azure-webapp:deploy -P [Target Environment Maven Profile Name]
 ```
+<br/>
 
 ## <a name="license"></a>3. License
 
-Distributed under the [Creative Commons Attribution-ShareAlike 4.0](https://creativecommons.org/licenses/by-sa/4.0/) license. Please see [LICENSE](../LICENSE) for more information.
+OntoPop is distributed under the [Creative Commons Attribution-ShareAlike 4.0](https://creativecommons.org/licenses/by-sa/4.0/) license. Please see [LICENSE](../LICENSE) for more information.
 <br/><br/>
 
 ## <a name="contact"></a>4. Contact and Further Information
 
 For further information and guidance, please contact:
 
+* **Highways England**<br/>Primary Project Sponsor<br/>contactus@ontopop.com<br/><br/>
 * **Jillur Quddus**<br/>Chief Data Scientist and Principal Polyglot Software Engineer<br/>contactus@hyperlearning.ai
