@@ -13,7 +13,7 @@
     <br/>
     <a href="https://ontopop.com" target="_blank"">Website</a>
     ·
-    <a href="https://hyperlearningai.atlassian.net/wiki/spaces/OF" target="_blank"">Documentation</a>
+    <a href="https://docs.ontopop.com" target="_blank"">Documentation</a>
   </p>
 </p>
 <br/>
@@ -86,7 +86,7 @@ The first phase of the OntoPop framework is the development of a minimum viable 
 
 ## <a name="contributing"></a>4. Contributing
 
-OntoPop is a community-driven open source framework released under the [Creative Commons Attribution-ShareAlike 4.0](https://creativecommons.org/licenses/by-sa/4.0/) license. The best way to get started is by visiting the [OntoPop Wiki](https://hyperlearningai.atlassian.net/wiki/spaces/OF).
+OntoPop is a community-driven open source framework released under the [Creative Commons Attribution-ShareAlike 4.0](https://creativecommons.org/licenses/by-sa/4.0/) license. The best way to get started is by visiting the [OntoPop Wiki](https://docs.ontopop.com).
 <br/><br/>
 
 ## <a name="license"></a>5. License
