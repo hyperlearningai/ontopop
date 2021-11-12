@@ -22,7 +22,7 @@ __pycache__/
 **/.project
 **/.pydevproject
 
-# Ontology Services Resources
+# Development Resources
 *.ipynb
 
 # Temporary Resources

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
+    <!-- Project Metadata -->
+    <groupId>ai.hyperlearning.ontopop</groupId>
+    <artifactId>ontopop</artifactId>
+    <version>2.0.0</version>
+    <packaging>pom</packaging>
+    <name>ontopop</name>
+    <description>OntoPop</description>
+    <url>https://ontopop.com</url>
+    <organization>
+        <name>HyperLearning AI</name>
+        <url>https://hyperlearning.ai</url>
+    </organization>
+    <developers>
+        <developer>
+            <id>jillurquddus</id>
+            <name>Jillur Quddus</name>
+            <email>contactus@hyperlearning.ai</email>
+            <url>https://hyperlearning.ai/team/jillurquddus</url>
+            <organization>HyperLearning AI</organization>
+            <organizationUrl>https://hyperlearning.ai</organizationUrl>
+            <roles>
+                <role>Chief Data Scientist</role>
+                <role>Principal Polyglot Software Engineer</role>
+            </roles>
+            <timezone>Europe/London</timezone>
+        </developer>
+    </developers>
+    
+    <!-- Spring Boot Parent -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.5.6</version>
+    </parent>
+    
+    <!-- Properties and Dependency Versions -->
+    <properties>
+        <java.version>11</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+    </properties>
+    
+    <!-- Project Dependencies -->
+    <dependencies>
+    
+        <!-- JUnit -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- Spring Boot Starter Test -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    
+    </dependencies>
+    
+    <!-- Project Dependency Management -->
+    <dependencyManagement>
+        <dependencies>
+        
+        </dependencies>
+    </dependencyManagement>
+    
+    <!-- Child Modules -->
+    <modules>
+        
+    </modules>
+    
+    <!-- Project Build Configuration -->
+    <build>
+    
+        <!-- Project Resources -->
+        <resources>
+        
+            <!-- Build Version  -->
+            <resource>
+                <directory>${project.basedir}</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>VERSION.txt</include>
+                </includes>
+            </resource>
+            
+        </resources>
+        
+        <!-- Project Plugins -->
+        <plugins>
+        
+            <!-- Compiler Management -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+        
+        </plugins>
+        
+    </build>
+
+</project>
