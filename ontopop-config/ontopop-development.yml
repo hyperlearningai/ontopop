@@ -1,0 +1,18 @@
+ontopop:
+    services:
+        compute:
+            config:
+                client:
+                    server:
+                        port: 8802
+            etl:
+                ingest:
+                    io:
+                        targetUri: file://tmp/ontopop/etl/ingest      
+                    validation:
+                        validExtensions: "owl"
+                    server:
+                        port: 8803
+        storage:
+            file:
+                type: local
