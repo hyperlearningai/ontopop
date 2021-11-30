@@ -3,16 +3,23 @@ ontopop:
         compute:
             config:
                 client:
-                    server:
-                        port: 8802
-            etl:
-                ingest:
-                    io:
-                        targetUri: file://tmp/ontopop/etl/ingest      
+                    network:
+                        httpPort: 8802
+            ingestors:
+                ontology:
+                    network:
+                        httpPort: 8803
+                    storage:
+                        outputDirectory: ontopop/data/ontology/ingested
                     validation:
                         validExtensions: "owl"
-                    server:
-                        port: 8803
+            validators:
+                ontology:
+                    network:
+                        httpPort: 8804
+                    storage:
+                        outputDirectory: ontopop/data/ontology/validated
         storage:
             file:
                 type: local
+                path: file://tmp
