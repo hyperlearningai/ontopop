@@ -43,6 +43,12 @@
     
     <!-- Module Dependencies -->
     <dependencies>
+    
+        <!-- Springdoc OpenAPI UI -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+        </dependency>
         
         <!-- Spring Boot Starter Web -->
         <dependency>
