@@ -39,6 +39,7 @@
     
     <!-- Properties and Dependency Versions -->
     <properties>
+        <commons-io.version>2.11.0</commons-io.version>
         <conf.bootstrap-properties.filename>bootstrap.yml</conf.bootstrap-properties.filename>
         <java.version>11</java.version>
         <javax.activation.version>1.1.1</javax.activation.version>
@@ -78,6 +79,13 @@
     <!-- Project Dependency Management -->
     <dependencyManagement>
         <dependencies>
+            
+            <!-- Apache Commons IO -->
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+            </dependency>
             
             <!-- JavaBeans Activation Framework for JAXB-API Implementation -->
 	        <dependency>
@@ -127,6 +135,7 @@
         <module>ontopop-config-server</module>
         <module>ontopop-common</module>
         <module>ontopop-config-client</module>
+        <module>ontopop-utils-git</module>
         <module>ontopop-utils-storage</module>
         <module>ontopop-model</module>
         <module>ontopop-ingestor-ontology</module>
