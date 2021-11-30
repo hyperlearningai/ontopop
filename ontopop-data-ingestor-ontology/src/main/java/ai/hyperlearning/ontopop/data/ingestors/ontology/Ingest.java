@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.ingestors.ontology;
+package ai.hyperlearning.ontopop.data.ingestors.ontology;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

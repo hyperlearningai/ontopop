@@ -11,8 +11,8 @@
     </parent>
     
     <!-- Module Metadata -->
-    <artifactId>ontopop-validator-ontology</artifactId>
-    <name>ontopop-validator-ontology</name>
+    <artifactId>ontopop-data-validator-ontology</artifactId>
+    <name>ontopop-data-validator-ontology</name>
     <packaging>jar</packaging>
     <description>OntoPop - Ontology Validation Service</description>
     <url>https://ontopop.com</url>

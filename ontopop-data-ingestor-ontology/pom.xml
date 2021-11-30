@@ -11,8 +11,8 @@
     </parent>
     
     <!-- Module Metadata -->
-    <artifactId>ontopop-ingestor-ontology</artifactId>
-    <name>ontopop-ingestor-ontology</name>
+    <artifactId>ontopop-data-ingestor-ontology</artifactId>
+    <name>ontopop-data-ingestor-ontology</name>
     <packaging>jar</packaging>
     <description>OntoPop - Ontology Ingestion Service</description>
     <url>https://ontopop.com</url>

@@ -138,9 +138,9 @@
         <module>ontopop-utils-git</module>
         <module>ontopop-utils-storage</module>
         <module>ontopop-model</module>
-        <module>ontopop-ingestor-ontology</module>
-        <module>ontopop-validator-ontology</module>
-        <module>ontopop-parser-ontology</module>
+        <module>ontopop-data-ingestor-ontology</module>
+        <module>ontopop-data-validator-ontology</module>
+        <module>ontopop-data-parser-ontology</module>
     </modules>
     
     <!-- Project Build Configuration -->
