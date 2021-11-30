@@ -10,33 +10,33 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
- * Configuration Controller
+ * Configuration Controller - Compute Services
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
 @RestController
-@RequestMapping("/api/config")
-@Tag(name = "config", description = "Configuration API")
-public class ConfigController {
+@RequestMapping("/api/config/services/compute")
+@Tag(name = "config", description = "Configuration API - Compute Services")
+public class ConfigComputeController {
 	
-	@Value("${ontopop.services.compute.etl.ingest.io.targetUri}")
-    private String servicesComputeEtlIngestIoTargetUri;
+	@Value("${ontopop.services.compute.ingestors.ontology.storage.outputDirectory}")
+    private String ingestorOntologyStorageOutputDirectory;
 	
 	/**************************************************************************
 	 * HTTP GET REQUESTS
 	 *************************************************************************/
 	
 	@Operation(
-			summary = "ETL Ingest Target URI",
-			description = "Get the ETL service ingest target URI",
-			tags = { "service", "compute", "etl", "ingest" })
+			summary = "Ingestor - Ontology Storage Output Directory",
+			description = "Get the ontology ingestion service storage output directory path",
+			tags = { "service", "compute", "ontology", "ingest" })
 	@GetMapping(
-			value = "/services/compute/etl/ingest/io/targetUri", 
+			value = "/ingestors/ontology/storage/outputDirectory", 
 			produces = MediaType.TEXT_PLAIN_VALUE)
-	public String getServicesComputeEtlIngestIoTargetUri() {
-		return servicesComputeEtlIngestIoTargetUri;
+	public String getIngestorOntologyStorageOutputDirectory() {
+		return ingestorOntologyStorageOutputDirectory;
 	}
 
 }

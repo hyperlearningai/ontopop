@@ -13,14 +13,14 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class ServerFactoryConfig implements WebServerFactoryCustomizer<ConfigurableWebServerFactory> {
+public class ConfigClientServerFactoryConfig implements WebServerFactoryCustomizer<ConfigurableWebServerFactory> {
 
-	@Value("${ontopop.services.compute.config.client.server.port}")
-    private int configClientServerPort;
+	@Value("${ontopop.services.compute.config.client.network.httpPort}")
+    private int configClientServerHttpPort;
 	
 	@Override
     public void customize(ConfigurableWebServerFactory factory) {
-		factory.setPort(configClientServerPort);
+		factory.setPort(configClientServerHttpPort);
 	}
 	
 }
