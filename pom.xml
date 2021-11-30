@@ -41,6 +41,7 @@
     <properties>
         <conf.bootstrap-properties.filename>bootstrap.yml</conf.bootstrap-properties.filename>
         <java.version>11</java.version>
+        <javax.activation.version>1.1.1</javax.activation.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -78,10 +79,27 @@
     <dependencyManagement>
         <dependencies>
             
+            <!-- JavaBeans Activation Framework for JAXB-API Implementation -->
+	        <dependency>
+	            <groupId>javax.activation</groupId>
+	            <artifactId>activation</artifactId>
+	            <version>${javax.activation.version}</version>
+	        </dependency>
+            
             <!-- OntoPop -->
             <dependency>
                 <groupId>ai.hyperlearning.ontopop</groupId>
                 <artifactId>ontopop-common</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>ai.hyperlearning.ontopop</groupId>
+                <artifactId>ontopop-utils-storage</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>ai.hyperlearning.ontopop</groupId>
+                <artifactId>ontopop-model</artifactId>
                 <version>${revision}</version>
             </dependency>
             
@@ -109,6 +127,11 @@
         <module>ontopop-config-server</module>
         <module>ontopop-common</module>
         <module>ontopop-config-client</module>
+        <module>ontopop-utils-storage</module>
+        <module>ontopop-model</module>
+        <module>ontopop-ingestor-ontology</module>
+        <module>ontopop-validator-ontology</module>
+        <module>ontopop-parser-ontology</module>
     </modules>
     
     <!-- Project Build Configuration -->
