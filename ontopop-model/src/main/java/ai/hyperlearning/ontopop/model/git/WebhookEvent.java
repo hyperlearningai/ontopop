@@ -89,6 +89,9 @@ public class WebhookEvent implements Serializable {
 	@NotNull
 	private String latestRelevantCommitCommitterUsername;
 	
+	@NotNull
+	private String requestHeaderSignature;
+	
 	@ManyToOne
     @JoinColumn(name="id", nullable=false)
     private Ontology ontology;
@@ -109,6 +112,7 @@ public class WebhookEvent implements Serializable {
 			@NotNull String latestRelevantCommitCommitterName,
 			@NotNull String latestRelevantCommitCommitterEmail,
 			@NotNull String latestRelevantCommitCommitterUsername,
+			@NotNull String requestHeaderSignature, 
 			Ontology ontology) {
 		super();
 		this.id = id;
@@ -129,6 +133,7 @@ public class WebhookEvent implements Serializable {
 		this.latestRelevantCommitCommitterName = latestRelevantCommitCommitterName;
 		this.latestRelevantCommitCommitterEmail = latestRelevantCommitCommitterEmail;
 		this.latestRelevantCommitCommitterUsername = latestRelevantCommitCommitterUsername;
+		this.requestHeaderSignature = requestHeaderSignature;
 		this.ontology = ontology;
 	}
 
@@ -287,6 +292,14 @@ public class WebhookEvent implements Serializable {
 				latestRelevantCommitCommitterUsername;
 	}
 
+	public String getRequestHeaderSignature() {
+		return requestHeaderSignature;
+	}
+
+	public void setRequestHeaderSignature(String requestHeaderSignature) {
+		this.requestHeaderSignature = requestHeaderSignature;
+	}
+
 	public Ontology getOntology() {
 		return ontology;
 	}
@@ -338,6 +351,7 @@ public class WebhookEvent implements Serializable {
 				+ "latestRelevantCommitCommitterName=" + latestRelevantCommitCommitterName + ", "
 				+ "latestRelevantCommitCommitterEmail=" + latestRelevantCommitCommitterEmail + ", "
 				+ "latestRelevantCommitCommitterUsername=" + latestRelevantCommitCommitterUsername + ", "
+				+ "requestHeaderSignature=" + requestHeaderSignature + ", "
 				+ "ontology=" + ontology 
 				+ "]";
 	}
