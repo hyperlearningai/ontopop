@@ -111,17 +111,17 @@
             </dependency>
             <dependency>
                 <groupId>ai.hyperlearning.ontopop</groupId>
+                <artifactId>ontopop-model</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>ai.hyperlearning.ontopop</groupId>
                 <artifactId>ontopop-utils-git</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>ai.hyperlearning.ontopop</groupId>
                 <artifactId>ontopop-utils-storage</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-model</artifactId>
                 <version>${revision}</version>
             </dependency>
             
@@ -149,9 +149,9 @@
         <module>ontopop-config-server</module>
         <module>ontopop-common</module>
         <module>ontopop-config-client</module>
+        <module>ontopop-model</module>
         <module>ontopop-utils-git</module>
         <module>ontopop-utils-storage</module>
-        <module>ontopop-model</module>
         <module>ontopop-data-jpa</module>
         <module>ontopop-data-ingestor-ontology</module>
         <module>ontopop-data-validator-ontology</module>
