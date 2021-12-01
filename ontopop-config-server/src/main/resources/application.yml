@@ -1,16 +1,15 @@
-server:
-    port: 8801
 spring:
     application:
-        name: ontopop-config-server
+        name: ontopop
     cloud:
         config:
             server:
-                native:
-                    search-locations: file://${user.home}/ontopop/ontopop-config
+                vault:
+                    host: 127.0.0.1
+                    post: 8200
+                    scheme: http
+                    backend: secret
+                    defaultKey: application
+                    kvVersion: 2
     profiles:
-        active: native
-    security:
-        user:
-            name: 
-            password: 
+        active: vault
