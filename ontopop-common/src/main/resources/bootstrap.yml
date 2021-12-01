@@ -4,7 +4,4 @@ spring:
     cloud:
         config:
             uri: http://localhost:8801
-            username: 
-            password: 
-    profiles:
-        active: development
+            token: 
