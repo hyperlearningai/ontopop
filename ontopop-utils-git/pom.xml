@@ -44,6 +44,24 @@
     <!-- Module Dependencies -->
     <dependencies>
     
+        <!-- Gson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+        </dependency>
+        
+        <!-- Guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+        
+        <!-- OntoPop -->
+        <dependency>
+            <groupId>ai.hyperlearning.ontopop</groupId>
+            <artifactId>ontopop-model</artifactId>
+        </dependency>
+    
         <!-- Spring Webflux -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
