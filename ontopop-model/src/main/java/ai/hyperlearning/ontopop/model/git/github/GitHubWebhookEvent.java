@@ -3,8 +3,10 @@ package ai.hyperlearning.ontopop.model.git.github;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ai.hyperlearning.ontopop.model.git.WebhookEvent;
 
@@ -35,29 +37,6 @@ public class GitHubWebhookEvent implements Serializable {
 	
 	public GitHubWebhookEvent() {
 		
-	}
-
-	public GitHubWebhookEvent(String ref, String before, String after, 
-			Map<String, Object> repository, Map<String, Object> pusher, 
-			Map<String, Object> organization, Map<String, Object> sender, 
-			boolean created, boolean deleted, boolean forced, String baseRef, 
-			String compare, List<Map<String, Object>> commits, 
-			Map<String, Object> headCommit) {
-		super();
-		this.ref = ref;
-		this.before = before;
-		this.after = after;
-		this.repository = repository;
-		this.pusher = pusher;
-		this.organization = organization;
-		this.sender = sender;
-		this.created = created;
-		this.deleted = deleted;
-		this.forced = forced;
-		this.baseRef = baseRef;
-		this.compare = compare;
-		this.commits = commits;
-		this.headCommit = headCommit;
 	}
 
 	public String getRef() {
@@ -198,46 +177,59 @@ public class GitHubWebhookEvent implements Serializable {
 		webhookEvent.setPusherName( this.pusher.get("name").toString() );
 		webhookEvent.setPusherEmail( this.pusher.get("email").toString() );
 		
-		// Set latest relevant commit attributes
-		commits:
+		// Set commits modified resource paths
+		Set<String> commitsModifiedResourcePaths = new HashSet<>();
 		for( Map<String, Object> commit : this.commits ) {
 			List<String> modified = (List<String>) commit.get("modified");
-			for (String modifiedResource: modified) {
-				if ( modifiedResource.equals(resourcePath) ) {
-					
-					// Set the commit ID and timestamp attributes
-					webhookEvent.setLatestRelevantCommitId( 
-							commit.get("id").toString() );
-					webhookEvent.setLatestRelevantCommitMessage(
-							commit.get("message").toString() );
-					String timestamp = commit.get("timestamp").toString();
-					webhookEvent.setLatestRelevantCommitTimestamp( 
-							LocalDateTime.parse(timestamp, formatter) );
-					
-					// Set the commit author attributes
-					Map<String, Object> author = 
-							(Map<String, Object>) commit.get("author");
-					webhookEvent.setLatestRelevantCommitAuthorName( 
-							author.get("name").toString() );
-					webhookEvent.setLatestRelevantCommitAuthorEmail( 
-							author.get("email").toString() );
-					webhookEvent.setLatestRelevantCommitAuthorUsername( 
-							author.get("username").toString() );
-					
-					// Set the commit committer attributes
-					Map<String, Object> committer = 
-							(Map<String, Object>) commit.get("committer");
-					webhookEvent.setLatestRelevantCommitCommitterName( 
-							committer.get("name").toString() );
-					webhookEvent.setLatestRelevantCommitCommitterEmail( 
-							committer.get("email").toString() );
-					webhookEvent.setLatestRelevantCommitCommitterUsername( 
-							committer.get("username").toString() );
-					
-					// Stop iterating over the commits
-					break commits;
-					
+			commitsModifiedResourcePaths.addAll(modified);
+		}
+		webhookEvent.setCommitsModifiedResourcePaths(
+				commitsModifiedResourcePaths);
+		
+		// Set latest relevant commit attributes
+		if (resourcePath != null) {
+			
+			commits:
+			for( Map<String, Object> commit : this.commits ) {
+				List<String> modified = (List<String>) commit.get("modified");
+				for (String modifiedResource: modified) {
+					if ( modifiedResource.equals(resourcePath) ) {
+						
+						// Set the commit ID and timestamp attributes
+						webhookEvent.setLatestRelevantCommitId( 
+								commit.get("id").toString() );
+						webhookEvent.setLatestRelevantCommitMessage(
+								commit.get("message").toString() );
+						String timestamp = commit.get("timestamp").toString();
+						webhookEvent.setLatestRelevantCommitTimestamp( 
+								LocalDateTime.parse(timestamp, formatter) );
+						
+						// Set the commit author attributes
+						Map<String, Object> author = 
+								(Map<String, Object>) commit.get("author");
+						webhookEvent.setLatestRelevantCommitAuthorName( 
+								author.get("name").toString() );
+						webhookEvent.setLatestRelevantCommitAuthorEmail( 
+								author.get("email").toString() );
+						webhookEvent.setLatestRelevantCommitAuthorUsername( 
+								author.get("username").toString() );
+						
+						// Set the commit committer attributes
+						Map<String, Object> committer = 
+								(Map<String, Object>) commit.get("committer");
+						webhookEvent.setLatestRelevantCommitCommitterName( 
+								committer.get("name").toString() );
+						webhookEvent.setLatestRelevantCommitCommitterEmail( 
+								committer.get("email").toString() );
+						webhookEvent.setLatestRelevantCommitCommitterUsername( 
+								committer.get("username").toString() );
+						
+						// Stop iterating over the commits
+						break commits;
+						
+					}
 				}
+				
 			}
 			
 		}

@@ -2,6 +2,7 @@ package ai.hyperlearning.ontopop.model.git;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
@@ -11,9 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
@@ -63,6 +66,10 @@ public class WebhookEvent implements Serializable {
 	@NotNull
 	private String pusherEmail;
 	
+	@JsonInclude()
+	@Transient
+	private Set<String> commitsModifiedResourcePaths;
+	
 	@NotNull
 	private String latestRelevantCommitId;
 	
@@ -100,45 +107,6 @@ public class WebhookEvent implements Serializable {
 	
 	public WebhookEvent() {
 		
-	}
-
-	public WebhookEvent(long id, @NotNull String ref, @NotNull String repoUrl, 
-			@NotNull long repoId, @NotNull String repoName, 
-			@NotNull String repoOwner, @NotNull String repoResourcePath,
-			@NotNull String repoBranch, @NotNull String pusherName, 
-			@NotNull String pusherEmail, @NotNull String latestRelevantCommitId, 
-			String latestRelevantCommitMessage, 
-			LocalDateTime latestRelevantCommitTimestamp, 
-			@NotNull String latestRelevantCommitAuthorName,
-			@NotNull String latestRelevantCommitAuthorEmail, 
-			@NotNull String latestRelevantCommitAuthorUsername,
-			@NotNull String latestRelevantCommitCommitterName,
-			@NotNull String latestRelevantCommitCommitterEmail,
-			@NotNull String latestRelevantCommitCommitterUsername,
-			@NotNull String requestHeaderSignature, 
-			Ontology ontology) {
-		super();
-		this.id = id;
-		this.ref = ref;
-		this.repoUrl = repoUrl;
-		this.repoId = repoId;
-		this.repoName = repoName;
-		this.repoOwner = repoOwner;
-		this.repoResourcePath = repoResourcePath;
-		this.repoBranch = repoBranch;
-		this.pusherName = pusherName;
-		this.pusherEmail = pusherEmail;
-		this.latestRelevantCommitId = latestRelevantCommitId;
-		this.latestRelevantCommitMessage = latestRelevantCommitMessage;
-		this.latestRelevantCommitTimestamp = latestRelevantCommitTimestamp;
-		this.latestRelevantCommitAuthorName = latestRelevantCommitAuthorName;
-		this.latestRelevantCommitAuthorEmail = latestRelevantCommitAuthorEmail;
-		this.latestRelevantCommitAuthorUsername = latestRelevantCommitAuthorUsername;
-		this.latestRelevantCommitCommitterName = latestRelevantCommitCommitterName;
-		this.latestRelevantCommitCommitterEmail = latestRelevantCommitCommitterEmail;
-		this.latestRelevantCommitCommitterUsername = latestRelevantCommitCommitterUsername;
-		this.requestHeaderSignature = requestHeaderSignature;
-		this.ontology = ontology;
 	}
 
 	public long getId() {
@@ -217,6 +185,15 @@ public class WebhookEvent implements Serializable {
 		return pusherEmail;
 	}
 
+	public Set<String> getCommitsModifiedResourcePaths() {
+		return commitsModifiedResourcePaths;
+	}
+
+	public void setCommitsModifiedResourcePaths(
+			Set<String> commitsModifiedResourcePaths) {
+		this.commitsModifiedResourcePaths = commitsModifiedResourcePaths;
+	}
+
 	public void setPusherEmail(String pusherEmail) {
 		this.pusherEmail = pusherEmail;
 	}
@@ -225,7 +202,8 @@ public class WebhookEvent implements Serializable {
 		return latestRelevantCommitId;
 	}
 
-	public void setLatestRelevantCommitId(String latestRelevantCommitId) {
+	public void setLatestRelevantCommitId(
+			String latestRelevantCommitId) {
 		this.latestRelevantCommitId = latestRelevantCommitId;
 	}
 
@@ -233,7 +211,8 @@ public class WebhookEvent implements Serializable {
 		return latestRelevantCommitMessage;
 	}
 
-	public void setLatestRelevantCommitMessage(String latestRelevantCommitMessage) {
+	public void setLatestRelevantCommitMessage(
+			String latestRelevantCommitMessage) {
 		this.latestRelevantCommitMessage = latestRelevantCommitMessage;
 	}
 
@@ -355,6 +334,7 @@ public class WebhookEvent implements Serializable {
 				+ "repoBranch=" + repoBranch + ", "
 				+ "pusherName=" + pusherName + ", "
 				+ "pusherEmail=" + pusherEmail + ", "
+				+ "commitsModifiedResourcePaths=" + commitsModifiedResourcePaths + ", "
 				+ "latestRelevantCommitId=" + latestRelevantCommitId + ", "
 				+ "latestRelevantCommitMessage=" + latestRelevantCommitMessage + ", "
 				+ "latestRelevantCommitTimestamp=" + latestRelevantCommitTimestamp + ", "

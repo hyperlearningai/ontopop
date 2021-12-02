@@ -40,13 +40,24 @@ public class Ontology implements Serializable {
 	private String repoUrl;
 	
 	@NotNull
+	private String repoName;
+	
+	@NotNull
 	private String repoOwner;
+	
+	@NotNull
+	private boolean repoPrivate;
 	
 	@NotNull
 	private String repoResourcePath;
 	
 	@NotNull
 	private String repoBranch;
+	
+	private String repoToken;
+	
+	@NotNull
+	private String repoWebhookSecret;
 	
 	@Basic
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -65,19 +76,6 @@ public class Ontology implements Serializable {
 		
 	}
 
-	public Ontology(int id, @NotNull String repoUrl, @NotNull String repoOwner, 
-			@NotNull String repoResourcePath, @NotNull String repoBranch, 
-			LocalDateTime dateCreated, LocalDateTime dateLastUpdated) {
-		super();
-		this.id = id;
-		this.repoUrl = repoUrl;
-		this.repoOwner = repoOwner;
-		this.repoResourcePath = repoResourcePath;
-		this.repoBranch = repoBranch;
-		this.dateCreated = dateCreated;
-		this.dateLastUpdated = dateLastUpdated;
-	}
-
 	public int getId() {
 		return id;
 	}
@@ -94,12 +92,28 @@ public class Ontology implements Serializable {
 		this.repoUrl = repoUrl;
 	}
 
+	public String getRepoName() {
+		return repoName;
+	}
+
+	public void setRepoName(String repoName) {
+		this.repoName = repoName;
+	}
+
 	public String getRepoOwner() {
 		return repoOwner;
 	}
 
 	public void setRepoOwner(String repoOwner) {
 		this.repoOwner = repoOwner;
+	}
+
+	public boolean isRepoPrivate() {
+		return repoPrivate;
+	}
+
+	public void setRepoPrivate(boolean repoPrivate) {
+		this.repoPrivate = repoPrivate;
 	}
 
 	public String getRepoResourcePath() {
@@ -116,6 +130,22 @@ public class Ontology implements Serializable {
 
 	public void setRepoBranch(String repoBranch) {
 		this.repoBranch = repoBranch;
+	}
+
+	public String getRepoToken() {
+		return repoToken;
+	}
+
+	public void setRepoToken(String repoToken) {
+		this.repoToken = repoToken;
+	}
+
+	public String getRepoWebhookSecret() {
+		return repoWebhookSecret;
+	}
+
+	public void setRepoWebhookSecret(String repoWebhookSecret) {
+		this.repoWebhookSecret = repoWebhookSecret;
 	}
 
 	public LocalDateTime getDateCreated() {
@@ -161,7 +191,9 @@ public class Ontology implements Serializable {
 		return "Ontology ["
 				+ "id=" + id + ", "
 				+ "repoUrl=" + repoUrl + ", "
+				+ "repoName=" + repoName + ", "
 				+ "repoOwner=" + repoOwner + ", "
+				+ "repoPrivate=" + repoPrivate + ", "
 				+ "repoResourcePath=" + repoResourcePath + ", "
 				+ "repoBranch=" + repoBranch + ", "
 				+ "dateCreated=" + dateCreated + ", "
