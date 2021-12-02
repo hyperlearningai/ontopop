@@ -2,20 +2,19 @@ package ai.hyperlearning.ontopop.utils.git.github;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.google.common.base.Strings;
 import com.google.common.hash.Hashing;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 import ai.hyperlearning.ontopop.model.git.WebhookEvent;
+import ai.hyperlearning.ontopop.model.git.github.GitHubWebhookEvent;
 import ai.hyperlearning.ontopop.utils.git.GitService;
 import reactor.core.publisher.Mono;
 
@@ -43,130 +42,101 @@ public class GitHubGitService implements GitService  {
 				.build();
 	}
 	
+	/**
+	 * Parse a GitHub webhook JSON request payload into a WebhookEvent object
+	 */
+	
 	@Override
 	public WebhookEvent parseWebhookPayload(
-			Map<String, String> headers, String payload) {
+			Map<String, String> headers, String payload, String path) 
+					throws IOException {
 		
-		JsonObject jsonPayload = new Gson().fromJson(payload, JsonObject.class);
-		String ref = jsonPayload.get("ref").getAsString();
+		// Map the payload to a GitHubWebhookEvent object
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+		GitHubWebhookEvent gitHubWebhookEvent = mapper.readValue(
+				payload, GitHubWebhookEvent.class);
 		
-		
-		
-		
-		String repoUrl;
-		long repoId;
-		String repoName;
-		String repoOwner;
-		String repoResourcePath;
-		String repoBranch;
-		
-		String pusherName;
-		String pusherEmail;
-		
-		String latestRelevantCommitId;
-		LocalDateTime latestRelevantCommitTimestamp;
-		String latestRelevantCommitAuthorName;
-		String latestRelevantCommitAuthorEmail;
-		String latestRelevantCommitAuthorUsername;
-		String latestRelevantCommitCommitterName;
-		String latestRelevantCommitCommitterEmail;
-		String latestRelevantCommitCommitterUsername;
-		String requestHeaderSignature = headers.get(WEBHOOK_REQUEST_HEADER_SIGNATURE_KEY);
+		// Convert the GitHubWebhookEvent object to a 
+		// general WebhookEvent object
+		String requestHeaderSignature = headers.get(
+				WEBHOOK_REQUEST_HEADER_SIGNATURE_KEY);
+		return gitHubWebhookEvent.toWebhookEvent(
+				path, requestHeaderSignature);
 		
 	}
 	
+	/**
+	 * Validate that the contents of a GitHub webhook JSON request payload 
+	 * matches the expected signature hash, and repository & resource attributes
+	 */
 	
+	@Override
+	public boolean isValidWebhookPayload(
+			Map<String, String> headers, String payload, 
+			String path, String secret, String repo, 
+			String owner, String branch) 
+					throws IOException {
+		
+		// Parse the payload
+		WebhookEvent webhookEvent = parseWebhookPayload(
+				headers, payload, path);
+		
+		// Validate the payload hash
+		boolean validPayloadHash = isValidPayloadHash(
+				webhookEvent, payload, secret);
+		
+		// Validate the repository name
+		boolean validRepositoryName = repo.equals(
+				webhookEvent.getRepoName());
+		
+		// Validate the repository owner
+		boolean validRepositoryOwner = owner.equals(
+				webhookEvent.getRepoOwner());
+		
+		// Validate the repository branch
+		boolean validBranch = branch.equals(
+				webhookEvent.getRepoBranch());
+		
+		// Validate that at least one of the payload commits modifies
+		// the relevant resource path
+		boolean relevantCommitExists = !Strings.isNullOrEmpty(
+				webhookEvent.getLatestRelevantCommitId() );
+		
+		return validPayloadHash && validRepositoryName && validRepositoryOwner
+				&& validBranch && relevantCommitExists;
+		
+	}
 	
+	/**
+	 * Validate the payload hash in the GitHub webhook request header
+	 * using the secret token defined when setting up the webhook
+	 * @param webhookEvent
+	 * @param payload
+	 * @param secret
+	 * @return
+	 */
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	private boolean isValidPayloadHash(Map<String, String> headers, 
+	private boolean isValidPayloadHash(WebhookEvent webhookEvent, 
 			String payload, String secret) {
 		
-		// Validate the payload hash in the GitHub webhook request header
-		// using the secret token defined when setting up the webhook
 		String payloadHmacSha256 = Hashing.hmacSha256(secret.getBytes())
 				.newHasher()
 				.putString(payload, StandardCharsets.UTF_8)
 				.hash()
 				.toString();
-		String signature = headers.get(WEBHOOK_REQUEST_HEADER_SIGNATURE_KEY);
+		String signature = webhookEvent.getRequestHeaderSignature();
 		return signature.equals(
 				WEBHOOK_REQUEST_HEADER_SIGNATURE_VALUE_PREFIX.concat(
 						payloadHmacSha256));
 		
 	}
-	
-	private boolean isValidPayloadRepositoryName(
-			JsonObject payload, String repo) {
-		return repo.equals(payload
-				.getAsJsonObject("repository")
-				.get("name")
-				.getAsString());
-	}
-	
-	private boolean isValidPayloadBranch(
-			JsonObject payload, String branch) {
-		String ref = payload.get("ref").getAsString();
-		return branch.equals(ref.substring(ref.lastIndexOf("/") + 1));
-	}
-	
-	private boolean payloadCommitsContainsPathResource(
-			JsonObject payload, String path) {
-		
-		// Validate that at least one of the payload commits modifies
-		// the relevant resource path
-		JsonArray commits = payload.getAsJsonArray("commits");
-		for (JsonElement commit : commits) {
-			JsonObject commitObject = commit.getAsJsonObject();
-			JsonArray modifications = commitObject.getAsJsonArray("modified");
-			for (JsonElement modification : modifications) {
-				String modifiedResource = modification.getAsString();
-				if ( modifiedResource.equals(path) )
-					return true;
-			}
-		}
-		
-		return false;
-		
-	}
-	
-	@Override
-	public boolean isValidWebhookPayload(
-			Map<String, String> headers, String payload, String secret) {
-		
-		
-		
-	}
 
+	/**
+	 * Get the string contents of a file resource managed by a 
+	 * public GitHub repository
+	 */
+	
 	@Override
 	public ResponseEntity<String> getFile(String owner, String repo, 
 			String path, String branch) throws IOException {
@@ -195,6 +165,11 @@ public class GitHubGitService implements GitService  {
 		
 	}
 
+	/**
+	 * Get the string contents of a file resource managed by a 
+	 * private GitHub repository
+	 */
+	
 	@Override
 	public ResponseEntity<String> getFile(String token, String owner, 
 			String repo, String path, String branch) throws IOException {
