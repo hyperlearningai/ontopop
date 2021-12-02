@@ -124,6 +124,11 @@
                 <artifactId>ontopop-utils-storage</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <dependency>
+                <groupId>ai.hyperlearning.ontopop</groupId>
+                <artifactId>ontopop-data-jpa</artifactId>
+                <version>${revision}</version>
+            </dependency>
             
             <!-- Springdoc OpenAPI UI -->
             <dependency>
