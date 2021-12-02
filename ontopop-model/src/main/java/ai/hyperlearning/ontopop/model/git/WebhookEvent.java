@@ -66,6 +66,8 @@ public class WebhookEvent implements Serializable {
 	@NotNull
 	private String latestRelevantCommitId;
 	
+	private String latestRelevantCommitMessage;
+	
 	@Basic
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
@@ -105,6 +107,7 @@ public class WebhookEvent implements Serializable {
 			@NotNull String repoOwner, @NotNull String repoResourcePath,
 			@NotNull String repoBranch, @NotNull String pusherName, 
 			@NotNull String pusherEmail, @NotNull String latestRelevantCommitId, 
+			String latestRelevantCommitMessage, 
 			LocalDateTime latestRelevantCommitTimestamp, 
 			@NotNull String latestRelevantCommitAuthorName,
 			@NotNull String latestRelevantCommitAuthorEmail, 
@@ -126,6 +129,7 @@ public class WebhookEvent implements Serializable {
 		this.pusherName = pusherName;
 		this.pusherEmail = pusherEmail;
 		this.latestRelevantCommitId = latestRelevantCommitId;
+		this.latestRelevantCommitMessage = latestRelevantCommitMessage;
 		this.latestRelevantCommitTimestamp = latestRelevantCommitTimestamp;
 		this.latestRelevantCommitAuthorName = latestRelevantCommitAuthorName;
 		this.latestRelevantCommitAuthorEmail = latestRelevantCommitAuthorEmail;
@@ -223,6 +227,14 @@ public class WebhookEvent implements Serializable {
 
 	public void setLatestRelevantCommitId(String latestRelevantCommitId) {
 		this.latestRelevantCommitId = latestRelevantCommitId;
+	}
+
+	public String getLatestRelevantCommitMessage() {
+		return latestRelevantCommitMessage;
+	}
+
+	public void setLatestRelevantCommitMessage(String latestRelevantCommitMessage) {
+		this.latestRelevantCommitMessage = latestRelevantCommitMessage;
 	}
 
 	public LocalDateTime getLatestRelevantCommitTimestamp() {
@@ -344,6 +356,7 @@ public class WebhookEvent implements Serializable {
 				+ "pusherName=" + pusherName + ", "
 				+ "pusherEmail=" + pusherEmail + ", "
 				+ "latestRelevantCommitId=" + latestRelevantCommitId + ", "
+				+ "latestRelevantCommitMessage=" + latestRelevantCommitMessage + ", "
 				+ "latestRelevantCommitTimestamp=" + latestRelevantCommitTimestamp + ", "
 				+ "latestRelevantCommitAuthorName=" + latestRelevantCommitAuthorName + ", "
 				+ "latestRelevantCommitAuthorEmail=" + latestRelevantCommitAuthorEmail + ", "
