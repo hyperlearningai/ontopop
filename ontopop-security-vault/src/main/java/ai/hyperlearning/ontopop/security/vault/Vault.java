@@ -1,6 +1,5 @@
 package ai.hyperlearning.ontopop.security.vault;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.vault.core.VaultTemplate;
 import org.springframework.vault.core.VaultKeyValueOperations;
 import org.springframework.vault.core.VaultKeyValueOperationsSupport.KeyValueBackend;
@@ -11,31 +10,10 @@ import org.springframework.vault.support.VaultResponseSupport;
  * Spring Cloud Vault Common Methods
  *
  * @author jillurquddus
- * @param <T>
  * @since 2.0.0
  */
 
-public class Vault<T> {
-
-	@Autowired
-	private VaultTemplate vaultTemplate;
-	
-	private String mountPath;
-	private KeyValueBackend version;
-	private VaultKeyValueOperations keyValueOps;
-	
-	/**
-	 * Set the mount path (e.g. secret) and the KV version (e.g. KV_2)
-	 * @param mountPath
-	 * @param version
-	 */
-	
-	public Vault(String mountPath, KeyValueBackend version) {
-		this.mountPath = mountPath;
-		this.version = version;
-		this.keyValueOps = vaultTemplate
-				.opsForKeyValue(mountPath, KeyValueBackend.versioned());
-	}
+public class Vault {
 	
 	/**
 	 * Get a value given a path (e.g. ontopop/development) 
@@ -45,7 +23,9 @@ public class Vault<T> {
 	 * @return
 	 */
 	
-	public Object get(String path, String key) throws NullPointerException {
+	public static Object get(VaultTemplate vaultTemplate, String mountPath, 
+			KeyValueBackend version, String path, String key) 
+					throws NullPointerException {
 		
 		VaultResponse response = vaultTemplate
 				.opsForKeyValue(mountPath, version)
@@ -57,12 +37,15 @@ public class Vault<T> {
 	/**
 	 * Get an object given a path (e.g. ontology/development/ontology/1)
 	 * and class type
+	 * @param <T>
 	 * @param path
 	 * @param className
 	 * @return
 	 */
 	
-	public VaultResponseSupport<T> get(String path, Class<T> className) {
+	public static <T> VaultResponseSupport<T> get(VaultTemplate vaultTemplate, 
+			String mountPath, KeyValueBackend version, 
+			String path, Class<T> className) {
 		
 		return vaultTemplate
 			.opsForKeyValue(mountPath, version)
@@ -77,8 +60,13 @@ public class Vault<T> {
 	 * @param object
 	 */
 	
-	public void put(String path, Object object) {
+	public static void put(VaultTemplate vaultTemplate, String mountPath, 
+			String path, Object object) {
+		
+		VaultKeyValueOperations keyValueOps = vaultTemplate
+				.opsForKeyValue(mountPath, KeyValueBackend.versioned());
 		keyValueOps.put(path, object);
+		
 	}
 	
 }
