@@ -11,8 +11,8 @@
     </parent>
     
     <!-- Module Metadata -->
-    <artifactId>ontopop-data-parser-ontology</artifactId>
-    <name>ontopop-data-parser-ontology</name>
+    <artifactId>ontopop-data-ontology-parser</artifactId>
+    <name>ontopop-data-ontology-parser</name>
     <packaging>jar</packaging>
     <description>OntoPop - Ontology Parsing Service</description>
     <url>https://ontopop.com</url>
