@@ -164,6 +164,7 @@
         <module>ontopop-utils-git</module>
         <module>ontopop-utils-storage</module>
         <module>ontopop-data-jpa</module>
+        <module>ontopop-data-ontology</module>
         <module>ontopop-data-ontology-ingestor</module>
         <module>ontopop-data-ontology-validator</module>
         <module>ontopop-data-ontology-parser</module>
