@@ -185,6 +185,11 @@ public class Ontology implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	public void clearSecretData() {
+		this.repoToken = null;
+		this.repoWebhookSecret = null;
+	}
 
 	@Override
 	public int hashCode() {
