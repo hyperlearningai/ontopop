@@ -11,6 +11,4 @@ spring:
             kv:
                 enabled: true
                 backend: secret
-                default-context: ontopop
-                application-name: ontopop
-                profiles: development
+                default-context: ontopop/development
