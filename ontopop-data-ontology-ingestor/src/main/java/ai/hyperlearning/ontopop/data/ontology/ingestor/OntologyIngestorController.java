@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.data.ingestors.ontology.controllers;
+package ai.hyperlearning.ontopop.data.ontology.ingestor;
 
 import java.util.Map;
 
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ai.hyperlearning.ontopop.data.ingestors.ontology.OntologyIngestorPipeline;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
@@ -33,7 +32,7 @@ public class OntologyIngestorController {
 			LoggerFactory.getLogger(OntologyIngestorController.class);
 	
 	@Autowired
-	private OntologyIngestorPipeline ontologyIngestorPipeline;
+	private OntologyIngestorService ontologyIngestorService;
 	
 	/**************************************************************************
 	 * HTTP POST REQUESTS
@@ -56,7 +55,7 @@ public class OntologyIngestorController {
 		LOGGER.debug(payload);
 		
 		// Run the Ontology Ingestion Service pipeline
-		ontologyIngestorPipeline.run(headers, payload);
+		ontologyIngestorService.run(headers, payload);
 		
 		// Return a response entity
 		return new ResponseEntity<String>(

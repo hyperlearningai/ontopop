@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.data.ingestors.ontology;
+package ai.hyperlearning.ontopop.data.ontology.ingestor;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -22,17 +22,17 @@ import ai.hyperlearning.ontopop.utils.git.GitService;
 import ai.hyperlearning.ontopop.utils.git.GitServiceFactory;
 
 /**
- * Ontology Ingestion Service - Pipeline
+ * Ontology Ingestion Service
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
 @Service
-public class OntologyIngestorPipeline {
+public class OntologyIngestorService {
 	
 	private static final Logger LOGGER = 
-			LoggerFactory.getLogger(OntologyIngestorPipeline.class);
+			LoggerFactory.getLogger(OntologyIngestorService.class);
 	
 	@Autowired
 	private GitServiceFactory gitServiceFactory;
@@ -47,7 +47,7 @@ public class OntologyIngestorPipeline {
 	private String payload;
 	private GitService gitService;
 	private Set<WebhookEvent> webhookEvents = new HashSet<>();
-	public OntologyIngestorPipeline() {
+	public OntologyIngestorService() {
 		
 	}
 	
