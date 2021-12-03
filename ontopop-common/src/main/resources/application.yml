@@ -2,7 +2,7 @@ spring:
     application:
         name: ontopop
     datasource:
-        driver-class-name: ${spring.datasource.driver-class-name}
+        driver-class-name: org.hsqldb.jdbc.JDBCDriver
         url: ${spring.datasource.url}
         username: ${spring.datasource.username}
         password: ${spring.datasource.password}
@@ -11,5 +11,5 @@ spring:
             write_dates_as_timestamps: false
 storage:
     file:
-        service: ${storage.file.service}
-        baseUri: ${storage.file.baseUri}
+        service: local
+        baseUri: ~/ontopop
