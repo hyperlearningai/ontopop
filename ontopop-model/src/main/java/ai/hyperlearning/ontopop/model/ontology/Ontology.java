@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -54,9 +55,10 @@ public class Ontology implements Serializable {
 	@NotNull
 	private String repoBranch;
 	
+	@Transient
 	private String repoToken;
 	
-	@NotNull
+	@Transient
 	private String repoWebhookSecret;
 	
 	@Basic
