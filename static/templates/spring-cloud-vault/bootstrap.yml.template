@@ -6,9 +6,11 @@ spring:
             host: localhost
             port: 8200
             scheme: http
-            backend: secret
-            defaultKey: ontopop
-            kvVersion: 2
             authentication: TOKEN
             token: ""
-            
+            kv:
+                enabled: true
+                backend: secret
+                default-context: ontopop
+                application-name: ontopop
+                profiles: development
