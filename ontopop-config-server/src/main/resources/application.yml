@@ -9,7 +9,7 @@ spring:
                     post: 8200
                     scheme: http
                     backend: secret
-                    defaultKey: application
+                    defaultKey: ontopop
                     kvVersion: 2
     profiles:
         active: vault
