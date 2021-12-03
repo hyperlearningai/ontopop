@@ -1,0 +1,14 @@
+spring:
+    application:
+        name: ontopop
+    cloud:
+        vault:
+            host: localhost
+            port: 8200
+            scheme: http
+            backend: secret
+            defaultKey: ontopop
+            kvVersion: 2
+            authentication: TOKEN
+            token: ""
+            

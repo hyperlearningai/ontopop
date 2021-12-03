@@ -1,0 +1,15 @@
+spring:
+    application:
+        name: ontopop
+    cloud:
+        config:
+            server:
+                vault:
+                    host: 127.0.0.1
+                    post: 8200
+                    scheme: http
+                    backend: secret
+                    defaultKey: ontopop
+                    kvVersion: 2
+    profiles:
+        active: vault

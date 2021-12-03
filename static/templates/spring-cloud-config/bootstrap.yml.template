@@ -1,0 +1,7 @@
+spring:
+    application:
+        name: ontopop
+    cloud:
+        config:
+            uri: http://localhost:8801
+            token: ""
