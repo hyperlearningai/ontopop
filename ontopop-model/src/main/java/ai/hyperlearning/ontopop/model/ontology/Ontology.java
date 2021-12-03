@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -60,6 +61,9 @@ public class Ontology implements Serializable {
 	
 	@Transient
 	private String repoWebhookSecret;
+	
+	@Column(length = 250)
+	private String description;
 	
 	@Basic
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -166,6 +170,22 @@ public class Ontology implements Serializable {
 		this.dateLastUpdated = dateLastUpdated;
 	}
 
+	public Set<WebhookEvent> getWebhooksEvents() {
+		return webhooksEvents;
+	}
+
+	public void setWebhooksEvents(Set<WebhookEvent> webhooksEvents) {
+		this.webhooksEvents = webhooksEvents;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -198,6 +218,7 @@ public class Ontology implements Serializable {
 				+ "repoPrivate=" + repoPrivate + ", "
 				+ "repoResourcePath=" + repoResourcePath + ", "
 				+ "repoBranch=" + repoBranch + ", "
+				+ "description=" + description + ", "
 				+ "dateCreated=" + dateCreated + ", "
 				+ "dateLastUpdated=" + dateLastUpdated 
 				+ "]";
