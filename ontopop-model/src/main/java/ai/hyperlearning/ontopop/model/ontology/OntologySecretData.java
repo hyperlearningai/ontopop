@@ -18,6 +18,11 @@ public class OntologySecretData implements Serializable {
 	public OntologySecretData() {
 		
 	}
+	
+	public OntologySecretData(Ontology ontology) {
+		this.repoToken = ontology.getRepoToken();
+		this.repoWebhookSecret = ontology.getRepoWebhookSecret();
+	}
 
 	public String getRepoToken() {
 		return repoToken;
