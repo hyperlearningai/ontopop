@@ -24,6 +24,7 @@ __pycache__/
 
 # Development Resources
 *.ipynb
+/ontopop-scratch/
 
 # Temporary Resources
 .ipynb_checkpoints/
