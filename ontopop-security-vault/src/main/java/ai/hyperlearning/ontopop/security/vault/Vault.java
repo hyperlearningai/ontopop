@@ -55,7 +55,8 @@ public class Vault {
 	
 	/**
 	 * PUT an object given a path (e.g. ontology/development/ontology/1). 
-	 * Note that PUT deletes all existing secrets at the given path.
+	 * Note that PUT deletes all existing secrets at the given path before
+	 * creating the new secret.
 	 * @param path
 	 * @param object
 	 */
@@ -66,6 +67,23 @@ public class Vault {
 		VaultKeyValueOperations keyValueOps = vaultTemplate
 				.opsForKeyValue(mountPath, KeyValueBackend.versioned());
 		keyValueOps.put(path, object);
+		
+	}
+	
+	/**
+	 * Delete all secrets at a given path 
+	 * (e.g. ontology/development/ontology/1).
+	 * @param vaultTemplate
+	 * @param mountPath
+	 * @param path
+	 */
+	
+	public static void delete(VaultTemplate vaultTemplate, String mountPath, 
+			String path ) {
+		
+		VaultKeyValueOperations keyValueOps = vaultTemplate
+				.opsForKeyValue(mountPath, KeyValueBackend.versioned());
+		keyValueOps.delete(path);
 		
 	}
 	
