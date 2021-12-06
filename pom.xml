@@ -45,6 +45,7 @@
         <guava.version>31.0.1-jre</guava.version>
         <java.version>11</java.version>
         <javax.activation.version>1.1.1</javax.activation.version>
+        <mapstruct.version>1.4.2.Final</mapstruct.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -102,6 +103,13 @@
 	            <artifactId>activation</artifactId>
 	            <version>${javax.activation.version}</version>
 	        </dependency>
+	        
+	        <!-- MapStruct -->
+	        <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
             
             <!-- OntoPop -->
             <dependency>
