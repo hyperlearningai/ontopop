@@ -4,7 +4,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
  * Ontology Service - Spring Boot Application
@@ -14,7 +13,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  */
 
 @ComponentScan(basePackages = {"ai.hyperlearning.ontopop"})
-@EnableJpaRepositories("ai.hyperlearning.ontopop.data.jpa.repositories")
 @EntityScan("ai.hyperlearning.ontopop.model")
 @SpringBootApplication
 public class OntologyApp {
