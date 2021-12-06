@@ -11,10 +11,10 @@
     </parent>
     
     <!-- Module Metadata -->
-    <artifactId>ontopop-config-client</artifactId>
-    <name>ontopop-config-client</name>
+    <artifactId>ontopop-configuration-server</artifactId>
+    <name>ontopop-configuration-server</name>
     <packaging>jar</packaging>
-    <description>OntoPop - Configuration Server Client</description>
+    <description>OntoPop - Configuration Server</description>
     <url>https://ontopop.com</url>
     <organization>
         <name>HyperLearning AI</name>
@@ -44,10 +44,10 @@
     <!-- Module Dependencies -->
     <dependencies>
         
-        <!-- OntoPop -->
+        <!-- Spring Cloud Config Server -->
         <dependency>
-            <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-configuration</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-config-server</artifactId>
         </dependency>
     
     </dependencies>

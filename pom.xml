@@ -174,9 +174,9 @@
     
     <!-- Child Modules -->
     <modules>
-        <module>ontopop-config-server</module>
+        <module>ontopop-configuration-server</module>
         <module>ontopop-configuration</module>
-        <module>ontopop-config-client</module>
+        <module>ontopop-configuration-client</module>
         <module>ontopop-security-vault</module>
         <module>ontopop-model</module>
         <module>ontopop-logging</module>
