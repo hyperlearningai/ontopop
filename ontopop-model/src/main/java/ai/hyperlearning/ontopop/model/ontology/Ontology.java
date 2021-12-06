@@ -39,6 +39,13 @@ public class Ontology implements Serializable {
 	private int id;
 	
 	@NotNull
+	@Column(length = 100)
+	private String name;
+	
+	@Column(length = 250)
+	private String description;
+	
+	@NotNull
 	private String repoUrl;
 	
 	@NotNull
@@ -61,9 +68,6 @@ public class Ontology implements Serializable {
 	
 	@Transient
 	private String repoWebhookSecret;
-	
-	@Column(length = 250)
-	private String description;
 	
 	@Basic
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -88,6 +92,22 @@ public class Ontology implements Serializable {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public String getRepoUrl() {
@@ -177,14 +197,6 @@ public class Ontology implements Serializable {
 	public void setWebhooksEvents(Set<WebhookEvent> webhooksEvents) {
 		this.webhooksEvents = webhooksEvents;
 	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
 	
 	public void clearSecretData() {
 		this.repoToken = null;
@@ -217,13 +229,14 @@ public class Ontology implements Serializable {
 	public String toString() {
 		return "Ontology ["
 				+ "id=" + id + ", "
+				+ "name=" + name + ", "
+				+ "description=" + description + ", "
 				+ "repoUrl=" + repoUrl + ", "
 				+ "repoName=" + repoName + ", "
 				+ "repoOwner=" + repoOwner + ", "
 				+ "repoPrivate=" + repoPrivate + ", "
 				+ "repoResourcePath=" + repoResourcePath + ", "
 				+ "repoBranch=" + repoBranch + ", "
-				+ "description=" + description + ", "
 				+ "dateCreated=" + dateCreated + ", "
 				+ "dateLastUpdated=" + dateLastUpdated 
 				+ "]";

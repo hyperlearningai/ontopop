@@ -14,13 +14,14 @@ public class OntologyNonSecretData implements Serializable {
 
 	private static final long serialVersionUID = -2410562383720708200L;
 	private int id;
+	private String name;
+	private String description;
 	private String repoUrl;
 	private String repoName;
 	private String repoOwner;
 	private boolean repoPrivate;
 	private String repoResourcePath;
 	private String repoBranch;
-	private String description;
 	private LocalDateTime dateLastUpdated;
 	
 	public OntologyNonSecretData() {
@@ -33,6 +34,22 @@ public class OntologyNonSecretData implements Serializable {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public String getRepoUrl() {
@@ -83,14 +100,6 @@ public class OntologyNonSecretData implements Serializable {
 		this.repoBranch = repoBranch;
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 	public LocalDateTime getDateLastUpdated() {
 		return dateLastUpdated;
 	}
@@ -125,13 +134,14 @@ public class OntologyNonSecretData implements Serializable {
 	public String toString() {
 		return "OntologyNonSecretData ["
 				+ "id=" + id + ", "
+				+ "name=" + name + ", "
+				+ "description=" + description + ", "
 				+ "repoUrl=" + repoUrl + ", "
 				+ "repoName=" + repoName + ", "
 				+ "repoOwner=" + repoOwner + ", "
 				+ "repoPrivate=" + repoPrivate + ", "
 				+ "repoResourcePath=" + repoResourcePath + ", "
 				+ "repoBranch=" + repoBranch + ", "
-				+ "description=" + description + ", "
 				+ "dateLastUpdated=" + dateLastUpdated 
 				+ "]";
 	}
