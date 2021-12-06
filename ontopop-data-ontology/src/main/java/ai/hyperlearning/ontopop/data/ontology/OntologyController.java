@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ai.hyperlearning.ontopop.data.jpa.repositories.OntologyRepository;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyNotFoundException;
 import ai.hyperlearning.ontopop.model.ontology.Ontology;
+import ai.hyperlearning.ontopop.model.ontology.OntologyNonSecretData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -118,6 +120,23 @@ public class OntologyController {
 	 * 3.1. PATCH - Update Ontology (non-sensitive attributes)
 	 *************************************************************************/
 	
+	@Operation(
+			summary = "Update ontology",
+			description = "Update an ontology by ID (non-sensitive attributes)",
+			tags = { "ontology" })
+	@ApiResponses(value = {
+	        @ApiResponse(
+	        		responseCode = "200",
+	        		description = "Ontology successfully updated"), 
+	        @ApiResponse(
+	        		responseCode = "401",
+	        		description = "Ontology update request unauthorized")})
+	@PatchMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Ontology updateOntology(@PathVariable(required = true) int id, 
+			@RequestBody OntologyNonSecretData ontologyNonSecretData) {
+		LOGGER.debug("New HTTP PATCH request: Update ontology by ID.");
+		return ontologyService.update(ontologyNonSecretData);
+	}
 	
 	/**************************************************************************
 	 * 3.2. PATCH - Update Ontology (repository access token)

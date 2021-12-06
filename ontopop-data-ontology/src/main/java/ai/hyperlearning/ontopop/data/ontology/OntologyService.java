@@ -1,5 +1,7 @@
 package ai.hyperlearning.ontopop.data.ontology;
 
+import java.time.LocalDateTime;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +9,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.vault.core.VaultTemplate;
 
+import ai.hyperlearning.ontopop.data.jpa.mappers.OntologyMapper;
 import ai.hyperlearning.ontopop.data.jpa.repositories.OntologyRepository;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyNotFoundException;
 import ai.hyperlearning.ontopop.model.ontology.Ontology;
+import ai.hyperlearning.ontopop.model.ontology.OntologyNonSecretData;
 import ai.hyperlearning.ontopop.model.ontology.OntologySecretData;
 import ai.hyperlearning.ontopop.security.vault.Vault;
 
@@ -30,6 +35,9 @@ public class OntologyService {
     private OntologyRepository ontologyRepository;
 	
 	@Autowired
+	private OntologyMapper ontologyMapper;
+	
+	@Autowired
 	private VaultTemplate vaultTemplate;
 	
 	@Value("${spring.cloud.vault.kv.backend}")
@@ -47,6 +55,8 @@ public class OntologyService {
 	protected Ontology create(Ontology ontology) {
 		
 		// Persist the new ontology
+		ontology.setDateCreated(LocalDateTime.now());
+		ontology.setDateLastUpdated(LocalDateTime.now());
 		Ontology newOntology = ontologyRepository.save(ontology);
 		
 		// Create a new ontology secret data object
@@ -65,6 +75,29 @@ public class OntologyService {
 		newOntology.clearSecretData();
 		LOGGER.debug("Created a new ontology: {}", newOntology.toString());
 		return newOntology;
+		
+	}
+	
+	/**
+	 * Update an ontology (non-sensitive attributes)
+	 * @param ontologyNonSecretData
+	 * @return
+	 */
+	
+	protected Ontology update(OntologyNonSecretData ontologyNonSecretData) {
+		
+		// Get the current ontology
+		int ontologyId = ontologyNonSecretData.getId();
+		Ontology ontology = ontologyRepository.findById(ontologyId)
+					.orElseThrow(
+							() -> new OntologyNotFoundException(ontologyId));
+		
+		// Persist the partially updated ontology
+		ontologyNonSecretData.setDateLastUpdated(LocalDateTime.now());
+		ontologyMapper.updateOntology(ontologyNonSecretData, ontology);
+		Ontology updatedOntology = ontologyRepository.save(ontology);
+		LOGGER.debug("Updated ontology with ID: {}", ontologyId);
+		return updatedOntology;
 		
 	}
 	
