@@ -51,6 +51,14 @@
         </dependency>
         <dependency>
             <groupId>ai.hyperlearning.ontopop</groupId>
+            <artifactId>ontopop-logging</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ai.hyperlearning.ontopop</groupId>
+            <artifactId>ontopop-exceptions</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ai.hyperlearning.ontopop</groupId>
             <artifactId>ontopop-data-jpa</artifactId>
         </dependency>
         <dependency>

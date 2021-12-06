@@ -67,5 +67,24 @@ public class OntologyService {
 		return newOntology;
 		
 	}
+	
+	/**
+	 * Delete an ontology
+	 * @param id
+	 */
+	
+	protected void delete(int id) {
+		
+		// Delete the ontology from storage
+		ontologyRepository.deleteById(null);
+		
+		// Delete the ontology secret data
+		Vault.delete(vaultTemplate, 
+				springCloudVaultKvBackend, 
+				springCloudVaultKvDefaultContext 
+					+ VAULT_SUBPATH_ONTOLOGIES + id);
+		LOGGER.debug("Deleted ontology with ID: {}", id);
+		
+	}
 
 }
