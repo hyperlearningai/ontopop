@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,6 +38,7 @@ public class WebhookEvent implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "webhookevent_id")
 	private long id;
 	
 	@NotNull
@@ -102,7 +104,7 @@ public class WebhookEvent implements Serializable {
 	private String requestHeaderSignature;
 	
 	@ManyToOne
-    @JoinColumn(name="id", nullable=false)
+    @JoinColumn(name="ontology_id", nullable=false)
     private Ontology ontology;
 	
 	public WebhookEvent() {

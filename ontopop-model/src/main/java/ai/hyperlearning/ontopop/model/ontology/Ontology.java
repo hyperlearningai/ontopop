@@ -36,6 +36,7 @@ public class Ontology implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ontology_id")
 	private int id;
 	
 	@NotNull
