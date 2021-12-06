@@ -12,6 +12,7 @@ spring:
     jpa:
         hibernate:
             ddl-auto: create-drop
+        show-sql: false
 storage:
     file:
         service: local
