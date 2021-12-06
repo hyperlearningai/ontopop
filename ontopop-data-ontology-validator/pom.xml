@@ -47,7 +47,7 @@
         <!-- OntoPop -->
         <dependency>
             <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-common</artifactId>
+            <artifactId>ontopop-configuration</artifactId>
         </dependency>
         <dependency>
             <groupId>ai.hyperlearning.ontopop</groupId>

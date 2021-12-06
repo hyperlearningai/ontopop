@@ -114,7 +114,7 @@
             <!-- OntoPop -->
             <dependency>
                 <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-common</artifactId>
+                <artifactId>ontopop-configuration</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
@@ -175,7 +175,7 @@
     <!-- Child Modules -->
     <modules>
         <module>ontopop-config-server</module>
-        <module>ontopop-common</module>
+        <module>ontopop-configuration</module>
         <module>ontopop-config-client</module>
         <module>ontopop-security-vault</module>
         <module>ontopop-model</module>

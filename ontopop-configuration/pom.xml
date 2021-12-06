@@ -11,10 +11,10 @@
     </parent>
     
     <!-- Module Metadata -->
-    <artifactId>ontopop-common</artifactId>
-    <name>ontopop-common</name>
+    <artifactId>ontopop-configuration</artifactId>
+    <name>ontopop-configuration</name>
     <packaging>jar</packaging>
-    <description>OntoPop - Common Resources</description>
+    <description>OntoPop - Global Configuration</description>
     <url>https://ontopop.com</url>
     <organization>
         <name>HyperLearning AI</name>
