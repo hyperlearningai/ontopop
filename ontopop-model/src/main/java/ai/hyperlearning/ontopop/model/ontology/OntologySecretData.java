@@ -12,6 +12,7 @@ import java.io.Serializable;
 public class OntologySecretData implements Serializable {
 
 	private static final long serialVersionUID = -3107174777469504852L;
+	private int id;
 	private String repoToken;
 	private String repoWebhookSecret;
 	
@@ -20,8 +21,17 @@ public class OntologySecretData implements Serializable {
 	}
 	
 	public OntologySecretData(Ontology ontology) {
+		this.id = ontology.getId();
 		this.repoToken = ontology.getRepoToken();
 		this.repoWebhookSecret = ontology.getRepoWebhookSecret();
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getRepoToken() {
