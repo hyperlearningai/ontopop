@@ -47,7 +47,7 @@
         <appender-ref ref="Console" />
     </root>
  
-    <!-- POB Logger -->
+    <!-- OntoPop Logger -->
     <logger name="ai.hyperlearning.ontopop" level="DEBUG" additivity="false">
         <appender-ref ref="RollingFile" />
         <appender-ref ref="Console" />
