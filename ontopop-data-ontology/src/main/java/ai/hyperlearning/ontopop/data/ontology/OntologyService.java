@@ -13,9 +13,9 @@ import org.springframework.vault.core.VaultKeyValueOperationsSupport.KeyValueBac
 
 import com.google.common.base.Strings;
 
-import ai.hyperlearning.ontopop.data.jpa.mappers.OntologyMapper;
 import ai.hyperlearning.ontopop.data.jpa.repositories.OntologyRepository;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyNotFoundException;
+import ai.hyperlearning.ontopop.mappers.OntologyMapper;
 import ai.hyperlearning.ontopop.model.ontology.Ontology;
 import ai.hyperlearning.ontopop.model.ontology.OntologyNonSecretData;
 import ai.hyperlearning.ontopop.model.ontology.OntologySecretData;

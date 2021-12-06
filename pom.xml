@@ -135,6 +135,11 @@
             </dependency>
             <dependency>
                 <groupId>ai.hyperlearning.ontopop</groupId>
+                <artifactId>ontopop-mappers</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>ai.hyperlearning.ontopop</groupId>
                 <artifactId>ontopop-logging</artifactId>
                 <version>${revision}</version>
             </dependency>
@@ -185,6 +190,7 @@
         <module>ontopop-configuration-client</module>
         <module>ontopop-security-vault</module>
         <module>ontopop-model</module>
+        <module>ontopop-mappers</module>
         <module>ontopop-logging</module>
         <module>ontopop-exceptions</module>
         <module>ontopop-git</module>

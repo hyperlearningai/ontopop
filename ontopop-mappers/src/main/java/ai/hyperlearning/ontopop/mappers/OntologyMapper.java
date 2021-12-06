@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.data.jpa.mappers;
+package ai.hyperlearning.ontopop.mappers;
 
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;

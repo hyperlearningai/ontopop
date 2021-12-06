@@ -11,10 +11,10 @@
     </parent>
     
     <!-- Module Metadata -->
-    <artifactId>ontopop-data-jpa</artifactId>
-    <name>ontopop-data-jpa</name>
+    <artifactId>ontopop-mappers</artifactId>
+    <name>ontopop-mappers</name>
     <packaging>jar</packaging>
-    <description>OntoPop - JPA Repositories and Configuration</description>
+    <description>OntoPop - Java Bean Mappings</description>
     <url>https://ontopop.com</url>
     <organization>
         <name>HyperLearning AI</name>
@@ -38,19 +38,19 @@
     
     <!-- Module Properties -->
     <properties>
+        <m2e.apt.activation>jdt_apt</m2e.apt.activation> <!-- Requires m2e-apt Eclipse plugin to be installed -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     
     <!-- Module Dependencies -->
     <dependencies>
     
-        <!-- HSQLDB -->
+        <!-- MapStruct -->
         <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <scope>runtime</scope>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
         </dependency>
-    
+        
         <!-- OntoPop -->
         <dependency>
             <groupId>ai.hyperlearning.ontopop</groupId>
@@ -58,5 +58,32 @@
         </dependency>
     
     </dependencies>
+    
+    <!-- Module Build Configuration -->
+    <build>
+    
+        <!-- Module Plugins -->
+        <plugins>
+        
+            <!-- Compiler Management -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${mapstruct-processor.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+        
+        </plugins>
+    
+    </build>
     
 </project>
