@@ -11,8 +11,8 @@
     </parent>
     
     <!-- Module Metadata -->
-    <artifactId>ontopop-utils-storage</artifactId>
-    <name>ontopop-utils-storage</name>
+    <artifactId>ontopop-storage</artifactId>
+    <name>ontopop-storage</name>
     <packaging>jar</packaging>
     <description>OntoPop - Persistent Storage Services</description>
     <url>https://ontopop.com</url>
