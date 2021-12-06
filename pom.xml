@@ -139,7 +139,7 @@
             </dependency>
             <dependency>
                 <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-utils-git</artifactId>
+                <artifactId>ontopop-git</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
@@ -181,7 +181,7 @@
         <module>ontopop-model</module>
         <module>ontopop-logging</module>
         <module>ontopop-exceptions</module>
-        <module>ontopop-utils-git</module>
+        <module>ontopop-git</module>
         <module>ontopop-utils-storage</module>
         <module>ontopop-data-jpa</module>
         <module>ontopop-data-ontology</module>

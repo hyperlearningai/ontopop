@@ -11,8 +11,8 @@
     </parent>
     
     <!-- Module Metadata -->
-    <artifactId>ontopop-utils-git</artifactId>
-    <name>ontopop-utils-git</name>
+    <artifactId>ontopop-git</artifactId>
+    <name>ontopop-git</name>
     <packaging>jar</packaging>
     <description>OntoPop - Git Repository Services</description>
     <url>https://ontopop.com</url>
