@@ -22,6 +22,7 @@ import ai.hyperlearning.ontopop.data.jpa.repositories.OntologyRepository;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyNotFoundException;
 import ai.hyperlearning.ontopop.model.ontology.Ontology;
 import ai.hyperlearning.ontopop.model.ontology.OntologyNonSecretData;
+import ai.hyperlearning.ontopop.model.ontology.OntologySecretData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -130,7 +131,10 @@ public class OntologyController {
 	        		description = "Ontology successfully updated"), 
 	        @ApiResponse(
 	        		responseCode = "401",
-	        		description = "Ontology update request unauthorized")})
+	        		description = "Ontology update request unauthorized"), 
+	        @ApiResponse(
+	        		responseCode = "404",
+	        		description = "Ontology not found")})
 	@PatchMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Ontology updateOntology(@PathVariable(required = true) int id, 
 			@RequestBody OntologyNonSecretData ontologyNonSecretData) {
@@ -139,14 +143,33 @@ public class OntologyController {
 	}
 	
 	/**************************************************************************
-	 * 3.2. PATCH - Update Ontology (repository access token)
+	 * 3.2. PATCH - Update Ontology (sensitive attributes)
 	 *************************************************************************/
 	
-	
-	/**************************************************************************
-	 * 3.3. PATCH - Update Ontology (webhook secret)
-	 *************************************************************************/
-	
+	@Operation(
+			summary = "Update ontology (sensitive)",
+			description = "Update an ontology by ID (sensitive attributes)",
+			tags = { "ontology" })
+	@ApiResponses(value = {
+	        @ApiResponse(
+	        		responseCode = "200",
+	        		description = "Ontology successfully updated"), 
+	        @ApiResponse(
+	        		responseCode = "401",
+	        		description = "Ontology update request unauthorized"), 
+	        @ApiResponse(
+	        		responseCode = "404",
+	        		description = "Ontology not found")})
+	@PatchMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> updateOntologyRepositoryAccessToken(
+			@PathVariable(required = true) int id, 
+			@RequestBody OntologySecretData ontologySecretData) {
+		LOGGER.debug("New HTTP PATCH request: Update ontology "
+				+ "(sensitive) by ID.");
+		ontologyService.update(ontologySecretData);
+		return new ResponseEntity<>(
+				"Ontology update request processed", HttpStatus.OK);
+	}
 	
 	/**************************************************************************
 	 * 4. DELETE - Delete Ontology

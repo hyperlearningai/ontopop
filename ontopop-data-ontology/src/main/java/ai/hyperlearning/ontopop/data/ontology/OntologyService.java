@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.vault.core.VaultTemplate;
+import org.springframework.vault.core.VaultKeyValueOperationsSupport.KeyValueBackend;
+
+import com.google.common.base.Strings;
 
 import ai.hyperlearning.ontopop.data.jpa.mappers.OntologyMapper;
 import ai.hyperlearning.ontopop.data.jpa.repositories.OntologyRepository;
@@ -98,6 +101,47 @@ public class OntologyService {
 		Ontology updatedOntology = ontologyRepository.save(ontology);
 		LOGGER.debug("Updated ontology with ID: {}", ontologyId);
 		return updatedOntology;
+		
+	}
+	
+	/**
+	 * Update an ontology (sensitive attributes)
+	 * @param ontologySecretData
+	 */
+	
+	protected void update(OntologySecretData ontologySecretData) {
+		
+		// Get the current sensitive attributes for this ontology
+		int ontologyId = ontologySecretData.getId();
+		OntologySecretData currentOntologySecretData = 
+				Vault.get(vaultTemplate, 
+						springCloudVaultKvBackend, 
+						KeyValueBackend.KV_2, 
+						springCloudVaultKvDefaultContext 
+							+ VAULT_SUBPATH_ONTOLOGIES 
+								+ ontologyId, 
+						OntologySecretData.class).getData();
+		
+		// Set the new sensitive attributes
+		if ( !Strings.isNullOrEmpty(ontologySecretData.getRepoToken()) )
+			currentOntologySecretData.setRepoToken(
+					ontologySecretData.getRepoToken());
+		if ( !Strings.isNullOrEmpty(ontologySecretData.getRepoWebhookSecret()) )
+			currentOntologySecretData.setRepoWebhookSecret(
+					ontologySecretData.getRepoWebhookSecret());
+		
+		// Persist the updated ontology secret data
+		if ( !Strings.isNullOrEmpty(
+				ontologySecretData.getRepoToken()) 
+				|| !Strings.isNullOrEmpty(
+						ontologySecretData.getRepoWebhookSecret()) )
+			Vault.put(vaultTemplate, 
+					springCloudVaultKvBackend, 
+					springCloudVaultKvDefaultContext 
+						+ VAULT_SUBPATH_ONTOLOGIES 
+							+  ontologyId, 
+					currentOntologySecretData);
+		LOGGER.debug("Updated ontology (sensitive) with ID: {}", ontologyId);
 		
 	}
 	
