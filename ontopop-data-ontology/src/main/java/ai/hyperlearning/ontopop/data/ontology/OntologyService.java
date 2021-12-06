@@ -105,7 +105,7 @@ public class OntologyService {
 	}
 	
 	/**
-	 * Update an ontology (sensitive attributes)
+	 * Update ontology secrets
 	 * @param ontologySecretData
 	 */
 	

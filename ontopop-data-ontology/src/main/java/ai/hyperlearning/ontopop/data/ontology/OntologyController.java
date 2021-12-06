@@ -143,12 +143,12 @@ public class OntologyController {
 	}
 	
 	/**************************************************************************
-	 * 3.2. PATCH - Update Ontology (sensitive attributes)
+	 * 3.2. PATCH - Update Ontology (secrets)
 	 *************************************************************************/
 	
 	@Operation(
-			summary = "Update ontology (sensitive)",
-			description = "Update an ontology by ID (sensitive attributes)",
+			summary = "Update ontology secrets",
+			description = "Update ontology secrets by ID",
 			tags = { "ontology" })
 	@ApiResponses(value = {
 	        @ApiResponse(
@@ -160,12 +160,11 @@ public class OntologyController {
 	        @ApiResponse(
 	        		responseCode = "404",
 	        		description = "Ontology not found")})
-	@PatchMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PatchMapping(value = "/{id}/secrets", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> updateOntologyRepositoryAccessToken(
 			@PathVariable(required = true) int id, 
 			@RequestBody OntologySecretData ontologySecretData) {
-		LOGGER.debug("New HTTP PATCH request: Update ontology "
-				+ "(sensitive) by ID.");
+		LOGGER.debug("New HTTP PATCH request: Update ontology secrets by ID.");
 		ontologyService.update(ontologySecretData);
 		return new ResponseEntity<>(
 				"Ontology update request processed", HttpStatus.OK);
