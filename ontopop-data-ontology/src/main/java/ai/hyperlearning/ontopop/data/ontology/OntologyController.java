@@ -139,7 +139,7 @@ public class OntologyController {
 	public Ontology updateOntology(@PathVariable(required = true) int id, 
 			@RequestBody OntologyNonSecretData ontologyNonSecretData) {
 		LOGGER.debug("New HTTP PATCH request: Update ontology by ID.");
-		return ontologyService.update(ontologyNonSecretData);
+		return ontologyService.update(id, ontologyNonSecretData);
 	}
 	
 	/**************************************************************************
@@ -165,7 +165,7 @@ public class OntologyController {
 			@PathVariable(required = true) int id, 
 			@RequestBody OntologySecretData ontologySecretData) {
 		LOGGER.debug("New HTTP PATCH request: Update ontology secrets by ID.");
-		ontologyService.update(ontologySecretData);
+		ontologyService.update(id, ontologySecretData);
 		return new ResponseEntity<>(
 				"Ontology update request processed", HttpStatus.OK);
 	}

@@ -89,19 +89,20 @@ public class OntologyService {
 	 * @return
 	 */
 	
-	protected Ontology update(OntologyNonSecretData ontologyNonSecretData) {
+	protected Ontology update(int id, 
+			OntologyNonSecretData ontologyNonSecretData) {
 		
 		// Get the current ontology
-		int ontologyId = ontologyNonSecretData.getId();
-		Ontology ontology = ontologyRepository.findById(ontologyId)
+		Ontology ontology = ontologyRepository.findById(id)
 					.orElseThrow(
-							() -> new OntologyNotFoundException(ontologyId));
+							() -> new OntologyNotFoundException(id));
 		
 		// Persist the partially updated ontology
+		ontologyNonSecretData.setId(id);
 		ontologyNonSecretData.setDateLastUpdated(LocalDateTime.now());
 		ontologyMapper.updateOntology(ontologyNonSecretData, ontology);
 		Ontology updatedOntology = ontologyRepository.save(ontology);
-		LOGGER.debug("Updated ontology with ID: {}", ontologyId);
+		LOGGER.debug("Updated ontology with ID: {}", id);
 		return updatedOntology;
 		
 	}
@@ -111,17 +112,16 @@ public class OntologyService {
 	 * @param ontologySecretData
 	 */
 	
-	protected void update(OntologySecretData ontologySecretData) {
+	protected void update(int id, 
+			OntologySecretData ontologySecretData) {
 		
 		// Get the current sensitive attributes for this ontology
-		int ontologyId = ontologySecretData.getId();
 		OntologySecretData currentOntologySecretData = 
 				Vault.get(vaultTemplate, 
 						springCloudVaultKvBackend, 
 						KeyValueBackend.KV_2, 
 						springCloudVaultKvDefaultContext 
-							+ VAULT_SUBPATH_ONTOLOGIES 
-								+ ontologyId, 
+							+ VAULT_SUBPATH_ONTOLOGIES + id, 
 						OntologySecretData.class).getData();
 		
 		// Set the new sensitive attributes
@@ -140,10 +140,9 @@ public class OntologyService {
 			Vault.put(vaultTemplate, 
 					springCloudVaultKvBackend, 
 					springCloudVaultKvDefaultContext 
-						+ VAULT_SUBPATH_ONTOLOGIES 
-							+  ontologyId, 
+						+ VAULT_SUBPATH_ONTOLOGIES +  id, 
 					currentOntologySecretData);
-		LOGGER.debug("Updated ontology (sensitive) with ID: {}", ontologyId);
+		LOGGER.debug("Updated ontology (sensitive) with ID: {}", id);
 		
 	}
 	
@@ -155,7 +154,7 @@ public class OntologyService {
 	protected void delete(int id) {
 		
 		// Delete the ontology from storage
-		ontologyRepository.deleteById(null);
+		ontologyRepository.deleteById(id);
 		
 		// Delete the ontology secret data
 		Vault.delete(vaultTemplate, 
