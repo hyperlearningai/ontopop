@@ -121,6 +121,16 @@
             </dependency>
             <dependency>
                 <groupId>ai.hyperlearning.ontopop</groupId>
+                <artifactId>ontopop-logging</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>ai.hyperlearning.ontopop</groupId>
+                <artifactId>ontopop-exceptions</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>ai.hyperlearning.ontopop</groupId>
                 <artifactId>ontopop-utils-git</artifactId>
                 <version>${revision}</version>
             </dependency>
@@ -161,6 +171,8 @@
         <module>ontopop-config-client</module>
         <module>ontopop-security-vault</module>
         <module>ontopop-model</module>
+        <module>ontopop-logging</module>
+        <module>ontopop-exceptions</module>
         <module>ontopop-utils-git</module>
         <module>ontopop-utils-storage</module>
         <module>ontopop-data-jpa</module>
