@@ -11,9 +11,20 @@ spring:
             write_dates_as_timestamps: false
     jpa:
         hibernate:
-            ddl-auto: create-drop
+            ddl-auto: update
         show-sql: false
+security:
+    vault:
+        paths:
+            subpaths:
+                ontologies: /ontologies/
 storage:
     file:
         service: local
         baseUri: ~/ontopop
+        dirNames:
+            ingested: ingested
+            validated: validated
+            parsed: parsed
+        patterns:
+            fileNameIdsSeparator: "_"

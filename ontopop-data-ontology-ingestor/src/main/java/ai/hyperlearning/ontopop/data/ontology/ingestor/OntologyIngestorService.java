@@ -47,8 +47,6 @@ public class OntologyIngestorService {
 	
 	private static final Logger LOGGER = 
 			LoggerFactory.getLogger(OntologyIngestorService.class);
-	private static final String INGESTED_DIRECTORY_NAME = "ingested";
-	private static final String ONTOLOGY_FILENAME_SEPARATOR = "_";
 	
 	@Autowired
 	private GitServiceFactory gitServiceFactory;
@@ -77,6 +75,12 @@ public class OntologyIngestorService {
 	@Value("${storage.file.baseUri}")
 	private String storageFileBaseUri;
 	
+	@Value("${storage.file.dirNames.ingested}")
+	private String ingestedDirectoryName;
+	
+	@Value("${storage.file.patterns.fileNameIdsSeparator}")
+	private String filenameIdsSeparator;
+	
 	@Value("${security.vault.paths.subpaths.ontologies}")
 	private String vaultSubpathOntologies;
 	
@@ -85,6 +89,7 @@ public class OntologyIngestorService {
 	private GitService gitService;
 	private Set<WebhookEvent> webhookEvents = new HashSet<>();
 	private FileStorageService fileStorageService;
+	private String writeDirectoryUri;
 	
 	public OntologyIngestorService() {
 		
@@ -102,10 +107,13 @@ public class OntologyIngestorService {
 		
 		try {
 			
-			// 1. Parse the webhook event payload into WebhookEvent objects
+			// 1. Environment setup
+			setup();
+			
+			// 2. Parse the webhook event payload into WebhookEvent objects
 			parseWebhookEvents();
 			
-			// 2. Save the relevant modified resources to persistent storage
+			// 3. Save the relevant modified resources to persistent storage
 			getModifiedResources();
 			
 		} catch (Exception e) {
@@ -113,6 +121,28 @@ public class OntologyIngestorService {
 		}
 		
 		LOGGER.info("Ontology Ingestion Service finished.");
+		
+	}
+	
+	/**
+	 * Instantiate the relevant Git and file storage services
+	 * @throws IOException
+	 */
+	
+	private void setup() throws IOException {
+		
+		// 1. Select the relevant Git service based on the HTTP headers
+		// of the webhook event request
+		gitService = gitServiceFactory.getGitService(headers);
+		
+		// 2. Select the relevant storage service and 
+		// create the target directory if it does not already exist
+		fileStorageService = fileStorageServiceFactory
+				.getFileStorageService(storageFileService);
+		writeDirectoryUri = storageFileBaseUri + 
+				File.separator + ingestedDirectoryName;
+		if ( !fileStorageService.doesDirectoryExist(writeDirectoryUri) )
+			fileStorageService.createDirectory(writeDirectoryUri);
 		
 	}
 	
@@ -130,17 +160,13 @@ public class OntologyIngestorService {
 		
 		LOGGER.info("Ontology Ingestion Service - "
 				+ "Started parsing of webhook events.");
-			
-		// 1. Select the relevant Git service based on the HTTP headers
-		// of the webhook event request
-		gitService = gitServiceFactory.getGitService(headers);
 		
-		// 2. Parse the webhook payload
+		// 1. Parse the webhook payload
 		WebhookEvent webhookEvent = gitService.parseWebhookPayload(
 				headers, payload, null);
 		LOGGER.debug("Original webhook event object: {} ", webhookEvent);
 		
-		// 3. Get all ontology objects that match the webhook event request
+		// 2. Get all ontology objects that match the webhook event request
 		// i.e. the payload may describe more than one resource path
 		// in the same repository that have been modified
 		Set<Ontology> ontoglogies = new HashSet<>();
@@ -154,10 +180,10 @@ public class OntologyIngestorService {
 							webhookEvent.getRepoBranch()));
 		}
 		
-		// 4. For each ontology, validate the webhook payload
+		// 3. For each ontology, validate the webhook payload
 		for (Ontology ontology : ontoglogies) {
 			
-			// 4.1. Get the ontology secret data
+			// 3.1. Get the ontology secret data
 			OntologySecretData ontologySecretData = Vault.get(
 					vaultTemplate, 
 					springCloudVaultKvBackend, 
@@ -171,14 +197,14 @@ public class OntologyIngestorService {
 			ontology.setRepoWebhookSecret(
 					ontologySecretData.getRepoWebhookSecret());
 			
-			// 4.1. Recreate the webhook payload object 
+			// 3.2. Recreate the webhook payload object 
 			// with the resource path
 			WebhookEvent currentWebhookEvent = gitService
 					.parseWebhookPayload(headers, payload, 
 							ontology.getRepoResourcePath());
 			currentWebhookEvent.setOntology(ontology);
 			
-			// 4.2. Validate the webhook payload
+			// 3.3. Validate the webhook payload
 			boolean validWebhookPayload = gitService.isValidWebhookPayload(
 					headers, payload, 
 					ontology.getRepoResourcePath(), 
@@ -187,7 +213,7 @@ public class OntologyIngestorService {
 					ontology.getRepoOwner(),
 					ontology.getRepoBranch());
 			
-			// 4.3. If valid, then persist the webhook event to storage
+			// 3.4. If valid, then persist the webhook event to storage
 			if ( validWebhookPayload ) {
 				webhookEvents.add(
 						webhookEventRepository.save(currentWebhookEvent));
@@ -214,19 +240,10 @@ public class OntologyIngestorService {
 		LOGGER.info("Ontology Ingestion Service - "
 				+ "Started downloading modified resources.");
 		
-		// 1. Select the relevant storage service and 
-		// create the target directory if it does not already exist
-		fileStorageService = fileStorageServiceFactory
-				.getFileStorageService(storageFileService);
-		String writeDirectoryUri = storageFileBaseUri + 
-				File.separator + INGESTED_DIRECTORY_NAME;
-		if ( !fileStorageService.doesDirectoryExist(writeDirectoryUri) )
-			fileStorageService.createDirectory(writeDirectoryUri);
-		
-		// 2. Download and write the modified resources to persistent storage
+		// 1. Download and write the modified resources to persistent storage
 		for ( WebhookEvent webhookEvent : webhookEvents ) {
 			
-			// Get the resource as a string encapsulated within a 
+			// 1.1. Get the resource as a string encapsulated within a 
 			// HTTP response entity
 			ResponseEntity<String> response = webhookEvent
 					.getOntology().isRepoPrivate() ?
@@ -245,7 +262,7 @@ public class OntologyIngestorService {
 										.getRepoResourcePath(), 
 									webhookEvent.getRepoBranch());
 			
-			// Check the response is OK
+			// 1.2. Check the response is OK
 			if ( response.getStatusCode().equals(HttpStatus.OK) 
 					&& !Strings.isNullOrEmpty(response.getBody()) ) {
 				
@@ -257,16 +274,16 @@ public class OntologyIngestorService {
 							.toString()
 							.replaceAll(" ", "-");
 				Path temporaryFile = Files.createTempFile("", 
-						ONTOLOGY_FILENAME_SEPARATOR 
+						filenameIdsSeparator 
 						+ webhookEvent.getOntology().getId() 
-						+ ONTOLOGY_FILENAME_SEPARATOR 
+						+ filenameIdsSeparator 
 						+ webhookEvent.getId()
-						+ ONTOLOGY_FILENAME_SEPARATOR
+						+ filenameIdsSeparator
 						+ resourcePathFilename);
 				Files.write(temporaryFile, 
 						response.getBody().getBytes(StandardCharsets.UTF_8));
 				
-				// Upload the file to the relevant persistent storage service
+				// 1.3. Upload the file to the relevant persistent storage service
 				String temporaryFilename = temporaryFile
 						.getFileName().toString();
 				String targetFilename = temporaryFilename
