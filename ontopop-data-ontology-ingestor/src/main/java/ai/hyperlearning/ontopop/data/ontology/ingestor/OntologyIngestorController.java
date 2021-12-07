@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
@@ -35,9 +38,17 @@ public class OntologyIngestorController {
 	private OntologyIngestorService ontologyIngestorService;
 	
 	/**************************************************************************
-	 * HTTP POST REQUESTS
+	 * 1. POST - Ontology Ingestion Webhook
 	 *************************************************************************/
 	
+	@Operation(
+			summary = "Ontology ingestion webhook",
+			description = "Ontology ingestion webhook",
+			tags = { "ingest", "ontology", "webhook" })
+	@ApiResponses(value = {
+	        @ApiResponse(
+	        		responseCode = "200",
+	        		description = "Ontology ingestion request accepted")})
 	@PostMapping(
 			value = "/webhooks",
 			consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -47,12 +58,13 @@ public class OntologyIngestorController {
 			@RequestBody(required = true) String payload) {
 		
 		// Log the HTTP request headers for debugging purposes
+		LOGGER.debug("New HTTP POST request: Ontology ingestion webhook.");
 		headers.forEach((key, value) -> {
 	        LOGGER.debug(String.format("Header '%s' = %s", key, value));
 	    });
 		
 		// Log the HTTP request body payload for debugging purposes
-		LOGGER.debug(payload);
+		LOGGER.debug("Ontology ingestion webhook payload: {}", payload);
 		
 		// Run the Ontology Ingestion Service pipeline
 		ontologyIngestorService.run(headers, payload);
