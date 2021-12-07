@@ -50,7 +50,7 @@ public class OntologyIngestorController {
 	        		responseCode = "200",
 	        		description = "Ontology ingestion request accepted")})
 	@PostMapping(
-			value = "/webhooks",
+			value = "/ingest",
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> ingest(

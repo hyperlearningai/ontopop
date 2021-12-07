@@ -164,7 +164,8 @@ public class OntologyIngestorService {
 		// 1. Parse the webhook payload
 		WebhookEvent webhookEvent = gitService.parseWebhookPayload(
 				headers, payload, null);
-		LOGGER.debug("Original webhook event object: {} ", webhookEvent);
+		LOGGER.debug("Parsed webhook event object without resource path: {} ", 
+				webhookEvent);
 		
 		// 2. Get all ontology objects that match the webhook event request
 		// i.e. the payload may describe more than one resource path
@@ -172,16 +173,22 @@ public class OntologyIngestorService {
 		Set<Ontology> ontoglogies = new HashSet<>();
 		for ( String modifiedResourcePath : webhookEvent
 				.getCommitsModifiedResourcePaths() ) {
+			
 			ontoglogies.addAll(
 					ontologyRepository.findByRepoUrlOwnerPathBranch(
 							webhookEvent.getRepoUrl(), 
 							webhookEvent.getRepoOwner(), 
 							modifiedResourcePath, 
 							webhookEvent.getRepoBranch()));
+		
 		}
 		
 		// 3. For each ontology, validate the webhook payload
+		LOGGER.debug("Found {} ontologies matching the "
+				+ "webhook event request.", ontoglogies.size());
+		int ontologyCounter = 0;
 		for (Ontology ontology : ontoglogies) {
+			ontologyCounter++;
 			
 			// 3.1. Get the ontology secret data
 			OntologySecretData ontologySecretData = Vault.get(
@@ -203,6 +210,9 @@ public class OntologyIngestorService {
 					.parseWebhookPayload(headers, payload, 
 							ontology.getRepoResourcePath());
 			currentWebhookEvent.setOntology(ontology);
+			LOGGER.debug("Parsed webhook event object with resource path "
+					+ "({} of {}): {}", ontologyCounter, ontoglogies.size(), 
+					currentWebhookEvent);
 			
 			// 3.3. Validate the webhook payload
 			boolean validWebhookPayload = gitService.isValidWebhookPayload(
@@ -214,11 +224,14 @@ public class OntologyIngestorService {
 					ontology.getRepoBranch());
 			
 			// 3.4. If valid, then persist the webhook event to storage
+			LOGGER.debug("Validity of parsed webhook event object "
+					+ "with resource path " + "({} of {}): {}", 
+					ontologyCounter, ontoglogies.size(), validWebhookPayload);
 			if ( validWebhookPayload ) {
 				webhookEvents.add(
 						webhookEventRepository.save(currentWebhookEvent));
-				LOGGER.debug("Parsed and persisted webhook event object: {}", 
-						currentWebhookEvent);
+				LOGGER.debug("Successfully parsed and persisted "
+						+ "webhook event object: {}", currentWebhookEvent);
 			}
 			
 		}
@@ -282,6 +295,12 @@ public class OntologyIngestorService {
 									filenameIdsSeparator));
 				Files.write(temporaryFile, 
 						response.getBody().getBytes(StandardCharsets.UTF_8));
+				LOGGER.debug("Successfully downloaded ontology resource '{}' "
+						+ "to a local temporary file at '{}'.", 
+						webhookEvent.getOntology().getRepoUrl() + "/" 
+								+ webhookEvent.getOntology()
+								.getRepoResourcePath(), 
+						temporaryFile.toAbsolutePath().toString());
 				
 				// 1.3. Upload the file to the relevant persistent storage service
 				String temporaryFilename = temporaryFile
