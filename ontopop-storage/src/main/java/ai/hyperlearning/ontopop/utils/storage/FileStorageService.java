@@ -22,4 +22,6 @@ public interface FileStorageService {
 	void copyDirectoryContents(String sourceDirectoryUri, 
 			String targetDirectoryUri) throws IOException;
 	
+	void uploadFile(String localSourceUri, String targetUri) throws IOException;
+	
 }

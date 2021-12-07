@@ -51,12 +51,11 @@ public class LocalFileStorageService implements FileStorageService {
 		File targetDirectory = new File(targetDirectoryUri);
 		FileUtils.copyDirectory(sourceDirectory, targetDirectory);
 	}
-	
-	public void writeStringToLocalTempFile(
-			String contents, String relativePath) throws IOException {
-		
-		Path tempFile = Files.createTempFile(null, null);
-		
+
+	@Override
+	public void uploadFile(String localSourceUri, String targetUri) 
+			throws IOException {
+		copyFile(localSourceUri, targetUri);
 	}
 
 }

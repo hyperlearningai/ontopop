@@ -47,4 +47,10 @@ public class AwsS3FileStorageService implements FileStorageService {
 		
 	}
 
+	@Override
+	public void uploadFile(String localSourceUri, String targetUri) throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
