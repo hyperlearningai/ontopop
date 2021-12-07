@@ -34,7 +34,6 @@ public class OntologyService {
 	
 	private static final Logger LOGGER = 
 			LoggerFactory.getLogger(OntologyService.class);
-	private static final String VAULT_SUBPATH_ONTOLOGIES = "/ontologies/";
 	
 	@Autowired
     private OntologyRepository ontologyRepository;
@@ -50,6 +49,9 @@ public class OntologyService {
 	
 	@Value("${spring.cloud.vault.kv.default-context}")
 	String springCloudVaultKvDefaultContext;
+	
+	@Value("${security.vault.paths.subpaths.ontologies}")
+	private String vaultSubpathOntologies;
 	
 	/**
 	 * Create a new ontology
@@ -72,7 +74,7 @@ public class OntologyService {
 		Vault.put(vaultTemplate, 
 				springCloudVaultKvBackend, 
 				springCloudVaultKvDefaultContext 
-					+ VAULT_SUBPATH_ONTOLOGIES 
+					+ vaultSubpathOntologies 
 						+ newOntology.getId(), 
 				newOntologySecretData);
 		
@@ -121,7 +123,7 @@ public class OntologyService {
 						springCloudVaultKvBackend, 
 						KeyValueBackend.KV_2, 
 						springCloudVaultKvDefaultContext 
-							+ VAULT_SUBPATH_ONTOLOGIES + id, 
+							+ vaultSubpathOntologies + id, 
 						OntologySecretData.class).getData();
 		
 		// Set the new sensitive attributes
@@ -140,7 +142,7 @@ public class OntologyService {
 			Vault.put(vaultTemplate, 
 					springCloudVaultKvBackend, 
 					springCloudVaultKvDefaultContext 
-						+ VAULT_SUBPATH_ONTOLOGIES +  id, 
+						+ vaultSubpathOntologies +  id, 
 					currentOntologySecretData);
 		LOGGER.debug("Updated ontology (sensitive) with ID: {}", id);
 		
@@ -160,7 +162,7 @@ public class OntologyService {
 		Vault.delete(vaultTemplate, 
 				springCloudVaultKvBackend, 
 				springCloudVaultKvDefaultContext 
-					+ VAULT_SUBPATH_ONTOLOGIES + id);
+					+ vaultSubpathOntologies + id);
 		LOGGER.debug("Deleted ontology with ID: {}", id);
 		
 	}
