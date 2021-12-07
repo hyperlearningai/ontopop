@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -29,6 +28,7 @@ import ai.hyperlearning.ontopop.model.git.WebhookEvent;
 import ai.hyperlearning.ontopop.model.ontology.Ontology;
 import ai.hyperlearning.ontopop.model.ontology.OntologySecretData;
 import ai.hyperlearning.ontopop.security.vault.Vault;
+import ai.hyperlearning.ontopop.utils.OntologyResourceUtils;
 import ai.hyperlearning.ontopop.utils.git.GitService;
 import ai.hyperlearning.ontopop.utils.git.GitServiceFactory;
 import ai.hyperlearning.ontopop.utils.storage.FileStorageService;
@@ -268,18 +268,18 @@ public class OntologyIngestorService {
 				
 				// Write the string contents to a temporary file 
 				// in the local file system
-				String resourcePathFilename = Paths.get(
-						webhookEvent.getOntology().getRepoResourcePath())
-							.getFileName()
-							.toString()
-							.replaceAll(" ", "-");
+				String resourcePathFilename = OntologyResourceUtils
+						.generateOntologyFilenameFromResourcePath(
+								webhookEvent.getOntology()
+									.getRepoResourcePath());
 				Path temporaryFile = Files.createTempFile("", 
 						filenameIdsSeparator 
-						+ webhookEvent.getOntology().getId() 
-						+ filenameIdsSeparator 
-						+ webhookEvent.getId()
-						+ filenameIdsSeparator
-						+ resourcePathFilename);
+						+ OntologyResourceUtils
+							.generateOntologyResourceFilename(
+									webhookEvent.getOntology().getId(), 
+									webhookEvent.getId(), 
+									resourcePathFilename, 
+									filenameIdsSeparator));
 				Files.write(temporaryFile, 
 						response.getBody().getBytes(StandardCharsets.UTF_8));
 				
@@ -295,7 +295,9 @@ public class OntologyIngestorService {
 						targetFilepath);
 				LOGGER.debug("Successfully persisted ontology "
 						+ "resource '{}' to '{}'.", 
-						webhookEvent.getOntology().getRepoResourcePath(),
+						webhookEvent.getOntology().getRepoUrl() + "/" 
+								+ webhookEvent.getOntology()
+									.getRepoResourcePath(),
 						targetFilepath);
 				
 			}

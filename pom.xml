@@ -160,6 +160,11 @@
             </dependency>
             <dependency>
                 <groupId>ai.hyperlearning.ontopop</groupId>
+                <artifactId>ontopop-utils</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>ai.hyperlearning.ontopop</groupId>
                 <artifactId>ontopop-data-jpa</artifactId>
                 <version>${revision}</version>
             </dependency>
@@ -195,6 +200,7 @@
         <module>ontopop-exceptions</module>
         <module>ontopop-git</module>
         <module>ontopop-storage</module>
+        <module>ontopop-utils</module>
         <module>ontopop-data-jpa</module>
         <module>ontopop-data-ontology</module>
         <module>ontopop-data-ontology-ingestor</module>

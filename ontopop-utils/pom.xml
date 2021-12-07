@@ -11,10 +11,10 @@
     </parent>
     
     <!-- Module Metadata -->
-    <artifactId>ontopop-data-ontology-ingestor</artifactId>
-    <name>ontopop-data-ontology-ingestor</name>
+    <artifactId>ontopop-utils</artifactId>
+    <name>ontopop-utils</name>
     <packaging>jar</packaging>
-    <description>OntoPop - Ontology Ingestion Service</description>
+    <description>OntoPop - Helper Functions</description>
     <url>https://ontopop.com</url>
     <organization>
         <name>HyperLearning AI</name>
@@ -43,32 +43,6 @@
     
     <!-- Module Dependencies -->
     <dependencies>
-        
-        <!-- OntoPop -->
-        <dependency>
-            <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-configuration</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-git</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-storage</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-utils</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-security-vault</artifactId>
-        </dependency>
     
     </dependencies>
     
