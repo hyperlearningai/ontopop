@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import ai.hyperlearning.ontopop.exceptions.git.WebhookEventNotFoundException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyNotFoundException;
 
 /**
@@ -21,7 +22,9 @@ import ai.hyperlearning.ontopop.exceptions.ontology.OntologyNotFoundException;
 @ControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	
-	@ExceptionHandler(OntologyNotFoundException.class)
+	@ExceptionHandler({
+		OntologyNotFoundException.class, 
+		WebhookEventNotFoundException.class})
 	public void springHandleNotFound(HttpServletResponse response) 
 			throws IOException {
 		response.sendError(HttpStatus.NOT_FOUND.value());
