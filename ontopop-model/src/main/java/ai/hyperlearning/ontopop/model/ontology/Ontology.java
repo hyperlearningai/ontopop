@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -85,7 +86,7 @@ public class Ontology implements Serializable {
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime dateLastUpdated;
 	
-	@OneToMany(mappedBy="ontology")
+	@OneToMany(mappedBy="ontology", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
     private Set<WebhookEvent> webhooksEvents;
 	
