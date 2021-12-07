@@ -327,6 +327,7 @@ public class WebhookEvent implements Serializable {
 	public String toString() {
 		return "WebhookEvent ["
 				+ "id=" + id + ", "
+				+ "ontologyId=" + (ontology == null ? "" : ontology.getId())
 				+ "ref=" + ref + ", "
 				+ "repoUrl=" + repoUrl + ", "
 				+ "repoId=" + repoId + ", "
@@ -347,7 +348,6 @@ public class WebhookEvent implements Serializable {
 				+ "latestRelevantCommitCommitterEmail=" + latestRelevantCommitCommitterEmail + ", "
 				+ "latestRelevantCommitCommitterUsername=" + latestRelevantCommitCommitterUsername + ", "
 				+ "requestHeaderSignature=" + requestHeaderSignature + ", "
-				+ "ontologyId=" + (ontology == null ? "" : ontology.getId())
 				+ "]";
 	}
 	

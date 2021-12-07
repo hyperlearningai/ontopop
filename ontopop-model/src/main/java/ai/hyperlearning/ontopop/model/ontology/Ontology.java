@@ -16,6 +16,9 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
@@ -65,9 +68,11 @@ public class Ontology implements Serializable {
 	private String repoBranch;
 	
 	@Transient
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String repoToken;
 	
 	@Transient
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String repoWebhookSecret;
 	
 	@Basic
@@ -81,6 +86,7 @@ public class Ontology implements Serializable {
 	private LocalDateTime dateLastUpdated;
 	
 	@OneToMany(mappedBy="ontology")
+	@JsonIgnore
     private Set<WebhookEvent> webhooksEvents;
 	
 	public Ontology() {
