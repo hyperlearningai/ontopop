@@ -347,7 +347,7 @@ public class WebhookEvent implements Serializable {
 				+ "latestRelevantCommitCommitterEmail=" + latestRelevantCommitCommitterEmail + ", "
 				+ "latestRelevantCommitCommitterUsername=" + latestRelevantCommitCommitterUsername + ", "
 				+ "requestHeaderSignature=" + requestHeaderSignature + ", "
-				+ "ontologyId=" + ontology.getId() 
+				+ "ontologyId=" + (ontology == null ? "" : ontology.getId())
 				+ "]";
 	}
 	
