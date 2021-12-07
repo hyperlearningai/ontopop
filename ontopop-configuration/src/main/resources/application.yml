@@ -28,3 +28,7 @@ storage:
             parsed: parsed
         patterns:
             fileNameIdsSeparator: "_"
+web:
+    client:
+        codecs:
+            maxInMemorySize: 10

@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,10 +38,19 @@ public class GitHubGitService implements GitService  {
 	private static final String WEBHOOK_REQUEST_HEADER_SIGNATURE_VALUE_PREFIX = "sha256=";
 	private WebClient client;
 	
-	public GitHubGitService() {
+	public GitHubGitService(
+			@Value("${web.client.codecs.maxInMemorySize}") int webClientMaxInMemorySize) {
+		
+		// Instantiate a web client to prepare for HTTP requests
 		this.client = WebClient.builder()
+				.exchangeStrategies(ExchangeStrategies.builder()
+			            .codecs(configurer -> configurer
+			                      .defaultCodecs()
+			                      .maxInMemorySize(webClientMaxInMemorySize * 1024 * 1024))
+			            		.build())
 				.baseUrl(BASE_URL)
 				.build();
+	
 	}
 	
 	/**
