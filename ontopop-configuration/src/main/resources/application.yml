@@ -20,8 +20,14 @@ security:
                 ontologies: /ontologies/
 storage:
     file:
-        service: local
-        baseUri: ~/ontopop
+        service: azure-storage
+        local:
+            baseUri: ~/ontopop
+        azure-storage:
+            account-name: ${azure.storage.account-name}
+            account-key: ${azure.storage.account-key}
+            blob-endpoint: ${azure.storage.blob-endpoint}
+            container-name: ${azure.storage.container-name}
         dirNames:
             ingested: ingested
             validated: validated
