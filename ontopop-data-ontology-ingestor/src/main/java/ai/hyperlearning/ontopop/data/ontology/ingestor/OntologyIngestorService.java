@@ -162,21 +162,13 @@ public class OntologyIngestorService {
 					fileStorageService.createDirectory(writeDirectoryUri);
 				break;
 				
-			case AZURE_STORAGE:
+			default:
 				
-				// Create (if required) the Azure Storage container
+				// Create (if required) the Azure Storage container 
+				// or AWS S3 bucket
 				writeDirectoryUri = ingestedDirectoryName;
 				if ( !fileStorageService.doesDirectoryExist(null) )
 					fileStorageService.createDirectory(null);
-				break;
-			
-			default:
-				
-				// Create (if required) the local target ingestion directory
-				writeDirectoryUri = storageFileLocalBaseUri + 
-					File.separator + ingestedDirectoryName;
-				if ( !fileStorageService.doesDirectoryExist(writeDirectoryUri) )
-					fileStorageService.createDirectory(writeDirectoryUri);
 			
 		}
 		
