@@ -33,6 +33,7 @@ import ai.hyperlearning.ontopop.utils.git.GitService;
 import ai.hyperlearning.ontopop.utils.git.GitServiceFactory;
 import ai.hyperlearning.ontopop.utils.storage.FileStorageService;
 import ai.hyperlearning.ontopop.utils.storage.FileStorageServiceFactory;
+import ai.hyperlearning.ontopop.utils.storage.FileStorageServiceType;
 
 /**
  * Ontology Ingestion Service
@@ -72,8 +73,8 @@ public class OntologyIngestorService {
 	@Value("${storage.file.service}")
 	private String storageFileService;
 	
-	@Value("${storage.file.baseUri}")
-	private String storageFileBaseUri;
+	@Value("${storage.file.local.baseUri}")
+	private String storageFileLocalBaseUri;
 	
 	@Value("${storage.file.dirNames.ingested}")
 	private String ingestedDirectoryName;
@@ -116,6 +117,9 @@ public class OntologyIngestorService {
 			// 3. Save the relevant modified resources to persistent storage
 			getModifiedResources();
 			
+			// 4. Cleanup resources
+			cleanup();
+			
 		} catch (Exception e) {
 			LOGGER.error("Ontology Ingestion Service encountered an error.", e);
 		}
@@ -135,14 +139,43 @@ public class OntologyIngestorService {
 		// of the webhook event request
 		gitService = gitServiceFactory.getGitService(headers);
 		
-		// 2. Select the relevant storage service and 
+		// 2. Select the relevant persistent storage service and 
 		// create the target directory if it does not already exist
+		FileStorageServiceType fileStorageServiceType = 
+				FileStorageServiceType.valueOf(storageFileService);
 		fileStorageService = fileStorageServiceFactory
-				.getFileStorageService(storageFileService);
-		writeDirectoryUri = storageFileBaseUri + 
-				File.separator + ingestedDirectoryName;
-		if ( !fileStorageService.doesDirectoryExist(writeDirectoryUri) )
-			fileStorageService.createDirectory(writeDirectoryUri);
+				.getFileStorageService(fileStorageServiceType);
+		
+		// 3. Define and create (if required) the relevant 
+		// target ingestion directory
+		switch ( fileStorageServiceType ) {
+			
+			case LOCAL:
+				
+				// Create (if required) the local target ingestion directory
+				writeDirectoryUri = storageFileLocalBaseUri + 
+					File.separator + ingestedDirectoryName;
+				if ( !fileStorageService.doesDirectoryExist(writeDirectoryUri) )
+					fileStorageService.createDirectory(writeDirectoryUri);
+				break;
+				
+			case AZURE_STORAGE:
+				
+				// Create (if required) the Azure Storage container
+				writeDirectoryUri = ingestedDirectoryName;
+				if ( !fileStorageService.doesDirectoryExist(null) )
+					fileStorageService.createDirectory(null);
+				break;
+			
+			default:
+				
+				// Create (if required) the local target ingestion directory
+				writeDirectoryUri = storageFileLocalBaseUri + 
+					File.separator + ingestedDirectoryName;
+				if ( !fileStorageService.doesDirectoryExist(writeDirectoryUri) )
+					fileStorageService.createDirectory(writeDirectoryUri);
+			
+		}
 		
 	}
 	
@@ -307,8 +340,7 @@ public class OntologyIngestorService {
 						.getFileName().toString();
 				String targetFilename = temporaryFilename
 						.substring(temporaryFilename.indexOf("_") + 1);
-				String targetFilepath = writeDirectoryUri +
-						File.separator + targetFilename;
+				String targetFilepath = writeDirectoryUri + "/" + targetFilename;
 				fileStorageService.uploadFile(
 						temporaryFile.toAbsolutePath().toString(), 
 						targetFilepath);
@@ -325,6 +357,17 @@ public class OntologyIngestorService {
 		
 		LOGGER.info("Ontology Ingestion Service - "
 				+ "Finished downloading modified resources.");
+		
+	}
+	
+	/**
+	 * Cleanup any open resources
+	 */
+	
+	private void cleanup() throws IOException {
+		
+		// Close any storage service clients
+		fileStorageService.cleanup();
 		
 	}
 	
