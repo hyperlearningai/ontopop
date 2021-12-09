@@ -4,10 +4,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,28 +29,14 @@ import reactor.core.publisher.Mono;
 @Service
 public class GitHubGitService implements GitService  {
 
-	private static final String BASE_URL = "https://api.github.com";
 	private static final String REQUEST_URI = "/repos/{owner}/{repo}/contents/{path}?ref={branch}";
 	private static final String HEADER_ACCEPT = "application/vnd.github.v3.raw+json";
 	private static final String HEADER_AUTHORIZATION_PREFIX = "token";
 	private static final String WEBHOOK_REQUEST_HEADER_SIGNATURE_KEY = "x-hub-signature-256";
 	private static final String WEBHOOK_REQUEST_HEADER_SIGNATURE_VALUE_PREFIX = "sha256=";
-	private WebClient client;
 	
-	public GitHubGitService(
-			@Value("${web.client.codecs.maxInMemorySize}") int webClientMaxInMemorySize) {
-		
-		// Instantiate a web client to prepare for HTTP requests
-		this.client = WebClient.builder()
-				.exchangeStrategies(ExchangeStrategies.builder()
-			            .codecs(configurer -> configurer
-			                      .defaultCodecs()
-			                      .maxInMemorySize(webClientMaxInMemorySize * 1024 * 1024))
-			            		.build())
-				.baseUrl(BASE_URL)
-				.build();
-	
-	}
+	@Autowired
+	private WebClient webClient;
 	
 	/**
 	 * Parse a GitHub webhook JSON request payload into a WebhookEvent object
@@ -153,7 +138,7 @@ public class GitHubGitService implements GitService  {
 			String path, String branch) throws IOException {
 
 		// Request the raw public resource
-		ResponseEntity<String> response = client.get()
+		ResponseEntity<String> response = webClient.get()
 			.uri(REQUEST_URI, owner, repo, path, branch)
 			.header("Accept", HEADER_ACCEPT)
 			.retrieve()
@@ -186,7 +171,7 @@ public class GitHubGitService implements GitService  {
 			String repo, String path, String branch) throws IOException {
 		
 		// Request the raw resource requiring authorisation
-		ResponseEntity<String> response = client.get()
+		ResponseEntity<String> response = webClient.get()
 			.uri(REQUEST_URI, owner, repo, path, branch)
 			.header("Accept", HEADER_ACCEPT)
 			.header("Authorization", HEADER_AUTHORIZATION_PREFIX + " " + token)
