@@ -56,6 +56,12 @@
             <artifactId>commons-lang3</artifactId>
         </dependency>
         
+        <!-- AWS Java SDK -->
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk</artifactId>
+        </dependency>
+        
         <!-- Azure Spring Boot Starter Storage -->
         <!-- 
         <dependency>

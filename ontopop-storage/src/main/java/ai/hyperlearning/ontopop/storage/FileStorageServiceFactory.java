@@ -3,7 +3,7 @@ package ai.hyperlearning.ontopop.storage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ai.hyperlearning.ontopop.storage.aws.s3.AwsS3FileStorageService;
+import ai.hyperlearning.ontopop.storage.aws.s3.AwsS3StorageService;
 import ai.hyperlearning.ontopop.storage.azure.storage.AzureStorageBlobStorageService;
 import ai.hyperlearning.ontopop.storage.local.LocalFileStorageService;
 
@@ -21,7 +21,7 @@ public class FileStorageServiceFactory {
 	private LocalFileStorageService localFileStorageService;
 	
 	@Autowired
-	private AwsS3FileStorageService awsS3FileStorageService;
+	private AwsS3StorageService awsS3StorageService;
 	
 	@Autowired
 	private AzureStorageBlobStorageService azureStorageBlobStorageService;
@@ -40,7 +40,7 @@ public class FileStorageServiceFactory {
 			case LOCAL:
 				return localFileStorageService;
 			case AWS_S3:
-				return awsS3FileStorageService;
+				return awsS3StorageService;
 			case AZURE_STORAGE:
 				return azureStorageBlobStorageService;
 			default:
@@ -56,7 +56,7 @@ public class FileStorageServiceFactory {
 			case LOCAL:
 				return localFileStorageService;
 			case AWS_S3:
-				return awsS3FileStorageService;
+				return awsS3StorageService;
 			case AZURE_STORAGE:
 				return azureStorageBlobStorageService;
 			default:
