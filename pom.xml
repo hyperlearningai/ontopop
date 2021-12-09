@@ -39,6 +39,7 @@
     
     <!-- Properties and Dependency Versions -->
     <properties>
+        <aws-java-sdk.version>1.12.126</aws-java-sdk.version>
         <azure-sdk-bom.version>1.0.6</azure-sdk-bom.version>
         <azure-spring-boot-starter-storage.version>3.11.0</azure-spring-boot-starter-storage.version>
         <commons-io.version>2.11.0</commons-io.version>
@@ -91,6 +92,13 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons-io.version}</version>
+            </dependency>
+            
+            <!-- AWS Java SDK -->
+            <dependency>
+                <groupId>com.amazonaws</groupId>
+                <artifactId>aws-java-sdk</artifactId>
+                <version>${aws-java-sdk.version}</version>
             </dependency>
             
             <!-- Azure SDK BOM (Azure client libraries e.g. storage client) -->
