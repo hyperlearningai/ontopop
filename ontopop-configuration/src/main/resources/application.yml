@@ -23,11 +23,16 @@ storage:
         service: azure-storage
         local:
             baseUri: ~/ontopop
+        aws-s3:
+            access-key-id: ${aws.s3.access-key-id}
+            access-key-secret: ${aws.s3.access-key-secret}
+            region: eu-west-2
+            bucket-name: ontopop
         azure-storage:
             account-name: ${azure.storage.account-name}
             account-key: ${azure.storage.account-key}
             blob-endpoint: ${azure.storage.blob-endpoint}
-            container-name: ${azure.storage.container-name}
+            container-name: ontopop
         dirNames:
             ingested: ingested
             validated: validated
