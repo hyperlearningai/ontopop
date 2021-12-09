@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.utils.git.github;
+package ai.hyperlearning.ontopop.git.github;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -14,9 +14,9 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.google.common.base.Strings;
 import com.google.common.hash.Hashing;
 
+import ai.hyperlearning.ontopop.git.GitService;
 import ai.hyperlearning.ontopop.model.git.WebhookEvent;
 import ai.hyperlearning.ontopop.model.git.github.GitHubWebhookEvent;
-import ai.hyperlearning.ontopop.utils.git.GitService;
 import reactor.core.publisher.Mono;
 
 /**

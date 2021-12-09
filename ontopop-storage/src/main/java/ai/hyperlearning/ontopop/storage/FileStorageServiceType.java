@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.utils.storage;
+package ai.hyperlearning.ontopop.storage;
 
 import java.util.HashMap;
 import java.util.Map;

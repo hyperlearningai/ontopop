@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.utils.git.github;
+package ai.hyperlearning.ontopop.git.github;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

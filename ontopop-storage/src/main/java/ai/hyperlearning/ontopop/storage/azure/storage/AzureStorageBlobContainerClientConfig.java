@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.utils.storage.azure.storage;
+package ai.hyperlearning.ontopop.storage.azure.storage;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

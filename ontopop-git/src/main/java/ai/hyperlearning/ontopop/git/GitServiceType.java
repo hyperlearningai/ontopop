@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.utils.git;
+package ai.hyperlearning.ontopop.git;
 
 /**
  * Supported Git Services

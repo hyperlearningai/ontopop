@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.utils.storage.azure.storage;
+package ai.hyperlearning.ontopop.storage.azure.storage;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 
-import ai.hyperlearning.ontopop.utils.storage.FileStorageService;
+import ai.hyperlearning.ontopop.storage.FileStorageService;
 
 /**
  * Azure Storage Blob Storage Service

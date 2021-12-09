@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.utils.git;
+package ai.hyperlearning.ontopop.git;
 
 import java.io.IOException;
 import java.util.Map;

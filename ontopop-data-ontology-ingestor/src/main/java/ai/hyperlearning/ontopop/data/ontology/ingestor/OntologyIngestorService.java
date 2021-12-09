@@ -24,16 +24,16 @@ import com.google.common.base.Strings;
 
 import ai.hyperlearning.ontopop.data.jpa.repositories.OntologyRepository;
 import ai.hyperlearning.ontopop.data.jpa.repositories.WebhookEventRepository;
+import ai.hyperlearning.ontopop.git.GitService;
+import ai.hyperlearning.ontopop.git.GitServiceFactory;
 import ai.hyperlearning.ontopop.model.git.WebhookEvent;
 import ai.hyperlearning.ontopop.model.ontology.Ontology;
 import ai.hyperlearning.ontopop.model.ontology.OntologySecretData;
 import ai.hyperlearning.ontopop.security.vault.Vault;
+import ai.hyperlearning.ontopop.storage.FileStorageService;
+import ai.hyperlearning.ontopop.storage.FileStorageServiceFactory;
+import ai.hyperlearning.ontopop.storage.FileStorageServiceType;
 import ai.hyperlearning.ontopop.utils.OntologyResourceUtils;
-import ai.hyperlearning.ontopop.utils.git.GitService;
-import ai.hyperlearning.ontopop.utils.git.GitServiceFactory;
-import ai.hyperlearning.ontopop.utils.storage.FileStorageService;
-import ai.hyperlearning.ontopop.utils.storage.FileStorageServiceFactory;
-import ai.hyperlearning.ontopop.utils.storage.FileStorageServiceType;
 
 /**
  * Ontology Ingestion Service

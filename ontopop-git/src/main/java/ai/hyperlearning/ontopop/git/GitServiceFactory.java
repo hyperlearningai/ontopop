@@ -1,11 +1,11 @@
-package ai.hyperlearning.ontopop.utils.git;
+package ai.hyperlearning.ontopop.git;
 
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ai.hyperlearning.ontopop.utils.git.github.GitHubGitService;
+import ai.hyperlearning.ontopop.git.github.GitHubGitService;
 
 /**
  * Git Service Factory

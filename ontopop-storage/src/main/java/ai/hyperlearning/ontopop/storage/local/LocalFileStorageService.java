@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.utils.storage.local;
+package ai.hyperlearning.ontopop.storage.local;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,7 +10,7 @@ import java.nio.file.StandardCopyOption;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 
-import ai.hyperlearning.ontopop.utils.storage.FileStorageService;
+import ai.hyperlearning.ontopop.storage.FileStorageService;
 
 /**
  * Local File Storage Service

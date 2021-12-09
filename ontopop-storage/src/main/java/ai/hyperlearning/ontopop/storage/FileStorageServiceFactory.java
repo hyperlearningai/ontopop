@@ -1,11 +1,11 @@
-package ai.hyperlearning.ontopop.utils.storage;
+package ai.hyperlearning.ontopop.storage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ai.hyperlearning.ontopop.utils.storage.aws.s3.AwsS3FileStorageService;
-import ai.hyperlearning.ontopop.utils.storage.azure.storage.AzureStorageBlobStorageService;
-import ai.hyperlearning.ontopop.utils.storage.local.LocalFileStorageService;
+import ai.hyperlearning.ontopop.storage.aws.s3.AwsS3FileStorageService;
+import ai.hyperlearning.ontopop.storage.azure.storage.AzureStorageBlobStorageService;
+import ai.hyperlearning.ontopop.storage.local.LocalFileStorageService;
 
 /**
  * File Storage Service Factory

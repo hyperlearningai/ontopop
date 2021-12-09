@@ -1,10 +1,10 @@
-package ai.hyperlearning.ontopop.utils.storage.aws.s3;
+package ai.hyperlearning.ontopop.storage.aws.s3;
 
 import java.io.IOException;
 
 import org.springframework.stereotype.Service;
 
-import ai.hyperlearning.ontopop.utils.storage.FileStorageService;
+import ai.hyperlearning.ontopop.storage.FileStorageService;
 
 /**
  * AWS S3 File Storage Service
