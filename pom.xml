@@ -39,6 +39,8 @@
     
     <!-- Properties and Dependency Versions -->
     <properties>
+        <azure-sdk-bom.version>1.0.6</azure-sdk-bom.version>
+        <azure-spring-boot-starter-storage.version>3.11.0</azure-spring-boot-starter-storage.version>
         <commons-io.version>2.11.0</commons-io.version>
         <conf.bootstrap-properties.filename>bootstrap.yml</conf.bootstrap-properties.filename>
         <conf.application-properties.filename>application.yml</conf.application-properties.filename>
@@ -89,6 +91,22 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons-io.version}</version>
+            </dependency>
+            
+            <!-- Azure SDK BOM (Azure client libraries e.g. storage client) -->
+            <dependency>
+                <groupId>com.azure</groupId>
+                <artifactId>azure-sdk-bom</artifactId>
+                <version>${azure-sdk-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            
+            <!-- Azure Spring Boot Starter Storage -->
+            <dependency>
+                <groupId>com.azure.spring</groupId>
+                <artifactId>azure-spring-boot-starter-storage</artifactId>
+                <version>${azure-spring-boot-starter-storage.version}</version>
             </dependency>
             
             <!-- Guava -->
