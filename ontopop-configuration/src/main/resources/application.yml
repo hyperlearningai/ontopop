@@ -20,7 +20,7 @@ security:
                 ontologies: /ontologies/
 storage:
     file:
-        service: azure-storage
+        service: aws-s3
         local:
             baseUri: ~/ontopop
         aws-s3:

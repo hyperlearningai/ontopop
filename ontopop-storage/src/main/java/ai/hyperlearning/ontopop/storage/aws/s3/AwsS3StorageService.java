@@ -29,7 +29,7 @@ public class AwsS3StorageService implements FileStorageService {
 
 	@Override
 	public boolean doesFileExist(String uri) {
-		return false;
+		return s3.doesObjectExist(bucketName, uri);
 	}
 
 	@Override
