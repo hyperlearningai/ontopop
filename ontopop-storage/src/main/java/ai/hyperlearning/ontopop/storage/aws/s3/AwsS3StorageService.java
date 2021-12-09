@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.amazonaws.services.s3.AmazonS3;
 
-import ai.hyperlearning.ontopop.storage.FileStorageService;
+import ai.hyperlearning.ontopop.storage.ObjectStorageService;
 
 /**
  * AWS S3 Storage Service
@@ -19,21 +19,21 @@ import ai.hyperlearning.ontopop.storage.FileStorageService;
  */
 
 @Service
-public class AwsS3StorageService implements FileStorageService {
+public class AwsS3StorageService implements ObjectStorageService {
 	
 	@Autowired
 	private AmazonS3 s3;
 	
-	@Value("${storage.file.aws-s3.bucket-name}")
+	@Value("${storage.object.aws-s3.bucket-name}")
 	private String bucketName;
 
 	@Override
-	public boolean doesFileExist(String uri) {
+	public boolean doesObjectExist(String uri) {
 		return s3.doesObjectExist(bucketName, uri);
 	}
 
 	@Override
-	public boolean doesDirectoryExist(String uri) {
+	public boolean doesContainerExist(String uri) {
 		
 		// Returns whether the specified bucket exists
 		return s3.doesBucketExistV2(bucketName);
@@ -41,7 +41,7 @@ public class AwsS3StorageService implements FileStorageService {
 	}
 
 	@Override
-	public void createDirectory(String uri) throws IOException {
+	public void createContainer(String uri) throws IOException {
 		
 		// Create the specified container
 		s3.createBucket(bucketName);
@@ -49,19 +49,19 @@ public class AwsS3StorageService implements FileStorageService {
 	}
 
 	@Override
-	public void copyFile(String sourceUri, String targetUri) 
+	public void copyObject(String sourceUri, String targetUri) 
 			throws IOException {
 		
 	}
 
 	@Override
-	public void copyDirectoryContents(String sourceDirectoryUri, 
-			String targetDirectoryUri) throws IOException {
+	public void copyContainerContents(String sourceContainerUri, 
+			String targetContainerUri) throws IOException {
 		
 	}
 
 	@Override
-	public void uploadFile(String localSourceUri, String targetUri) 
+	public void uploadObject(String localSourceUri, String targetUri) 
 			throws IOException {
 		
 		// Upload the source file using the S3 client

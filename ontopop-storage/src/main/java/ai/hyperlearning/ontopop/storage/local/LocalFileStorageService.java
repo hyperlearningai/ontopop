@@ -10,7 +10,7 @@ import java.nio.file.StandardCopyOption;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 
-import ai.hyperlearning.ontopop.storage.FileStorageService;
+import ai.hyperlearning.ontopop.storage.ObjectStorageService;
 
 /**
  * Local File Storage Service
@@ -20,25 +20,25 @@ import ai.hyperlearning.ontopop.storage.FileStorageService;
  */
 
 @Service
-public class LocalFileStorageService implements FileStorageService {
+public class LocalFileStorageService implements ObjectStorageService {
 
 	@Override
-	public boolean doesFileExist(String uri) {
+	public boolean doesObjectExist(String uri) {
 		return Files.exists(Paths.get(uri));
 	}
 
 	@Override
-	public boolean doesDirectoryExist(String uri) {
+	public boolean doesContainerExist(String uri) {
 		return Files.exists(Paths.get(uri));
 	}
 
 	@Override
-	public void createDirectory(String uri) throws IOException {
+	public void createContainer(String uri) throws IOException {
 		Files.createDirectory(Paths.get(uri));
 	}
 
 	@Override
-	public void copyFile(String sourceUri, String targetUri) 
+	public void copyObject(String sourceUri, String targetUri) 
 			throws IOException {
 		Path source = Paths.get(sourceUri);
 		Path target = Paths.get(targetUri);
@@ -46,17 +46,17 @@ public class LocalFileStorageService implements FileStorageService {
 	}
 
 	@Override
-	public void copyDirectoryContents(String sourceDirectoryUri, 
-			String targetDirectoryUri) throws IOException {
-		File sourceDirectory = new File(sourceDirectoryUri);
-		File targetDirectory = new File(targetDirectoryUri);
+	public void copyContainerContents(String sourceContainerUri, 
+			String targetContainerUri) throws IOException {
+		File sourceDirectory = new File(sourceContainerUri);
+		File targetDirectory = new File(targetContainerUri);
 		FileUtils.copyDirectory(sourceDirectory, targetDirectory);
 	}
 
 	@Override
-	public void uploadFile(String localSourceUri, String targetUri) 
+	public void uploadObject(String localSourceUri, String targetUri) 
 			throws IOException {
-		copyFile(localSourceUri, targetUri);
+		copyObject(localSourceUri, targetUri);
 	}
 	
 	@Override

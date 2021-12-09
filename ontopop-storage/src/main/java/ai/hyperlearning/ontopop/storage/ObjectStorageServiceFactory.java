@@ -8,14 +8,14 @@ import ai.hyperlearning.ontopop.storage.azure.storage.AzureStorageBlobStorageSer
 import ai.hyperlearning.ontopop.storage.local.LocalFileStorageService;
 
 /**
- * File Storage Service Factory
+ * Object Storage Service Factory
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
 @Service
-public class FileStorageServiceFactory {
+public class ObjectStorageServiceFactory {
 	
 	@Autowired
 	private LocalFileStorageService localFileStorageService;
@@ -27,16 +27,16 @@ public class FileStorageServiceFactory {
 	private AzureStorageBlobStorageService azureStorageBlobStorageService;
 	
 	/**
-	 * Select the relevant file storage service
+	 * Select the relevant object storage service
 	 * @param type
 	 * @return
 	 */
 	
-	public FileStorageService getFileStorageService(String type) {
+	public ObjectStorageService getObjectStorageService(String type) {
 		
-		FileStorageServiceType fileStorageServiceType = 
-				FileStorageServiceType.valueOfLabel(type.toUpperCase());
-		switch ( fileStorageServiceType ) {
+		ObjectStorageServiceType objectStorageServiceType = 
+				ObjectStorageServiceType.valueOfLabel(type.toUpperCase());
+		switch ( objectStorageServiceType ) {
 			case LOCAL:
 				return localFileStorageService;
 			case AWS_S3:
@@ -49,10 +49,10 @@ public class FileStorageServiceFactory {
 		
 	}
 	
-	public FileStorageService getFileStorageService(
-		FileStorageServiceType fileStorageServiceType) {
+	public ObjectStorageService getObjectStorageService(
+		ObjectStorageServiceType objectStorageServiceType) {
 		
-		switch ( fileStorageServiceType ) {
+		switch ( objectStorageServiceType ) {
 			case LOCAL:
 				return localFileStorageService;
 			case AWS_S3:

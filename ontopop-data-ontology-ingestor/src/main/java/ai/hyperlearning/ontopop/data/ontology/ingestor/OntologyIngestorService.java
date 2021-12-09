@@ -30,9 +30,9 @@ import ai.hyperlearning.ontopop.model.git.WebhookEvent;
 import ai.hyperlearning.ontopop.model.ontology.Ontology;
 import ai.hyperlearning.ontopop.model.ontology.OntologySecretData;
 import ai.hyperlearning.ontopop.security.vault.Vault;
-import ai.hyperlearning.ontopop.storage.FileStorageService;
-import ai.hyperlearning.ontopop.storage.FileStorageServiceFactory;
-import ai.hyperlearning.ontopop.storage.FileStorageServiceType;
+import ai.hyperlearning.ontopop.storage.ObjectStorageService;
+import ai.hyperlearning.ontopop.storage.ObjectStorageServiceFactory;
+import ai.hyperlearning.ontopop.storage.ObjectStorageServiceType;
 import ai.hyperlearning.ontopop.utils.OntologyResourceUtils;
 
 /**
@@ -59,7 +59,7 @@ public class OntologyIngestorService {
 	private WebhookEventRepository webhookEventRepository;
 	
 	@Autowired
-	private FileStorageServiceFactory fileStorageServiceFactory;
+	private ObjectStorageServiceFactory objectStorageServiceFactory;
 	
 	@Autowired
 	private VaultTemplate vaultTemplate;
@@ -70,16 +70,16 @@ public class OntologyIngestorService {
 	@Value("${spring.cloud.vault.kv.default-context}")
 	private String springCloudVaultKvDefaultContext;
 	
-	@Value("${storage.file.service}")
-	private String storageFileService;
+	@Value("${storage.object.service}")
+	private String storageObjectService;
 	
-	@Value("${storage.file.local.baseUri}")
-	private String storageFileLocalBaseUri;
+	@Value("${storage.object.local.baseUri}")
+	private String storageLocalBaseUri;
 	
-	@Value("${storage.file.dirNames.ingested}")
+	@Value("${storage.object.dirNames.ingested}")
 	private String ingestedDirectoryName;
 	
-	@Value("${storage.file.patterns.fileNameIdsSeparator}")
+	@Value("${storage.object.patterns.fileNameIdsSeparator}")
 	private String filenameIdsSeparator;
 	
 	@Value("${security.vault.paths.subpaths.ontologies}")
@@ -89,7 +89,7 @@ public class OntologyIngestorService {
 	private String payload;
 	private GitService gitService;
 	private Set<WebhookEvent> webhookEvents = new HashSet<>();
-	private FileStorageService fileStorageService;
+	private ObjectStorageService objectStorageService;
 	private String writeDirectoryUri;
 	
 	public OntologyIngestorService() {
@@ -129,7 +129,7 @@ public class OntologyIngestorService {
 	}
 	
 	/**
-	 * Instantiate the relevant Git and file storage services
+	 * Instantiate the relevant Git and object storage services
 	 * @throws IOException
 	 */
 	
@@ -141,25 +141,25 @@ public class OntologyIngestorService {
 		
 		// 2. Select the relevant persistent storage service and 
 		// create the target directory if it does not already exist
-		FileStorageServiceType fileStorageServiceType = 
-				FileStorageServiceType.valueOfLabel(
-						storageFileService.toUpperCase());
-		fileStorageService = fileStorageServiceFactory
-				.getFileStorageService(fileStorageServiceType);
-		LOGGER.debug("Using the {} file storage service.", 
-				fileStorageServiceType.toString());
+		ObjectStorageServiceType objectStorageServiceType = 
+				ObjectStorageServiceType.valueOfLabel(
+						storageObjectService.toUpperCase());
+		objectStorageService = objectStorageServiceFactory
+				.getObjectStorageService(objectStorageServiceType);
+		LOGGER.debug("Using the {} object storage service.", 
+				objectStorageServiceType.toString());
 		
 		// 3. Define and create (if required) the relevant 
 		// target ingestion directory
-		switch ( fileStorageServiceType ) {
+		switch ( objectStorageServiceType ) {
 			
 			case LOCAL:
 				
 				// Create (if required) the local target ingestion directory
-				writeDirectoryUri = storageFileLocalBaseUri + 
+				writeDirectoryUri = storageLocalBaseUri + 
 					File.separator + ingestedDirectoryName;
-				if ( !fileStorageService.doesDirectoryExist(writeDirectoryUri) )
-					fileStorageService.createDirectory(writeDirectoryUri);
+				if ( !objectStorageService.doesContainerExist(writeDirectoryUri) )
+					objectStorageService.createContainer(writeDirectoryUri);
 				break;
 				
 			default:
@@ -167,8 +167,8 @@ public class OntologyIngestorService {
 				// Create (if required) the Azure Storage container 
 				// or AWS S3 bucket
 				writeDirectoryUri = ingestedDirectoryName;
-				if ( !fileStorageService.doesDirectoryExist(null) )
-					fileStorageService.createDirectory(null);
+				if ( !objectStorageService.doesContainerExist(null) )
+					objectStorageService.createContainer(null);
 			
 		}
 		
@@ -336,7 +336,7 @@ public class OntologyIngestorService {
 				String targetFilename = temporaryFilename
 						.substring(temporaryFilename.indexOf("_") + 1);
 				String targetFilepath = writeDirectoryUri + "/" + targetFilename;
-				fileStorageService.uploadFile(
+				objectStorageService.uploadObject(
 						temporaryFile.toAbsolutePath().toString(), 
 						targetFilepath);
 				LOGGER.debug("Successfully persisted ontology "
@@ -362,7 +362,7 @@ public class OntologyIngestorService {
 	private void cleanup() throws IOException {
 		
 		// Close any storage service clients
-		fileStorageService.cleanup();
+		objectStorageService.cleanup();
 		
 	}
 	

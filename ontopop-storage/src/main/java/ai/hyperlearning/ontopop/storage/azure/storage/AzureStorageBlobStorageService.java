@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 
-import ai.hyperlearning.ontopop.storage.FileStorageService;
+import ai.hyperlearning.ontopop.storage.ObjectStorageService;
 
 /**
  * Azure Storage Blob Storage Service
@@ -22,13 +22,13 @@ import ai.hyperlearning.ontopop.storage.FileStorageService;
  */
 
 @Service
-public class AzureStorageBlobStorageService implements FileStorageService {
+public class AzureStorageBlobStorageService implements ObjectStorageService {
 
 	@Autowired
 	private BlobContainerClient blobContainerClient;
 	
 	@Override
-	public boolean doesFileExist(String uri) {
+	public boolean doesObjectExist(String uri) {
 		
 		// Instantiate a client that references a blob
 		// in the given Azure Storage account
@@ -40,7 +40,7 @@ public class AzureStorageBlobStorageService implements FileStorageService {
 	}
 
 	@Override
-	public boolean doesDirectoryExist(String uri) {
+	public boolean doesContainerExist(String uri) {
 		
 		// Returns whether the specified container exists
 		return blobContainerClient.exists();
@@ -48,7 +48,7 @@ public class AzureStorageBlobStorageService implements FileStorageService {
 	}
 
 	@Override
-	public void createDirectory(String uri) throws IOException {
+	public void createContainer(String uri) throws IOException {
 		
 		// Create the specified container
 		blobContainerClient.create();
@@ -56,20 +56,20 @@ public class AzureStorageBlobStorageService implements FileStorageService {
 	}
 
 	@Override
-	public void copyFile(String sourceUri, String targetUri) 
+	public void copyObject(String sourceUri, String targetUri) 
 			throws IOException {
 		
 	}
 
 	@Override
-	public void copyDirectoryContents(
-			String sourceDirectoryUri, String targetDirectoryUri) 
+	public void copyContainerContents(
+			String sourceContainerUri, String targetContainerUri) 
 					throws IOException {
 		
 	}
 
 	@Override
-	public void uploadFile(String localSourceUri, String targetUri) 
+	public void uploadObject(String localSourceUri, String targetUri) 
 			throws IOException {
 		
 		// Instantiate a client that references a to-be-created blob

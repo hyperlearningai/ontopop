@@ -4,33 +4,33 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Supported File Storage Services
+ * Supported Object Storage Services
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
-public enum FileStorageServiceType {
+public enum ObjectStorageServiceType {
 
 	LOCAL("LOCAL"), 
 	AWS_S3("AWS-S3"), 
 	AZURE_STORAGE("AZURE-STORAGE");
 	
 	private final String label;
-	private static final Map<String, FileStorageServiceType> LABEL_MAP = 
+	private static final Map<String, ObjectStorageServiceType> LABEL_MAP = 
 			new HashMap<>();
 	
 	static {
-        for (FileStorageServiceType f: values()) {
+        for (ObjectStorageServiceType f: values()) {
         		LABEL_MAP.put(f.label, f);
         }
     }
 	
-	private FileStorageServiceType(final String label) {
+	private ObjectStorageServiceType(final String label) {
 		this.label = label;
 	}
 	
-	public static FileStorageServiceType valueOfLabel(String label) {
+	public static ObjectStorageServiceType valueOfLabel(String label) {
         return LABEL_MAP.get(label);
     }
 	

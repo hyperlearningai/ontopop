@@ -19,7 +19,7 @@ security:
             subpaths:
                 ontologies: /ontologies/
 storage:
-    file:
+    object:
         service: aws-s3
         local:
             baseUri: ~/ontopop

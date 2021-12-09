@@ -19,16 +19,16 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 @Configuration
 public class AzureStorageBlobContainerClientConfig {
 	
-	@Value("${storage.file.azure-storage.account-name}")
+	@Value("${storage.object.azure-storage.account-name}")
 	private String accountName;
 	
-	@Value("${storage.file.azure-storage.account-key}")
+	@Value("${storage.object.azure-storage.account-key}")
 	private String accountKey; 
 	
-	@Value("${storage.file.azure-storage.blob-endpoint}")
+	@Value("${storage.object.azure-storage.blob-endpoint}")
 	private String blobEndpoint;
 	
-	@Value("${storage.file.azure-storage.container-name}")
+	@Value("${storage.object.azure-storage.container-name}")
 	private String containerName;
 	
 	@Bean
