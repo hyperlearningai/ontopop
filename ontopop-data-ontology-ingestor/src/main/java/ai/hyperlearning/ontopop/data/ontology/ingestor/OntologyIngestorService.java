@@ -65,10 +65,10 @@ public class OntologyIngestorService {
 	private VaultTemplate vaultTemplate;
 	
 	@Value("${spring.cloud.vault.kv.backend}")
-	String springCloudVaultKvBackend;
+	private String springCloudVaultKvBackend;
 	
 	@Value("${spring.cloud.vault.kv.default-context}")
-	String springCloudVaultKvDefaultContext;
+	private String springCloudVaultKvDefaultContext;
 	
 	@Value("${storage.file.service}")
 	private String storageFileService;
@@ -142,9 +142,12 @@ public class OntologyIngestorService {
 		// 2. Select the relevant persistent storage service and 
 		// create the target directory if it does not already exist
 		FileStorageServiceType fileStorageServiceType = 
-				FileStorageServiceType.valueOf(storageFileService);
+				FileStorageServiceType.valueOfLabel(
+						storageFileService.toUpperCase());
 		fileStorageService = fileStorageServiceFactory
 				.getFileStorageService(fileStorageServiceType);
+		LOGGER.debug("Using the {} file storage service.", 
+				fileStorageServiceType.toString());
 		
 		// 3. Define and create (if required) the relevant 
 		// target ingestion directory
@@ -348,7 +351,7 @@ public class OntologyIngestorService {
 						+ "resource '{}' to '{}'.", 
 						webhookEvent.getOntology().getRepoUrl() + "/" 
 								+ webhookEvent.getOntology()
-									.getRepoResourcePath(),
+									.getRepoResourcePath(), 
 						targetFilepath);
 				
 			}
