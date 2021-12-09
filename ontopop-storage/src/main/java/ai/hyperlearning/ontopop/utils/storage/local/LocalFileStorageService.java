@@ -38,7 +38,8 @@ public class LocalFileStorageService implements FileStorageService {
 	}
 
 	@Override
-	public void copyFile(String sourceUri, String targetUri) throws IOException {
+	public void copyFile(String sourceUri, String targetUri) 
+			throws IOException {
 		Path source = Paths.get(sourceUri);
 		Path target = Paths.get(targetUri);
 		Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
@@ -56,6 +57,11 @@ public class LocalFileStorageService implements FileStorageService {
 	public void uploadFile(String localSourceUri, String targetUri) 
 			throws IOException {
 		copyFile(localSourceUri, targetUri);
+	}
+	
+	@Override
+	public void cleanup() throws IOException  {
+		
 	}
 
 }

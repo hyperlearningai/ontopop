@@ -48,5 +48,21 @@ public class FileStorageServiceFactory {
 		}
 		
 	}
+	
+	public FileStorageService getFileStorageService(
+		FileStorageServiceType fileStorageServiceType) {
+		
+		switch ( fileStorageServiceType ) {
+			case LOCAL:
+				return localFileStorageService;
+			case AWS_S3:
+				return awsS3FileStorageService;
+			case AZURE_STORAGE:
+				return azureStorageFileStorageService;
+			default:
+				return localFileStorageService;
+		}
+		
+	}
 
 }

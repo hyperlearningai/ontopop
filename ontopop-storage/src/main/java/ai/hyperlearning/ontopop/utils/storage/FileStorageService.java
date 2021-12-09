@@ -10,7 +10,7 @@ import java.io.IOException;
  */
 
 public interface FileStorageService {
-
+	
 	boolean doesFileExist(String uri);
 	
 	boolean doesDirectoryExist(String uri);
@@ -23,5 +23,7 @@ public interface FileStorageService {
 			String targetDirectoryUri) throws IOException;
 	
 	void uploadFile(String localSourceUri, String targetUri) throws IOException;
+	
+	void cleanup() throws IOException;
 	
 }

@@ -18,38 +18,39 @@ public class AwsS3FileStorageService implements FileStorageService {
 
 	@Override
 	public boolean doesFileExist(String uri) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean doesDirectoryExist(String uri) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public void createDirectory(String uri) throws IOException {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void copyFile(String sourceUri, String targetUri) throws IOException {
-		// TODO Auto-generated method stub
+	public void copyFile(String sourceUri, String targetUri) 
+			throws IOException {
 		
 	}
 
 	@Override
 	public void copyDirectoryContents(String sourceDirectoryUri, 
 			String targetDirectoryUri) throws IOException {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void uploadFile(String localSourceUri, String targetUri) throws IOException {
-		// TODO Auto-generated method stub
+	public void uploadFile(String localSourceUri, String targetUri) 
+			throws IOException {
+		
+	}
+
+	@Override
+	public void cleanup() throws IOException {
 		
 	}
 
