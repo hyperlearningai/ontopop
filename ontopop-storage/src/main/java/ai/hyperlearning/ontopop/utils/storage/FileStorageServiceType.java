@@ -1,5 +1,8 @@
 package ai.hyperlearning.ontopop.utils.storage;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Supported File Storage Services
  *
@@ -13,14 +16,27 @@ public enum FileStorageServiceType {
 	AWS_S3("AWS-S3"), 
 	AZURE_STORAGE("AZURE-STORAGE");
 	
-	private final String text;
+	private final String label;
+	private static final Map<String, FileStorageServiceType> LABEL_MAP = 
+			new HashMap<>();
 	
-	FileStorageServiceType(final String text) {
-		this.text = text;
+	static {
+        for (FileStorageServiceType f: values()) {
+        		LABEL_MAP.put(f.label, f);
+        }
+    }
+	
+	private FileStorageServiceType(final String label) {
+		this.label = label;
 	}
 	
+	public static FileStorageServiceType valueOfLabel(String label) {
+        return LABEL_MAP.get(label);
+    }
+	
+	@Override
 	public String toString() {
-		return text;
+		return label;
 	}
 	
 }
