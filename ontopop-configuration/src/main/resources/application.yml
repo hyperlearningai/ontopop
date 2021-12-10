@@ -4,20 +4,35 @@ spring:
     cloud:
         stream:
             bindings:
-                ontologyIngestedChannel:
-                    destination: ontopop.ontology.ingested
+                ingestedPublicationChannel:
+                    destination: ontopop.data.ingested
                     binder: local_rabbit
-                ontologyValidatedChannel:
-                    destination: ontopop.ontology.validated
+                ingestedConsumptionChannel:
+                    destination: ontopop.data.ingested
                     binder: local_rabbit
-                ontologyParsedChannel:
-                    destination: ontopop.ontology.parsed
+                validatedPublicationChannel:
+                    destination: ontopop.data.validated
                     binder: local_rabbit
-                ontologyModelledChannel:
-                    destination: ontopop.ontology.modelled
+                validatedConsumptionChannel:
+                    destination: ontopop.data.validated
                     binder: local_rabbit
-                ontologyLoadedChannel:
-                    destination: ontopop.ontology.loaded
+                parsedPublicationChannel:
+                    destination: ontopop.data.parsed
+                    binder: local_rabbit
+                parsedConsumptionChannel:
+                    destination: ontopop.data.parsed
+                    binder: local_rabbit
+                modelledPublicationChannel:
+                    destination: ontopop.data.modelled
+                    binder: local_rabbit
+                modelledConsumptionChannel:
+                    destination: ontopop.data.modelled
+                    binder: local_rabbit
+                loadedPublicationChannel:
+                    destination: ontopop.data.loaded
+                    binder: local_rabbit
+                loadedConsumptionChannel:
+                    destination: ontopop.data.loaded
                     binder: local_rabbit
             binders:
                 local_rabbit:

@@ -1,12 +1,19 @@
 package ai.hyperlearning.ontopop.data.ontology.validator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.context.annotation.ComponentScan;
 
-import ai.hyperlearning.ontopop.messaging.processors.OntologyProcessor;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import ai.hyperlearning.ontopop.messaging.processors.DataPipelineSource;
+import ai.hyperlearning.ontopop.model.git.WebhookEvent;
 
 /**
  * Ontology Validation Service - Spring Boot Application
@@ -18,16 +25,47 @@ import ai.hyperlearning.ontopop.messaging.processors.OntologyProcessor;
 @SuppressWarnings("deprecation")
 @ComponentScan(basePackages = {"ai.hyperlearning.ontopop"})
 @SpringBootApplication
-@EnableBinding(OntologyProcessor.class)
+@EnableBinding(DataPipelineSource.class)
 public class OntologyValidatorApp {
+	
+	private static final Logger LOGGER = 
+			LoggerFactory.getLogger(OntologyValidatorApp.class);
+	
+	@Autowired
+	private OntologyValidatorService ontologyValidatorService;
 	
 	public static void main(String[] args) {
         SpringApplication.run(OntologyValidatorApp.class, args);
 	}
 	
-	@StreamListener("consumeIngestedOntology")
-	public void processIngestedOntology(String webhookEvent) {
-		System.out.println("Webhook Event Registered by Client " + webhookEvent);
+	@StreamListener("ingestedConsumptionChannel")
+	public void processIngestedOntology(String payload) {
+		
+		try {
+			
+			// Explicitly check that the string payload is a WebhookEvent object
+			ObjectMapper mapper = new ObjectMapper();
+			WebhookEvent webhookEvent = 
+					mapper.readValue(payload, WebhookEvent.class);
+			
+			// Log the consumed payload for debugging purposes
+			LOGGER.debug("New ontology ingestion event detected and consumed "
+					+ "via the shared messaging service and the "
+					+ "ingestedConsumptionChannel channel.");
+			LOGGER.debug("Ontology ingestion message payload: {}", payload);
+			
+			// Run the Ontology Validation Service pipeline
+			ontologyValidatorService.run(webhookEvent);
+			
+		} catch (JsonProcessingException e) {
+			
+			LOGGER.info("New ingestion event detected and consumed via "
+					+ "the shared messaging service and the "
+					+ "ingestedConsumptionChannel channel.");
+			LOGGER.warn("The ingested object is NOT an ontology. Skipping.");
+			
+		}
+		
 	}
 
 }
