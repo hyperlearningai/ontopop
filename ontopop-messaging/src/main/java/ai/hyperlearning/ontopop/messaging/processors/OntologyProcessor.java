@@ -1,7 +1,9 @@
 package ai.hyperlearning.ontopop.messaging.processors;
 
+import org.springframework.cloud.stream.annotation.Input;
 import org.springframework.cloud.stream.annotation.Output;
 import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.SubscribableChannel;
 
 /**
  * Ontology Processor
@@ -14,18 +16,33 @@ import org.springframework.messaging.MessageChannel;
 public interface OntologyProcessor {
 	
 	@Output("ontologyIngestedChannel")
-	MessageChannel ontologyIngested();
+	MessageChannel publishIngestedOntology();
+	
+	@Input("ontologyIngestedChannel")
+	SubscribableChannel consumeIngestedOntology();
 	
 	@Output("ontologyValidatedChannel")
-	MessageChannel ontologyValidated();
+	MessageChannel publishValidatedOntology();
+	
+	@Input("ontologyIngestedChannel")
+	SubscribableChannel consumeValidatedOntology();
 	
 	@Output("ontologyParsedChannel")
-	MessageChannel ontologyParsed();
+	MessageChannel publishParsedOntology();
+	
+	@Input("ontologyIngestedChannel")
+	SubscribableChannel consumeParsedOntology();
 	
 	@Output("ontologyModelledChannel")
-	MessageChannel ontologyModelled();
+	MessageChannel publishModelledOntology();
+	
+	@Input("ontologyIngestedChannel")
+	SubscribableChannel consumeModelledOntology();
 	
 	@Output("ontologyLoadedChannel")
-	MessageChannel ontologyLoaded();
+	MessageChannel publishLoadedOntology();
+	
+	@Input("ontologyIngestedChannel")
+	SubscribableChannel consumeLoadedOntology();
 
 }
