@@ -18,6 +18,8 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
@@ -102,6 +104,10 @@ public class WebhookEvent implements Serializable {
 	
 	@NotNull
 	private String requestHeaderSignature;
+	
+	@Transient
+	@JsonProperty(access = Access.READ_WRITE)
+	private boolean repoResourceSemanticallyValid;
 	
 	@ManyToOne
     @JoinColumn(name="ontology_id", nullable=false)
@@ -291,6 +297,15 @@ public class WebhookEvent implements Serializable {
 
 	public void setRequestHeaderSignature(String requestHeaderSignature) {
 		this.requestHeaderSignature = requestHeaderSignature;
+	}
+
+	public boolean isRepoResourceSemanticallyValid() {
+		return repoResourceSemanticallyValid;
+	}
+
+	public void setRepoResourceSemanticallyValid(
+			boolean repoResourceSemanticallyValid) {
+		this.repoResourceSemanticallyValid = repoResourceSemanticallyValid;
 	}
 
 	public Ontology getOntology() {
