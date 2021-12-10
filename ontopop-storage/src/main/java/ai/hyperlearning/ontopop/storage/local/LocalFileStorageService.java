@@ -60,6 +60,20 @@ public class LocalFileStorageService implements ObjectStorageService {
 	}
 	
 	@Override
+	public String downloadObject(String sourceUri, String filename) 
+			throws IOException {
+		Path temporaryFile = Files.createTempFile("", filename);
+		copyObject(sourceUri, temporaryFile.toAbsolutePath().toString());
+		return temporaryFile.toAbsolutePath().toString();
+	}
+
+	@Override
+	public void downloadObject(String sourceUri, String targeContainertUri, 
+			String filename) throws IOException {
+		copyObject(sourceUri, targeContainertUri + File.separator + filename);
+	}
+	
+	@Override
 	public void cleanup() throws IOException  {
 		
 	}

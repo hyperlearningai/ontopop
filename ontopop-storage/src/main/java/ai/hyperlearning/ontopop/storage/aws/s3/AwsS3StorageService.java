@@ -77,4 +77,16 @@ public class AwsS3StorageService implements ObjectStorageService {
 		
 	}
 
+	@Override
+	public String downloadObject(String sourceUri, String filename) 
+			throws IOException {
+		return null;
+	}
+
+	@Override
+	public void downloadObject(String sourceUri, String targetContainerUri, 
+			String filename) throws IOException {
+		
+	}
+
 }
