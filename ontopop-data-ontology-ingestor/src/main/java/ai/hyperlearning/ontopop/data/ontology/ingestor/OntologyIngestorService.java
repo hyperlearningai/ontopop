@@ -36,7 +36,6 @@ import ai.hyperlearning.ontopop.security.vault.Vault;
 import ai.hyperlearning.ontopop.storage.ObjectStorageService;
 import ai.hyperlearning.ontopop.storage.ObjectStorageServiceFactory;
 import ai.hyperlearning.ontopop.storage.ObjectStorageServiceType;
-import ai.hyperlearning.ontopop.utils.OntologyResourceUtils;
 
 /**
  * Ontology Ingestion Service
@@ -115,14 +114,15 @@ public class OntologyIngestorService {
 			// 1. Environment setup
 			setup();
 			
-			// 2. Parse the webhook event payload into WebhookEvent objects
-			parseWebhookEvents();
+			// 2. Parse the webhook event payload into individual 
+			// WebhookEvent objects
+			parse();
 			
 			// 3. Save the relevant modified resources to persistent storage
-			getModifiedResources();
+			save();
 			
 			// 4. Publish messages for each valid webhook event
-			publishMessage();
+			publish();
 			
 			// 5. Cleanup resources
 			cleanup();
@@ -174,8 +174,8 @@ public class OntologyIngestorService {
 				// Create (if required) the Azure Storage container 
 				// or AWS S3 bucket
 				writeDirectoryUri = ingestedDirectoryName;
-				if ( !objectStorageService.doesContainerExist(null) )
-					objectStorageService.createContainer(null);
+				if ( !objectStorageService.doesContainerExist(writeDirectoryUri) )
+					objectStorageService.createContainer(writeDirectoryUri);
 			
 		}
 		
@@ -191,7 +191,7 @@ public class OntologyIngestorService {
 	 * @throws IOException
 	 */
 	
-	private void parseWebhookEvents() throws IOException {
+	private void parse() throws IOException {
 		
 		LOGGER.info("Ontology Ingestion Service - "
 				+ "Started parsing of webhook events.");
@@ -283,7 +283,7 @@ public class OntologyIngestorService {
 	 * @throws IOException
 	 */
 	
-	private void getModifiedResources() throws IOException {
+	private void save() throws IOException {
 		
 		LOGGER.info("Ontology Ingestion Service - "
 				+ "Started downloading modified resources.");
@@ -316,18 +316,10 @@ public class OntologyIngestorService {
 				
 				// Write the string contents to a temporary file 
 				// in the local file system
-				String resourcePathFilename = OntologyResourceUtils
-						.generateOntologyFilenameFromResourcePath(
-								webhookEvent.getOntology()
-									.getRepoResourcePath());
 				Path temporaryFile = Files.createTempFile("", 
-						filenameIdsSeparator 
-						+ OntologyResourceUtils
-							.generateOntologyResourceFilename(
-									webhookEvent.getOntology().getId(), 
-									webhookEvent.getId(), 
-									resourcePathFilename, 
-									filenameIdsSeparator));
+						filenameIdsSeparator + webhookEvent.getOntology()
+						.generateFilenameForPersistence(
+								webhookEvent.getId(), filenameIdsSeparator));
 				Files.write(temporaryFile, 
 						response.getBody().getBytes(StandardCharsets.UTF_8));
 				LOGGER.debug("Successfully downloaded ontology resource '{}' "
@@ -368,7 +360,7 @@ public class OntologyIngestorService {
 	 * @throws IOException
 	 */
 	
-	private void publishMessage() {
+	private void publish() {
 		
 		LOGGER.info("Ontology Ingestion Service - "
 				+ "Started publishing messages.");
@@ -376,7 +368,7 @@ public class OntologyIngestorService {
 		// Iterate over each valid webhook event and publish it within
 		// a message body to the shared messaging system
 		for ( WebhookEvent webhookEvent : webhookEvents ) {
-			ontologyProcessor.ontologyIngested()
+			ontologyProcessor.publishIngestedOntology()
 				.send(MessageBuilder.withPayload(webhookEvent).build());
 		}
 		
