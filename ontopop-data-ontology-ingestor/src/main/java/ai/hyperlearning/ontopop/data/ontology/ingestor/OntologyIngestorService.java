@@ -31,6 +31,7 @@ import ai.hyperlearning.ontopop.git.GitServiceFactory;
 import ai.hyperlearning.ontopop.messaging.processors.DataPipelineSource;
 import ai.hyperlearning.ontopop.model.git.WebhookEvent;
 import ai.hyperlearning.ontopop.model.ontology.Ontology;
+import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 import ai.hyperlearning.ontopop.model.ontology.OntologySecretData;
 import ai.hyperlearning.ontopop.security.vault.Vault;
 import ai.hyperlearning.ontopop.storage.ObjectStorageService;
@@ -365,11 +366,22 @@ public class OntologyIngestorService {
 		LOGGER.info("Ontology Ingestion Service - "
 				+ "Started publishing messages.");
 		
-		// Iterate over each valid webhook event and publish it within
-		// a message body to the shared messaging system
+		// Iterate over each valid webhook event, create an OntologyMessage
+		// object and publish it to the shared messaging system
 		for ( WebhookEvent webhookEvent : webhookEvents ) {
+			
+			// Create an ontology message
+			OntologyMessage ontologyMessage = new OntologyMessage();
+			ontologyMessage.setOntologyId(webhookEvent.getOntology().getId());
+			ontologyMessage.setWebhookEventId(webhookEvent.getId());
+			ontologyMessage.setProcessedFilename(
+					webhookEvent.getOntology().generateFilenameForPersistence(
+							webhookEvent.getId(), filenameIdsSeparator));
+			
+			// Publish the message to the shared messaging system
 			dataPipelineSource.ingestedPublicationChannel()
-				.send(MessageBuilder.withPayload(webhookEvent).build());
+				.send(MessageBuilder.withPayload(ontologyMessage).build());
+			
 		}
 		
 		LOGGER.info("Ontology Ingestion Service - "

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ai.hyperlearning.ontopop.messaging.processors.DataPipelineSource;
-import ai.hyperlearning.ontopop.model.git.WebhookEvent;
+import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 
 /**
  * Ontology Validation Service - Spring Boot Application
@@ -43,10 +43,11 @@ public class OntologyValidatorApp {
 		
 		try {
 			
-			// Explicitly check that the string payload is a WebhookEvent object
+			// Explicitly check that the string payload 
+			// models an OntologyMessage object
 			ObjectMapper mapper = new ObjectMapper();
-			WebhookEvent webhookEvent = 
-					mapper.readValue(payload, WebhookEvent.class);
+			OntologyMessage ontologyMessage = 
+					mapper.readValue(payload, OntologyMessage.class);
 			
 			// Log the consumed payload for debugging purposes
 			LOGGER.debug("New ontology ingestion event detected and consumed "
@@ -55,14 +56,14 @@ public class OntologyValidatorApp {
 			LOGGER.debug("Ontology ingestion message payload: {}", payload);
 			
 			// Run the Ontology Validation Service pipeline
-			ontologyValidatorService.run(webhookEvent);
+			ontologyValidatorService.run(ontologyMessage);
 			
 		} catch (JsonProcessingException e) {
 			
 			LOGGER.info("New ingestion event detected and consumed via "
 					+ "the shared messaging service and the "
 					+ "ingestedConsumptionChannel channel.");
-			LOGGER.warn("The ingested object is NOT an ontology. Skipping.");
+			LOGGER.info("The ingested object is NOT an ontology. Skipping.");
 			
 		}
 		

@@ -19,7 +19,7 @@ import org.springframework.integration.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
 import ai.hyperlearning.ontopop.messaging.processors.DataPipelineSource;
-import ai.hyperlearning.ontopop.model.git.WebhookEvent;
+import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 import ai.hyperlearning.ontopop.storage.ObjectStorageService;
 import ai.hyperlearning.ontopop.storage.ObjectStorageServiceFactory;
 import ai.hyperlearning.ontopop.storage.ObjectStorageServiceType;
@@ -60,22 +60,20 @@ public class OntologyValidatorService {
 	@Value("${storage.object.patterns.fileNameIdsSeparator}")
 	private String filenameIdsSeparator;
 	
-	private WebhookEvent webhookEvent;
+	private OntologyMessage ontologyMessage;
 	private ObjectStorageService objectStorageService;
 	private String readObjectUri;
 	private String writeDirectoryUri;
-	private String filename;
 	private String downloadedFileUri;
-	private boolean semanticallyValid = false;
 	
 	/**
 	 * Run the Ontology Validation service end-to-end pipeline
 	 */
 	
-	public void run(WebhookEvent webhookEvent) {
+	public void run(OntologyMessage ontologyMessage) {
 		
 		LOGGER.info("Ontology Validation Service started.");
-		this.webhookEvent = webhookEvent;
+		this.ontologyMessage = ontologyMessage;
 		
 		try {
 			
@@ -123,11 +121,7 @@ public class OntologyValidatorService {
 		LOGGER.debug("Using the {} object storage service.", 
 				objectStorageServiceType);
 		
-		// 2. Reconstruct the persisted resource filename
-		filename = webhookEvent.getOntology().generateFilenameForPersistence(
-				webhookEvent.getId(), filenameIdsSeparator);
-		
-		// 3. Define and create (if required) the relevant 
+		// 2. Define and create (if required) the relevant 
 		// target validation directory
 		switch ( objectStorageServiceType ) {
 			
@@ -136,7 +130,7 @@ public class OntologyValidatorService {
 				// Create (if required) the local target validation directory
 				readObjectUri = storageLocalBaseUri 
 					+ File.separator + ingestedDirectoryName 
-					+ File.separator + filename;
+					+ File.separator + ontologyMessage.getProcessedFilename();
 				writeDirectoryUri = storageLocalBaseUri + 
 					File.separator + validatedDirectoryName;
 				if ( !objectStorageService.doesContainerExist(writeDirectoryUri) )
@@ -147,7 +141,8 @@ public class OntologyValidatorService {
 				
 				// Create (if required) the Azure Storage container 
 				// or AWS S3 bucket
-				readObjectUri = ingestedDirectoryName + "/" + filename;
+				readObjectUri = ingestedDirectoryName + "/" 
+						+ ontologyMessage.getProcessedFilename();
 				writeDirectoryUri = validatedDirectoryName;
 				if ( !objectStorageService.doesContainerExist(writeDirectoryUri) )
 					objectStorageService.createContainer(writeDirectoryUri);
@@ -167,7 +162,7 @@ public class OntologyValidatorService {
 		LOGGER.info("Ontology Validation Service - "
 				+ "Started downloading the ingested resource.");
 		downloadedFileUri = objectStorageService.downloadObject(readObjectUri, 
-				filenameIdsSeparator + filename);
+				filenameIdsSeparator + ontologyMessage.getProcessedFilename());
 		LOGGER.debug("Downloaded ingested resource to '{}'.", 
 				downloadedFileUri);
 		LOGGER.info("Ontology Validation Service - "
@@ -195,10 +190,10 @@ public class OntologyValidatorService {
 		// Validate the consistency of the ontology
 		Configuration configuration = new Configuration();
 		OWLReasoner reasoner = new Reasoner(configuration, ontology);
-		semanticallyValid = reasoner.isConsistent();
+		ontologyMessage.setSemanticallyValid(reasoner.isConsistent());
 		
 		LOGGER.debug("Semantic validation of '{}' result: {}", 
-				downloadedFileUri, semanticallyValid);
+				downloadedFileUri, ontologyMessage.isSemanticallyValid());
 		LOGGER.info("Ontology Validation Service - "
 				+ "Finished the semantic validation of the ingested resource.");
 		
@@ -212,9 +207,8 @@ public class OntologyValidatorService {
 		
 		LOGGER.info("Ontology Validation Service - "
 				+ "Started publishing message.");
-		webhookEvent.setRepoResourceSemanticallyValid(semanticallyValid);
 		dataPipelineSource.validatedPublicationChannel()
-			.send(MessageBuilder.withPayload(webhookEvent).build());
+			.send(MessageBuilder.withPayload(ontologyMessage).build());
 		LOGGER.info("Ontology Validation Service - "
 				+ "Finished publishing message.");
 		
@@ -228,20 +222,17 @@ public class OntologyValidatorService {
 	
 	private void save() throws IOException {
 		
-		if (semanticallyValid) {
+		if (ontologyMessage.isSemanticallyValid()) {
 			
 			LOGGER.info("Ontology Validation Service - "
 					+ "Started the persistence of the validated resource.");
-			String targetFilepath = writeDirectoryUri + "/" + filename;
+			String targetFilepath = writeDirectoryUri + "/" + 
+					ontologyMessage.getProcessedFilename();
 			objectStorageService.uploadObject(
 					downloadedFileUri, 
 					targetFilepath);
 			LOGGER.debug("Successfully persisted validated ontology "
-					+ "resource '{}' to '{}'.", 
-					webhookEvent.getOntology().getRepoUrl() + "/" 
-							+ webhookEvent.getOntology()
-								.getRepoResourcePath(), 
-					targetFilepath);
+					+ "resource to '{}'.", targetFilepath);
 			LOGGER.info("Ontology Validation Service - "
 					+ "Finished the persistence of the validated resource.");
 			

@@ -212,7 +212,7 @@ public class Ontology implements Serializable {
 		this.repoWebhookSecret = null;
 	}
 	
-	public String getAndTransformFilenameFromResourcePath() {
+	public String standardiseRepoResourcePath() {
 		return Paths.get(repoResourcePath)
 				.getFileName()
 				.toString()
@@ -224,7 +224,7 @@ public class Ontology implements Serializable {
 			long webhookEventId, String separator) {
 		return id + separator 
 				+ webhookEventId + separator 
-				+ getAndTransformFilenameFromResourcePath();
+				+ standardiseRepoResourcePath();
 	}
 
 	@Override
