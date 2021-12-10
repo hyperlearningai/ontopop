@@ -1,6 +1,31 @@
 spring:
     application:
         name: ontopop
+    cloud:
+        stream:
+            bindings:
+                ontologyIngestedChannel:
+                    destination: ontopop.ontology.ingested
+                    binder: local_rabbit
+                ontologyValidatedChannel:
+                    destination: ontopop.ontology.validated
+                    binder: local_rabbit
+                ontologyParsedChannel:
+                    destination: ontopop.ontology.parsed
+                    binder: local_rabbit
+            binders:
+                local_rabbit:
+                    type: rabbit
+                    environment:
+                        spring:
+                            rabbitmq:
+                                host: ${rabbitmq.host}
+                                port: ${rabbitmq.port}
+                                username: ${rabbitmq.username}
+                                password: ${rabbitmq.password}
+                                virtual-host: /
+            default:
+                contentType: application/json
     datasource:
         driver-class-name: org.hsqldb.jdbc.JDBCDriver
         url: ${spring.datasource.url}

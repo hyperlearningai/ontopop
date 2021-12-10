@@ -11,10 +11,10 @@
     </parent>
     
     <!-- Module Metadata -->
-    <artifactId>ontopop-data-ontology-ingestor</artifactId>
-    <name>ontopop-data-ontology-ingestor</name>
+    <artifactId>ontopop-messaging</artifactId>
+    <name>ontopop-messaging</name>
     <packaging>jar</packaging>
-    <description>OntoPop - Ontology Ingestion Service</description>
+    <description>OntoPop - Shared Messaging Services</description>
     <url>https://ontopop.com</url>
     <organization>
         <name>HyperLearning AI</name>
@@ -43,35 +43,17 @@
     
     <!-- Module Dependencies -->
     <dependencies>
-        
-        <!-- OntoPop -->
+    
+        <!-- Spring Cloud Stream Binder RabbitMQ -->
         <dependency>
-            <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-configuration</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-stream-binder-rabbit</artifactId>
         </dependency>
+    
+        <!-- Spring Context -->
         <dependency>
-            <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-git</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-storage</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-messaging</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-utils</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-security-vault</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
         </dependency>
     
     </dependencies>
