@@ -1,6 +1,7 @@
 package ai.hyperlearning.ontopop.model.ontology;
 
 import java.io.Serializable;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -209,6 +210,21 @@ public class Ontology implements Serializable {
 	public void clearSecretData() {
 		this.repoToken = null;
 		this.repoWebhookSecret = null;
+	}
+	
+	public String getAndTransformFilenameFromResourcePath() {
+		return Paths.get(repoResourcePath)
+				.getFileName()
+				.toString()
+				.replaceAll(" ", "-")
+				.trim();
+	}
+	
+	public String generateFilenameForPersistence(
+			long webhookEventId, String separator) {
+		return id + separator 
+				+ webhookEventId + separator 
+				+ getAndTransformFilenameFromResourcePath();
 	}
 
 	@Override
