@@ -21,5 +21,11 @@ public interface OntologyProcessor {
 	
 	@Output("ontologyParsedChannel")
 	MessageChannel ontologyParsed();
+	
+	@Output("ontologyModelledChannel")
+	MessageChannel ontologyModelled();
+	
+	@Output("ontologyLoadedChannel")
+	MessageChannel ontologyLoaded();
 
 }

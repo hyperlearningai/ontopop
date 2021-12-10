@@ -13,6 +13,12 @@ spring:
                 ontologyParsedChannel:
                     destination: ontopop.ontology.parsed
                     binder: local_rabbit
+                ontologyModelledChannel:
+                    destination: ontopop.ontology.modelled
+                    binder: local_rabbit
+                ontologyLoadedChannel:
+                    destination: ontopop.ontology.loaded
+                    binder: local_rabbit
             binders:
                 local_rabbit:
                     type: rabbit

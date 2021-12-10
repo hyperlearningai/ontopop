@@ -13,8 +13,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.integration.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.vault.core.VaultTemplate;
@@ -26,6 +28,7 @@ import ai.hyperlearning.ontopop.data.jpa.repositories.OntologyRepository;
 import ai.hyperlearning.ontopop.data.jpa.repositories.WebhookEventRepository;
 import ai.hyperlearning.ontopop.git.GitService;
 import ai.hyperlearning.ontopop.git.GitServiceFactory;
+import ai.hyperlearning.ontopop.messaging.processors.OntologyProcessor;
 import ai.hyperlearning.ontopop.model.git.WebhookEvent;
 import ai.hyperlearning.ontopop.model.ontology.Ontology;
 import ai.hyperlearning.ontopop.model.ontology.OntologySecretData;
@@ -42,8 +45,10 @@ import ai.hyperlearning.ontopop.utils.OntologyResourceUtils;
  * @since 2.0.0
  */
 
+@SuppressWarnings("deprecation")
 @Service
 @Transactional
+@EnableBinding(OntologyProcessor.class)
 public class OntologyIngestorService {
 	
 	private static final Logger LOGGER = 
@@ -63,6 +68,9 @@ public class OntologyIngestorService {
 	
 	@Autowired
 	private VaultTemplate vaultTemplate;
+	
+	@Autowired
+	private OntologyProcessor ontologyProcessor;
 	
 	@Value("${spring.cloud.vault.kv.backend}")
 	private String springCloudVaultKvBackend;
@@ -92,10 +100,6 @@ public class OntologyIngestorService {
 	private ObjectStorageService objectStorageService;
 	private String writeDirectoryUri;
 	
-	public OntologyIngestorService() {
-		
-	}
-	
 	/**
 	 * Run the Ontology Ingestion service end-to-end pipeline
 	 */
@@ -117,7 +121,10 @@ public class OntologyIngestorService {
 			// 3. Save the relevant modified resources to persistent storage
 			getModifiedResources();
 			
-			// 4. Cleanup resources
+			// 4. Publish messages for each valid webhook event
+			publishMessage();
+			
+			// 5. Cleanup resources
 			cleanup();
 			
 		} catch (Exception e) {
@@ -147,7 +154,7 @@ public class OntologyIngestorService {
 		objectStorageService = objectStorageServiceFactory
 				.getObjectStorageService(objectStorageServiceType);
 		LOGGER.debug("Using the {} object storage service.", 
-				objectStorageServiceType.toString());
+				objectStorageServiceType);
 		
 		// 3. Define and create (if required) the relevant 
 		// target ingestion directory
@@ -352,6 +359,29 @@ public class OntologyIngestorService {
 		
 		LOGGER.info("Ontology Ingestion Service - "
 				+ "Finished downloading modified resources.");
+		
+	}
+	
+	/**
+	 * Publish messages to the shared messaging system for each valid
+	 * webhook event indicating successful ingestion of an updated ontology.
+	 * @throws IOException
+	 */
+	
+	private void publishMessage() {
+		
+		LOGGER.info("Ontology Ingestion Service - "
+				+ "Started publishing messages.");
+		
+		// Iterate over each valid webhook event and publish it within
+		// a message body to the shared messaging system
+		for ( WebhookEvent webhookEvent : webhookEvents ) {
+			ontologyProcessor.ontologyIngested()
+				.send(MessageBuilder.withPayload(webhookEvent).build());
+		}
+		
+		LOGGER.info("Ontology Ingestion Service - "
+				+ "Finished publishing messages.");
 		
 	}
 	
