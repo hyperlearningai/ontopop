@@ -52,6 +52,8 @@
         <mapstruct-processor.version>1.4.2.Final</mapstruct-processor.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
+        <org.semanticweb.hermit.version>1.4.5.519</org.semanticweb.hermit.version>
+        <owlapi-distribution.version>5.1.19</owlapi-distribution.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <revision>2.0.0</revision>
         <spring-cloud-dependencies.version>2020.0.4</spring-cloud-dependencies.version>
@@ -124,6 +126,13 @@
                 <version>${guava.version}</version>
             </dependency>
             
+            <!-- HermiT -->
+            <dependency>
+                <groupId>net.sourceforge.owlapi</groupId>
+                <artifactId>org.semanticweb.hermit</artifactId>
+                <version>${org.semanticweb.hermit.version}</version>
+            </dependency>
+            
             <!-- JavaBeans Activation Framework for JAXB-API Implementation -->
 	        <dependency>
 	            <groupId>javax.activation</groupId>
@@ -152,6 +161,11 @@
             <dependency>
                 <groupId>ai.hyperlearning.ontopop</groupId>
                 <artifactId>ontopop-security-vault</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>ai.hyperlearning.ontopop</groupId>
+                <artifactId>ontopop-utils</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
@@ -191,13 +205,15 @@
             </dependency>
             <dependency>
                 <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-utils</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
                 <artifactId>ontopop-data-jpa</artifactId>
                 <version>${revision}</version>
+            </dependency>
+            
+            <!-- OWL API -->
+            <dependency>
+                <groupId>net.sourceforge.owlapi</groupId>
+                <artifactId>owlapi-distribution</artifactId>
+                <version>${owlapi-distribution.version}</version>
             </dependency>
             
             <!-- Springdoc OpenAPI UI -->
@@ -225,6 +241,7 @@
         <module>ontopop-configuration</module>
         <module>ontopop-configuration-client</module>
         <module>ontopop-security-vault</module>
+        <module>ontopop-utils</module>
         <module>ontopop-model</module>
         <module>ontopop-mappers</module>
         <module>ontopop-logging</module>
@@ -232,7 +249,6 @@
         <module>ontopop-git</module>
         <module>ontopop-storage</module>
         <module>ontopop-messaging</module>
-        <module>ontopop-utils</module>
         <module>ontopop-data-jpa</module>
         <module>ontopop-data-ontology</module>
         <module>ontopop-data-ontology-ingestor</module>
