@@ -12,7 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ai.hyperlearning.ontopop.messaging.processors.DataPipelineSource;
+import ai.hyperlearning.ontopop.messaging.processors.DataPipelineValidatorSource;
 import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 
 /**
@@ -25,7 +25,7 @@ import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 @SuppressWarnings("deprecation")
 @ComponentScan(basePackages = {"ai.hyperlearning.ontopop"})
 @SpringBootApplication
-@EnableBinding(DataPipelineSource.class)
+@EnableBinding(DataPipelineValidatorSource.class)
 public class OntologyValidatorApp {
 	
 	private static final Logger LOGGER = 

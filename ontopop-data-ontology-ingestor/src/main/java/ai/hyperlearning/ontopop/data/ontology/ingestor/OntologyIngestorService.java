@@ -28,7 +28,7 @@ import ai.hyperlearning.ontopop.data.jpa.repositories.OntologyRepository;
 import ai.hyperlearning.ontopop.data.jpa.repositories.WebhookEventRepository;
 import ai.hyperlearning.ontopop.git.GitService;
 import ai.hyperlearning.ontopop.git.GitServiceFactory;
-import ai.hyperlearning.ontopop.messaging.processors.DataPipelineSource;
+import ai.hyperlearning.ontopop.messaging.processors.DataPipelineIngestorSource;
 import ai.hyperlearning.ontopop.model.git.WebhookEvent;
 import ai.hyperlearning.ontopop.model.ontology.Ontology;
 import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
@@ -48,7 +48,7 @@ import ai.hyperlearning.ontopop.storage.ObjectStorageServiceType;
 @SuppressWarnings("deprecation")
 @Service
 @Transactional
-@EnableBinding(DataPipelineSource.class)
+@EnableBinding(DataPipelineIngestorSource.class)
 public class OntologyIngestorService {
 	
 	private static final Logger LOGGER = 
@@ -70,7 +70,7 @@ public class OntologyIngestorService {
 	private VaultTemplate vaultTemplate;
 	
 	@Autowired
-	private DataPipelineSource dataPipelineSource;
+	private DataPipelineIngestorSource dataPipelineIngestorSource;
 	
 	@Value("${spring.cloud.vault.kv.backend}")
 	private String springCloudVaultKvBackend;
@@ -379,7 +379,7 @@ public class OntologyIngestorService {
 							webhookEvent.getId(), filenameIdsSeparator));
 			
 			// Publish the message to the shared messaging system
-			dataPipelineSource.ingestedPublicationChannel()
+			dataPipelineIngestorSource.ingestedPublicationChannel()
 				.send(MessageBuilder.withPayload(ontologyMessage).build());
 			
 		}

@@ -18,7 +18,7 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
-import ai.hyperlearning.ontopop.messaging.processors.DataPipelineSource;
+import ai.hyperlearning.ontopop.messaging.processors.DataPipelineValidatorSource;
 import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 import ai.hyperlearning.ontopop.storage.ObjectStorageService;
 import ai.hyperlearning.ontopop.storage.ObjectStorageServiceFactory;
@@ -33,7 +33,7 @@ import ai.hyperlearning.ontopop.storage.ObjectStorageServiceType;
 
 @SuppressWarnings("deprecation")
 @Service
-@EnableBinding(DataPipelineSource.class)
+@EnableBinding(DataPipelineValidatorSource.class)
 public class OntologyValidatorService {
 	
 	private static final Logger LOGGER = 
@@ -43,7 +43,7 @@ public class OntologyValidatorService {
 	private ObjectStorageServiceFactory objectStorageServiceFactory;
 	
 	@Autowired
-	private DataPipelineSource dataPipelineSource;
+	private DataPipelineValidatorSource dataPipelineValidatorSource;
 	
 	@Value("${storage.object.service}")
 	private String storageObjectService;
@@ -207,7 +207,7 @@ public class OntologyValidatorService {
 		
 		LOGGER.info("Ontology Validation Service - "
 				+ "Started publishing message.");
-		dataPipelineSource.validatedPublicationChannel()
+		dataPipelineValidatorSource.validatedPublicationChannel()
 			.send(MessageBuilder.withPayload(ontologyMessage).build());
 		LOGGER.info("Ontology Validation Service - "
 				+ "Finished publishing message.");
