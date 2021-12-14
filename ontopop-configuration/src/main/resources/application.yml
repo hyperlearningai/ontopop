@@ -28,11 +28,17 @@ spring:
                 modelledConsumptionChannel:
                     destination: ontopop.data.modelled
                     binder: local_rabbit
-                loadedPublicationChannel:
-                    destination: ontopop.data.loaded
+                modelledLoadedPublicationChannel:
+                    destination: ontopop.data.modelled.loaded
                     binder: local_rabbit
-                loadedConsumptionChannel:
-                    destination: ontopop.data.loaded
+                modelledLoadedConsumptionChannel:
+                    destination: ontopop.data.modelled.loaded
+                    binder: local_rabbit
+                validatedLoadedPublicationChannel:
+                    destination: ontopop.data.validated.loaded
+                    binder: local_rabbit
+                validatedLoadedConsumptionChannel:
+                    destination: ontopop.data.validated.loaded
                     binder: local_rabbit
             binders:
                 local_rabbit:
@@ -66,7 +72,7 @@ security:
                 ontologies: /ontologies/
 storage:
     object:
-        service: aws-s3
+        service: local
         local:
             baseUri: ~/ontopop
         aws-s3:
