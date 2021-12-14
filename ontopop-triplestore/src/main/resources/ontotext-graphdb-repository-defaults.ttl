@@ -1,0 +1,18 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix rep: <http://www.openrdf.org/config/repository#>.
+@prefix sr: <http://www.openrdf.org/config/repository/sail#>.
+@prefix sail: <http://www.openrdf.org/config/sail#>.
+@prefix owlim: <http://www.ontotext.com/trree/owlim#>.
+
+[] a rep:Repository ;
+  rep:repositoryID "ontopop-repository" ;
+  rdfs:label "OntoPop Repository" ;
+  rep:repositoryImpl [
+    rep:repositoryType "openrdf:SailRepository" ;
+    sr:sailImpl [
+      sail:sailType "graphdb:FreeSail" ;
+      owlim:ruleset "owl-horst-optimized" ;
+      owlim:storage-folder "storage" ;
+      owlim:repository-type "file-repository" ;
+    ]
+  ].

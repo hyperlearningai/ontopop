@@ -1,5 +1,7 @@
 package ai.hyperlearning.ontopop.triplestore;
 
+import java.io.IOException;
+
 /**
  * Triplestore Service Interface
  *
@@ -9,6 +11,15 @@ package ai.hyperlearning.ontopop.triplestore;
 
 public interface TriplestoreService {
 	
-	void loadOntologyOwl(String owlSourceUri);
+	boolean doesRepositoryExist(int id) throws IOException;
+	
+	void createRepository(int id) throws IOException;
+	
+	void removeRepository(int id) throws IOException;
+	
+	void loadOntologyOwlRdfXml(int id, String owlSourceUri) 
+			throws IOException;
+	
+	void cleanup() throws IOException;
 
 }

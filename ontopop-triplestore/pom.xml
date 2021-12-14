@@ -44,6 +44,12 @@
     <!-- Module Dependencies -->
     <dependencies>
     
+        <!-- Ontotext GraphDB -->
+        <dependency>
+            <groupId>com.ontotext.graphdb</groupId>
+            <artifactId>graphdb-free-runtime</artifactId>
+        </dependency>
+    
         <!-- Spring Context -->
         <dependency>
             <groupId>org.springframework</groupId>
