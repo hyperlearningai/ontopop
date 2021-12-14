@@ -2,12 +2,17 @@ package ai.hyperlearning.ontopop.storage.aws.s3;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
 
 import ai.hyperlearning.ontopop.storage.ObjectStorageService;
 
@@ -73,19 +78,30 @@ public class AwsS3StorageService implements ObjectStorageService {
 	}
 
 	@Override
-	public void cleanup() throws IOException {
-		
-	}
-
-	@Override
 	public String downloadObject(String sourceUri, String filename) 
 			throws IOException {
-		return null;
+		
+		// Download the source file to a temporary local file
+		Path temporaryFile = Files.createTempFile("", filename);
+		S3Object s3object = s3.getObject(
+				bucketName, sourceUri);
+		try (S3ObjectInputStream inputStream = s3object.getObjectContent()) {
+			FileUtils.copyInputStreamToFile(inputStream, 
+					new File(temporaryFile.toAbsolutePath().toString()));
+		}
+		
+		return temporaryFile.toAbsolutePath().toString();
+		
 	}
 
 	@Override
 	public void downloadObject(String sourceUri, String targetContainerUri, 
 			String filename) throws IOException {
+		
+	}
+	
+	@Override
+	public void cleanup() throws IOException {
 		
 	}
 

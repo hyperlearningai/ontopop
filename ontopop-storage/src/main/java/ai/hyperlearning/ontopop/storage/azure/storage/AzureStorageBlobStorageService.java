@@ -4,6 +4,8 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,21 +88,33 @@ public class AzureStorageBlobStorageService implements ObjectStorageService {
 		}
 		
 	}
-	
-	@Override
-	public void cleanup() throws IOException {
-		
-	}
 
 	@Override
 	public String downloadObject(String sourceUri, String filename) 
 			throws IOException {
-		return null;
+		
+		// Instantiate a client that references a blob
+		// in the given Azure Storage account
+		BlockBlobClient blobClient = blobContainerClient
+				.getBlobClient(sourceUri)
+				.getBlockBlobClient();
+		
+		// Download the source file to a local temporary file
+		Path temporaryFile = Files.createTempFile("", filename);
+		blobClient.downloadToFile(
+				temporaryFile.toAbsolutePath().toString(), true);
+		return temporaryFile.toAbsolutePath().toString();
+		
 	}
 
 	@Override
 	public void downloadObject(String sourceUri, String targetContainerUri, 
 			String filename) throws IOException {
+		
+	}
+	
+	@Override
+	public void cleanup() throws IOException {
 		
 	}
 
