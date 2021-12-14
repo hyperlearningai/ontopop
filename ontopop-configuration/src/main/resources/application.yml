@@ -91,6 +91,13 @@ storage:
             parsed: parsed
         patterns:
             fileNameIdsSeparator: "_"
+    triplestore:
+        service: apache-jena
+        apache-jena:
+            fuseki:
+                url: http://localhost:3030
+        ontotext-graphdb:
+            url: http://localhost:7200
 web:
     client:
         codecs:
