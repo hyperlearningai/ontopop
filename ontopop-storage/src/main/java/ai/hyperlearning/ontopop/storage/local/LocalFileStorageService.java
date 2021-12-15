@@ -34,7 +34,7 @@ public class LocalFileStorageService implements ObjectStorageService {
 
 	@Override
 	public void createContainer(String uri) throws IOException {
-		Files.createDirectory(Paths.get(uri));
+		Files.createDirectories(Paths.get(uri));
 	}
 
 	@Override
