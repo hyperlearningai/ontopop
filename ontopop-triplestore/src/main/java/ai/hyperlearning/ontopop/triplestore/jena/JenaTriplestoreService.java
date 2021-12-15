@@ -123,6 +123,10 @@ public class JenaTriplestoreService implements TriplestoreService {
 	public void loadOntologyOwlRdfXml(int id, String owlSourceUri) 
 			throws IOException {
 		
+		// Create the dataset if it does not already exist
+		if ( getRepository(id) == null )
+			createRepository(id);
+		
 		// Build the multipart file
 		final MultipartBodyBuilder builder = new MultipartBodyBuilder();
 		File file = new File(owlSourceUri);
