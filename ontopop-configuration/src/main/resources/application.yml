@@ -89,6 +89,9 @@ storage:
             ingested: ingested
             validated: validated
             parsed: parsed
+            loaded:
+                triplestore: loaded/triplestore
+                graph: loaded/graph
         patterns:
             fileNameIdsSeparator: "_"
     triplestore:
