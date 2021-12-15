@@ -167,6 +167,7 @@ public class OntologyValidatorService {
 				downloadedFileUri);
 		LOGGER.info("Ontology Validation Service - "
 				+ "Finished downloading the ingested resource.");
+		
 	}
 	
 	/**
