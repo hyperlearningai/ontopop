@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -143,7 +144,7 @@ public class GitHubGitService implements GitService  {
 			.header("Accept", HEADER_ACCEPT)
 			.retrieve()
 			.onStatus(
-					status -> status.value() != 200,
+					status -> status.value() != HttpStatus.OK.value(),
 			        clientResponse -> Mono.empty())
 			.toEntity(String.class)
 			.block();
@@ -152,7 +153,7 @@ public class GitHubGitService implements GitService  {
 		if ( response == null )
 			throw new IOException(
 					"Null HTTP Response");
-		if ( response.getStatusCodeValue() != 200 )
+		if ( response.getStatusCodeValue() != HttpStatus.OK.value() )
 			throw new IOException(
 					"Invalid HTTP Response " + response.getStatusCodeValue());
 		
@@ -177,7 +178,7 @@ public class GitHubGitService implements GitService  {
 			.header("Authorization", HEADER_AUTHORIZATION_PREFIX + " " + token)
 			.retrieve()
 			.onStatus(
-					status -> status.value() != 200,
+					status -> status.value() != HttpStatus.OK.value(),
 			        clientResponse -> Mono.empty())
 			.toEntity(String.class)
 			.block();
@@ -186,7 +187,7 @@ public class GitHubGitService implements GitService  {
 		if ( response == null )
 			throw new IOException(
 					"Null HTTP Response");
-		if ( response.getStatusCodeValue() != 200 )
+		if ( response.getStatusCodeValue() != HttpStatus.OK.value() )
 			throw new IOException(
 					"Invalid HTTP Response " + response.getStatusCodeValue());
 		
