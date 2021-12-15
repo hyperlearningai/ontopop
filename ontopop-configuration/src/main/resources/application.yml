@@ -98,9 +98,9 @@ storage:
         service: apache-jena
         apache-jena:
             fuseki:
-                url: http://localhost:3030
+                url: ${jena.fuseki.url}
         ontotext-graphdb:
-            url: http://localhost:7200
+            url: ${ontotext.graphdb.url}
 web:
     client:
         codecs:
