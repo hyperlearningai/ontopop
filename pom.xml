@@ -39,6 +39,7 @@
     
     <!-- Properties and Dependency Versions -->
     <properties>
+        <apache-jena-libs.version>4.3.1</apache-jena-libs.version>
         <aws-java-sdk.version>1.12.126</aws-java-sdk.version>
         <azure-sdk-bom.version>1.0.6</azure-sdk-bom.version>
         <azure-spring-boot-starter-storage.version>3.11.0</azure-spring-boot-starter-storage.version>
@@ -95,6 +96,14 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons-io.version}</version>
+            </dependency>
+            
+            <!-- Apache Jena -->
+            <dependency>
+                <groupId>org.apache.jena</groupId>
+                <artifactId>apache-jena-libs</artifactId>
+                <version>${apache-jena-libs.version}</version>
+                <type>pom</type>
             </dependency>
             
             <!-- AWS Java SDK -->

@@ -49,12 +49,11 @@ public class OntotextGraphDBTriplestoreService implements TriplestoreService {
 	}
 	
 	@Override
-	public boolean doesRepositoryExist(int id) throws IOException {
+	public Repository getRepository(int id) throws IOException {
 		
-		// Get the repository - if it does not exist then null will be returned
-		Repository repository = repositoryManager.getRepository(
+		// Get a repository - if it does not exist then null will be returned
+		return repositoryManager.getRepository(
 				String.valueOf(id));
-		return repository == null ? false: true;
 		
 	}
 	
@@ -87,7 +86,7 @@ public class OntotextGraphDBTriplestoreService implements TriplestoreService {
 	}
 	
 	@Override
-	public void removeRepository(int id) throws IOException {
+	public void deleteRepository(int id) throws IOException {
 		
 		// Remove the given repository
 		repositoryManager.removeRepository(String.valueOf(id));
@@ -108,8 +107,8 @@ public class OntotextGraphDBTriplestoreService implements TriplestoreService {
 		
 		// Naively (delete and) create a repository (POC only)
 		// To do: Research Ontotext GraphDB update mode
-		if (doesRepositoryExist(id))
-			removeRepository(id);
+		if (getRepository(id) != null)
+			deleteRepository(id);
 		createRepository(id);
 		
 		// Get a connection to the repository
