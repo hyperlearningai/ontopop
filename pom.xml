@@ -276,6 +276,7 @@
         <module>ontopop-data-ontology</module>
         <module>ontopop-data-ontology-ingestor</module>
         <module>ontopop-data-ontology-validator</module>
+        <module>ontopop-data-ontology-loader-triplestore</module>
         <module>ontopop-data-ontology-parser</module>
     </modules>
     
