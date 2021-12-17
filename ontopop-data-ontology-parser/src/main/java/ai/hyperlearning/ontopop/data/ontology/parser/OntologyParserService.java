@@ -17,6 +17,7 @@ import org.springframework.integration.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import ai.hyperlearning.ontopop.messaging.processors.DataPipelineParserSource;
 import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
@@ -232,7 +233,8 @@ public class OntologyParserService {
 		String jsonFilename = ontologyMessage.getProcessedFilename() + ".json";
 		Path temporaryFile = Files.createTempFile("", jsonFilename);
 		File file = new File(temporaryFile.toAbsolutePath().toString());
-		ObjectMapper mapper = new ObjectMapper();
+		ObjectMapper mapper = new ObjectMapper()
+				.enable(SerializationFeature.INDENT_OUTPUT);;
 		mapper.writeValue(file, simpleOntology);
 		
 		// Upload the serialized JSON file to persistent object storage
