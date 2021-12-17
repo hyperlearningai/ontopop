@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.model.owl;
+package ai.hyperlearning.ontopop.model.graph;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -7,7 +7,7 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 
 /**
- * Simple Property Graph Model - Ontology
+ * Simple Directed Property Graph model representation of an OWL Ontology
  *
  * @author jillurquddus
  * @since 2.0.0
