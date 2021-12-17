@@ -14,6 +14,7 @@ public class SimpleOntology implements Serializable {
 
 	private static final long serialVersionUID = -2164606179650762875L;
 	private int id;
+	private long latestWebhookEventId;
 	
 	// Map between annotation property IRI and Simple Annotation Property objects
 	private Map<String, SimpleAnnotationProperty> simpleAnnotationPropertyMap;
@@ -30,10 +31,12 @@ public class SimpleOntology implements Serializable {
 	
 	public SimpleOntology(
 			int id, 
+			long latestWebhookEventId, 
 			Map<String, SimpleAnnotationProperty> simpleAnnotationPropertyMap,
 			Map<String, SimpleObjectProperty> simpleObjectPropertyMap, 
 			Map<String, SimpleClass> simpleClassMap) {
 		this.id = id;
+		this.latestWebhookEventId = latestWebhookEventId;
 		this.simpleAnnotationPropertyMap = simpleAnnotationPropertyMap;
 		this.simpleObjectPropertyMap = simpleObjectPropertyMap;
 		this.simpleClassMap = simpleClassMap;
@@ -45,6 +48,14 @@ public class SimpleOntology implements Serializable {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public long getLatestWebhookEventId() {
+		return latestWebhookEventId;
+	}
+
+	public void setLatestWebhookEventId(long latestWebhookEventId) {
+		this.latestWebhookEventId = latestWebhookEventId;
 	}
 
 	public Map<String, SimpleAnnotationProperty> getSimpleAnnotationPropertyMap() {
@@ -99,6 +110,7 @@ public class SimpleOntology implements Serializable {
 	public String toString() {
 		return "SimpleOntology ["
 				+ "id=" + id + ", "
+				+ "latestWebhookEventId=" + latestWebhookEventId + ", "
 				+ "simpleAnnotationPropertyMap=" + simpleAnnotationPropertyMap + ", "
 				+ "simpleObjectPropertyMap=" + simpleObjectPropertyMap + ", "
 				+ "simpleClassMap=" + simpleClassMap 
