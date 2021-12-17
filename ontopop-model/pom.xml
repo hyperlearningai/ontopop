@@ -44,6 +44,12 @@
     <!-- Module Dependencies -->
     <dependencies>
     
+        <!-- Apache TinkerPop -->
+        <dependency>
+            <groupId>org.apache.tinkerpop</groupId>
+            <artifactId>gremlin-core</artifactId>
+        </dependency>
+    
         <!-- Jackson Databind -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

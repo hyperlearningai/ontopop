@@ -47,6 +47,7 @@
         <conf.bootstrap-properties.filename>bootstrap.yml</conf.bootstrap-properties.filename>
         <conf.application-properties.filename>application.yml</conf.application-properties.filename>
         <graphdb-free-runtime.version>9.10.1</graphdb-free-runtime.version>
+        <gremlin-core.version>3.5.1</gremlin-core.version>
         <guava.version>31.0.1-jre</guava.version>
         <java.version>11</java.version>
         <javax.activation.version>1.1.1</javax.activation.version>
@@ -104,6 +105,13 @@
                 <artifactId>apache-jena-libs</artifactId>
                 <version>${apache-jena-libs.version}</version>
                 <type>pom</type>
+            </dependency>
+            
+            <!-- Apache TinkerPop -->
+            <dependency>
+                <groupId>org.apache.tinkerpop</groupId>
+                <artifactId>gremlin-core</artifactId>
+                <version>${gremlin-core.version}</version>
             </dependency>
             
             <!-- AWS Java SDK -->
