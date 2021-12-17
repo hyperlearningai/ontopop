@@ -23,19 +23,22 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLAPIStreamUtils;
 
 import ai.hyperlearning.ontopop.model.owl.SimpleAnnotationProperty;
+import ai.hyperlearning.ontopop.model.owl.SimpleClass;
 import ai.hyperlearning.ontopop.model.owl.SimpleObjectProperty;
 
 /**
- * OWL API Helper Methods
+ * OWL API 5 Helper Methods
  *
  * @author jillurquddus
  * @since 2.0.0
@@ -152,7 +155,7 @@ public class OWLAPI {
 		
 		// Iterate over all OWL annotation properties found in the OWL ontology
 		Set<OWLAnnotationProperty> owlAnnotationProperties = 
-				ontology.getAnnotationPropertiesInSignature();
+				getAnnotationProperties(ontology);
 		for ( OWLAnnotationProperty owlAnnotationProperty : 
 				owlAnnotationProperties ) {
 			
@@ -185,8 +188,10 @@ public class OWLAPI {
 							annotationPropertyIri, 
 							annotationPropertyRDFSLabel, 
 							annotations);
-			simpleAnnotationPropertyMap.put(
-					annotationPropertyIri, 
+			
+			// Add the new Simple Annotation Property to the map of 
+			// Simple Annotation Property objects
+			simpleAnnotationPropertyMap.put(annotationPropertyIri, 
 					simpleAnnotationProperty);
 			
 		}
@@ -251,9 +256,8 @@ public class OWLAPI {
 		Map<String, SimpleObjectProperty> simpleObjectPropertyMap = 
 				new LinkedHashMap<>();
 		
-		// Iterate over all OWL annotation properties found in the OWL ontology
-		Set<OWLObjectProperty> owlObjectProperties = 
-				ontology.getObjectPropertiesInSignature();
+		// Iterate over all OWL object properties found in the OWL ontology
+		Set<OWLObjectProperty> owlObjectProperties = getObjectProperties(ontology);
 		for ( OWLObjectProperty owlObjectProperty : owlObjectProperties ) {
 			
 			// Get the OWL object property IRI
@@ -278,7 +282,7 @@ public class OWLAPI {
 						getAnnotationValueLiteral(owlAnnotation));
 			}
 			
-			// Create a Simple Object Property object and 
+			// Create a Simple Object Property object
 			SimpleObjectProperty simpleObjectProperty = 
 					new SimpleObjectProperty();
 			simpleObjectProperty.setIri(objectPropertyIri);
@@ -308,10 +312,9 @@ public class OWLAPI {
 				}
 			}
 			
-			// Add it to the map of Simple Object Property objects
-			simpleObjectPropertyMap.put(
-					objectPropertyIri, 
-					simpleObjectProperty);
+			// Add the new Simple Object Property to the map of 
+			// Simple Object Property objects
+			simpleObjectPropertyMap.put(objectPropertyIri, simpleObjectProperty);
 			
 		}
 		
@@ -340,6 +343,120 @@ public class OWLAPI {
 	
 	public static Set<OWLClass> getClasses(OWLOntology ontology) {
 		return ontology.getClassesInSignature();
+	}
+	
+	/**
+	 * Get all class subClassOf relationships
+	 * @param ontology
+	 * @return
+	 */
+	
+	public static Set<OWLSubClassOfAxiom> getSubClassOfAxioms(
+			OWLOntology ontology) {
+		return ontology.getAxioms(AxiomType.SUBCLASS_OF);
+	}
+	
+	/**
+	 * Parse the ontology and generate a map of Class IRI to
+	 * OntoPop Simple Class objects
+	 * @param ontology
+	 * @return
+	 */
+	
+	public static Map<String, SimpleClass> parseClasses(
+			OWLOntology ontology) {
+		
+		Map<String, SimpleClass> simpleClassMap = new LinkedHashMap<>();
+		
+		// Iterate over all OWL classes found in the OWL ontology
+		Set<OWLClass> owlClasses = getClasses(ontology);
+		for ( OWLClass owlClass : owlClasses ) {
+			
+			// Get the OWL class IRI
+			String classIri = owlClass.getIRI().toString();
+			
+			// Extract the list of OWL annotations from this OWL class
+			List<OWLAnnotation> owlAnnotations = 
+					OWLAPIStreamUtils.asList(
+							EntitySearcher.getAnnotations(owlClass, ontology));
+			
+			// Get the OWL class RDFS Label
+			String classRDFSLabel = getRDFSLabel(owlAnnotations);
+			
+			// Generate a map of annotation IRI to annotation literal value
+			Map<String, String> annotations = new LinkedHashMap<>();
+			for (OWLAnnotation owlAnnotation : owlAnnotations) {
+				annotations.put(
+						owlAnnotation.getProperty().getIRI().toString(), 
+						getAnnotationValueLiteral(owlAnnotation));
+			}
+			
+			// Create a Simple Class object
+			SimpleClass simpleClass = new SimpleClass();
+			simpleClass.setIri(classIri);
+			simpleClass.setLabel(classRDFSLabel);
+			simpleClass.setAnnotations(annotations);
+			
+			// Get all axioms for this class
+			Map<String, String> parentClasses = new LinkedHashMap<>();
+			List<OWLAxiom> owlClassReferencingAxioms = 
+					OWLAPI.getReferencingAxioms(ontology, owlClass);
+			for (OWLAxiom owlClassReferencingAxiom : owlClassReferencingAxioms) {
+				if ( owlClassReferencingAxiom.getAxiomType() == 
+						AxiomType.SUBCLASS_OF) {
+					
+					// Get the parent class IRI for all parent classes
+					// that do not have OWL restrictions
+					OWLSubClassOfAxiom owlClassSubClassOfAxiom = 
+							(OWLSubClassOfAxiom) owlClassReferencingAxiom;
+					if ( owlClassSubClassOfAxiom.getSuperClass() instanceof OWLClass
+							&& owlClassSubClassOfAxiom.getSubClass() instanceof OWLClass
+							&& owlClassReferencingAxiom.getSignature().size() == 2 ) {
+						
+						String superClassIRI = owlClassSubClassOfAxiom
+								.getSuperClass()
+								.asOWLClass()
+								.getIRI()
+								.toString();
+						if ( !classIri.equals(superClassIRI) )
+							parentClasses.put(superClassIRI, null);
+						
+					}
+					
+					// Get the parent class IRI and object property IRI for
+					// all parent classes that do have OWL restrictions
+					else if ( owlClassSubClassOfAxiom.getSuperClass() instanceof OWLObjectSomeValuesFrom 
+							&& owlClassSubClassOfAxiom.getSubClass() instanceof OWLClass
+							&& owlClassReferencingAxiom.getSignature().size() == 3 ) {
+						
+						OWLObjectSomeValuesFrom owlObjectPropertySomeValuesFrom = 
+								(OWLObjectSomeValuesFrom) owlClassSubClassOfAxiom.getSuperClass();
+						String objectPropertyIRI = 
+								((OWLObjectProperty) owlObjectPropertySomeValuesFrom.getProperty())
+								.getIRI()
+								.toString();
+						String superClassIRI = 
+								((OWLClass) owlObjectPropertySomeValuesFrom.getFiller())
+								.getIRI()
+								.toString();
+						if ( !classIri.equals(superClassIRI) )
+							parentClasses.put(superClassIRI, objectPropertyIRI);
+						
+					}
+					
+				}
+			}
+			
+			// Set the parent class IRI <> object property IRI mapping
+			simpleClass.setParentClasses(parentClasses);
+			
+			// Add the new Simple Class object to the map of Simple Class objects
+			simpleClassMap.put(classIri, simpleClass);
+			
+		}
+		
+		return simpleClassMap;
+		
 	}
 	
 	/**************************************************************************
