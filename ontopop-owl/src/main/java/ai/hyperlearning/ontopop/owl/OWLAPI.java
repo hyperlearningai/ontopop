@@ -10,24 +10,29 @@ import java.util.Set;
 import org.semanticweb.HermiT.Configuration;
 import org.semanticweb.HermiT.Reasoner;
 import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAnnotation;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLAnnotationValue;
+import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLAPIStreamUtils;
 
 import ai.hyperlearning.ontopop.model.owl.SimpleAnnotationProperty;
+import ai.hyperlearning.ontopop.model.owl.SimpleObjectProperty;
 
 /**
  * OWL API Helper Methods
@@ -173,7 +178,8 @@ public class OWLAPI {
 						getAnnotationValueLiteral(owlAnnotation));
 			}
 			
-			// Create a Simple Annotation Property object
+			// Create a Simple Annotation Property object and add it
+			// to the map of Simple Annotation Property objects
 			SimpleAnnotationProperty simpleAnnotationProperty = 
 					new SimpleAnnotationProperty(
 							annotationPropertyIri, 
@@ -221,6 +227,98 @@ public class OWLAPI {
 		return ontology.getObjectPropertiesInSignature();
 	}
 	
+	/**
+	 * Get all object property subPropertyOf relationships
+	 * @param ontology
+	 * @return
+	 */
+	
+	public static Set<OWLSubObjectPropertyOfAxiom> getSubPropertyOfAxioms(
+			OWLOntology ontology) {
+		return ontology.getAxioms(AxiomType.SUB_OBJECT_PROPERTY);
+	}
+	
+	/**
+	 * Parse the ontology and generate a map of Object Property IRI to
+	 * OntoPop Simple Object Property objects
+	 * @param ontology
+	 * @return
+	 */
+	
+	public static Map<String, SimpleObjectProperty> parseObjectProperties(
+			OWLOntology ontology) {
+		
+		Map<String, SimpleObjectProperty> simpleObjectPropertyMap = 
+				new LinkedHashMap<>();
+		
+		// Iterate over all OWL annotation properties found in the OWL ontology
+		Set<OWLObjectProperty> owlObjectProperties = 
+				ontology.getObjectPropertiesInSignature();
+		for ( OWLObjectProperty owlObjectProperty : owlObjectProperties ) {
+			
+			// Get the OWL object property IRI
+			String objectPropertyIri = owlObjectProperty
+					.getIRI().toString();
+			
+			// Extract the list of OWL annotations from this
+			// OWL object property
+			List<OWLAnnotation> owlAnnotations = 
+					OWLAPIStreamUtils.asList(
+							EntitySearcher.getAnnotations(
+									owlObjectProperty, ontology));
+			
+			// Get the OWL object property RDFS Label
+			String objectPropertyRDFSLabel = getRDFSLabel(owlAnnotations);
+			
+			// Generate a map of annotation IRI to annotation literal value
+			Map<String, String> annotations = new LinkedHashMap<>();
+			for (OWLAnnotation owlAnnotation : owlAnnotations) {
+				annotations.put(
+						owlAnnotation.getProperty().getIRI().toString(), 
+						getAnnotationValueLiteral(owlAnnotation));
+			}
+			
+			// Create a Simple Object Property object and 
+			SimpleObjectProperty simpleObjectProperty = 
+					new SimpleObjectProperty();
+			simpleObjectProperty.setIri(objectPropertyIri);
+			simpleObjectProperty.setLabel(objectPropertyRDFSLabel);
+			simpleObjectProperty.setAnnotations(annotations);
+			
+			// Get all axioms for this object property
+			List<OWLAxiom> owlObjectPropertyReferencingAxioms = 
+					OWLAPI.getReferencingAxioms(ontology, owlObjectProperty);
+			for (OWLAxiom owlObjectPropertyReferencingAxiom : 
+				owlObjectPropertyReferencingAxioms) {
+				if ( owlObjectPropertyReferencingAxiom.getAxiomType() == 
+						AxiomType.SUB_OBJECT_PROPERTY) {
+					
+					// Get the parent object property IRI
+					OWLSubObjectPropertyOfAxiom owlObjectPropertySubObjectPropertyOfAxiom = 
+							(OWLSubObjectPropertyOfAxiom) owlObjectPropertyReferencingAxiom;
+					String superObjectPropertyIRI = owlObjectPropertySubObjectPropertyOfAxiom
+							.getSuperProperty()
+							.asOWLObjectProperty()
+							.getIRI()
+							.toString();
+					simpleObjectProperty.setParentObjectPropertyIRI(
+							superObjectPropertyIRI);
+					break;
+					
+				}
+			}
+			
+			// Add it to the map of Simple Object Property objects
+			simpleObjectPropertyMap.put(
+					objectPropertyIri, 
+					simpleObjectProperty);
+			
+		}
+		
+		return simpleObjectPropertyMap;
+		
+	}
+	
 	/**************************************************************************
 	 * Individuals
 	 *************************************************************************/
@@ -242,6 +340,16 @@ public class OWLAPI {
 	
 	public static Set<OWLClass> getClasses(OWLOntology ontology) {
 		return ontology.getClassesInSignature();
+	}
+	
+	/**************************************************************************
+	 * Axioms
+	 *************************************************************************/
+	
+	public static List<OWLAxiom> getReferencingAxioms(
+			OWLOntology ontology, OWLEntity owlEntity) {
+		return OWLAPIStreamUtils.asList(
+				EntitySearcher.getReferencingAxioms(owlEntity, ontology));
 	}
 	
 }
