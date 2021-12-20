@@ -222,6 +222,7 @@ public class OntologyIngestorService {
 		// 3. For each ontology, validate the webhook payload
 		LOGGER.debug("Found {} ontologies matching the "
 				+ "webhook event request.", ontoglogies.size());
+		webhookEvents.clear();
 		int ontologyCounter = 0;
 		for (Ontology ontology : ontoglogies) {
 			ontologyCounter++;
