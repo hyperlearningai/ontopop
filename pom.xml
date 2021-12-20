@@ -292,6 +292,7 @@
         <module>ontopop-data-ontology-validator</module>
         <module>ontopop-data-ontology-loader-triplestore</module>
         <module>ontopop-data-ontology-parser</module>
+        <module>ontopop-data-ontology-modeller-graph</module>
     </modules>
     
     <!-- Project Build Configuration -->
