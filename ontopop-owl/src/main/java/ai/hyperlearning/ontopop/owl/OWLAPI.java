@@ -111,7 +111,12 @@ public class OWLAPI {
 	public static String getAnnotationValueLiteral(
 			OWLAnnotation annotation) {
 		OWLAnnotationValue annotationValue = annotation.getValue();
-		return ((OWLLiteral) annotationValue).getLiteral();
+		try {
+			return ((OWLLiteral) annotationValue).getLiteral();
+		} catch (ClassCastException e) {
+			return annotationValue.toString();
+		}
+		
 	}
 	
 	/**
