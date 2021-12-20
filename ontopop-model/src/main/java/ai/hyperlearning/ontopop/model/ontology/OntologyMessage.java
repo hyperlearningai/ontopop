@@ -50,6 +50,10 @@ public class OntologyMessage implements Serializable {
 	public String getProcessedFilename() {
 		return processedFilename;
 	}
+	
+	public String getJsonProcessedFilename() {
+		return processedFilename + ".json";
+	}
 
 	public void setProcessedFilename(String processedFilename) {
 		this.processedFilename = processedFilename;

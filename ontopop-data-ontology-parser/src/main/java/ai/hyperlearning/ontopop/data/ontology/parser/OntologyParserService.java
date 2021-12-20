@@ -230,7 +230,7 @@ public class OntologyParserService {
 		
 		// Serialize the Simple Ontology object to a temporary file in 
 		// the local file system
-		String jsonFilename = ontologyMessage.getProcessedFilename() + ".json";
+		String jsonFilename = ontologyMessage.getJsonProcessedFilename();
 		Path temporaryFile = Files.createTempFile("", jsonFilename);
 		File file = new File(temporaryFile.toAbsolutePath().toString());
 		ObjectMapper mapper = new ObjectMapper()
@@ -239,7 +239,7 @@ public class OntologyParserService {
 		
 		// Upload the serialized JSON file to persistent object storage
 		String targetFilepath = writeDirectoryUri + "/" + 
-				ontologyMessage.getProcessedFilename() + ".json";
+				ontologyMessage.getJsonProcessedFilename();
 		objectStorageService.uploadObject(
 				temporaryFile.toAbsolutePath().toString(), 
 				targetFilepath);
