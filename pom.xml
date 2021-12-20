@@ -44,6 +44,7 @@
         <azure-sdk-bom.version>1.0.6</azure-sdk-bom.version>
         <azure-spring-boot-starter-storage.version>3.11.0</azure-spring-boot-starter-storage.version>
         <commons-io.version>2.11.0</commons-io.version>
+        <commons-text.version>1.9</commons-text.version>
         <conf.bootstrap-properties.filename>bootstrap.yml</conf.bootstrap-properties.filename>
         <conf.application-properties.filename>application.yml</conf.application-properties.filename>
         <graphdb-free-runtime.version>9.10.1</graphdb-free-runtime.version>
@@ -97,6 +98,13 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons-io.version}</version>
+            </dependency>
+            
+            <!-- Apache Commons Text -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-text</artifactId>
+                <version>${commons-text.version}</version>
             </dependency>
             
             <!-- Apache Jena -->
