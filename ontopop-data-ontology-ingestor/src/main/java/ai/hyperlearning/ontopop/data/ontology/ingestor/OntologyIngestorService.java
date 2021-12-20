@@ -84,7 +84,7 @@ public class OntologyIngestorService {
 	@Value("${storage.object.local.baseUri}")
 	private String storageLocalBaseUri;
 	
-	@Value("${storage.object.dirNames.ingested}")
+	@Value("${storage.object.containers.ingested}")
 	private String ingestedDirectoryName;
 	
 	@Value("${storage.object.patterns.fileNameIdsSeparator}")

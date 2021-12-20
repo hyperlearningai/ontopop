@@ -57,10 +57,10 @@ public class OntologyParserService {
 	@Value("${storage.object.local.baseUri}")
 	private String storageLocalBaseUri;
 	
-	@Value("${storage.object.dirNames.validated}")
+	@Value("${storage.object.containers.validated}")
 	private String validatedDirectoryName;
 	
-	@Value("${storage.object.dirNames.parsed}")
+	@Value("${storage.object.containers.parsed}")
 	private String parsedDirectoryName;
 	
 	@Value("${storage.object.patterns.fileNameIdsSeparator}")

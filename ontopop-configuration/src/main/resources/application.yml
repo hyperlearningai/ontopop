@@ -85,7 +85,7 @@ storage:
             account-key: ${azure.storage.account-key}
             blob-endpoint: ${azure.storage.blob-endpoint}
             container-name: ontopop
-        dirNames:
+        containers:
             ingested: ingested
             validated: validated
             parsed: parsed

@@ -50,10 +50,10 @@ public class OntologyTriplestoreLoaderService {
 	@Value("${storage.object.local.baseUri}")
 	private String storageLocalBaseUri;
 	
-	@Value("${storage.object.dirNames.validated}")
+	@Value("${storage.object.containers.validated}")
 	private String validatedDirectoryName;
 	
-	@Value("${storage.object.dirNames.loaded.triplestore}")
+	@Value("${storage.object.containers.loaded.triplestore}")
 	private String loadedDirectoryName;
 	
 	@Value("${storage.object.patterns.fileNameIdsSeparator}")
