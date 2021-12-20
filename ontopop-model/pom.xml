@@ -44,10 +44,10 @@
     <!-- Module Dependencies -->
     <dependencies>
     
-        <!-- Apache TinkerPop -->
+        <!-- Apache Commons Text -->
         <dependency>
-            <groupId>org.apache.tinkerpop</groupId>
-            <artifactId>gremlin-core</artifactId>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
         </dependency>
     
         <!-- Jackson Databind -->
