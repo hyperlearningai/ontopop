@@ -86,12 +86,12 @@ public class OntologyValidatorService {
 			// 3. Semantically validate the ingested ontology
 			validate();
 			
-			// 4. Publish a message containing the semantic validation result
-			publish();
-			
-			// 5. Copy the ingested ontology to the validated directory 
+			// 4. Copy the ingested ontology to the validated directory 
 			// in persistent storage if it is semantically valid
 			save();
+			
+			// 5. Publish a message containing the semantic validation result
+			publish();
 			
 			// 6. Cleanup resources
 			cleanup();
@@ -201,21 +201,6 @@ public class OntologyValidatorService {
 	}
 	
 	/**
-	 *  Publish a message containing the semantic validation result
-	 */
-	
-	private void publish() {
-		
-		LOGGER.info("Ontology Validation Service - "
-				+ "Started publishing message.");
-		dataPipelineValidatorSource.validatedPublicationChannel()
-			.send(MessageBuilder.withPayload(ontologyMessage).build());
-		LOGGER.info("Ontology Validation Service - "
-				+ "Finished publishing message.");
-		
-	}
-	
-	/**
 	 * Copy the ingested ontology to the validated directory 
 	 * in persistent storage if it is semantically valid
 	 * @throws IOException
@@ -238,6 +223,21 @@ public class OntologyValidatorService {
 					+ "Finished the persistence of the validated resource.");
 			
 		}
+		
+	}
+	
+	/**
+	 *  Publish a message containing the semantic validation result
+	 */
+	
+	private void publish() {
+		
+		LOGGER.info("Ontology Validation Service - "
+				+ "Started publishing message.");
+		dataPipelineValidatorSource.validatedPublicationChannel()
+			.send(MessageBuilder.withPayload(ontologyMessage).build());
+		LOGGER.info("Ontology Validation Service - "
+				+ "Finished publishing message.");
 		
 	}
 	

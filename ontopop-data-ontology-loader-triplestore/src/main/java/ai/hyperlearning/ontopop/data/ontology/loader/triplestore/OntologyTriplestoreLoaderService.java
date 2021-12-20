@@ -89,12 +89,12 @@ public class OntologyTriplestoreLoaderService {
 			// 3. Load the ontology into a triplestore
 			load();
 			
-			// 4. Publish a message to the shared messaging system
-			publish();
-			
-			// 5. Copy the validated ontology to the loaded directory 
+			// 4. Copy the validated ontology to the loaded directory 
 			// in persistent storage 
 			copy();
+			
+			// 5. Publish a message to the shared messaging system
+			publish();
 			
 			// 6. Cleanup resources
 			cleanup();
@@ -202,21 +202,6 @@ public class OntologyTriplestoreLoaderService {
 	}
 	
 	/**
-	 * Publish a message to the shared messaging system
-	 */
-	
-	private void publish() {
-		
-		LOGGER.info("Ontology Triplestore Loading Service - "
-				+ "Started publishing message.");
-		dataPipelineValidatedLoaderSource.validatedLoadedPublicationChannel()
-			.send(MessageBuilder.withPayload(ontologyMessage).build());
-		LOGGER.info("Ontology Triplestore Loading Service - "
-				+ "Finished publishing message.");
-		
-	}
-	
-	/**
 	 * Copy the validated ontology to the loaded directory 
 	 * in persistent storage 
 	 * @throws IOException
@@ -235,6 +220,21 @@ public class OntologyTriplestoreLoaderService {
 				+ "resource to '{}'.", targetFilepath);
 		LOGGER.info("Ontology Triplestore Loading Service - "
 				+ "Finished the persistence of the loaded resource.");
+		
+	}
+	
+	/**
+	 * Publish a message to the shared messaging system
+	 */
+	
+	private void publish() {
+		
+		LOGGER.info("Ontology Triplestore Loading Service - "
+				+ "Started publishing message.");
+		dataPipelineValidatedLoaderSource.validatedLoadedPublicationChannel()
+			.send(MessageBuilder.withPayload(ontologyMessage).build());
+		LOGGER.info("Ontology Triplestore Loading Service - "
+				+ "Finished publishing message.");
 		
 	}
 	
