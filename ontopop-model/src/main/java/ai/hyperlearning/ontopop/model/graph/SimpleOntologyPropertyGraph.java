@@ -65,16 +65,14 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 			int id,
 			long latestWebhookEventId, 
 			SimpleOntology simpleOntology, 
-			Map<String, SimpleAnnotationProperty> skosAnnotationProperties, 
-			Map<String, SimpleAnnotationProperty> rdfSchemaAnnotationProperties) {
+			Map<String, SimpleAnnotationProperty> annotationProperties) {
 		
 		// Set the IDs
 		this.id = id;
 		this.latestWebhookEventId = latestWebhookEventId;
 		
 		// Resolve and set the simple ontology vertex objects
-		setVertices(simpleOntology, 
-				skosAnnotationProperties, rdfSchemaAnnotationProperties);
+		setVertices(simpleOntology, annotationProperties);
 		
 		// Resolve and set the simple ontology edge objects
 		setEdges(simpleOntology);
@@ -91,15 +89,13 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 	
 	public void setVertices(
 			SimpleOntology simpleOntology, 
-			Map<String, SimpleAnnotationProperty> skosAnnotationProperties, 
-			Map<String, SimpleAnnotationProperty> rdfSchemaAnnotationProperties) {
+			Map<String, SimpleAnnotationProperty> annotationProperties) {
 		
 		// Aggregate the simple annotation property objects into a single map
 		Map<String, SimpleAnnotationProperty> simpleAnnotationPropertyMap = 
 				new LinkedHashMap<>(
 						simpleOntology.getSimpleAnnotationPropertyMap());
-		simpleAnnotationPropertyMap.putAll(skosAnnotationProperties);
-		simpleAnnotationPropertyMap.putAll(rdfSchemaAnnotationProperties);
+		simpleAnnotationPropertyMap.putAll(annotationProperties);
 		
 		// Iterate over the simple class map from the simple ontology
 		Map<String, SimpleClass> simpleClassMap = simpleOntology.getSimpleClassMap();
