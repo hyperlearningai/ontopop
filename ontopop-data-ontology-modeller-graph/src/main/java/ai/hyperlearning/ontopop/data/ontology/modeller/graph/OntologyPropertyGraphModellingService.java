@@ -185,7 +185,7 @@ public class OntologyPropertyGraphModellingService {
 	private void model() throws IOException, OWLOntologyCreationException {
 		
 		LOGGER.info("Ontology Property Graph Modelling Service - "
-				+ "Started modelled the validated resource.");
+				+ "Started modelling the parsed resource.");
 		
 		// Deserialize the Simple Ontology object from JSON
 		ObjectMapper mapper = new ObjectMapper();
@@ -213,7 +213,7 @@ public class OntologyPropertyGraphModellingService {
 		
 		LOGGER.debug("Modelled ontology: '{}'.", simpleOntologyPropertyGraph);
 		LOGGER.info("Ontology Property Graph Modelling Service - "
-				+ "Finished modelled the validated resource.");
+				+ "Finished modelling the parsed resource.");
 		
 	}
 	
