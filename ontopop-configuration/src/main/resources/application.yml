@@ -89,6 +89,7 @@ storage:
             ingested: ingested
             validated: validated
             parsed: parsed
+            modelled: modelled
             loaded:
                 triplestore: loaded/triplestore
                 graph: loaded/graph
