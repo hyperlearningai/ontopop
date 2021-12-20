@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Map;
 
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +22,10 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import ai.hyperlearning.ontopop.messaging.processors.DataPipelineModellerSource;
 import ai.hyperlearning.ontopop.model.graph.SimpleOntologyPropertyGraph;
 import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
+import ai.hyperlearning.ontopop.model.owl.SimpleAnnotationProperty;
 import ai.hyperlearning.ontopop.model.owl.SimpleOntology;
+import ai.hyperlearning.ontopop.owl.RDFSchema;
+import ai.hyperlearning.ontopop.owl.SKOSVocabulary;
 import ai.hyperlearning.ontopop.storage.ObjectStorageService;
 import ai.hyperlearning.ontopop.storage.ObjectStorageServiceFactory;
 import ai.hyperlearning.ontopop.storage.ObjectStorageServiceType;
@@ -173,9 +179,10 @@ public class OntologyPropertyGraphModellingService {
 	/**
 	 * Model the ontology as a directed property graph
 	 * @throws IOException
+	 * @throws OWLOntologyCreationException 
 	 */
 	
-	private void model() throws IOException {
+	private void model() throws IOException, OWLOntologyCreationException {
 		
 		LOGGER.info("Ontology Property Graph Modelling Service - "
 				+ "Started modelled the validated resource.");
@@ -185,12 +192,24 @@ public class OntologyPropertyGraphModellingService {
 		simpleOntology = mapper.readValue(
 				new File(downloadedFileUri), SimpleOntology.class);
 		
+		// Load the SKOS Vocabulary Namespace and parse its annotation properties
+		OWLOntology skos = SKOSVocabulary.loadSKOSRDF();
+		Map<String, SimpleAnnotationProperty> skosAnnotationProperties = 
+				SKOSVocabulary.parseAnnotationProperties(skos);
+		
+		// Load the RDF Schema and parse its annotation properties
+		OWLOntology rdf = RDFSchema.loadRdfSchema();
+		Map<String, SimpleAnnotationProperty> rdfSchemaAnnotationProperties = 
+				RDFSchema.parseAnnotationProperties(rdf);
+		
 		// Transform the Simple Ontology object into a 
 		// Simple Ontology Property Graph object
 		simpleOntologyPropertyGraph = new SimpleOntologyPropertyGraph(
 				ontologyMessage.getOntologyId(), 
 				ontologyMessage.getWebhookEventId(), 
-				simpleOntology);
+				simpleOntology, 
+				skosAnnotationProperties, 
+				rdfSchemaAnnotationProperties);
 		
 		LOGGER.debug("Modelled ontology: '{}'.", simpleOntologyPropertyGraph);
 		LOGGER.info("Ontology Property Graph Modelling Service - "
@@ -214,7 +233,7 @@ public class OntologyPropertyGraphModellingService {
 		Path temporaryFile = Files.createTempFile("", jsonFilename);
 		File file = new File(temporaryFile.toAbsolutePath().toString());
 		ObjectMapper mapper = new ObjectMapper()
-				.enable(SerializationFeature.INDENT_OUTPUT);;
+				.enable(SerializationFeature.INDENT_OUTPUT);
 		mapper.writeValue(file, simpleOntologyPropertyGraph);
 		
 		// Upload the serialized JSON file to persistent object storage
