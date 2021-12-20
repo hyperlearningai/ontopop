@@ -21,7 +21,7 @@ public class SimpleOntologyVertex implements Serializable {
 	private static final long serialVersionUID = -9077006932418612066L;
 	protected static final String VERTEX_KEY_DELIMITER = "_";
 	
-	private static final String LABEL = "class";
+	public static final String LABEL = "class";
 	private String iri;
 	private Integer ontologyId;
 	private String key;
@@ -94,10 +94,6 @@ public class SimpleOntologyVertex implements Serializable {
 
 	public void setDateLastUpdated(LocalDateTime dateLastUpdated) {
 		this.dateLastUpdated = dateLastUpdated;
-	}
-
-	public static String getLabel() {
-		return LABEL;
 	}
 
 	@Override

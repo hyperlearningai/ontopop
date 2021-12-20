@@ -59,20 +59,21 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 	 * @param id
 	 * @param latestWebhookEventId
 	 * @param simpleOntology
+	 * @param standardSchemaAnnotationProperties
 	 */
 	
 	public SimpleOntologyPropertyGraph(
 			int id,
 			long latestWebhookEventId, 
 			SimpleOntology simpleOntology, 
-			Map<String, SimpleAnnotationProperty> annotationProperties) {
+			Map<String, SimpleAnnotationProperty> standardSchemaAnnotationProperties) {
 		
 		// Set the IDs
 		this.id = id;
 		this.latestWebhookEventId = latestWebhookEventId;
 		
 		// Resolve and set the simple ontology vertex objects
-		setVertices(simpleOntology, annotationProperties);
+		setVertices(simpleOntology, standardSchemaAnnotationProperties);
 		
 		// Resolve and set the simple ontology edge objects
 		setEdges(simpleOntology);
@@ -83,19 +84,18 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 	 * Resolve and set the simple ontology vertex objects which are a 
 	 * one-to-one mapping of OWL classes
 	 * @param simpleOntology
-	 * @param skosAnnotationProperties
-	 * @param rdfSchemaAnnotationProperties
+	 * @param standardSchemaAnnotationProperties
 	 */
 	
 	public void setVertices(
 			SimpleOntology simpleOntology, 
-			Map<String, SimpleAnnotationProperty> annotationProperties) {
+			Map<String, SimpleAnnotationProperty> standardSchemaAnnotationProperties) {
 		
 		// Aggregate the simple annotation property objects into a single map
 		Map<String, SimpleAnnotationProperty> simpleAnnotationPropertyMap = 
 				new LinkedHashMap<>(
 						simpleOntology.getSimpleAnnotationPropertyMap());
-		simpleAnnotationPropertyMap.putAll(annotationProperties);
+		simpleAnnotationPropertyMap.putAll(standardSchemaAnnotationProperties);
 		
 		// Iterate over the simple class map from the simple ontology
 		Map<String, SimpleClass> simpleClassMap = simpleOntology.getSimpleClassMap();
@@ -122,7 +122,10 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 											.get(annotationIRI).getLabel(), 
 										false, ' ') :
 								annotationIRI;
-				vertexProperties.put(annotationLabel, annotationValue);
+				vertexProperties.put(
+						annotationLabel != null ? 
+								annotationLabel : annotationIRI, 
+						annotationValue);
 			}
 			
 			// Add the new simple ontology vertex to the set of vertices
@@ -172,8 +175,8 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 						// Create a new simple ontology edge object for each 
 						// OWL class parent relationship
 						SimpleOntologyEdge edge = new SimpleOntologyEdge();
-						edge.setSourceVertex(sourceVertex);
-						edge.setTargetVertex(targetVertex);
+						edge.setSourceVertexKey(sourceVertex.getKey());
+						edge.setTargetVertexKey(targetVertex.getKey());
 						edge.setOntologyId(id);
 						edge.setLatestWebhookEventId(latestWebhookEventId);
 						Map<String, Object> edgeProperties = new LinkedHashMap<>();

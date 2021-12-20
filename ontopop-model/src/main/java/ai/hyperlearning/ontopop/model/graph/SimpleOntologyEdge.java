@@ -19,10 +19,10 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 public class SimpleOntologyEdge implements Serializable {
 
 	private static final long serialVersionUID = 3796299067782280539L;
-	private static final String LABEL = "subClassOf";
-	protected static final String RELATIONSHIP_TYPE_KEY = "relationshipType";
-	private SimpleOntologyVertex sourceVertex;
-	private SimpleOntologyVertex targetVertex;
+	public static final String LABEL = "subClassOf";
+	public static final String RELATIONSHIP_TYPE_KEY = "relationship";
+	private String sourceVertexKey;
+	private String targetVertexKey;
 	private int ontologyId;
 	private long latestWebhookEventId;
 	private Map<String, Object> properties = new LinkedHashMap<>();;
@@ -36,32 +36,32 @@ public class SimpleOntologyEdge implements Serializable {
 	}
 
 	public SimpleOntologyEdge(
-			SimpleOntologyVertex sourceVertex, 
-			SimpleOntologyVertex targetVertex, 
+			String sourceVertexKey, 
+			String targetVertexKey, 
 			int ontologyId,
 			long latestWebhookEventId, 
 			Map<String, Object> properties) {
-		this.sourceVertex = sourceVertex;
-		this.targetVertex = targetVertex;
+		this.sourceVertexKey = sourceVertexKey;
+		this.targetVertexKey = targetVertexKey;
 		this.ontologyId = ontologyId;
 		this.latestWebhookEventId = latestWebhookEventId;
 		this.properties = properties;
 	}
 
-	public SimpleOntologyVertex getSourceVertex() {
-		return sourceVertex;
+	public String getSourceVertexKey() {
+		return sourceVertexKey;
 	}
 
-	public void setSourceVertex(SimpleOntologyVertex sourceVertex) {
-		this.sourceVertex = sourceVertex;
+	public void setSourceVertexKey(String sourceVertexKey) {
+		this.sourceVertexKey = sourceVertexKey;
 	}
 
-	public SimpleOntologyVertex getTargetVertex() {
-		return targetVertex;
+	public String getTargetVertexKey() {
+		return targetVertexKey;
 	}
 
-	public void setTargetVertex(SimpleOntologyVertex targetVertex) {
-		this.targetVertex = targetVertex;
+	public void setTargetVertexKey(String targetVertexKey) {
+		this.targetVertexKey = targetVertexKey;
 	}
 
 	public int getOntologyId() {
@@ -96,17 +96,13 @@ public class SimpleOntologyEdge implements Serializable {
 		this.dateLastUpdated = dateLastUpdated;
 	}
 
-	public static String getLabel() {
-		return LABEL;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ontologyId;
-		result = prime * result + ((sourceVertex == null) ? 0 : sourceVertex.hashCode());
-		result = prime * result + ((targetVertex == null) ? 0 : targetVertex.hashCode());
+		result = prime * result + ((sourceVertexKey == null) ? 0 : sourceVertexKey.hashCode());
+		result = prime * result + ((targetVertexKey == null) ? 0 : targetVertexKey.hashCode());
 		return result;
 	}
 
@@ -121,15 +117,15 @@ public class SimpleOntologyEdge implements Serializable {
 		SimpleOntologyEdge other = (SimpleOntologyEdge) obj;
 		if (ontologyId != other.ontologyId)
 			return false;
-		if (sourceVertex == null) {
-			if (other.sourceVertex != null)
+		if (sourceVertexKey == null) {
+			if (other.sourceVertexKey != null)
 				return false;
-		} else if (!sourceVertex.equals(other.sourceVertex))
+		} else if (!sourceVertexKey.equals(other.sourceVertexKey))
 			return false;
-		if (targetVertex == null) {
-			if (other.targetVertex != null)
+		if (targetVertexKey == null) {
+			if (other.targetVertexKey != null)
 				return false;
-		} else if (!targetVertex.equals(other.targetVertex))
+		} else if (!targetVertexKey.equals(other.targetVertexKey))
 			return false;
 		return true;
 	}
@@ -138,8 +134,8 @@ public class SimpleOntologyEdge implements Serializable {
 	public String toString() {
 		return "SimpleOntologyEdge ["
 				+ "label=" + LABEL + ", "
-				+ "sourceVertexKey=" + sourceVertex.getKey() + ", "
-				+ "targetVertexKey=" + targetVertex.getKey() + ", "
+				+ "sourceVertexKey=" + sourceVertexKey + ", "
+				+ "targetVertexKey=" + sourceVertexKey + ", "
 				+ "ontologyId=" + ontologyId + ", "
 				+ "latestWebhookEventId=" + latestWebhookEventId + ", "
 				+ "properties=" + properties + ", "
