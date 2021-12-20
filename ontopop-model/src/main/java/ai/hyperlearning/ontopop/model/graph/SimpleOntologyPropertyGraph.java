@@ -1,10 +1,16 @@
 package ai.hyperlearning.ontopop.model.graph;
 
 import java.io.Serializable;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
-import org.apache.tinkerpop.gremlin.structure.Edge;
-import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.apache.commons.text.CaseUtils;
+
+import ai.hyperlearning.ontopop.model.owl.SimpleAnnotationProperty;
+import ai.hyperlearning.ontopop.model.owl.SimpleClass;
+import ai.hyperlearning.ontopop.model.owl.SimpleOntology;
 
 /**
  * Simple Directed Property Graph model representation of an OWL Ontology
@@ -24,11 +30,13 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 	// to vertices and edges when they are updated
 	private long latestWebhookEventId;
 	
-	// Set of OWL classes and associated annotations and annotation properties
-	private Set<Vertex> vertices;
+	// Map of resolved Simple Ontology Vertex Key (IRI + Ontology ID) <> 
+	// Simple Ontology Vertex objects which are a one-to-one mapping of OWL classes
+	private Map<String, SimpleOntologyVertex> vertices = new LinkedHashMap<>();
 	
-	// Set of OWL subclass relationships and associated object properties
-	private Set<Edge> edges;
+	// Set of resolved Simple Ontology Edge objects which are a one-to-one
+	// mapping of OWL subclass relationships
+	private Set<SimpleOntologyEdge> edges = new LinkedHashSet<>();
 	
 	public SimpleOntologyPropertyGraph() {
 		
@@ -37,12 +45,170 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 	public SimpleOntologyPropertyGraph(
 			int id, 
 			long latestWebhookEventId, 
-			Set<Vertex> vertices, 
-			Set<Edge> edges) {
+			Map<String, SimpleOntologyVertex> vertices, 
+			Set<SimpleOntologyEdge> edges) {
 		this.id = id;
 		this.latestWebhookEventId = latestWebhookEventId;
 		this.vertices = vertices;
 		this.edges = edges;
+	}
+	
+	/**
+	 * Transform a SimpleOntology object into a 
+	 * SimpleOntologyPropertyGraph object
+	 * @param id
+	 * @param latestWebhookEventId
+	 * @param simpleOntology
+	 */
+	
+	public SimpleOntologyPropertyGraph(
+			int id,
+			long latestWebhookEventId, 
+			SimpleOntology simpleOntology, 
+			Map<String, SimpleAnnotationProperty> skosAnnotationProperties, 
+			Map<String, SimpleAnnotationProperty> rdfSchemaAnnotationProperties) {
+		
+		// Set the IDs
+		this.id = id;
+		this.latestWebhookEventId = latestWebhookEventId;
+		
+		// Resolve and set the simple ontology vertex objects
+		setVertices(simpleOntology, 
+				skosAnnotationProperties, rdfSchemaAnnotationProperties);
+		
+		// Resolve and set the simple ontology edge objects
+		setEdges(simpleOntology);
+		
+	}
+	
+	/**
+	 * Resolve and set the simple ontology vertex objects which are a 
+	 * one-to-one mapping of OWL classes
+	 * @param simpleOntology
+	 * @param skosAnnotationProperties
+	 * @param rdfSchemaAnnotationProperties
+	 */
+	
+	public void setVertices(
+			SimpleOntology simpleOntology, 
+			Map<String, SimpleAnnotationProperty> skosAnnotationProperties, 
+			Map<String, SimpleAnnotationProperty> rdfSchemaAnnotationProperties) {
+		
+		// Aggregate the simple annotation property objects into a single map
+		Map<String, SimpleAnnotationProperty> simpleAnnotationPropertyMap = 
+				new LinkedHashMap<>(
+						simpleOntology.getSimpleAnnotationPropertyMap());
+		simpleAnnotationPropertyMap.putAll(skosAnnotationProperties);
+		simpleAnnotationPropertyMap.putAll(rdfSchemaAnnotationProperties);
+		
+		// Iterate over the simple class map from the simple ontology
+		Map<String, SimpleClass> simpleClassMap = simpleOntology.getSimpleClassMap();
+		for (var simpleClassMapEntry : simpleClassMap.entrySet()) {
+			String owlClassIRI = simpleClassMapEntry.getKey();
+			SimpleClass owlClass = simpleClassMapEntry.getValue();
+			
+			// Create a new simple ontology vertex object for each OWL class
+			SimpleOntologyVertex vertex = new SimpleOntologyVertex();
+			vertex.setIri(owlClassIRI);
+			vertex.setOntologyId(this.id);
+			vertex.setLatestWebhookEventId(this.latestWebhookEventId);
+			Map<String, Object> vertexProperties = new LinkedHashMap<>();
+			
+			// Resolve annotations for this vertex
+			Map<String, String> owlClassAnnotations = owlClass.getAnnotations();
+			for (var owlClassAnnotationsEntry : owlClassAnnotations.entrySet()) {
+				String annotationIRI = owlClassAnnotationsEntry.getKey();
+				String annotationValue = owlClassAnnotationsEntry.getValue();
+				String annotationLabel = 
+						simpleAnnotationPropertyMap.containsKey(annotationIRI) ? 
+								CaseUtils.toCamelCase(
+										simpleAnnotationPropertyMap
+											.get(annotationIRI).getLabel(), 
+										false, ' ') :
+								annotationIRI;
+				vertexProperties.put(annotationLabel, annotationValue);
+			}
+			
+			// Add the new simple ontology vertex to the set of vertices
+			vertex.setProperties(vertexProperties);
+			this.vertices.put(vertex.getKey(), vertex);
+			
+		}
+		
+	}
+	
+	/**
+	 * Resolve and set the simple ontology edge objects which are a
+	 * one-to-one mapping of OWL sub class of relationships 
+	 * @param simpleOntology
+	 */
+	
+	public void setEdges(SimpleOntology simpleOntology) {
+		
+		// Iterate over the simple class map from the simple ontology
+		Map<String, SimpleClass> simpleClassMap = simpleOntology.getSimpleClassMap();
+		for (var simpleClassMapEntry : simpleClassMap.entrySet()) {
+			String owlClassIRI = simpleClassMapEntry.getKey();
+			SimpleClass owlClass = simpleClassMapEntry.getValue();
+			
+			// Get the previously resolved source vertex
+			String sourceVertexKey = owlClassIRI 
+					+ SimpleOntologyVertex.VERTEX_KEY_DELIMITER 
+					+ this.id;
+			SimpleOntologyVertex sourceVertex = this.vertices.containsKey(sourceVertexKey) ? 
+					vertices.get(sourceVertexKey) : null;
+			if ( sourceVertex != null ) {
+				
+				// Resolve relationships for this vertex
+				Map<String, String> owlClassParents = owlClass.getParentClasses();
+				for (var owlClassParentsEntry : owlClassParents.entrySet()) {
+					String parentClassIRI = owlClassParentsEntry.getKey();
+					String objectPropertyIRI = owlClassParentsEntry.getValue();
+					
+					// Get the previously resolved target vertex
+					String targetVertexKey = parentClassIRI 
+							+ SimpleOntologyVertex.VERTEX_KEY_DELIMITER 
+							+ this.id;
+					SimpleOntologyVertex targetVertex = this.vertices.containsKey(targetVertexKey) ? 
+							vertices.get(targetVertexKey) : null;
+					if ( targetVertex != null ) {
+						
+						// Create a new simple ontology edge object for each 
+						// OWL class parent relationship
+						SimpleOntologyEdge edge = new SimpleOntologyEdge();
+						edge.setSourceVertex(sourceVertex);
+						edge.setTargetVertex(targetVertex);
+						edge.setOntologyId(id);
+						edge.setLatestWebhookEventId(latestWebhookEventId);
+						Map<String, Object> edgeProperties = new LinkedHashMap<>();
+						if ( objectPropertyIRI != null ) {
+							
+							String objectPropertyLabel = simpleOntology
+									.getSimpleObjectPropertyMap()
+									.containsKey(objectPropertyIRI) ?
+											simpleOntology
+												.getSimpleObjectPropertyMap()
+												.get(objectPropertyIRI)
+												.getLabel() : 
+											objectPropertyIRI;
+							edgeProperties.put(
+									SimpleOntologyEdge.RELATIONSHIP_TYPE_KEY, 
+									objectPropertyLabel);
+							
+						}
+						
+						// Add the new simple ontology edge to the set of edges
+						edge.setProperties(edgeProperties);
+						this.edges.add(edge);
+						
+					}
+					
+				}
+				
+			}
+			
+		}
+		
 	}
 
 	public int getId() {
@@ -61,20 +227,28 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 		this.latestWebhookEventId = latestWebhookEventId;
 	}
 
-	public Set<Vertex> getVertices() {
+	public Map<String, SimpleOntologyVertex> getVertices() {
 		return vertices;
 	}
 
-	public void setVertices(Set<Vertex> vertices) {
+	public void setVertices(Map<String, SimpleOntologyVertex> vertices) {
 		this.vertices = vertices;
 	}
+	
+	public void addVertex(String key, SimpleOntologyVertex vertex) {
+		this.vertices.put(key, vertex);
+	}
 
-	public Set<Edge> getEdges() {
+	public Set<SimpleOntologyEdge> getEdges() {
 		return edges;
 	}
 
-	public void setEdges(Set<Edge> edges) {
+	public void setEdges(Set<SimpleOntologyEdge> edges) {
 		this.edges = edges;
+	}
+	
+	public void addEdge(SimpleOntologyEdge edge) {
+		this.edges.add(edge);
 	}
 
 	@Override
