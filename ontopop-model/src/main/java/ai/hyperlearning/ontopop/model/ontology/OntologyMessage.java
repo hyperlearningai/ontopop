@@ -2,6 +2,8 @@ package ai.hyperlearning.ontopop.model.ontology;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * Ontology Message model for shared messaging system
  *
@@ -51,6 +53,7 @@ public class OntologyMessage implements Serializable {
 		return processedFilename;
 	}
 	
+	@JsonIgnore
 	public String getJsonProcessedFilename() {
 		return processedFilename + ".json";
 	}
