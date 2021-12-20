@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -24,8 +25,9 @@ import ai.hyperlearning.ontopop.model.graph.SimpleOntologyPropertyGraph;
 import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 import ai.hyperlearning.ontopop.model.owl.SimpleAnnotationProperty;
 import ai.hyperlearning.ontopop.model.owl.SimpleOntology;
-import ai.hyperlearning.ontopop.owl.RDFSchema;
-import ai.hyperlearning.ontopop.owl.SKOSVocabulary;
+import ai.hyperlearning.ontopop.rdf.DCMI;
+import ai.hyperlearning.ontopop.rdf.RDFSchema;
+import ai.hyperlearning.ontopop.rdf.SKOSVocabulary;
 import ai.hyperlearning.ontopop.storage.ObjectStorageService;
 import ai.hyperlearning.ontopop.storage.ObjectStorageServiceFactory;
 import ai.hyperlearning.ontopop.storage.ObjectStorageServiceType;
@@ -192,7 +194,7 @@ public class OntologyPropertyGraphModellingService {
 		simpleOntology = mapper.readValue(
 				new File(downloadedFileUri), SimpleOntology.class);
 		
-		// Load the SKOS Vocabulary Namespace and parse its annotation properties
+		// Load the SKOS Vocabulary and parse its annotation properties
 		OWLOntology skos = SKOSVocabulary.loadSKOSRDF();
 		Map<String, SimpleAnnotationProperty> skosAnnotationProperties = 
 				SKOSVocabulary.parseAnnotationProperties(skos);
@@ -202,14 +204,23 @@ public class OntologyPropertyGraphModellingService {
 		Map<String, SimpleAnnotationProperty> rdfSchemaAnnotationProperties = 
 				RDFSchema.parseAnnotationProperties(rdf);
 		
+		// Load the DCMI RDF Schema and parse its annotation properties
+		Map<String, SimpleAnnotationProperty> dcmiSchemaAnnotationProperties = 
+				DCMI.parseAnnotationProperties();
+		
+		// Aggregate the annotation properties
+		Map<String, SimpleAnnotationProperty> simpleAnnotationProperties = 
+				new LinkedHashMap<>(skosAnnotationProperties);
+		simpleAnnotationProperties.putAll(rdfSchemaAnnotationProperties);
+		simpleAnnotationProperties.putAll(dcmiSchemaAnnotationProperties);
+		
 		// Transform the Simple Ontology object into a 
 		// Simple Ontology Property Graph object
 		simpleOntologyPropertyGraph = new SimpleOntologyPropertyGraph(
 				ontologyMessage.getOntologyId(), 
 				ontologyMessage.getWebhookEventId(), 
 				simpleOntology, 
-				skosAnnotationProperties, 
-				rdfSchemaAnnotationProperties);
+				simpleAnnotationProperties);
 		
 		LOGGER.debug("Modelled ontology: '{}'.", simpleOntologyPropertyGraph);
 		LOGGER.info("Ontology Property Graph Modelling Service - "
