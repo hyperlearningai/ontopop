@@ -208,11 +208,11 @@ public class OntologyPropertyGraphModellingService {
 		Map<String, SimpleAnnotationProperty> dcmiSchemaAnnotationProperties = 
 				DCMI.parseAnnotationProperties();
 		
-		// Aggregate the annotation properties
-		Map<String, SimpleAnnotationProperty> simpleAnnotationProperties = 
+		// Aggregate the standard schema annotation properties
+		Map<String, SimpleAnnotationProperty> standardSchemaAnnotationProperties = 
 				new LinkedHashMap<>(skosAnnotationProperties);
-		simpleAnnotationProperties.putAll(rdfSchemaAnnotationProperties);
-		simpleAnnotationProperties.putAll(dcmiSchemaAnnotationProperties);
+		standardSchemaAnnotationProperties.putAll(rdfSchemaAnnotationProperties);
+		standardSchemaAnnotationProperties.putAll(dcmiSchemaAnnotationProperties);
 		
 		// Transform the Simple Ontology object into a 
 		// Simple Ontology Property Graph object
@@ -220,7 +220,7 @@ public class OntologyPropertyGraphModellingService {
 				ontologyMessage.getOntologyId(), 
 				ontologyMessage.getWebhookEventId(), 
 				simpleOntology, 
-				simpleAnnotationProperties);
+				standardSchemaAnnotationProperties);
 		
 		LOGGER.debug("Modelled ontology: '{}'.", simpleOntologyPropertyGraph);
 		LOGGER.info("Ontology Property Graph Modelling Service - "
