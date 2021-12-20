@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.owl;
+package ai.hyperlearning.ontopop.rdf;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,6 +8,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import ai.hyperlearning.ontopop.model.owl.SimpleAnnotationProperty;
+import ai.hyperlearning.ontopop.owl.OWLAPI;
 
 /**
  * RDF Schema Helper Methods
