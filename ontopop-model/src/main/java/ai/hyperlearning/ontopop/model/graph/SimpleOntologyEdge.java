@@ -2,6 +2,7 @@ package ai.hyperlearning.ontopop.model.graph;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -24,7 +25,7 @@ public class SimpleOntologyEdge implements Serializable {
 	private SimpleOntologyVertex targetVertex;
 	private int ontologyId;
 	private long latestWebhookEventId;
-	private Map<String, Object> properties;
+	private Map<String, Object> properties = new LinkedHashMap<>();;
 	
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
