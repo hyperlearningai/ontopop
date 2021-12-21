@@ -48,6 +48,7 @@
         <commons-text.version>1.9</commons-text.version>
         <conf.bootstrap-properties.filename>bootstrap.yml</conf.bootstrap-properties.filename>
         <conf.application-properties.filename>application.yml</conf.application-properties.filename>
+        <conf.gremlin-graph-properties.filename>gremlin-graph.properties</conf.gremlin-graph-properties.filename>
         <graphdb-free-runtime.version>9.10.1</graphdb-free-runtime.version>
         <gremlin-core.version>3.5.1</gremlin-core.version>
         <gremlin-groovy.version>3.5.1</gremlin-groovy.version>

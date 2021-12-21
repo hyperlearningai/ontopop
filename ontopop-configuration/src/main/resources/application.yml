@@ -105,7 +105,7 @@ storage:
     graph:
         service: tinkergraph
         gremlin-graph:
-            configuration-filename: gremlin-tinkergraph.properties
+            configuration-filename: gremlin-graph.properties
 web:
     client:
         codecs:
