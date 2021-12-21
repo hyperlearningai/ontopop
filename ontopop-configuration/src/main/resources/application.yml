@@ -103,7 +103,9 @@ storage:
         ontotext-graphdb:
             url: ${ontotext.graphdb.url}
     graph:
-        service: gremlin-graph
+        service: tinkergraph
+        gremlin-graph:
+            configuration-filename: gremlin-tinkergraph.properties
 web:
     client:
         codecs:
