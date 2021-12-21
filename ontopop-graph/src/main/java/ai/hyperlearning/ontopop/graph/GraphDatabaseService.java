@@ -26,7 +26,7 @@ public interface GraphDatabaseService {
 
 	public GraphTraversalSource openGraph() throws IOException;
 	
-	public void closeGraph() throws IOException;
+	public void closeGraph() throws Exception;
 	
 	public void deleteGraph();
 	
@@ -34,7 +34,7 @@ public interface GraphDatabaseService {
 	
 	public void rollback();
 	
-	public void serializeGraph(String filepath) throws Exception;
+	public void serializeGraph(String filepath) throws IOException;
 	
 	/**************************************************************************
 	 * SCHEMA MANAGEMENT
