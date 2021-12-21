@@ -43,12 +43,14 @@
         <aws-java-sdk.version>1.12.126</aws-java-sdk.version>
         <azure-sdk-bom.version>1.0.6</azure-sdk-bom.version>
         <azure-spring-boot-starter-storage.version>3.11.0</azure-spring-boot-starter-storage.version>
+        <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <commons-io.version>2.11.0</commons-io.version>
         <commons-text.version>1.9</commons-text.version>
         <conf.bootstrap-properties.filename>bootstrap.yml</conf.bootstrap-properties.filename>
         <conf.application-properties.filename>application.yml</conf.application-properties.filename>
         <graphdb-free-runtime.version>9.10.1</graphdb-free-runtime.version>
         <gremlin-core.version>3.5.1</gremlin-core.version>
+        <gremlin-groovy.version>3.5.1</gremlin-groovy.version>
         <guava.version>31.0.1-jre</guava.version>
         <java.version>11</java.version>
         <javax.activation.version>1.1.1</javax.activation.version>
@@ -62,6 +64,7 @@
         <revision>2.0.0</revision>
         <spring-cloud-dependencies.version>2020.0.4</spring-cloud-dependencies.version>
         <springdoc-openapi-ui.version>1.5.12</springdoc-openapi-ui.version>
+        <tinkergraph-gremlin.version>3.5.1</tinkergraph-gremlin.version>
     </properties>
     
     <!-- Project Dependencies -->
@@ -93,6 +96,13 @@
     <dependencyManagement>
         <dependencies>
             
+            <!-- Apache Commons BeanUtils -->
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>${commons-beanutils.version}</version>
+            </dependency>
+            
             <!-- Apache Commons IO -->
             <dependency>
                 <groupId>commons-io</groupId>
@@ -120,6 +130,16 @@
                 <groupId>org.apache.tinkerpop</groupId>
                 <artifactId>gremlin-core</artifactId>
                 <version>${gremlin-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tinkerpop</groupId>
+                <artifactId>gremlin-groovy</artifactId>
+                <version>${gremlin-groovy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tinkerpop</groupId>
+                <artifactId>tinkergraph-gremlin</artifactId>
+                <version>${tinkergraph-gremlin.version}</version>
             </dependency>
             
             <!-- AWS Java SDK -->
