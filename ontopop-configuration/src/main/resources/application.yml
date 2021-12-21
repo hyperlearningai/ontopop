@@ -102,6 +102,8 @@ storage:
                 url: ${jena.fuseki.url}
         ontotext-graphdb:
             url: ${ontotext.graphdb.url}
+    graph:
+        service: gremlin-graph
 web:
     client:
         codecs:

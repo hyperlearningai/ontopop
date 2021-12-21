@@ -292,6 +292,7 @@
         <module>ontopop-git</module>
         <module>ontopop-storage</module>
         <module>ontopop-triplestore</module>
+        <module>ontopop-graph</module>
         <module>ontopop-messaging</module>
         <module>ontopop-owl</module>
         <module>ontopop-data-jpa</module>

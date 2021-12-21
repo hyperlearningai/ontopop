@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    
+    <!-- Parent Project -->
+    <parent>
+        <groupId>ai.hyperlearning.ontopop</groupId>
+        <artifactId>ontopop</artifactId>
+        <version>${revision}</version>
+    </parent>
+    
+    <!-- Module Metadata -->
+    <artifactId>ontopop-graph</artifactId>
+    <name>ontopop-graph</name>
+    <packaging>jar</packaging>
+    <description>OntoPop - Graph Database Services</description>
+    <url>https://ontopop.com</url>
+    <organization>
+        <name>HyperLearning AI</name>
+        <url>https://hyperlearning.ai</url>
+    </organization>
+    <developers>
+        <developer>
+            <id>jillurquddus</id>
+            <name>Jillur Quddus</name>
+            <email>contactus@hyperlearning.ai</email>
+            <url>https://hyperlearning.ai/team/jillurquddus</url>
+            <organization>HyperLearning AI</organization>
+            <organizationUrl>https://hyperlearning.ai</organizationUrl>
+            <roles>
+                <role>Chief Data Scientist</role>
+                <role>Principal Polyglot Software Engineer</role>
+            </roles>
+            <timezone>Europe/London</timezone>
+        </developer>
+    </developers>
+    
+    <!-- Module Properties -->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    
+    <!-- Module Dependencies -->
+    <dependencies>
+    
+        <!-- Apache TinkerPop -->
+        <dependency>
+            <groupId>org.apache.tinkerpop</groupId>
+            <artifactId>gremlin-core</artifactId>
+        </dependency>
+    
+        <!-- Spring Context -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+    
+    </dependencies>
+    
+</project>
