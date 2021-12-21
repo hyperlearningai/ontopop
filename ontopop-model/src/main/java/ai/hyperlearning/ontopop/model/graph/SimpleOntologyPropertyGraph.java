@@ -176,7 +176,9 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 						// OWL class parent relationship
 						SimpleOntologyEdge edge = new SimpleOntologyEdge();
 						edge.setSourceVertexKey(sourceVertex.getKey());
+						edge.setSourceVertexId(sourceVertex.getVertexId());
 						edge.setTargetVertexKey(targetVertex.getKey());
+						edge.setTargetVertexId(targetVertex.getVertexId());
 						edge.setOntologyId(id);
 						edge.setLatestWebhookEventId(latestWebhookEventId);
 						Map<String, Object> edgeProperties = new LinkedHashMap<>();

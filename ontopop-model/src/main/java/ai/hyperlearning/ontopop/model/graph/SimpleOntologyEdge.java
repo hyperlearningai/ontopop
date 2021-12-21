@@ -22,7 +22,9 @@ public class SimpleOntologyEdge implements Serializable {
 	public static final String LABEL = "subClassOf";
 	public static final String RELATIONSHIP_TYPE_KEY = "relationship";
 	private String sourceVertexKey;
+	private long sourceVertexId;
 	private String targetVertexKey;
+	private long targetVertexId;
 	private int ontologyId;
 	private long latestWebhookEventId;
 	private Map<String, Object> properties = new LinkedHashMap<>();;
@@ -37,12 +39,16 @@ public class SimpleOntologyEdge implements Serializable {
 
 	public SimpleOntologyEdge(
 			String sourceVertexKey, 
+			long sourceVertexId, 
 			String targetVertexKey, 
+			long targetVertexId, 
 			int ontologyId,
 			long latestWebhookEventId, 
 			Map<String, Object> properties) {
 		this.sourceVertexKey = sourceVertexKey;
+		this.sourceVertexId = sourceVertexId;
 		this.targetVertexKey = targetVertexKey;
+		this.targetVertexId = targetVertexId;
 		this.ontologyId = ontologyId;
 		this.latestWebhookEventId = latestWebhookEventId;
 		this.properties = properties;
@@ -56,12 +62,28 @@ public class SimpleOntologyEdge implements Serializable {
 		this.sourceVertexKey = sourceVertexKey;
 	}
 
+	public long getSourceVertexId() {
+		return sourceVertexId;
+	}
+
+	public void setSourceVertexId(long sourceVertexId) {
+		this.sourceVertexId = sourceVertexId;
+	}
+
 	public String getTargetVertexKey() {
 		return targetVertexKey;
 	}
 
 	public void setTargetVertexKey(String targetVertexKey) {
 		this.targetVertexKey = targetVertexKey;
+	}
+
+	public long getTargetVertexId() {
+		return targetVertexId;
+	}
+
+	public void setTargetVertexId(long targetVertexId) {
+		this.targetVertexId = targetVertexId;
 	}
 
 	public int getOntologyId() {
@@ -135,7 +157,9 @@ public class SimpleOntologyEdge implements Serializable {
 		return "SimpleOntologyEdge ["
 				+ "label=" + LABEL + ", "
 				+ "sourceVertexKey=" + sourceVertexKey + ", "
-				+ "targetVertexKey=" + sourceVertexKey + ", "
+				+ "sourceVertexId=" + sourceVertexId + ", "
+				+ "targetVertexKey=" + targetVertexKey + ", "
+				+ "targetVertexId=" + targetVertexId + ", "
 				+ "ontologyId=" + ontologyId + ", "
 				+ "latestWebhookEventId=" + latestWebhookEventId + ", "
 				+ "properties=" + properties + ", "

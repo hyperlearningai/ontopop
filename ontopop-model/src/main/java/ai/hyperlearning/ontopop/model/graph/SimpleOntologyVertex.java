@@ -20,11 +20,13 @@ public class SimpleOntologyVertex implements Serializable {
 
 	private static final long serialVersionUID = -9077006932418612066L;
 	protected static final String VERTEX_KEY_DELIMITER = "_";
+	protected static final String VERTEX_ID_ONTOLOGY_ID_PADDING = "0";
 	
 	public static final String LABEL = "class";
 	private String iri;
 	private Integer ontologyId;
 	private String key;
+	private long vertexId;
 	private long latestWebhookEventId;
 	private Map<String, Object> properties = new LinkedHashMap<>();
 	
@@ -54,8 +56,15 @@ public class SimpleOntologyVertex implements Serializable {
 
 	public void setIri(String iri) {
 		this.iri = iri;
-		if ( this.ontologyId != null )
+		if ( this.ontologyId != null ) {
 			this.key = iri + VERTEX_KEY_DELIMITER + this.ontologyId;
+			String hashCode = (String.valueOf(key.hashCode()))
+					.replace("-", "");
+			this.vertexId = Long.parseLong(hashCode 
+					+ VERTEX_ID_ONTOLOGY_ID_PADDING 
+					+ this.ontologyId);
+		}
+			
 	}
 
 	public int getOntologyId() {
@@ -64,12 +73,22 @@ public class SimpleOntologyVertex implements Serializable {
 
 	public void setOntologyId(int ontologyId) {
 		this.ontologyId = ontologyId;
-		if ( this.iri != null )
+		if ( this.iri != null ) {
 			this.key = this.iri + VERTEX_KEY_DELIMITER + ontologyId;
+			String hashCode = (String.valueOf(key.hashCode()))
+					.replace("-", "");
+			this.vertexId = Long.parseLong(hashCode 
+					+ VERTEX_ID_ONTOLOGY_ID_PADDING 
+					+ this.ontologyId);
+		}
 	}
 	
 	public String getKey() {
 		return key;
+	}
+	
+	public long getVertexId() {
+		return vertexId;
 	}
 
 	public long getLatestWebhookEventId() {
@@ -131,6 +150,7 @@ public class SimpleOntologyVertex implements Serializable {
 				+ "iri=" + iri + ", "
 				+ "ontologyId=" + ontologyId + ", "
 				+ "key=" + key + ", "
+				+ "vertexId=" + vertexId + ", "
 				+ "latestWebhookEventId=" + latestWebhookEventId + ", "
 				+ "properties=" + properties + ", "
 				+ "dateLastUpdated=" + dateLastUpdated 
