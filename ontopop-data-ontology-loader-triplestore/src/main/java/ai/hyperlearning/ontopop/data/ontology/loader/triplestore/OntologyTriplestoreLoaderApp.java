@@ -16,7 +16,7 @@ import ai.hyperlearning.ontopop.messaging.processors.DataPipelineValidatedLoader
 import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 
 /**
- * Ontology Validation Service - Spring Boot Application
+ * Ontology Triplestore Loading Service - Spring Boot Application
  *
  * @author jillurquddus
  * @since 2.0.0

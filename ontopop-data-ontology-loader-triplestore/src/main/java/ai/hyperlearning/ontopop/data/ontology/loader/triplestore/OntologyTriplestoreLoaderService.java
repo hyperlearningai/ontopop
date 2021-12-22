@@ -126,12 +126,12 @@ public class OntologyTriplestoreLoaderService {
 				objectStorageServiceType);
 		
 		// 2. Define and create (if required) the relevant 
-		// target validation directory
+		// target loaded directory
 		switch ( objectStorageServiceType ) {
 			
 			case LOCAL:
 				
-				// Create (if required) the local target validation directory
+				// Create (if required) the local target loaded directory
 				readObjectUri = storageLocalBaseUri 
 					+ File.separator + validatedDirectoryName 
 					+ File.separator + ontologyMessage.getProcessedFilename();
