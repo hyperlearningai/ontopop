@@ -252,6 +252,11 @@
             </dependency>
             <dependency>
                 <groupId>ai.hyperlearning.ontopop</groupId>
+                <artifactId>ontopop-graph</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>ai.hyperlearning.ontopop</groupId>
                 <artifactId>ontopop-messaging</artifactId>
                 <version>${revision}</version>
             </dependency>
@@ -323,6 +328,7 @@
         <module>ontopop-data-ontology-loader-triplestore</module>
         <module>ontopop-data-ontology-parser</module>
         <module>ontopop-data-ontology-modeller-graph</module>
+        <module>ontopop-data-ontology-loader-graph</module>
     </modules>
     
     <!-- Project Build Configuration -->
