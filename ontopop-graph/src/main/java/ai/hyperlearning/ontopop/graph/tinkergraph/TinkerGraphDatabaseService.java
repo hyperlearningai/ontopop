@@ -37,13 +37,16 @@ public class TinkerGraphDatabaseService extends GremlinGraphDatabaseService {
             tinkerGraph.createIndex("ontologyId", Vertex.class);
             tinkerGraph.createIndex("latestWebhookEventId", Vertex.class);
             tinkerGraph.createIndex("key", Vertex.class);
+            tinkerGraph.createIndex("vertexId", Vertex.class);
         }
         
         // Create edge-centric indices
         if (!tinkerGraph.getIndexedKeys(Edge.class).iterator().hasNext()) {
         	tinkerGraph.createIndex("id", Edge.class);
         	tinkerGraph.createIndex("sourceVertexKey", Edge.class);
+        	tinkerGraph.createIndex("sourceVertexId", Edge.class);
         	tinkerGraph.createIndex("targetVertexKey", Edge.class);
+        	tinkerGraph.createIndex("targetVertexId", Edge.class);
         	tinkerGraph.createIndex("ontologyId", Edge.class);
         	tinkerGraph.createIndex("latestWebhookEventId", Edge.class);
         }

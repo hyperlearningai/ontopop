@@ -3,6 +3,7 @@ package ai.hyperlearning.ontopop.graph.gremlin;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -16,6 +17,7 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSo
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.apache.tinkerpop.gremlin.structure.util.TransactionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -70,15 +72,21 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
 		g.V().drop().iterate();
 		g.E().drop().iterate();
 	}
+	
+	@Override
+	public void deleteSubGraph(String propertyKey, Object propertyValue) {
+		g.V().has(propertyKey, propertyValue).drop().iterate();
+		g.E().has(propertyKey, propertyValue).drop().iterate();
+	}
 
 	@Override
-	public void commit() {
+	public void commit() throws TransactionException {
 		if ( supportsTransactions )
 			g.tx().commit();
 	}
 
 	@Override
-	public void rollback() {
+	public void rollback() throws TransactionException {
 		if ( supportsTransactions )
 			g.tx().rollback();
 	}
@@ -102,6 +110,22 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
 	 *************************************************************************/
 
 	@Override
+	public GraphTraversal<Vertex, Vertex> getVertices() {
+		return g.V();
+	}
+	
+	@Override
+	public GraphTraversal<Vertex, Vertex> getVertices(
+			String propertyKey, Object propertyValue) {
+		return g.V().has(propertyKey, propertyValue);
+	}
+	
+	@Override
+	public Vertex getVertex(long vertexId) throws NoSuchElementException {
+		return g.V(vertexId).next();
+	}
+	
+	@Override
 	public Vertex addVertex(String label, Map<String, Object> properties) {
 		
 		GraphTraversal<Vertex, Vertex> graphTraversal = g.addV(label);
@@ -117,7 +141,8 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
 
 	@Override
 	public Vertex updateVertex(long vertexId, 
-			String propertyKey, Object propertyValue) {
+			String propertyKey, Object propertyValue) 
+					throws NoSuchElementException {
 		
 		Vertex vertex = g.V(vertexId).next();
 		vertex.property(propertyKey, propertyValue);
@@ -126,7 +151,8 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
 	}
 
 	@Override
-	public Vertex updateVertex(long vertexId, Map<String, Object> properties) {
+	public Vertex updateVertex(long vertexId, Map<String, Object> properties) 
+			throws NoSuchElementException {
 		
 		Vertex vertex = g.V(vertexId).next();
 		for (Map.Entry<String, Object> entry : properties.entrySet()) {
@@ -137,7 +163,7 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
 	}
 
 	@Override
-	public Vertex deleteVertex(long vertexId) {
+	public Vertex deleteVertex(long vertexId) throws NoSuchElementException {
 		
 		Vertex vertex = g.V(vertexId).next();
 		vertex.remove();
@@ -145,10 +171,31 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
 		
 	}
 	
+	@Override
+	public void deleteVertices(String propertyKey, Object propertyValue) {
+		g.V().has(propertyKey, propertyValue).drop().iterate();
+	}
+	
 	/**************************************************************************
 	 * EDGE MANAGEMENT
 	 *************************************************************************/
 
+	@Override
+	public GraphTraversal<Edge, Edge> getEdges() {
+		return g.E();
+	}
+	
+	@Override
+	public GraphTraversal<Edge, Edge> getEdges(
+			String propertyKey, Object propertyValue) {
+		return g.E().has(propertyKey, propertyValue);
+	}
+	
+	@Override
+	public Edge getEdge(long edgeId) throws NoSuchElementException {
+		return g.E(edgeId).next();
+	}
+	
 	@Override
 	public Edge addEdge(Vertex sourceVertex, Vertex targetVertex, 
 			String label, Map<String, Object> properties) {
@@ -168,7 +215,8 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
 
 	@Override
 	public Edge updateEdge(long edgeId, 
-			String propertyKey, Object propertyValue) {
+			String propertyKey, Object propertyValue) 
+					throws NoSuchElementException {
 		
 		Edge edge = g.E(edgeId).next();
 		edge.property(propertyKey, propertyValue);	
@@ -177,7 +225,8 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
 	}
 
 	@Override
-	public Edge updateEdge(long edgeId, Map<String, Object> properties) {
+	public Edge updateEdge(long edgeId, Map<String, Object> properties) 
+			throws NoSuchElementException {
 		
 		Edge edge = g.E(edgeId).next();
 		for (Map.Entry<String, Object> entry : properties.entrySet()) {
@@ -188,12 +237,17 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
 	}
 
 	@Override
-	public Edge deleteEdge(long edgeId) {
+	public Edge deleteEdge(long edgeId) throws NoSuchElementException {
 		
 		Edge edge = g.E(edgeId).next();
 		edge.remove();
 		return edge;
 		
+	}
+	
+	@Override
+	public void deleteEdges(String propertyKey, Object propertyValue) {
+		g.E().has(propertyKey, propertyValue).drop().iterate();
 	}
 	
 	/**************************************************************************
