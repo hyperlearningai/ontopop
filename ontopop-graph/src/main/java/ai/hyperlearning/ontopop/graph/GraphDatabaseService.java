@@ -45,6 +45,8 @@ public interface GraphDatabaseService {
 	
 	public void serializeGraph(String filepath) throws IOException;
 	
+	public void cleanup() throws Exception;
+	
 	/**************************************************************************
 	 * SCHEMA MANAGEMENT
 	 *************************************************************************/

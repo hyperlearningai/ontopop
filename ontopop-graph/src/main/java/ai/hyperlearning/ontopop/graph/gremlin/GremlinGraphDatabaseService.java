@@ -106,6 +106,11 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
 		g.io(filepath).with(IO.writer, IO.gryo).write().iterate();
 	}
 	
+	@Override
+	public void cleanup() throws Exception {
+		closeGraph();
+	}
+	
 	/**************************************************************************
 	 * SCHEMA MANAGEMENT
 	 *************************************************************************/
