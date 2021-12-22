@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import javax.script.ScriptException;
@@ -13,6 +14,9 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSo
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.util.TransactionException;
+
+import ai.hyperlearning.ontopop.graph.model.SimpleBulkEdge;
+import ai.hyperlearning.ontopop.graph.model.SimpleBulkVertex;
 
 /**
  * Graph Database Service Interface
@@ -53,11 +57,26 @@ public interface GraphDatabaseService {
 	
 	public GraphTraversal<Vertex, Vertex> getVertices();
 	
+	public GraphTraversal<Vertex, Vertex> getVertices(String label);
+	
+	public GraphTraversal<Vertex, Vertex> getVertices(
+			String label, String propertyKey, Object propertyValue);
+	
 	public GraphTraversal<Vertex, Vertex> getVertices(
 			String propertyKey, Object propertyValue);
 	
 	public Vertex getVertex(long vertexId) 
 			throws NoSuchElementException;
+	
+	public Vertex getVertex(
+			String label, String propertyKey, Object propertyValue);
+	
+	public Vertex getVertex(
+			String propertyKey, Object propertyValue);
+	
+	public void addVertices(String label, Set<SimpleBulkVertex> vertices);
+	
+	public void addVertices(String label, List<Map<String, Object>> propertyMaps);
 	
 	public Vertex addVertex(String label, Map<String, Object> properties);
 	
@@ -71,6 +90,8 @@ public interface GraphDatabaseService {
 	public Vertex deleteVertex(long vertexId) 
 			throws NoSuchElementException;
 	
+	public void deleteVertices();
+	
 	public void deleteVertices(String propertyKey, Object propertyValue);
 	
 	/**************************************************************************
@@ -79,11 +100,24 @@ public interface GraphDatabaseService {
 	
 	public GraphTraversal<Edge, Edge> getEdges();
 	
+	public GraphTraversal<Edge, Edge> getEdges(String label);
+	
+	public GraphTraversal<Edge, Edge> getEdges(
+			String label, String propertyKey, Object propertyValue);
+	
 	public GraphTraversal<Edge, Edge> getEdges(
 			String propertyKey, Object propertyValue);
 	
 	public Edge getEdge(long edgeId) 
 			throws NoSuchElementException;
+	
+	public Edge getEdge(
+			String label, String propertyKey, Object propertyValue);
+	
+	public Edge getEdge(
+			String propertyKey, Object propertyValue);
+	
+	public void addEdges(List<SimpleBulkEdge> edges);
 	
 	public Edge addEdge(Vertex sourceVertex, Vertex targetVertex, String label, 
 			Map<String, Object> properties);
@@ -97,6 +131,8 @@ public interface GraphDatabaseService {
 	
 	public Edge deleteEdge(long edgeId) 
 			throws NoSuchElementException;
+	
+	public void deleteEdges();
 	
 	public void deleteEdges(String propertyKey, Object propertyValue);
 	
