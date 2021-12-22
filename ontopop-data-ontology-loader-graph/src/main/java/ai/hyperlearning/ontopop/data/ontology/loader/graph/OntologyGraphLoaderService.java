@@ -2,7 +2,12 @@ package ai.hyperlearning.ontopop.data.ontology.loader.graph;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +16,17 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import ai.hyperlearning.ontopop.graph.GraphDatabaseService;
 import ai.hyperlearning.ontopop.graph.GraphDatabaseServiceFactory;
 import ai.hyperlearning.ontopop.graph.GraphDatabaseServiceType;
+import ai.hyperlearning.ontopop.graph.model.SimpleBulkEdge;
+import ai.hyperlearning.ontopop.graph.model.SimpleBulkVertex;
 import ai.hyperlearning.ontopop.messaging.processors.DataPipelineModelledLoaderSource;
+import ai.hyperlearning.ontopop.model.graph.SimpleOntologyEdge;
+import ai.hyperlearning.ontopop.model.graph.SimpleOntologyPropertyGraph;
+import ai.hyperlearning.ontopop.model.graph.SimpleOntologyVertex;
 import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 import ai.hyperlearning.ontopop.storage.ObjectStorageService;
 import ai.hyperlearning.ontopop.storage.ObjectStorageServiceFactory;
@@ -34,6 +46,9 @@ public class OntologyGraphLoaderService {
 	
 	private static final Logger LOGGER = 
 			LoggerFactory.getLogger(OntologyGraphLoaderService.class);
+	
+	private static final String ONTOLOGY_ID_PROPERTY_KEY = "ontologyId";
+	private static final String KEY_PROPERTY_KEY = "key";
 	
 	@Autowired
 	private ObjectStorageServiceFactory objectStorageServiceFactory;
@@ -162,6 +177,9 @@ public class OntologyGraphLoaderService {
 		LOGGER.debug("Using the {} graph database service.", 
 				graphDatabaseServiceType);
 		
+		// 4. Create the graph database schema if required
+		graphDatabaseService.createSchema();
+		
 	}
 	
 	/**
@@ -194,7 +212,63 @@ public class OntologyGraphLoaderService {
 				+ "Started loading the modelled resource into "
 				+ "the graph database.");
 		
-		// TODO pending
+		// Deserialize the Simple Ontology Property Graph object from JSON
+		ObjectMapper mapper = new ObjectMapper();
+		SimpleOntologyPropertyGraph simpleOntologyPropertyGraph = 
+				mapper.readValue(new File(downloadedFileUri), 
+						SimpleOntologyPropertyGraph.class);
+		
+		// Delete all existing vertices with this ontology ID
+		graphDatabaseService.deleteVertices(
+				ONTOLOGY_ID_PROPERTY_KEY, ontologyMessage.getOntologyId());
+		graphDatabaseService.commit();
+		
+		// Generate a set of SimpleBulkVertex objects
+		Set<SimpleBulkVertex> vertices = new LinkedHashSet<>();
+		for (var entry : simpleOntologyPropertyGraph.getVertices().entrySet()) {
+			SimpleOntologyVertex vertex = entry.getValue();
+			vertex.preparePropertiesForLoading();
+			vertices.add(new SimpleBulkVertex(
+					vertex.getVertexId(), 
+					SimpleOntologyVertex.LABEL, 
+					vertex.getProperties()));	
+		}
+		
+		// Bulk load the vertices/classes
+		graphDatabaseService.addVertices(SimpleOntologyVertex.LABEL, vertices);
+		graphDatabaseService.commit();
+		LOGGER.debug("Loaded {} vertices.", vertices.size());
+		
+		// Delete all existing edges with this ontology ID
+		graphDatabaseService.deleteEdges(
+				ONTOLOGY_ID_PROPERTY_KEY, ontologyMessage.getOntologyId());
+		graphDatabaseService.commit();
+		
+		// Generate a set of SimpleBulkEdge objects
+		List<SimpleBulkEdge> edges = new ArrayList<>();
+		for (SimpleOntologyEdge edge : simpleOntologyPropertyGraph.getEdges()) {
+			edge.preparePropertiesForLoading();
+			Vertex sourceVertex = graphDatabaseService.getVertex(
+					SimpleOntologyVertex.LABEL, 
+					KEY_PROPERTY_KEY, 
+					edge.getSourceVertexKey());
+			Vertex targetVertex = graphDatabaseService.getVertex(
+					SimpleOntologyVertex.LABEL, 
+					KEY_PROPERTY_KEY, 
+					edge.getTargetVertexKey());
+			if ( sourceVertex != null && targetVertex != null ) {
+				edges.add(new SimpleBulkEdge(
+						SimpleOntologyEdge.LABEL, 
+						sourceVertex, 
+						targetVertex, 
+						edge.getProperties()));
+			}
+		}
+		
+		// Bulk load the edges/subClassOf relationships
+		graphDatabaseService.addEdges(edges);
+		graphDatabaseService.commit();
+		LOGGER.debug("Loaded {} edges.", edges.size());
 		
 		LOGGER.info("Ontology Graph Loading Service - "
 				+ "Finished loading the modelled resource into "
