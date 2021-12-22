@@ -106,6 +106,14 @@ public class SimpleOntologyVertex implements Serializable {
 	public void setProperties(Map<String, Object> properties) {
 		this.properties = properties;
 	}
+	
+	public void preparePropertiesForLoading() {
+		this.properties.put("iri", this.iri);
+		this.properties.put("ontologyId", this.ontologyId);
+		this.properties.put("key", this.key);
+		this.properties.put("vertexId", this.vertexId);
+		this.properties.put("latestWebhookEventId", this.latestWebhookEventId);
+	}
 
 	public LocalDateTime getDateLastUpdated() {
 		return dateLastUpdated;

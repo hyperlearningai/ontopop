@@ -109,6 +109,15 @@ public class SimpleOntologyEdge implements Serializable {
 	public void setProperties(Map<String, Object> properties) {
 		this.properties = properties;
 	}
+	
+	public void preparePropertiesForLoading() {
+		this.properties.put("sourceVertexKey", this.sourceVertexKey);
+		this.properties.put("sourceVertexId", this.sourceVertexId);
+		this.properties.put("targetVertexKey", this.targetVertexKey);
+		this.properties.put("targetVertexId", this.targetVertexId);
+		this.properties.put("ontologyId", this.ontologyId);
+		this.properties.put("latestWebhookEventId", this.latestWebhookEventId);
+	}
 
 	public LocalDateTime getDateLastUpdated() {
 		return dateLastUpdated;
