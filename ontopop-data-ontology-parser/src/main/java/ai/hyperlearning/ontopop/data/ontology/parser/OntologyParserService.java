@@ -212,7 +212,17 @@ public class OntologyParserService {
 				simpleObjectPropertyMap, 
 				simpleClassMap);
 		
+		// Count the number of relationships for debugging purposes
+		int relationshipCount = 0;
+		for (var entry : simpleOntology.getSimpleClassMap().entrySet()) {
+			relationshipCount += entry.getValue().getParentClasses().size();
+		}
+		
 		LOGGER.debug("Parsed ontology: '{}'.", simpleOntology);
+		LOGGER.debug("Parsed {} classes.", 
+				simpleOntology.getSimpleClassMap().size());
+		LOGGER.debug("Parsed {} parent-child class relationships.", 
+				relationshipCount);
 		LOGGER.info("Ontology Parsing Service - "
 				+ "Finished parsing the validated resource.");
 		
