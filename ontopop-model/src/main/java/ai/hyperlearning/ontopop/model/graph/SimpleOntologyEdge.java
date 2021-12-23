@@ -29,7 +29,7 @@ public class SimpleOntologyEdge implements Serializable {
 	private long targetVertexId;
 	private int ontologyId;
 	private long latestWebhookEventId;
-	private Map<String, Object> properties = new LinkedHashMap<>();;
+	private Map<String, Object> properties = new LinkedHashMap<>();
 	
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
@@ -128,40 +128,6 @@ public class SimpleOntologyEdge implements Serializable {
 
 	public void setDateLastUpdated(LocalDateTime dateLastUpdated) {
 		this.dateLastUpdated = dateLastUpdated;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ontologyId;
-		result = prime * result + ((sourceVertexKey == null) ? 0 : sourceVertexKey.hashCode());
-		result = prime * result + ((targetVertexKey == null) ? 0 : targetVertexKey.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		SimpleOntologyEdge other = (SimpleOntologyEdge) obj;
-		if (ontologyId != other.ontologyId)
-			return false;
-		if (sourceVertexKey == null) {
-			if (other.sourceVertexKey != null)
-				return false;
-		} else if (!sourceVertexKey.equals(other.sourceVertexKey))
-			return false;
-		if (targetVertexKey == null) {
-			if (other.targetVertexKey != null)
-				return false;
-		} else if (!targetVertexKey.equals(other.targetVertexKey))
-			return false;
-		return true;
 	}
 
 	@Override

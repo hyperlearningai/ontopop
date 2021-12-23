@@ -1,10 +1,10 @@
 package ai.hyperlearning.ontopop.model.graph;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.text.CaseUtils;
 
@@ -36,9 +36,9 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 	// Simple Ontology Vertex objects which are a one-to-one mapping of OWL classes
 	private Map<String, SimpleOntologyVertex> vertices = new LinkedHashMap<>();
 	
-	// Set of resolved Simple Ontology Edge objects which are a one-to-one
+	// List of resolved Simple Ontology Edge objects which are a one-to-one
 	// mapping of OWL subclass relationships
-	private Set<SimpleOntologyEdge> edges = new LinkedHashSet<>();
+	private List<SimpleOntologyEdge> edges = new ArrayList<>();
 	
 	public SimpleOntologyPropertyGraph() {
 		
@@ -48,7 +48,7 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 			int id, 
 			long latestWebhookEventId, 
 			Map<String, SimpleOntologyVertex> vertices, 
-			Set<SimpleOntologyEdge> edges) {
+			List<SimpleOntologyEdge> edges) {
 		this.id = id;
 		this.latestWebhookEventId = latestWebhookEventId;
 		this.vertices = vertices;
@@ -75,10 +75,11 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 		this.latestWebhookEventId = latestWebhookEventId;
 		
 		// Resolve and set the simple ontology vertex objects
-		setVertices(simpleOntology, standardSchemaAnnotationProperties);
+		resolveAndSetVertices(simpleOntology, 
+				standardSchemaAnnotationProperties);
 		
 		// Resolve and set the simple ontology edge objects
-		setEdges(simpleOntology);
+		resolveAndSetEdges(simpleOntology);
 		
 	}
 	
@@ -90,7 +91,7 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 	 */
 	
 	@JsonIgnore
-	public void setVertices(
+	public void resolveAndSetVertices(
 			SimpleOntology simpleOntology, 
 			Map<String, SimpleAnnotationProperty> standardSchemaAnnotationProperties) {
 		
@@ -146,7 +147,7 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 	 */
 	
 	@JsonIgnore
-	public void setEdges(SimpleOntology simpleOntology) {
+	public void resolveAndSetEdges(SimpleOntology simpleOntology) {
 		
 		// Iterate over the simple class map from the simple ontology
 		Map<String, SimpleClass> simpleClassMap = simpleOntology.getSimpleClassMap();
@@ -244,11 +245,11 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 		this.vertices.put(key, vertex);
 	}
 
-	public Set<SimpleOntologyEdge> getEdges() {
+	public List<SimpleOntologyEdge> getEdges() {
 		return edges;
 	}
 
-	public void setEdges(Set<SimpleOntologyEdge> edges) {
+	public void setEdges(List<SimpleOntologyEdge> edges) {
 		this.edges = edges;
 	}
 	
