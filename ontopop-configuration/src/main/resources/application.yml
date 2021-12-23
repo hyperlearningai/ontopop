@@ -112,6 +112,13 @@ storage:
         service: tinkergraph
         gremlin-graph:
             configuration-filename: gremlin-graph.properties
+    search:
+        service: elasticsearch
+        elasticsearch:
+            url: ${elasticsearch.url}
+            indexNamePrefix: ontopop
+            shards: 1
+            replicas: 0
 web:
     client:
         codecs:
