@@ -11,10 +11,10 @@
     </parent>
     
     <!-- Module Metadata -->
-    <artifactId>ontopop-data-ontology</artifactId>
-    <name>ontopop-data-ontology</name>
+    <artifactId>ontopop-api-ontology</artifactId>
+    <name>ontopop-api-ontology</name>
     <packaging>jar</packaging>
-    <description>OntoPop - Ontology Service</description>
+    <description>OntoPop - Ontology API Service</description>
     <url>https://ontopop.com</url>
     <organization>
         <name>HyperLearning AI</name>

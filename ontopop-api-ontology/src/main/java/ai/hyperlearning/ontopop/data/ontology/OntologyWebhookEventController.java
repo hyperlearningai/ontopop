@@ -28,7 +28,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/api/ontologies")
-@Tag(name = "webhook", description = "Ontology Service Webhooks REST API")
+@Tag(name = "webhook", description = "Ontology Webhooks REST API")
 public class OntologyWebhookEventController {
 	
 	private static final Logger LOGGER = 

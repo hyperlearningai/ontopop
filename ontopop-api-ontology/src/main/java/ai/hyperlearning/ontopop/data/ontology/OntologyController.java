@@ -37,7 +37,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/api/ontologies")
-@Tag(name = "ontology", description = "Ontology Service REST API")
+@Tag(name = "ontology", description = "Ontology REST API")
 public class OntologyController {
 	
 	private static final Logger LOGGER = 

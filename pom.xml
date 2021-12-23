@@ -322,13 +322,13 @@
         <module>ontopop-messaging</module>
         <module>ontopop-owl</module>
         <module>ontopop-data-jpa</module>
-        <module>ontopop-data-ontology</module>
         <module>ontopop-data-ontology-ingestor</module>
         <module>ontopop-data-ontology-validator</module>
         <module>ontopop-data-ontology-loader-triplestore</module>
         <module>ontopop-data-ontology-parser</module>
         <module>ontopop-data-ontology-modeller-graph</module>
         <module>ontopop-data-ontology-loader-graph</module>
+        <module>ontopop-api-ontology</module>
     </modules>
     
     <!-- Project Build Configuration -->

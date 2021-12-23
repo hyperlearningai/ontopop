@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
- * Ontology Service - Spring Boot Application
+ * Ontology API Service - Spring Boot Application
  *
  * @author jillurquddus
  * @since 2.0.0
