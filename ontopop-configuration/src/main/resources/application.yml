@@ -34,6 +34,12 @@ spring:
                 modelledLoadedConsumptionChannel:
                     destination: ontopop.data.modelled.loaded
                     binder: local_rabbit
+                modelledIndexedPublicationChannel:
+                    destination: ontopop.data.modelled.indexed
+                    binder: local_rabbit
+                modelledIndexedConsumptionChannel:
+                    destination: ontopop.data.modelled.indexed
+                    binder: local_rabbit
                 validatedLoadedPublicationChannel:
                     destination: ontopop.data.validated.loaded
                     binder: local_rabbit
