@@ -177,7 +177,8 @@ public class OntologyGraphLoaderService {
 		LOGGER.debug("Using the {} graph database service.", 
 				graphDatabaseServiceType);
 		
-		// 4. Create the graph database schema if required
+		// 4. Open and create the graph database schema if required
+		graphDatabaseService.openGraph();
 		graphDatabaseService.createSchema();
 		
 	}
