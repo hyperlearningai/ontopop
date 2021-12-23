@@ -18,13 +18,13 @@ public class SimpleOntology implements Serializable {
 	private long latestWebhookEventId;
 	
 	// Map between annotation property IRI and Simple Annotation Property objects
-	private Map<String, SimpleAnnotationProperty> simpleAnnotationPropertyMap = new LinkedHashMap<>();;
+	private Map<String, SimpleAnnotationProperty> simpleAnnotationPropertyMap = new LinkedHashMap<>();
 	
 	// Map between object property IRI and Simple Object Property objects
-	private Map<String, SimpleObjectProperty> simpleObjectPropertyMap = new LinkedHashMap<>();;
+	private Map<String, SimpleObjectProperty> simpleObjectPropertyMap = new LinkedHashMap<>();
 	
 	// Map between class IRI and Simple Class objects
-	private Map<String, SimpleClass> simpleClassMap = new LinkedHashMap<>();;
+	private Map<String, SimpleClass> simpleClassMap = new LinkedHashMap<>();
 	
 	public SimpleOntology() {
 		
