@@ -8,6 +8,8 @@ import java.util.Set;
 
 import org.apache.commons.text.CaseUtils;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import ai.hyperlearning.ontopop.model.owl.SimpleAnnotationProperty;
 import ai.hyperlearning.ontopop.model.owl.SimpleClass;
 import ai.hyperlearning.ontopop.model.owl.SimpleOntology;
@@ -87,6 +89,7 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 	 * @param standardSchemaAnnotationProperties
 	 */
 	
+	@JsonIgnore
 	public void setVertices(
 			SimpleOntology simpleOntology, 
 			Map<String, SimpleAnnotationProperty> standardSchemaAnnotationProperties) {
@@ -142,6 +145,7 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 	 * @param simpleOntology
 	 */
 	
+	@JsonIgnore
 	public void setEdges(SimpleOntology simpleOntology) {
 		
 		// Iterate over the simple class map from the simple ontology
