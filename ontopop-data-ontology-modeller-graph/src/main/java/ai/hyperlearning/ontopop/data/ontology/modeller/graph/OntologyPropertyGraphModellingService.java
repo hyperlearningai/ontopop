@@ -223,6 +223,10 @@ public class OntologyPropertyGraphModellingService {
 				standardSchemaAnnotationProperties);
 		
 		LOGGER.debug("Modelled ontology: '{}'.", simpleOntologyPropertyGraph);
+		LOGGER.debug("Modelled {} vertices.", 
+				simpleOntologyPropertyGraph.getVertices().size());
+		LOGGER.debug("Modelled {} edges.", 
+				simpleOntologyPropertyGraph.getEdges().size());
 		LOGGER.info("Ontology Property Graph Modelling Service - "
 				+ "Finished modelling the parsed resource.");
 		
