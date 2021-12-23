@@ -21,8 +21,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ai.hyperlearning.ontopop.graph.GraphDatabaseService;
 import ai.hyperlearning.ontopop.graph.GraphDatabaseServiceFactory;
 import ai.hyperlearning.ontopop.graph.GraphDatabaseServiceType;
-import ai.hyperlearning.ontopop.graph.model.SimpleBulkEdge;
-import ai.hyperlearning.ontopop.graph.model.SimpleBulkVertex;
+import ai.hyperlearning.ontopop.graph.model.SimpleGraphEdge;
+import ai.hyperlearning.ontopop.graph.model.SimpleGraphVertex;
 import ai.hyperlearning.ontopop.messaging.processors.DataPipelineModelledLoaderSource;
 import ai.hyperlearning.ontopop.model.graph.SimpleOntologyEdge;
 import ai.hyperlearning.ontopop.model.graph.SimpleOntologyPropertyGraph;
@@ -224,12 +224,12 @@ public class OntologyGraphLoaderService {
 				ONTOLOGY_ID_PROPERTY_KEY, ontologyMessage.getOntologyId());
 		graphDatabaseService.commit();
 		
-		// Generate a set of SimpleBulkVertex objects
-		Set<SimpleBulkVertex> vertices = new LinkedHashSet<>();
+		// Generate a set of SimpleGraphVertex objects
+		Set<SimpleGraphVertex> vertices = new LinkedHashSet<>();
 		for (var entry : simpleOntologyPropertyGraph.getVertices().entrySet()) {
 			SimpleOntologyVertex vertex = entry.getValue();
 			vertex.preparePropertiesForLoading();
-			vertices.add(new SimpleBulkVertex(
+			vertices.add(new SimpleGraphVertex(
 					vertex.getVertexId(), 
 					SimpleOntologyVertex.LABEL, 
 					vertex.getProperties()));	
@@ -245,8 +245,8 @@ public class OntologyGraphLoaderService {
 				ONTOLOGY_ID_PROPERTY_KEY, ontologyMessage.getOntologyId());
 		graphDatabaseService.commit();
 		
-		// Generate a set of SimpleBulkEdge objects
-		List<SimpleBulkEdge> edges = new ArrayList<>();
+		// Generate a set of SimpleGraphEdge objects
+		List<SimpleGraphEdge> edges = new ArrayList<>();
 		for (SimpleOntologyEdge edge : simpleOntologyPropertyGraph.getEdges()) {
 			edge.preparePropertiesForLoading();
 			Vertex sourceVertex = graphDatabaseService.getVertex(
@@ -258,7 +258,7 @@ public class OntologyGraphLoaderService {
 					KEY_PROPERTY_KEY, 
 					edge.getTargetVertexKey());
 			if ( sourceVertex != null && targetVertex != null ) {
-				edges.add(new SimpleBulkEdge(
+				edges.add(new SimpleGraphEdge(
 						SimpleOntologyEdge.LABEL, 
 						sourceVertex, 
 						targetVertex, 

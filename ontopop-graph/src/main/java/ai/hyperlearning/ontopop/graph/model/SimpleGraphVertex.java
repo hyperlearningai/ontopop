@@ -4,24 +4,24 @@ import java.io.Serializable;
 import java.util.Map;
 
 /**
- * Simple Vertex model for bulk loading
+ * Simple Vertex model for graph loading
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
-public class SimpleBulkVertex implements Serializable {
+public class SimpleGraphVertex implements Serializable {
 
 	private static final long serialVersionUID = 9091136164674497432L;
 	private long vertexId;
 	private String label;
 	private Map<String, Object> properties;
 	
-	public SimpleBulkVertex() {
+	public SimpleGraphVertex() {
 		
 	}
 
-	public SimpleBulkVertex(long vertexId, 
+	public SimpleGraphVertex(long vertexId, 
 			String label, 
 			Map<String, Object> properties) {
 		this.vertexId = vertexId;
@@ -69,7 +69,7 @@ public class SimpleBulkVertex implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		SimpleBulkVertex other = (SimpleBulkVertex) obj;
+		SimpleGraphVertex other = (SimpleGraphVertex) obj;
 		if (vertexId != other.vertexId)
 			return false;
 		return true;
@@ -77,7 +77,7 @@ public class SimpleBulkVertex implements Serializable {
 
 	@Override
 	public String toString() {
-		return "SimpleBulkVertex ["
+		return "SimpleGraphVertex ["
 				+ "vertexId=" + vertexId + ", "
 				+ "label=" + label + ", "
 				+ "properties=" + properties 

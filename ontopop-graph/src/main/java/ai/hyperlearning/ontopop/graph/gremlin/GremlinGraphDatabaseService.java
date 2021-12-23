@@ -27,8 +27,8 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import ai.hyperlearning.ontopop.graph.GraphDatabaseService;
-import ai.hyperlearning.ontopop.graph.model.SimpleBulkEdge;
-import ai.hyperlearning.ontopop.graph.model.SimpleBulkVertex;
+import ai.hyperlearning.ontopop.graph.model.SimpleGraphEdge;
+import ai.hyperlearning.ontopop.graph.model.SimpleGraphVertex;
 
 /**
  * Gremlin Graph Database Service
@@ -164,19 +164,19 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
 	}
 	
 	@Override
-	public void addVertices(String label, Set<SimpleBulkVertex> vertices) {
+	public void addVertices(String label, Set<SimpleGraphVertex> vertices) {
 		
 		if ( !vertices.isEmpty() ) {
 			
 			// Partition the set of vertices
-			Iterable<List<SimpleBulkVertex>> verticesSubLists = 
+			Iterable<List<SimpleGraphVertex>> verticesSubLists = 
 					Iterables.partition(vertices, BULK_LOAD_PARTITION_SIZE);
-			for (List<SimpleBulkVertex> verticesSubList : verticesSubLists) {
+			for (List<SimpleGraphVertex> verticesSubList : verticesSubLists) {
 				
 				// Bulk load the vertices in this vertices sublist
 				GraphTraversal<Vertex, Vertex> graphTraversal = g.addV(label);
 				int counter = 0;
-				for (SimpleBulkVertex vertex : verticesSubList) {
+				for (SimpleGraphVertex vertex : verticesSubList) {
 					if ( counter > 0 )
 						graphTraversal.addV(label);
 					graphTraversal.property(T.id, vertex.getVertexId());
@@ -324,9 +324,9 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
 	}
 	
 	@Override
-	public void addEdges(List<SimpleBulkEdge> edges) {
+	public void addEdges(List<SimpleGraphEdge> edges) {
 		if ( !edges.isEmpty() ) {
-			for (SimpleBulkEdge edge : edges) {
+			for (SimpleGraphEdge edge : edges) {
 				addEdge(edge.getSourceVertex(), 
 						edge.getTargetVertex(), 
 						edge.getLabel(), 

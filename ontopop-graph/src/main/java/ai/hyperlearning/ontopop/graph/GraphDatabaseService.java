@@ -15,8 +15,8 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.util.TransactionException;
 
-import ai.hyperlearning.ontopop.graph.model.SimpleBulkEdge;
-import ai.hyperlearning.ontopop.graph.model.SimpleBulkVertex;
+import ai.hyperlearning.ontopop.graph.model.SimpleGraphEdge;
+import ai.hyperlearning.ontopop.graph.model.SimpleGraphVertex;
 
 /**
  * Graph Database Service Interface
@@ -76,7 +76,7 @@ public interface GraphDatabaseService {
 	public Vertex getVertex(
 			String propertyKey, Object propertyValue);
 	
-	public void addVertices(String label, Set<SimpleBulkVertex> vertices);
+	public void addVertices(String label, Set<SimpleGraphVertex> vertices);
 	
 	public void addVertices(String label, List<Map<String, Object>> propertyMaps);
 	
@@ -119,7 +119,7 @@ public interface GraphDatabaseService {
 	public Edge getEdge(
 			String propertyKey, Object propertyValue);
 	
-	public void addEdges(List<SimpleBulkEdge> edges);
+	public void addEdges(List<SimpleGraphEdge> edges);
 	
 	public Edge addEdge(Vertex sourceVertex, Vertex targetVertex, String label, 
 			Map<String, Object> properties);

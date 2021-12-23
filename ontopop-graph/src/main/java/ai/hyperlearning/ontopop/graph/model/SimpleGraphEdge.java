@@ -6,13 +6,13 @@ import java.util.Map;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 
 /**
- * Simple Edge model for bulk loading
+ * Simple Edge model for graph loading
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
-public class SimpleBulkEdge implements Serializable {
+public class SimpleGraphEdge implements Serializable {
 
 	private static final long serialVersionUID = 1133567718026149941L;
 	private String label;
@@ -20,11 +20,11 @@ public class SimpleBulkEdge implements Serializable {
 	private Vertex targetVertex;
 	private Map<String, Object> properties;
 	
-	public SimpleBulkEdge() {
+	public SimpleGraphEdge() {
 		
 	}
 
-	public SimpleBulkEdge(String label, 
+	public SimpleGraphEdge(String label, 
 			Vertex sourceVertex, 
 			Vertex targetVertex, 
 			Map<String, Object> properties) {
@@ -68,7 +68,7 @@ public class SimpleBulkEdge implements Serializable {
 
 	@Override
 	public String toString() {
-		return "SimpleBulkEdge ["
+		return "SimpleGraphEdge ["
 				+ "label=" + label + ", "
 				+ "sourceVertex=" + sourceVertex + ", "
 				+ "targetVertex=" + targetVertex + ", "
