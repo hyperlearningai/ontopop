@@ -20,9 +20,6 @@ public class SimpleIndexedVertex implements Serializable {
 	private static final long serialVersionUID = -692044707286693545L;
 	
 	@org.springframework.data.annotation.Id
-	@Field(type = FieldType.Text)
-	private String key;
-	
 	@Field(type = FieldType.Long)
 	private long vertexId;
 	
@@ -35,22 +32,12 @@ public class SimpleIndexedVertex implements Serializable {
 		
 	}
 
-	public SimpleIndexedVertex(String key, 
-			long vertexId, 
+	public SimpleIndexedVertex(long vertexId, 
 			String label, 
 			Map<String, Object> properties) {
-		this.key = key;
 		this.vertexId = vertexId;
 		this.label = label;
 		this.properties = properties;
-	}
-
-	public String getKey() {
-		return key;
-	}
-
-	public void setKey(String key) {
-		this.key = key;
 	}
 
 	public long getVertexId() {
@@ -80,7 +67,6 @@ public class SimpleIndexedVertex implements Serializable {
 	@Override
 	public String toString() {
 		return "SimpleIndexedVertex ["
-				+ "key=" + key + ", "
 				+ "vertexId=" + vertexId + ", "
 				+ "label=" + label + ", "
 				+ "properties=" + properties + "]";

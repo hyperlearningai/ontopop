@@ -2,6 +2,8 @@ package ai.hyperlearning.ontopop.search;
 
 import java.util.Set;
 
+import org.springframework.data.elasticsearch.core.SearchHits;
+
 import ai.hyperlearning.ontopop.search.model.SimpleIndexedVertex;
 
 /**
@@ -24,6 +26,15 @@ public interface SearchService {
 	/**************************************************************************
 	 * DOCUMENT MANAGEMENT
 	 *************************************************************************/
+	
+	public SimpleIndexedVertex getDocument(String indexName, long vertexId);
+	
+	public SearchHits<SimpleIndexedVertex> search(String indexName, 
+			String propertyKey, String query, boolean exact, boolean and);
+	
+	public SearchHits<SimpleIndexedVertex> search(String indexName, 
+			String propertyKey, String query, boolean and,  
+			int minimumShouldMatchPercentage);
 	
 	public void indexDocuments(String indexName, 
 			Set<SimpleIndexedVertex> vertices);

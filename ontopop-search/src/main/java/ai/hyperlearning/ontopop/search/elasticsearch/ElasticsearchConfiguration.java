@@ -8,7 +8,6 @@ import org.springframework.data.elasticsearch.client.ClientConfiguration;
 import org.springframework.data.elasticsearch.client.RestClients;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
-import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
 /**
  * Elasticsearch Configuration
@@ -18,7 +17,6 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
  */
 
 @Configuration
-@EnableElasticsearchRepositories(basePackages = "ai.hyperlearning.ontopop.search.elasticsearch.repositories")
 public class ElasticsearchConfiguration {
 	
 	@Value("${storage.search.elasticsearch.url}")
