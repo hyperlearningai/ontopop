@@ -267,7 +267,12 @@
             </dependency>
             <dependency>
                 <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-data-jpa</artifactId>
+                <artifactId>ontopop-jpa</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>ai.hyperlearning.ontopop</groupId>
+                <artifactId>ontopop-search</artifactId>
                 <version>${revision}</version>
             </dependency>
             
@@ -321,7 +326,8 @@
         <module>ontopop-graph</module>
         <module>ontopop-messaging</module>
         <module>ontopop-owl</module>
-        <module>ontopop-data-jpa</module>
+        <module>ontopop-jpa</module>
+        <module>ontopop-search</module>
         <module>ontopop-data-ontology-ingestor</module>
         <module>ontopop-data-ontology-validator</module>
         <module>ontopop-data-ontology-loader-triplestore</module>

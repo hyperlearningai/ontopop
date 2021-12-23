@@ -11,8 +11,8 @@
     </parent>
     
     <!-- Module Metadata -->
-    <artifactId>ontopop-data-jpa</artifactId>
-    <name>ontopop-data-jpa</name>
+    <artifactId>ontopop-jpa</artifactId>
+    <name>ontopop-jpa</name>
     <packaging>jar</packaging>
     <description>OntoPop - JPA Repositories and Configuration</description>
     <url>https://ontopop.com</url>

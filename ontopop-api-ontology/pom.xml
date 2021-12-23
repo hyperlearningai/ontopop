@@ -65,7 +65,7 @@
         </dependency>
         <dependency>
             <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-data-jpa</artifactId>
+            <artifactId>ontopop-jpa</artifactId>
         </dependency>
         <dependency>
             <groupId>ai.hyperlearning.ontopop</groupId>
