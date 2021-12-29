@@ -1,0 +1,23 @@
+{
+  "version": "2.0",
+  "functionTimeout": "00:10:00", 
+  "logging": {
+    "applicationInsights": {
+      "samplingSettings": {
+        "isEnabled": true,
+        "initialSamplingPercentage": 0.0,
+        "minSamplingPercentage": 0.0,
+        "maxSamplingPercentage": 0.0,
+        "excludedTypes": "Event;Exception"
+      },
+      "enableLiveMetrics": false,
+      "enableDependencyTracking": false,
+      "enablePerformanceCountersCollection": false,
+      "httpAutoCollectionOptions": {
+        "enableHttpTriggerExtendedInfoCollection": false,
+        "enableW3CDistributedTracing": false,
+        "enableResponseHeaderInjection": false
+      }
+    }
+  }
+}
