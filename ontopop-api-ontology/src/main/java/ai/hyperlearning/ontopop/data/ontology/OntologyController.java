@@ -19,10 +19,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import ai.hyperlearning.ontopop.data.jpa.repositories.OntologyRepository;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreationException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDeletionException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyNotFoundException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyUpdateSecretDataException;
 import ai.hyperlearning.ontopop.model.ontology.Ontology;
 import ai.hyperlearning.ontopop.model.ontology.OntologyNonSecretData;
-import ai.hyperlearning.ontopop.model.ontology.OntologySecretData;
+import ai.hyperlearning.ontopop.security.secrets.model.OntologySecretData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -63,12 +66,19 @@ public class OntologyController {
 	        		description = "Ontology created"), 
 	        @ApiResponse(
 	        		responseCode = "401",
-	        		description = "Ontology creation request unauthorized")})
+	        		description = "Ontology creation request unauthorized"), 
+	        @ApiResponse(
+	        		responseCode = "500",
+	        		description = "Internal server error")})
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public Ontology newOntology(@RequestBody Ontology newOntology) {
 		LOGGER.debug("New HTTP POST request: Create ontology.");
-		return ontologyService.create(newOntology);
+		try {
+			return ontologyService.create(newOntology);
+		} catch (Exception e) {
+			throw new OntologyCreationException();
+		}
 	}
 	
 	/**************************************************************************
@@ -165,9 +175,13 @@ public class OntologyController {
 			@PathVariable(required = true) int id, 
 			@RequestBody OntologySecretData ontologySecretData) {
 		LOGGER.debug("New HTTP PATCH request: Update ontology secrets by ID.");
-		ontologyService.update(id, ontologySecretData);
-		return new ResponseEntity<>(
-				"Ontology update request processed", HttpStatus.OK);
+		try {
+			ontologyService.update(id, ontologySecretData);
+			return new ResponseEntity<>(
+					"Ontology update request processed", HttpStatus.OK);
+		} catch (Exception e) {
+			throw new OntologyUpdateSecretDataException(id);
+		}
 	}
 	
 	/**************************************************************************
@@ -192,9 +206,14 @@ public class OntologyController {
 	public ResponseEntity<String> deleteOntology(
 			@PathVariable(required = true) int id)	{
 		LOGGER.debug("New HTTP DELETE request: Delete ontology by ID.");
-		ontologyService.delete(id);
-		return new ResponseEntity<>(
-				"Ontology deletion request processed", HttpStatus.OK);
+		try {
+			ontologyService.delete(id);
+			return new ResponseEntity<>(
+					"Ontology deletion request processed", HttpStatus.OK);
+		} catch (Exception e) {
+			throw new OntologyDeletionException(id);
+		}
+		
 	}
 
 }
