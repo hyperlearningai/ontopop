@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.model.ontology;
+package ai.hyperlearning.ontopop.security.secrets.model;
 
 import java.io.Serializable;
 
@@ -20,10 +20,11 @@ public class OntologySecretData implements Serializable {
 		
 	}
 	
-	public OntologySecretData(Ontology ontology) {
-		this.id = ontology.getId();
-		this.repoToken = ontology.getRepoToken();
-		this.repoWebhookSecret = ontology.getRepoWebhookSecret();
+	public OntologySecretData(
+			int id, String repoToken, String repoWebhookSecret) {
+		this.id = id;
+		this.repoToken = repoToken;
+		this.repoWebhookSecret = repoWebhookSecret;
 	}
 
 	public int getId() {

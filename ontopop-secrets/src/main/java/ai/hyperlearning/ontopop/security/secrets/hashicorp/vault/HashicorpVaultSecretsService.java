@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.security.vault;
+package ai.hyperlearning.ontopop.security.secrets.hashicorp.vault;
 
 import org.springframework.vault.core.VaultTemplate;
 import org.springframework.vault.core.VaultKeyValueOperations;
@@ -7,13 +7,16 @@ import org.springframework.vault.support.VaultResponse;
 import org.springframework.vault.support.VaultResponseSupport;
 
 /**
- * Spring Cloud Vault Common Methods
+ * Hashicorp Vault Secrets Service
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
-public class Vault {
+public class HashicorpVaultSecretsService {
+	
+	private static final KeyValueBackend KV_BACKEND_VERSION = 
+			KeyValueBackend.KV_2;
 	
 	/**
 	 * Get a value given a path (e.g. ontopop/development) 
@@ -24,11 +27,10 @@ public class Vault {
 	 */
 	
 	public static Object get(VaultTemplate vaultTemplate, String mountPath, 
-			KeyValueBackend version, String path, String key) 
-					throws NullPointerException {
+			String path, String key) throws NullPointerException {
 		
 		VaultResponse response = vaultTemplate
-				.opsForKeyValue(mountPath, version)
+				.opsForKeyValue(mountPath, KV_BACKEND_VERSION)
 				.get(path);
 		return response.getData().get(key);
 		
@@ -44,11 +46,10 @@ public class Vault {
 	 */
 	
 	public static <T> VaultResponseSupport<T> get(VaultTemplate vaultTemplate, 
-			String mountPath, KeyValueBackend version, 
-			String path, Class<T> className) {
+			String mountPath, String path, Class<T> className) {
 		
 		return vaultTemplate
-			.opsForKeyValue(mountPath, version)
+			.opsForKeyValue(mountPath, KV_BACKEND_VERSION)
 			.get(path, className);
 		
 	}
