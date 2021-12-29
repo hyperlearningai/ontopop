@@ -63,7 +63,7 @@
         <owlapi-distribution.version>5.1.19</owlapi-distribution.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <revision>2.0.0</revision>
-        <spring-cloud-dependencies.version>2020.0.4</spring-cloud-dependencies.version>
+        <spring-cloud-dependencies.version>2021.0.0</spring-cloud-dependencies.version>
         <springdoc-openapi-ui.version>1.5.12</springdoc-openapi-ui.version>
         <tinkergraph-gremlin.version>3.5.1</tinkergraph-gremlin.version>
     </properties>
