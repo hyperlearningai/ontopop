@@ -59,6 +59,16 @@ spring:
                                 virtual-host: /
             default:
                 contentType: application/json
+        vault:
+            host: localhost
+            port: 8200
+            scheme: http
+            authentication: TOKEN
+            token: ${VAULT_TOKEN}
+            kv:
+                enabled: true
+                backend: secret
+                default-context: ontopop/development
     datasource:
         driver-class-name: org.hsqldb.jdbc.JDBCDriver
         url: ${spring.datasource.url}
@@ -72,10 +82,18 @@ spring:
             ddl-auto: update
         show-sql: false
 security:
-    vault:
-        paths:
-            subpaths:
-                ontologies: /ontologies/
+    secrets:
+        service: hashicorp-vault
+        aws-secrets-manager: 
+            access-key-id: ${aws.secrets-manager.access-key-id}
+            access-key-secret: ${aws.secrets-manager.access-key-secret}
+            region: eu-west-2
+        azure-key-vault:
+            url: ${azure.key-vault.url}
+        hashicorp-vault:
+            paths:
+                subpaths:
+                    ontologies: /ontologies/
 storage:
     object:
         service: local
