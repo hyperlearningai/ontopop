@@ -5,11 +5,8 @@ import java.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.vault.core.VaultTemplate;
-import org.springframework.vault.core.VaultKeyValueOperationsSupport.KeyValueBackend;
 
 import com.google.common.base.Strings;
 
@@ -18,8 +15,8 @@ import ai.hyperlearning.ontopop.exceptions.ontology.OntologyNotFoundException;
 import ai.hyperlearning.ontopop.mappers.OntologyMapper;
 import ai.hyperlearning.ontopop.model.ontology.Ontology;
 import ai.hyperlearning.ontopop.model.ontology.OntologyNonSecretData;
-import ai.hyperlearning.ontopop.model.ontology.OntologySecretData;
-import ai.hyperlearning.ontopop.security.vault.Vault;
+import ai.hyperlearning.ontopop.security.secrets.managers.OntologySecretDataManager;
+import ai.hyperlearning.ontopop.security.secrets.model.OntologySecretData;
 
 /**
  * Ontology Service
@@ -40,26 +37,18 @@ public class OntologyService {
 	
 	@Autowired
 	private OntologyMapper ontologyMapper;
-	
+
 	@Autowired
-	private VaultTemplate vaultTemplate;
-	
-	@Value("${spring.cloud.vault.kv.backend}")
-	String springCloudVaultKvBackend;
-	
-	@Value("${spring.cloud.vault.kv.default-context}")
-	String springCloudVaultKvDefaultContext;
-	
-	@Value("${security.vault.paths.subpaths.ontologies}")
-	private String vaultSubpathOntologies;
+	private OntologySecretDataManager ontologySecretDataManager;
 	
 	/**
 	 * Create a new ontology
 	 * @param ontology
 	 * @return
+	 * @throws Exception 
 	 */
 	
-	protected Ontology create(Ontology ontology) {
+	protected Ontology create(Ontology ontology) throws Exception {
 		
 		// Persist the new ontology
 		ontology.setDateCreated(LocalDateTime.now());
@@ -68,15 +57,12 @@ public class OntologyService {
 		
 		// Create a new ontology secret data object
 		OntologySecretData newOntologySecretData = 
-				new OntologySecretData(newOntology);
+				new OntologySecretData(newOntology.getId(), 
+						newOntology.getRepoToken(), 
+						newOntology.getRepoWebhookSecret());
 		
 		// Persist the new ontology secret data
-		Vault.put(vaultTemplate, 
-				springCloudVaultKvBackend, 
-				springCloudVaultKvDefaultContext 
-					+ vaultSubpathOntologies 
-						+ newOntology.getId(), 
-				newOntologySecretData);
+		ontologySecretDataManager.put(newOntologySecretData);
 		
 		// Sanitize and return the new ontology
 		newOntology.clearSecretData();
@@ -112,19 +98,15 @@ public class OntologyService {
 	/**
 	 * Update ontology secrets
 	 * @param ontologySecretData
+	 * @throws Exception 
 	 */
 	
 	protected void update(int id, 
-			OntologySecretData ontologySecretData) {
+			OntologySecretData ontologySecretData) throws Exception {
 		
 		// Get the current sensitive attributes for this ontology
 		OntologySecretData currentOntologySecretData = 
-				Vault.get(vaultTemplate, 
-						springCloudVaultKvBackend, 
-						KeyValueBackend.KV_2, 
-						springCloudVaultKvDefaultContext 
-							+ vaultSubpathOntologies + id, 
-						OntologySecretData.class).getData();
+				ontologySecretDataManager.get(id);
 		
 		// Set the new sensitive attributes
 		if ( !Strings.isNullOrEmpty(ontologySecretData.getRepoToken()) )
@@ -139,11 +121,7 @@ public class OntologyService {
 				ontologySecretData.getRepoToken()) 
 				|| !Strings.isNullOrEmpty(
 						ontologySecretData.getRepoWebhookSecret()) )
-			Vault.put(vaultTemplate, 
-					springCloudVaultKvBackend, 
-					springCloudVaultKvDefaultContext 
-						+ vaultSubpathOntologies +  id, 
-					currentOntologySecretData);
+			ontologySecretDataManager.put(currentOntologySecretData);
 		LOGGER.debug("Updated ontology (sensitive) with ID: {}", id);
 		
 	}
@@ -151,18 +129,16 @@ public class OntologyService {
 	/**
 	 * Delete an ontology
 	 * @param id
+	 * @throws Exception 
 	 */
 	
-	protected void delete(int id) {
+	protected void delete(int id) throws Exception {
 		
 		// Delete the ontology from storage
 		ontologyRepository.deleteById(id);
 		
 		// Delete the ontology secret data
-		Vault.delete(vaultTemplate, 
-				springCloudVaultKvBackend, 
-				springCloudVaultKvDefaultContext 
-					+ vaultSubpathOntologies + id);
+		ontologySecretDataManager.delete(id);
 		LOGGER.debug("Deleted ontology with ID: {}", id);
 		
 	}
