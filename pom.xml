@@ -41,6 +41,8 @@
     <properties>
         <apache-jena-libs.version>4.3.1</apache-jena-libs.version>
         <aws-java-sdk.version>1.12.126</aws-java-sdk.version>
+        <aws-sdk-bom.version>2.17.102</aws-sdk-bom.version>
+        <aws-secretsmanager.version>2.17.102</aws-secretsmanager.version>
         <azure-functions-java-library.version>1.4.2</azure-functions-java-library.version>
         <azure-functions-maven-plugin.version>1.15.0</azure-functions-maven-plugin.version>
         <azure-sdk-bom.version>1.0.6</azure-sdk-bom.version>
@@ -152,6 +154,21 @@
                 <artifactId>aws-java-sdk</artifactId>
                 <version>${aws-java-sdk.version}</version>
             </dependency>
+            
+            <!-- AWS SDK BOM -->
+            <dependency>
+                <groupId>software.amazon.awssdk</groupId>
+                <artifactId>bom</artifactId>
+                <version>${aws-sdk-bom.version}</version>
+                <type>pom</type>
+            </dependency>
+            
+            <!-- AWS Secrets Manager -->
+	        <dependency>
+	            <groupId>software.amazon.awssdk</groupId>
+	            <artifactId>secretsmanager</artifactId>
+	            <version>${aws-secretsmanager.version}</version>
+	        </dependency>
             
             <!-- Azure Functions Java Library -->
             <dependency>
