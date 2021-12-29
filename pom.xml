@@ -41,8 +41,11 @@
     <properties>
         <apache-jena-libs.version>4.3.1</apache-jena-libs.version>
         <aws-java-sdk.version>1.12.126</aws-java-sdk.version>
+        <azure-functions-java-library.version>1.4.2</azure-functions-java-library.version>
+        <azure-functions-maven-plugin.version>1.15.0</azure-functions-maven-plugin.version>
         <azure-sdk-bom.version>1.0.6</azure-sdk-bom.version>
         <azure-spring-boot-starter-storage.version>3.11.0</azure-spring-boot-starter-storage.version>
+        <azure-webapp-maven-plugin.version>2.3.0</azure-webapp-maven-plugin.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <commons-io.version>2.11.0</commons-io.version>
         <commons-text.version>1.9</commons-text.version>
@@ -148,6 +151,13 @@
                 <groupId>com.amazonaws</groupId>
                 <artifactId>aws-java-sdk</artifactId>
                 <version>${aws-java-sdk.version}</version>
+            </dependency>
+            
+            <!-- Azure Functions Java Library -->
+            <dependency>
+                <groupId>com.microsoft.azure.functions</groupId>
+                <artifactId>azure-functions-java-library</artifactId>
+                <version>${azure-functions-java-library.version}</version>
             </dependency>
             
             <!-- Azure SDK BOM (Azure client libraries e.g. storage client) -->
@@ -275,6 +285,11 @@
                 <artifactId>ontopop-search</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <dependency>
+                <groupId>ai.hyperlearning.ontopop</groupId>
+                <artifactId>ontopop-data-ontology-ingestor</artifactId>
+                <version>${revision}</version>
+            </dependency>
             
             <!-- Ontotext GraphDB -->
 	        <dependency>
@@ -336,6 +351,7 @@
         <module>ontopop-data-ontology-loader-graph</module>
         <module>ontopop-data-ontology-indexer</module>
         <module>ontopop-api-ontology</module>
+        <module>ontopop-cloud-azure</module>
     </modules>
     
     <!-- Project Build Configuration -->
@@ -354,6 +370,27 @@
             </resource>
             
         </resources>
+        
+        <!-- Project Plugin Management -->
+        <pluginManagement>
+            <plugins>
+        
+                <!-- Microsoft Azure Functions Maven Plugin -->
+                <plugin>
+                    <groupId>com.microsoft.azure</groupId>
+                    <artifactId>azure-functions-maven-plugin</artifactId>
+                    <version>${azure-functions-maven-plugin.version}</version>
+                </plugin>
+        
+                <!-- Microsoft Azure Webapp Maven Plugin -->
+                <plugin>
+                    <groupId>com.microsoft.azure</groupId>
+                    <artifactId>azure-webapp-maven-plugin</artifactId>
+                    <version>${azure-webapp-maven-plugin.version}</version>
+                </plugin>
+        
+            </plugins>
+        </pluginManagement>
         
         <!-- Project Plugins -->
         <plugins>
