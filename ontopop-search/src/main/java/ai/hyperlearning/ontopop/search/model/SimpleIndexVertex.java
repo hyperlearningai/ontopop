@@ -14,8 +14,8 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
  * @since 2.0.0
  */
 
-@Document(indexName = "#{@environment.getProperty('storage.search.elasticsearch.indexNamePrefix')}", createIndex = false)
-public class SimpleIndexedVertex implements Serializable {
+@Document(indexName = "#{@environment.getProperty('storage.search.indexNamePrefix')}", createIndex = false)
+public class SimpleIndexVertex implements Serializable {
 
 	private static final long serialVersionUID = -692044707286693545L;
 	
@@ -28,11 +28,11 @@ public class SimpleIndexedVertex implements Serializable {
 	
 	private Map<String, Object> properties;
 	
-	public SimpleIndexedVertex() {
+	public SimpleIndexVertex() {
 		
 	}
 
-	public SimpleIndexedVertex(long vertexId, 
+	public SimpleIndexVertex(long vertexId, 
 			String label, 
 			Map<String, Object> properties) {
 		this.vertexId = vertexId;
@@ -66,7 +66,7 @@ public class SimpleIndexedVertex implements Serializable {
 
 	@Override
 	public String toString() {
-		return "SimpleIndexedVertex ["
+		return "SimpleIndexVertex ["
 				+ "vertexId=" + vertexId + ", "
 				+ "label=" + label + ", "
 				+ "properties=" + properties + "]";

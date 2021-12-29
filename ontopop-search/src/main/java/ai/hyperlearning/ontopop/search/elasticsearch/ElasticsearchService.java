@@ -17,7 +17,7 @@ import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import ai.hyperlearning.ontopop.search.SearchService;
-import ai.hyperlearning.ontopop.search.model.SimpleIndexedVertex;
+import ai.hyperlearning.ontopop.search.model.SimpleIndexVertex;
 
 /**
  * Elasticsearch Service
@@ -34,6 +34,15 @@ public class ElasticsearchService implements SearchService {
 	
 	@Autowired
 	private ElasticsearchOperations elasticsearchTemplate;
+	
+	/**************************************************************************
+	 * SEARCH CLIENT MANAGEMENT
+	 *************************************************************************/
+
+	@Override
+	public void cleanup() throws Exception {
+		
+	}
 	
 	/**************************************************************************
 	 * SEARCH INDEX MANAGEMENT
@@ -68,14 +77,14 @@ public class ElasticsearchService implements SearchService {
 	 *************************************************************************/
 
 	@Override
-	public SimpleIndexedVertex getDocument(String indexName, long vertexId) {
+	public SimpleIndexVertex getDocument(String indexName, long vertexId) {
 		return elasticsearchTemplate.get(String.valueOf(vertexId), 
-				SimpleIndexedVertex.class, 
+				SimpleIndexVertex.class, 
 				IndexCoordinates.of(indexName));
 	}
 	
 	@Override
-	public SearchHits<SimpleIndexedVertex> search(String indexName, 
+	public SearchHits<SimpleIndexVertex> search(String indexName, 
 			String propertyKey, String query, boolean exact, boolean and) {
 		
 		Operator operator = and ? Operator.AND : Operator.OR;
@@ -86,13 +95,13 @@ public class ElasticsearchService implements SearchService {
 					.withQuery(fuzzyQuery(propertyKey, query))
 					.build();
 		return elasticsearchTemplate
-				.search(searchQuery, SimpleIndexedVertex.class, 
+				.search(searchQuery, SimpleIndexVertex.class, 
 						IndexCoordinates.of(indexName));
 		
 	}
 	
 	@Override
-	public SearchHits<SimpleIndexedVertex> search(String indexName, 
+	public SearchHits<SimpleIndexVertex> search(String indexName, 
 			String propertyKey, String query, boolean and, 
 			int minimumShouldMatchPercentage) {
 		
@@ -105,20 +114,20 @@ public class ElasticsearchService implements SearchService {
 						.minimumShouldMatch(minimumShouldMatchPct))
 	            .build();
 		return elasticsearchTemplate
-				.search(searchQuery, SimpleIndexedVertex.class, 
+				.search(searchQuery, SimpleIndexVertex.class, 
 						IndexCoordinates.of(indexName));
 		
 	}
 	
 	@Override
 	public void indexDocuments(String indexName, 
-			Set<SimpleIndexedVertex> vertices) {
+			Set<SimpleIndexVertex> vertices) {
 		elasticsearchTemplate.save(vertices, IndexCoordinates.of(indexName));
 	}
 
 	@Override
 	public void indexDocument(String indexName, 
-			SimpleIndexedVertex vertex) {
+			SimpleIndexVertex vertex) {
 		elasticsearchTemplate.save(vertex, IndexCoordinates.of(indexName));
 	}
 
