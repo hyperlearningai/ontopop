@@ -11,10 +11,10 @@
     </parent>
     
     <!-- Module Metadata -->
-    <artifactId>ontopop-security-vault</artifactId>
-    <name>ontopop-security-vault</name>
+    <artifactId>ontopop-secrets</artifactId>
+    <name>ontopop-secrets</name>
     <packaging>jar</packaging>
-    <description>OntoPop - Vault API</description>
+    <description>OntoPop - Secrets Management Services</description>
     <url>https://ontopop.com</url>
     <organization>
         <name>HyperLearning AI</name>

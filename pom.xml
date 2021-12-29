@@ -217,7 +217,7 @@
             </dependency>
             <dependency>
                 <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-security-vault</artifactId>
+                <artifactId>ontopop-secrets</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
@@ -329,7 +329,7 @@
         <module>ontopop-configuration-server</module>
         <module>ontopop-configuration</module>
         <module>ontopop-configuration-client</module>
-        <module>ontopop-security-vault</module>
+        <module>ontopop-secrets</module>
         <module>ontopop-utils</module>
         <module>ontopop-model</module>
         <module>ontopop-mappers</module>

@@ -67,7 +67,7 @@
         </dependency>
         <dependency>
             <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-security-vault</artifactId>
+            <artifactId>ontopop-secrets</artifactId>
         </dependency>
     
     </dependencies>
