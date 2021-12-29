@@ -334,6 +334,7 @@
         <module>ontopop-data-ontology-parser</module>
         <module>ontopop-data-ontology-modeller-graph</module>
         <module>ontopop-data-ontology-loader-graph</module>
+        <module>ontopop-data-ontology-indexer</module>
         <module>ontopop-api-ontology</module>
     </modules>
     
