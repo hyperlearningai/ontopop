@@ -99,6 +99,7 @@ storage:
             loaded:
                 triplestore: loaded/triplestore
                 graph: loaded/graph
+            indexed: indexed
         patterns:
             fileNameIdsSeparator: "_"
     triplestore:
@@ -114,9 +115,9 @@ storage:
             configuration-filename: gremlin-graph.properties
     search:
         service: elasticsearch
+        indexNamePrefix: ontopop
         elasticsearch:
             url: ${elasticsearch.url}
-            indexNamePrefix: ontopop
             shards: 1
             replicas: 0
 web:
