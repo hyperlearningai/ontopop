@@ -230,8 +230,8 @@ public class OntologyIndexerService {
 		LOGGER.debug("Indexed {} vertices.", vertices.size());
 		
 		LOGGER.info("Ontology Indexing Service - "
-				+ "Finished loading the modelled resource into "
-				+ "the graph database.");
+				+ "Finished indexing the modelled resource into "
+				+ "the search index.");
 		
 	}
 	
