@@ -12,6 +12,7 @@ import java.util.Map;
 
 public enum SecretsServiceType {
 	
+	HASHICORP_VAULT("HASHICORP-VAULT"), 
 	AWS_SECRETS_MANAGER("AWS-SECRETS-MANAGER"), 
 	AZURE_KEY_VAULT("AZURE-KEY-VAULT");
 	

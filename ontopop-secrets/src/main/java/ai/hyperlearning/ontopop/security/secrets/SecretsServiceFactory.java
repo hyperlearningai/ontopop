@@ -33,6 +33,8 @@ public class SecretsServiceFactory {
 		SecretsServiceType secretsServiceType = 
 				SecretsServiceType.valueOfLabel(type.toUpperCase());
 		switch ( secretsServiceType ) {
+			case HASHICORP_VAULT:
+				return null;
 			case AWS_SECRETS_MANAGER:
 				return awsSecretsManagerSecretsService;
 			case AZURE_KEY_VAULT:
@@ -47,6 +49,8 @@ public class SecretsServiceFactory {
 			SecretsServiceType secretsServiceType) {
 			
 		switch ( secretsServiceType ) {
+			case HASHICORP_VAULT:
+				return null;
 			case AWS_SECRETS_MANAGER:
 				return awsSecretsManagerSecretsService;
 			case AZURE_KEY_VAULT:
