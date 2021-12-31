@@ -46,6 +46,7 @@
         <azure-functions-java-library.version>1.4.2</azure-functions-java-library.version>
         <azure-functions-maven-plugin.version>1.15.0</azure-functions-maven-plugin.version>
         <azure-sdk-bom.version>1.0.6</azure-sdk-bom.version>
+        <azure-spring-boot-bom.version>3.12.0</azure-spring-boot-bom.version>
         <azure-spring-boot-starter-storage.version>3.11.0</azure-spring-boot-starter-storage.version>
         <azure-webapp-maven-plugin.version>2.3.0</azure-webapp-maven-plugin.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
@@ -182,6 +183,15 @@
                 <groupId>com.azure</groupId>
                 <artifactId>azure-sdk-bom</artifactId>
                 <version>${azure-sdk-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            
+            <!-- Azure Spring Boot BOM -->
+            <dependency>
+                <groupId>com.azure.spring</groupId>
+                <artifactId>azure-spring-boot-bom</artifactId>
+                <version>${azure-spring-boot-bom.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
