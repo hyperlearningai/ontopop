@@ -12,3 +12,6 @@ spring:
                 enabled: true
                 backend: secret
                 default-context: ontopop/development
+azure:
+    keyvault:
+        enabled: false
