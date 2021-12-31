@@ -1,5 +1,7 @@
 package ai.hyperlearning.ontopop.security.secrets.managers;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -27,10 +29,10 @@ public class OntologySecretDataManager {
 			"ontologyRepoWebhookSecret";
 	
 	@Autowired
-	private SecretsServiceFactory secretsServiceFactory;
+	private VaultTemplate vaultTemplate;
 	
 	@Autowired
-	private VaultTemplate vaultTemplate;
+	private SecretsServiceFactory secretsServiceFactory;
 	
 	@Value("${spring.cloud.vault.kv.backend}")
 	private String springCloudVaultKvBackend;
@@ -38,14 +40,17 @@ public class OntologySecretDataManager {
 	@Value("${spring.cloud.vault.kv.default-context}")
 	private String springCloudVaultKvDefaultContext;
 	
+	@Value("${security.secrets.service}")
+	private String securitySecretsService;
+	
 	@Value("${security.secrets.hashicorp-vault.paths.subpaths.ontologies}")
 	private String vaultSubpathOntologies;
 	
-	private SecretsService secretsService;
+	private SecretsService secretsService = null;
 	private boolean useVault = false;
 	
-	public OntologySecretDataManager(
-			@Value("${security.secrets.service}") String securitySecretsService) {
+	@PostConstruct
+    public void init() {
 		
 		// Ascertain whether to use a platform-specific secrets manager
 		// or Hashicorp Vault
@@ -54,7 +59,8 @@ public class OntologySecretDataManager {
 						securitySecretsService.toUpperCase());
 		secretsService = secretsServiceFactory
 				.getSecretsService(secretsServiceType);
-		if ( secretsService == null )
+		if ( secretsService == null && 
+				secretsServiceType.equals(SecretsServiceType.HASHICORP_VAULT) )
 			useVault = true;
 		
 	}
