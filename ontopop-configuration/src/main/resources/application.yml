@@ -3,49 +3,6 @@ spring:
         name: ontopop
     cloud:
         stream:
-            bindings:
-                ingestedPublicationChannel:
-                    destination: ontopop.data.ingested
-                    binder: rabbitmq
-                ingestedConsumptionChannel:
-                    destination: ontopop.data.ingested
-                    binder: rabbitmq
-                validatedPublicationChannel:
-                    destination: ontopop.data.validated
-                    binder: rabbitmq
-                validatedConsumptionChannel:
-                    destination: ontopop.data.validated
-                    binder: rabbitmq
-                parsedPublicationChannel:
-                    destination: ontopop.data.parsed
-                    binder: rabbitmq
-                parsedConsumptionChannel:
-                    destination: ontopop.data.parsed
-                    binder: rabbitmq
-                modelledPublicationChannel:
-                    destination: ontopop.data.modelled
-                    binder: rabbitmq
-                modelledConsumptionChannel:
-                    destination: ontopop.data.modelled
-                    binder: rabbitmq
-                modelledLoadedPublicationChannel:
-                    destination: ontopop.data.modelled.loaded
-                    binder: rabbitmq
-                modelledLoadedConsumptionChannel:
-                    destination: ontopop.data.modelled.loaded
-                    binder: rabbitmq
-                modelledIndexedPublicationChannel:
-                    destination: ontopop.data.modelled.indexed
-                    binder: rabbitmq
-                modelledIndexedConsumptionChannel:
-                    destination: ontopop.data.modelled.indexed
-                    binder: rabbitmq
-                validatedLoadedPublicationChannel:
-                    destination: ontopop.data.validated.loaded
-                    binder: rabbitmq
-                validatedLoadedConsumptionChannel:
-                    destination: ontopop.data.validated.loaded
-                    binder: rabbitmq
             binders:
                 rabbitmq:
                     type: rabbit
@@ -66,6 +23,49 @@ spring:
                                 azure:
                                     servicebus:
                                         connection-string: ${azure.service-bus.connection-string}
+            bindings:
+                ingestedPublicationChannel:
+                    destination: ontopop.data.ingested
+                    binder: azure_service_bus
+                ingestedConsumptionChannel:
+                    destination: ontopop.data.ingested
+                    binder: azure_service_bus
+                validatedPublicationChannel:
+                    destination: ontopop.data.validated
+                    binder: azure_service_bus
+                validatedConsumptionChannel:
+                    destination: ontopop.data.validated
+                    binder: azure_service_bus
+                parsedPublicationChannel:
+                    destination: ontopop.data.parsed
+                    binder: azure_service_bus
+                parsedConsumptionChannel:
+                    destination: ontopop.data.parsed
+                    binder: azure_service_bus
+                modelledPublicationChannel:
+                    destination: ontopop.data.modelled
+                    binder: azure_service_bus
+                modelledConsumptionChannel:
+                    destination: ontopop.data.modelled
+                    binder: azure_service_bus
+                modelledLoadedPublicationChannel:
+                    destination: ontopop.data.modelled.loaded
+                    binder: azure_service_bus
+                modelledLoadedConsumptionChannel:
+                    destination: ontopop.data.modelled.loaded
+                    binder: azure_service_bus
+                modelledIndexedPublicationChannel:
+                    destination: ontopop.data.modelled.indexed
+                    binder: azure_service_bus
+                modelledIndexedConsumptionChannel:
+                    destination: ontopop.data.modelled.indexed
+                    binder: azure_service_bus
+                validatedLoadedPublicationChannel:
+                    destination: ontopop.data.validated.loaded
+                    binder: azure_service_bus
+                validatedLoadedConsumptionChannel:
+                    destination: ontopop.data.validated.loaded
+                    binder: azure_service_bus
             default:
                 contentType: application/json
         vault:
@@ -107,7 +107,7 @@ storage:
     object:
         service: local
         local:
-            baseUri: ~/ontopop
+            baseUri: ${local.storage.base.directory.path}
         aws-s3:
             access-key-id: ${aws.s3.access-key-id}
             access-key-secret: ${aws.s3.access-key-secret}
