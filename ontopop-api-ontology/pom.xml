@@ -75,6 +75,12 @@
             <groupId>ai.hyperlearning.ontopop</groupId>
             <artifactId>ontopop-secrets</artifactId>
         </dependency>
+        
+        <!-- Springdoc OpenAPI UI -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+        </dependency>
     
     </dependencies>
     
