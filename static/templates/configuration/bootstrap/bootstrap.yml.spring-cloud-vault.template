@@ -7,7 +7,7 @@ spring:
             port: 8200
             scheme: http
             authentication: TOKEN
-            token: ""
+            token: ${VAULT_TOKEN}
             kv:
                 enabled: true
                 backend: secret

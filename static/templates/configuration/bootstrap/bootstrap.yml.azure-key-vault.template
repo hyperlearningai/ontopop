@@ -1,0 +1,8 @@
+azure.keyvault.client-id=${AZURE_KEYVAULT_CLIENT_ID}
+azure.keyvault.client-key=${AZURE_KEYVAULT_CLIENT_SECRET}
+azure.keyvault.enabled=true
+azure.keyvault.tenant-id=${AZURE_KEYVAULT_TENANT_ID}
+azure.keyvault.uri=${AZURE_KEYVAULT_URI}
+spring:
+    application:
+        name: ontopop
