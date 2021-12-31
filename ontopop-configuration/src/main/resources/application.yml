@@ -6,49 +6,50 @@ spring:
             bindings:
                 ingestedPublicationChannel:
                     destination: ontopop.data.ingested
-                    binder: local_rabbit
+                    binder: rabbitmq
                 ingestedConsumptionChannel:
                     destination: ontopop.data.ingested
-                    binder: local_rabbit
+                    binder: rabbitmq
                 validatedPublicationChannel:
                     destination: ontopop.data.validated
-                    binder: local_rabbit
+                    binder: rabbitmq
                 validatedConsumptionChannel:
                     destination: ontopop.data.validated
-                    binder: local_rabbit
+                    binder: rabbitmq
                 parsedPublicationChannel:
                     destination: ontopop.data.parsed
-                    binder: local_rabbit
+                    binder: rabbitmq
                 parsedConsumptionChannel:
                     destination: ontopop.data.parsed
-                    binder: local_rabbit
+                    binder: rabbitmq
                 modelledPublicationChannel:
                     destination: ontopop.data.modelled
-                    binder: local_rabbit
+                    binder: rabbitmq
                 modelledConsumptionChannel:
                     destination: ontopop.data.modelled
-                    binder: local_rabbit
+                    binder: rabbitmq
                 modelledLoadedPublicationChannel:
                     destination: ontopop.data.modelled.loaded
-                    binder: local_rabbit
+                    binder: rabbitmq
                 modelledLoadedConsumptionChannel:
                     destination: ontopop.data.modelled.loaded
-                    binder: local_rabbit
+                    binder: rabbitmq
                 modelledIndexedPublicationChannel:
                     destination: ontopop.data.modelled.indexed
-                    binder: local_rabbit
+                    binder: rabbitmq
                 modelledIndexedConsumptionChannel:
                     destination: ontopop.data.modelled.indexed
-                    binder: local_rabbit
+                    binder: rabbitmq
                 validatedLoadedPublicationChannel:
                     destination: ontopop.data.validated.loaded
-                    binder: local_rabbit
+                    binder: rabbitmq
                 validatedLoadedConsumptionChannel:
                     destination: ontopop.data.validated.loaded
-                    binder: local_rabbit
+                    binder: rabbitmq
             binders:
-                local_rabbit:
+                rabbitmq:
                     type: rabbit
+                    default-candidate: true
                     environment:
                         spring:
                             rabbitmq:
@@ -57,6 +58,14 @@ spring:
                                 username: ${rabbitmq.username}
                                 password: ${rabbitmq.password}
                                 virtual-host: /
+                azure_service_bus:
+                    type: servicebus-topic
+                    environment:
+                        spring:
+                            cloud:
+                                azure:
+                                    servicebus:
+                                        connection-string: ${azure.service-bus.connection-string}
             default:
                 contentType: application/json
         vault:
