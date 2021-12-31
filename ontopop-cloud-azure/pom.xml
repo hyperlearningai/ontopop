@@ -40,8 +40,23 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     
+    <!-- Module Dependency Management -->
+    <dependencyManagement>
+        <dependencies>
+        
+            <!-- OntoPop Cloud Azure -->
+            <dependency>
+                <groupId>ai.hyperlearning.ontopop</groupId>
+                <artifactId>ontopop-azure-configuration</artifactId>
+                <version>${revision}</version>
+            </dependency>
+        
+        </dependencies>
+    </dependencyManagement>
+    
     <!-- Child Modules -->
     <modules>
+        <module>ontopop-azure-configuration</module>
         <module>ontopop-azure-data-ontology-ingestor</module>
     </modules>
     

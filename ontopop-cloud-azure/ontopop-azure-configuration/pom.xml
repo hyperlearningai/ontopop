@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    
+    <!-- Parent Project -->
+    <parent>
+        <groupId>ai.hyperlearning.ontopop</groupId>
+        <artifactId>ontopop-cloud-azure</artifactId>
+        <version>${revision}</version>
+    </parent>
+    
+    <!-- Module Metadata -->
+    <artifactId>ontopop-azure-configuration</artifactId>
+    <name>ontopop-azure-configuration</name>
+    <packaging>jar</packaging>
+    <description>OntoPop - Microsoft Azure Configuration</description>
+    <url>https://ontopop.com</url>
+    <organization>
+        <name>HyperLearning AI</name>
+        <url>https://hyperlearning.ai</url>
+    </organization>
+    <developers>
+        <developer>
+            <id>jillurquddus</id>
+            <name>Jillur Quddus</name>
+            <email>contactus@hyperlearning.ai</email>
+            <url>https://hyperlearning.ai/team/jillurquddus</url>
+            <organization>HyperLearning AI</organization>
+            <organizationUrl>https://hyperlearning.ai</organizationUrl>
+            <roles>
+                <role>Chief Data Scientist</role>
+                <role>Principal Polyglot Software Engineer</role>
+            </roles>
+            <timezone>Europe/London</timezone>
+        </developer>
+    </developers>
+    
+    <!-- Module Properties -->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    
+    <!-- Module Dependencies -->
+    <dependencies>
+    
+        <!-- Microsoft Azure Key Vault Secrets Spring Boot Starter -->
+        <!-- Bootstrap configuration stored in Microsoft Azure Key Vault -->
+        <dependency>
+            <groupId>com.azure.spring</groupId>
+            <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
+        </dependency>
+        
+        <!-- Spring Boot Starter Validation -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        
+        <!-- Spring Boot Starter Web -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        
+        <!-- Spring Cloud Starter Bootstrap -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
+        
+        <!-- Spring Cloud Starter Vault Config -->
+        <!-- Bootstrap configuration stored in Hashicorp Vault -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-vault-config</artifactId>
+        </dependency>
+    
+    </dependencies>
+    
+    <!-- Module Build -->
+    <build>
+    
+        <!-- Resources -->
+        <resources>
+        
+            <!-- Configuration -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>${conf.bootstrap-properties.filename}</include>
+                    <include>${conf.application-properties.filename}</include>
+                    <include>${conf.gremlin-graph-properties.filename}</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        
+        </resources>
+        
+        <!-- Plugins -->
+        <plugins>
+        
+            <!-- Unit Test Management -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <additionalClasspathElements>
+                        <additionalClasspathElement>src/main/resources</additionalClasspathElement>
+                    </additionalClasspathElements>
+                </configuration>
+            </plugin>
+        
+        </plugins>
+    
+    </build>
+    
+</project>

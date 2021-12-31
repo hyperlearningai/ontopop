@@ -1,0 +1,14 @@
+spring:
+    application:
+        name: ontopop
+    cloud:
+        vault:
+            host: localhost
+            port: 8200
+            scheme: http
+            authentication: TOKEN
+            token: ${VAULT_TOKEN}
+            kv:
+                enabled: true
+                backend: secret
+                default-context: ontopop/development

@@ -1,0 +1,144 @@
+spring:
+    application:
+        name: ontopop
+    cloud:
+        stream:
+            bindings:
+                ingestedPublicationChannel:
+                    destination: ontopop.data.ingested
+                    binder: local_rabbit
+                ingestedConsumptionChannel:
+                    destination: ontopop.data.ingested
+                    binder: local_rabbit
+                validatedPublicationChannel:
+                    destination: ontopop.data.validated
+                    binder: local_rabbit
+                validatedConsumptionChannel:
+                    destination: ontopop.data.validated
+                    binder: local_rabbit
+                parsedPublicationChannel:
+                    destination: ontopop.data.parsed
+                    binder: local_rabbit
+                parsedConsumptionChannel:
+                    destination: ontopop.data.parsed
+                    binder: local_rabbit
+                modelledPublicationChannel:
+                    destination: ontopop.data.modelled
+                    binder: local_rabbit
+                modelledConsumptionChannel:
+                    destination: ontopop.data.modelled
+                    binder: local_rabbit
+                modelledLoadedPublicationChannel:
+                    destination: ontopop.data.modelled.loaded
+                    binder: local_rabbit
+                modelledLoadedConsumptionChannel:
+                    destination: ontopop.data.modelled.loaded
+                    binder: local_rabbit
+                modelledIndexedPublicationChannel:
+                    destination: ontopop.data.modelled.indexed
+                    binder: local_rabbit
+                modelledIndexedConsumptionChannel:
+                    destination: ontopop.data.modelled.indexed
+                    binder: local_rabbit
+                validatedLoadedPublicationChannel:
+                    destination: ontopop.data.validated.loaded
+                    binder: local_rabbit
+                validatedLoadedConsumptionChannel:
+                    destination: ontopop.data.validated.loaded
+                    binder: local_rabbit
+            binders:
+                local_rabbit:
+                    type: rabbit
+                    environment:
+                        spring:
+                            rabbitmq:
+                                host: ${rabbitmq.host}
+                                port: ${rabbitmq.port}
+                                username: ${rabbitmq.username}
+                                password: ${rabbitmq.password}
+                                virtual-host: /
+            default:
+                contentType: application/json
+        vault:
+            host: localhost
+            port: 8200
+            scheme: http
+            authentication: TOKEN
+            token: ${VAULT_TOKEN}
+            kv:
+                enabled: true
+                backend: secret
+                default-context: ontopop/development
+    datasource:
+        driver-class-name: org.hsqldb.jdbc.JDBCDriver
+        url: ${spring.datasource.url}
+        username: ${spring.datasource.username}
+        password: ${spring.datasource.password}
+    jackson:
+        serialization:
+            write_dates_as_timestamps: false
+    jpa:
+        hibernate:
+            ddl-auto: update
+        show-sql: false
+security:
+    secrets:
+        service: azure-key-vault
+        aws-secrets-manager: 
+            access-key-id: ${aws.secrets-manager.access-key-id}
+            access-key-secret: ${aws.secrets-manager.access-key-secret}
+            region: eu-west-2
+        azure-key-vault:
+            url: ${azure.key-vault.url}
+        hashicorp-vault:
+            paths:
+                subpaths:
+                    ontologies: /ontologies/
+storage:
+    object:
+        service: local
+        local:
+            baseUri: ~/ontopop
+        aws-s3:
+            access-key-id: ${aws.s3.access-key-id}
+            access-key-secret: ${aws.s3.access-key-secret}
+            region: eu-west-2
+            bucket-name: ontopop
+        azure-storage:
+            account-name: ${azure.storage.account-name}
+            account-key: ${azure.storage.account-key}
+            blob-endpoint: ${azure.storage.blob-endpoint}
+            container-name: ontopop
+        containers:
+            ingested: ingested
+            validated: validated
+            parsed: parsed
+            modelled: modelled
+            loaded:
+                triplestore: loaded/triplestore
+                graph: loaded/graph
+            indexed: indexed
+        patterns:
+            fileNameIdsSeparator: "_"
+    triplestore:
+        service: apache-jena
+        apache-jena:
+            fuseki:
+                url: ${jena.fuseki.url}
+        ontotext-graphdb:
+            url: ${ontotext.graphdb.url}
+    graph:
+        service: tinkergraph
+        gremlin-graph:
+            configuration-filename: gremlin-graph.properties
+    search:
+        service: elasticsearch
+        indexNamePrefix: ontopop
+        elasticsearch:
+            url: ${elasticsearch.url}
+            shards: 1
+            replicas: 0
+web:
+    client:
+        codecs:
+            maxInMemorySize: 10
