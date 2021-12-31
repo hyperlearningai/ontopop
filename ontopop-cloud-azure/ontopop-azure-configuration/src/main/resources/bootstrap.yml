@@ -1,14 +1,10 @@
+azure:
+    keyvault:
+        client-id: ${AZURE_KEYVAULT_CLIENT_ID}
+        client-key: ${AZURE_KEYVAULT_CLIENT_SECRET}
+        enabled: true
+        tenant-id: ${AZURE_KEYVAULT_TENANT_ID}
+        uri: ${AZURE_KEYVAULT_URI}
 spring:
     application:
         name: ontopop
-    cloud:
-        vault:
-            host: localhost
-            port: 8200
-            scheme: http
-            authentication: TOKEN
-            token: ${VAULT_TOKEN}
-            kv:
-                enabled: true
-                backend: secret
-                default-context: ontopop/development

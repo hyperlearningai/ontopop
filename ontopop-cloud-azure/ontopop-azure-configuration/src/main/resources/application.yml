@@ -52,10 +52,10 @@ spring:
                     environment:
                         spring:
                             rabbitmq:
-                                host: ${rabbitmq.host}
-                                port: ${rabbitmq.port}
-                                username: ${rabbitmq.username}
-                                password: ${rabbitmq.password}
+                                host: ${rabbitmq-host}
+                                port: ${rabbitmq-port}
+                                username: ${rabbitmq-username}
+                                password: ${rabbitmq-password}
                                 virtual-host: /
             default:
                 contentType: application/json
@@ -71,9 +71,9 @@ spring:
                 default-context: ontopop/development
     datasource:
         driver-class-name: org.hsqldb.jdbc.JDBCDriver
-        url: ${spring.datasource.url}
-        username: ${spring.datasource.username}
-        password: ${spring.datasource.password}
+        url: ${spring-datasource-url}
+        username: ${spring-datasource-username}
+        password: ${spring-datasource-password}
     jackson:
         serialization:
             write_dates_as_timestamps: false
@@ -85,29 +85,29 @@ security:
     secrets:
         service: azure-key-vault
         aws-secrets-manager: 
-            access-key-id: ${aws.secrets-manager.access-key-id}
-            access-key-secret: ${aws.secrets-manager.access-key-secret}
+            access-key-id: ${aws-secrets-manager-access-key-id}
+            access-key-secret: ${aws-secrets-manager-access-key-secret}
             region: eu-west-2
         azure-key-vault:
-            url: ${azure.key-vault.url}
+            url: ${azure-key-vault-url}
         hashicorp-vault:
             paths:
                 subpaths:
                     ontologies: /ontologies/
 storage:
     object:
-        service: local
+        service: azure-storage
         local:
             baseUri: ~/ontopop
         aws-s3:
-            access-key-id: ${aws.s3.access-key-id}
-            access-key-secret: ${aws.s3.access-key-secret}
+            access-key-id: ${aws-s3-access-key-id}
+            access-key-secret: ${aws-s3-access-key-secret}
             region: eu-west-2
             bucket-name: ontopop
         azure-storage:
-            account-name: ${azure.storage.account-name}
-            account-key: ${azure.storage.account-key}
-            blob-endpoint: ${azure.storage.blob-endpoint}
+            account-name: ${azure-storage-account-name}
+            account-key: ${azure-storage-account-key}
+            blob-endpoint: ${azure-storage-blob-endpoint}
             container-name: ontopop
         containers:
             ingested: ingested
@@ -124,9 +124,9 @@ storage:
         service: apache-jena
         apache-jena:
             fuseki:
-                url: ${jena.fuseki.url}
+                url: ${jena-fuseki-url}
         ontotext-graphdb:
-            url: ${ontotext.graphdb.url}
+            url: ${ontotext-graphdb-url}
     graph:
         service: tinkergraph
         gremlin-graph:
@@ -135,7 +135,7 @@ storage:
         service: elasticsearch
         indexNamePrefix: ontopop
         elasticsearch:
-            url: ${elasticsearch.url}
+            url: ${elasticsearch-url}
             shards: 1
             replicas: 0
 web:
