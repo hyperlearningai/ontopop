@@ -1,7 +1,7 @@
 ---
 name: Task
 about: Project tasks and subtasks
-title: "[TASK]"
+title: ''
 labels: enhancement
 assignees: ''
 
