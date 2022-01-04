@@ -17,6 +17,7 @@ spring:
                                 virtual-host: /
                 azure_service_bus:
                     type: servicebus-topic
+                    default-candidate: false
                     environment:
                         spring:
                             cloud:
@@ -29,43 +30,79 @@ spring:
                     binder: azure_service_bus
                 ingestedConsumptionChannel:
                     destination: ontopop.data.ingested
+                    group: ontopop.data.ingested.consumers
                     binder: azure_service_bus
                 validatedPublicationChannel:
                     destination: ontopop.data.validated
                     binder: azure_service_bus
                 validatedConsumptionChannel:
                     destination: ontopop.data.validated
+                    group: ontopop.data.validated.consumers
                     binder: azure_service_bus
                 parsedPublicationChannel:
                     destination: ontopop.data.parsed
                     binder: azure_service_bus
                 parsedConsumptionChannel:
                     destination: ontopop.data.parsed
+                    group: ontopop.data.parsed.consumers
                     binder: azure_service_bus
                 modelledPublicationChannel:
                     destination: ontopop.data.modelled
                     binder: azure_service_bus
                 modelledConsumptionChannel:
                     destination: ontopop.data.modelled
+                    group: ontopop.data.modelled.consumers
                     binder: azure_service_bus
                 modelledLoadedPublicationChannel:
                     destination: ontopop.data.modelled.loaded
                     binder: azure_service_bus
                 modelledLoadedConsumptionChannel:
                     destination: ontopop.data.modelled.loaded
+                    group: ontopop.data.modelled.loaded.consumers
                     binder: azure_service_bus
                 modelledIndexedPublicationChannel:
                     destination: ontopop.data.modelled.indexed
                     binder: azure_service_bus
                 modelledIndexedConsumptionChannel:
                     destination: ontopop.data.modelled.indexed
+                    group: ontopop.data.modelled.indexed.consumers
                     binder: azure_service_bus
                 validatedLoadedPublicationChannel:
                     destination: ontopop.data.validated.loaded
                     binder: azure_service_bus
                 validatedLoadedConsumptionChannel:
                     destination: ontopop.data.validated.loaded
+                    group: ontopop.data.validated.loaded.consumers
                     binder: azure_service_bus
+            servicebus:
+                topic:
+                    bindings:
+                        ingestedConsumptionChannel:
+                            consumer:
+                                checkpoint-mode: MANUAL
+                        validatedConsumptionChannel:
+                            consumer:
+                                checkpoint-mode: MANUAL
+                        parsedConsumptionChannel:
+                            consumer:
+                                checkpoint-mode: MANUAL
+                        modelledConsumptionChannel:
+                            consumer:
+                                checkpoint-mode: MANUAL
+                        modelledLoadedConsumptionChannel:
+                            consumer:
+                                checkpoint-mode: MANUAL
+                        modelledIndexedConsumptionChannel:
+                            consumer:
+                                checkpoint-mode: MANUAL
+                        validatedLoadedConsumptionChannel:
+                            consumer:
+                                checkpoint-mode: MANUAL
+            function:
+                definition: consume;supply;
+            poller:
+                fixed-delay: 1000
+                initial-delay: 0
             default:
                 contentType: application/json
         vault:
