@@ -10,10 +10,10 @@ spring:
                     environment:
                         spring:
                             rabbitmq:
-                                host: ${rabbitmq.host}
-                                port: ${rabbitmq.port}
-                                username: ${rabbitmq.username}
-                                password: ${rabbitmq.password}
+                                host: ${rabbitmq-host}
+                                port: ${rabbitmq-port}
+                                username: ${rabbitmq-username}
+                                password: ${rabbitmq-password}
                                 virtual-host: /
                 azure_service_bus:
                     type: servicebus-topic
@@ -23,57 +23,57 @@ spring:
                             cloud:
                                 azure:
                                     servicebus:
-                                        connection-string: ${azure.service-bus.connection-string}
+                                        connection-string: ${azure-service-bus-connection-string}
             bindings:
                 ingestedPublicationChannel:
                     destination: ontopop.data.ingested
-                    binder: azure_service_bus
+                    binder: rabbitmq
                 ingestedConsumptionChannel:
                     destination: ontopop.data.ingested
                     group: ontopop.data.ingested.consumers
-                    binder: azure_service_bus
+                    binder: rabbitmq
                 validatedPublicationChannel:
                     destination: ontopop.data.validated
-                    binder: azure_service_bus
+                    binder: rabbitmq
                 validatedConsumptionChannel:
                     destination: ontopop.data.validated
                     group: ontopop.data.validated.consumers
-                    binder: azure_service_bus
+                    binder: rabbitmq
                 parsedPublicationChannel:
                     destination: ontopop.data.parsed
-                    binder: azure_service_bus
+                    binder: rabbitmq
                 parsedConsumptionChannel:
                     destination: ontopop.data.parsed
                     group: ontopop.data.parsed.consumers
-                    binder: azure_service_bus
+                    binder: rabbitmq
                 modelledPublicationChannel:
                     destination: ontopop.data.modelled
-                    binder: azure_service_bus
+                    binder: rabbitmq
                 modelledConsumptionChannel:
                     destination: ontopop.data.modelled
                     group: ontopop.data.modelled.consumers
-                    binder: azure_service_bus
+                    binder: rabbitmq
                 modelledLoadedPublicationChannel:
                     destination: ontopop.data.modelled.loaded
-                    binder: azure_service_bus
+                    binder: rabbitmq
                 modelledLoadedConsumptionChannel:
                     destination: ontopop.data.modelled.loaded
                     group: ontopop.data.modelled.loaded.consumers
-                    binder: azure_service_bus
+                    binder: rabbitmq
                 modelledIndexedPublicationChannel:
                     destination: ontopop.data.modelled.indexed
-                    binder: azure_service_bus
+                    binder: rabbitmq
                 modelledIndexedConsumptionChannel:
                     destination: ontopop.data.modelled.indexed
                     group: ontopop.data.modelled.indexed.consumers
-                    binder: azure_service_bus
+                    binder: rabbitmq
                 validatedLoadedPublicationChannel:
                     destination: ontopop.data.validated.loaded
-                    binder: azure_service_bus
+                    binder: rabbitmq
                 validatedLoadedConsumptionChannel:
                     destination: ontopop.data.validated.loaded
                     group: ontopop.data.validated.loaded.consumers
-                    binder: azure_service_bus
+                    binder: rabbitmq
             servicebus:
                 topic:
                     bindings:
@@ -117,9 +117,9 @@ spring:
                 default-context: ontopop/development
     datasource:
         driver-class-name: org.hsqldb.jdbc.JDBCDriver
-        url: ${spring.datasource.url}
-        username: ${spring.datasource.username}
-        password: ${spring.datasource.password}
+        url: ${spring-datasource-url}
+        username: ${spring-datasource-username}
+        password: ${spring-datasource-password}
     jackson:
         serialization:
             write_dates_as_timestamps: false
@@ -131,11 +131,11 @@ security:
     secrets:
         service: hashicorp-vault
         aws-secrets-manager: 
-            access-key-id: ${aws.secrets-manager.access-key-id}
-            access-key-secret: ${aws.secrets-manager.access-key-secret}
+            access-key-id: ${aws-secrets-manager-access-key-id}
+            access-key-secret: ${aws-secrets-manager-access-key-secret}
             region: eu-west-2
         azure-key-vault:
-            url: ${azure.key-vault.url}
+            url: ${azure-key-vault-url}
         hashicorp-vault:
             paths:
                 subpaths:
@@ -144,16 +144,16 @@ storage:
     object:
         service: local
         local:
-            baseUri: ${local.storage.base.directory.path}
+            baseUri: ${local-storage-base-directory-path}
         aws-s3:
-            access-key-id: ${aws.s3.access-key-id}
-            access-key-secret: ${aws.s3.access-key-secret}
+            access-key-id: ${aws-s3-access-key-id}
+            access-key-secret: ${aws-s3-access-key-secret}
             region: eu-west-2
             bucket-name: ontopop
         azure-storage:
-            account-name: ${azure.storage.account-name}
-            account-key: ${azure.storage.account-key}
-            blob-endpoint: ${azure.storage.blob-endpoint}
+            account-name: ${azure-storage-account-name}
+            account-key: ${azure-storage-account-key}
+            blob-endpoint: ${azure-storage-blob-endpoint}
             container-name: ontopop
         containers:
             ingested: ingested
@@ -170,9 +170,9 @@ storage:
         service: apache-jena
         apache-jena:
             fuseki:
-                url: ${jena.fuseki.url}
+                url: ${jena-fuseki-url}
         ontotext-graphdb:
-            url: ${ontotext.graphdb.url}
+            url: ${ontotext-graphdb-url}
     graph:
         service: tinkergraph
         gremlin-graph:
@@ -181,7 +181,7 @@ storage:
         service: elasticsearch
         indexNamePrefix: ontopop
         elasticsearch:
-            url: ${elasticsearch.url}
+            url: ${elasticsearch-url}
             shards: 1
             replicas: 0
 web:
