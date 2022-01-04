@@ -53,18 +53,6 @@
         <dependency>
             <groupId>ai.hyperlearning.ontopop</groupId>
             <artifactId>ontopop-data-ontology-ingestor</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>ai.hyperlearning.ontopop</groupId>
-                    <artifactId>ontopop-configuration</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        
-        <!-- OntoPop Cloud Azure -->
-        <dependency>
-            <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-azure-configuration</artifactId>
         </dependency>
         
         <!-- Spring Cloud Function -->
