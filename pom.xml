@@ -56,8 +56,10 @@
         <conf.bootstrap-properties.filename>bootstrap.yml</conf.bootstrap-properties.filename>
         <conf.application-properties.filename>application.yml</conf.application-properties.filename>
         <conf.gremlin-graph-properties.filename>gremlin-graph.properties</conf.gremlin-graph-properties.filename>
+        <conf.gremlin-graph-remote-properties.filename>gremlin-graph-remote.yaml</conf.gremlin-graph-remote-properties.filename>
         <graphdb-free-runtime.version>9.10.1</graphdb-free-runtime.version>
         <gremlin-core.version>3.5.1</gremlin-core.version>
+        <gremlin-driver.version>3.5.1</gremlin-driver.version>
         <gremlin-groovy.version>3.5.1</gremlin-groovy.version>
         <guava.version>31.0.1-jre</guava.version>
         <java.version>11</java.version>
@@ -138,6 +140,11 @@
                 <groupId>org.apache.tinkerpop</groupId>
                 <artifactId>gremlin-core</artifactId>
                 <version>${gremlin-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tinkerpop</groupId>
+                <artifactId>gremlin-driver</artifactId>
+                <version>${gremlin-driver.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.tinkerpop</groupId>
