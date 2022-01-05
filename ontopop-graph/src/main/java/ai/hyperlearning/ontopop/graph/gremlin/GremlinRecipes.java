@@ -56,7 +56,10 @@ public class GremlinRecipes {
 	
 	private static String resolveHasPropertyValue(Object propertyValue) {
 		return propertyValue instanceof String ? 
-				"'" + propertyValue + "'" : propertyValue.toString(); 
+				"'" + propertyValue.toString()
+						.replaceAll("\'", "")
+						.trim() + "'" : 
+					propertyValue.toString(); 
 	}
 	
 	/**
