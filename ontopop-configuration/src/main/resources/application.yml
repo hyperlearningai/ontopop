@@ -174,11 +174,18 @@ storage:
         ontotext-graphdb:
             url: ${ontotext-graphdb-url}
     graph:
-        service: tinkergraph
+        service: gremlin-remote-graph
         gremlin-graph:
             configuration-filename: gremlin-graph.properties
         gremlin-remote-graph:
-            configuration-filename: gremlin-graph-remote.yaml
+            host: ${gremlin-remote-graph-host}
+            port: ${gremlin-remote-graph-port}
+            username: ${gremlin-remote-graph-username}
+            password: ${gremlin-remote-graph-password}
+            enableSsl: true
+            serializer:
+                className: org.apache.tinkerpop.gremlin.driver.ser.GraphSONMessageSerializerV2d0
+                serializeResultToString: true
     search:
         service: elasticsearch
         indexNamePrefix: ontopop
