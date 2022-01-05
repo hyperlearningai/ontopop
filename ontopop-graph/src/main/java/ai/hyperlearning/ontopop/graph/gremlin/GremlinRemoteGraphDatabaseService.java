@@ -16,6 +16,8 @@ import org.apache.tinkerpop.gremlin.driver.ResultSet;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.util.TransactionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,6 +36,9 @@ import ai.hyperlearning.ontopop.graph.model.SimpleGraphVertex;
 
 @Service
 public class GremlinRemoteGraphDatabaseService implements GraphDatabaseService {
+	
+	private static final Logger LOGGER = 
+			LoggerFactory.getLogger(GremlinRemoteGraphDatabaseService.class);
 	
 	private static final String VERTEX_ID_PROPERTY_KEY = "vertexId";
 	
@@ -147,16 +152,19 @@ public class GremlinRemoteGraphDatabaseService implements GraphDatabaseService {
 	@Override
 	public List<Result> getVertices() 
 			throws InterruptedException, ExecutionException {
-		ResultSet results = client.submit(
-				GremlinRecipes.getVertices(supportsTraversalsBy));
+		String query = GremlinRecipes.getVertices(supportsTraversalsBy);
+		LOGGER.debug("Gremlin Query - Get Vertices: {}", query);
+		ResultSet results = client.submit(query);
 		return getResultList(results);
 	}
 
 	@Override
 	public List<Result> getVertices(String label) 
 			throws InterruptedException, ExecutionException {
-		ResultSet results = client.submit(GremlinRecipes.getVertices(
-				label, supportsTraversalsBy));
+		String query = GremlinRecipes.getVertices(
+				label, supportsTraversalsBy);
+		LOGGER.debug("Gremlin Query - Get Vertices: {}", query);
+		ResultSet results = client.submit(query);
 		return getResultList(results);
 	}
 
@@ -164,9 +172,10 @@ public class GremlinRemoteGraphDatabaseService implements GraphDatabaseService {
 	public List<Result> getVertices(
 			String label, String propertyKey, Object propertyValue) 
 					throws InterruptedException, ExecutionException {
-		ResultSet results = client.submit(
-				GremlinRecipes.getVertices(label, 
-						propertyKey, propertyValue, supportsTraversalsBy));
+		String query = GremlinRecipes.getVertices(label, 
+				propertyKey, propertyValue, supportsTraversalsBy);
+		LOGGER.debug("Gremlin Query - Get Vertices: {}", query);
+		ResultSet results = client.submit(query);
 		return getResultList(results);
 	}
 
@@ -174,9 +183,10 @@ public class GremlinRemoteGraphDatabaseService implements GraphDatabaseService {
 	public List<Result> getVertices(
 			String propertyKey, Object propertyValue) 
 					throws InterruptedException, ExecutionException {
-		ResultSet results = client.submit(
-				GremlinRecipes.getVertices(
-						propertyKey, propertyValue, supportsTraversalsBy));
+		String query = GremlinRecipes.getVertices(
+				propertyKey, propertyValue, supportsTraversalsBy);
+		LOGGER.debug("Gremlin Query - Get Vertices: {}", query);
+		ResultSet results = client.submit(query);
 		return getResultList(results);
 	}
 
@@ -184,9 +194,10 @@ public class GremlinRemoteGraphDatabaseService implements GraphDatabaseService {
 	public Result getVertex(long vertexId) 
 			throws NoSuchElementException, InterruptedException, 
 			ExecutionException {
-		ResultSet results = client.submit(
-				GremlinRecipes.getVertex(
-						vertexId, supportsNonStringIds, supportsTraversalsBy));
+		String query = GremlinRecipes.getVertex(
+				vertexId, supportsNonStringIds, supportsTraversalsBy);
+		LOGGER.debug("Gremlin Query - Get Vertex: {}", query);
+		ResultSet results = client.submit(query);
 		return getResult(results);
 	}
 
@@ -194,18 +205,20 @@ public class GremlinRemoteGraphDatabaseService implements GraphDatabaseService {
 	public Result getVertex(
 			String label, String propertyKey, Object propertyValue) 
 					throws InterruptedException, ExecutionException {
-		ResultSet results = client.submit(
-				GremlinRecipes.getVertices(label, 
-						propertyKey, propertyValue, supportsTraversalsBy));
+		String query = GremlinRecipes.getVertices(label, 
+				propertyKey, propertyValue, supportsTraversalsBy);
+		LOGGER.debug("Gremlin Query - Get Vertex: {}", query);
+		ResultSet results = client.submit(query);
 		return getResult(results);
 	}
 
 	@Override
 	public Result getVertex(String propertyKey, Object propertyValue) 
 			throws InterruptedException, ExecutionException {
-		ResultSet results = client.submit(
-				GremlinRecipes.getVertices(
-						propertyKey, propertyValue, supportsTraversalsBy));
+		String query = GremlinRecipes.getVertices(
+				propertyKey, propertyValue, supportsTraversalsBy);
+		LOGGER.debug("Gremlin Query - Get Vertex: {}", query);
+		ResultSet results = client.submit(query);
 		return getResult(results);
 	}
 
@@ -214,12 +227,13 @@ public class GremlinRemoteGraphDatabaseService implements GraphDatabaseService {
 			throws InterruptedException, ExecutionException {
 		if ( !vertices.isEmpty() ) {
 			for (SimpleGraphVertex vertex : vertices) {
-				client.submit(GremlinRecipes.addVertex(
+				String query = GremlinRecipes.addVertex(
 						label, 
 						vertex.getVertexId(),
 						vertex.getProperties(), 
-						supportsNonStringIds))
-					.all().get();
+						supportsNonStringIds);
+				LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
+				client.submit(query).all().get();
 			}
 		}
 	}
@@ -231,10 +245,10 @@ public class GremlinRemoteGraphDatabaseService implements GraphDatabaseService {
 		if ( !propertyMaps.isEmpty() ) {
 			for ( Map<String, Object> properties : propertyMaps ) {
 				long vertexId = (Long) properties.get(VERTEX_ID_PROPERTY_KEY);
-				client.submit(
-						GremlinRecipes.addVertex(label, 
-								vertexId, properties, supportsNonStringIds))
-					.all().get();
+				String query = GremlinRecipes.addVertex(label, 
+						vertexId, properties, supportsNonStringIds);
+				LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
+				client.submit(query).all().get();
 			}
 		}
 	}
@@ -244,9 +258,10 @@ public class GremlinRemoteGraphDatabaseService implements GraphDatabaseService {
 			throws NoSuchElementException, InterruptedException, 
 			ExecutionException {
 		long vertexId = (Long) properties.get(VERTEX_ID_PROPERTY_KEY);
-		client.submit(GremlinRecipes.addVertex(label, 
-				vertexId, properties, supportsNonStringIds))
-			.all().get();
+		String query = GremlinRecipes.addVertex(label, 
+				vertexId, properties, supportsNonStringIds);
+		LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
+		client.submit(query).all().get();
 		return getVertex(vertexId);
 	}
 
@@ -255,9 +270,10 @@ public class GremlinRemoteGraphDatabaseService implements GraphDatabaseService {
 			long vertexId, String propertyKey, Object propertyValue) 
 					throws NoSuchElementException, InterruptedException, 
 					ExecutionException {
-		client.submit(GremlinRecipes.updateVertex(
-				vertexId, propertyKey, propertyValue, supportsNonStringIds))
-			.all().get();
+		String query = GremlinRecipes.updateVertex(
+				vertexId, propertyKey, propertyValue, supportsNonStringIds);
+		LOGGER.debug("Gremlin Query - Update Vertex: {}", query);
+		client.submit(query).all().get();
 		return getVertex(vertexId);
 	}
 
@@ -266,9 +282,10 @@ public class GremlinRemoteGraphDatabaseService implements GraphDatabaseService {
 			long vertexId, Map<String, Object> properties) 
 					throws NoSuchElementException, InterruptedException, 
 					ExecutionException {
-		client.submit(GremlinRecipes.updateVertex(
-				vertexId, properties, supportsNonStringIds))
-			.all().get();
+		String query = GremlinRecipes.updateVertex(
+				vertexId, properties, supportsNonStringIds);
+		LOGGER.debug("Gremlin Query - Update Vertex: {}", query);
+		client.submit(query).all().get();
 		return getVertex(vertexId);
 	}
 
@@ -276,23 +293,27 @@ public class GremlinRemoteGraphDatabaseService implements GraphDatabaseService {
 	public List<Result> deleteVertex(long vertexId) 
 			throws NoSuchElementException, InterruptedException, 
 			ExecutionException {
-		return client.submit(
-				GremlinRecipes.deleteVertex(vertexId, supportsNonStringIds))
-					.all().get();
+		String query = GremlinRecipes.deleteVertex(
+				vertexId, supportsNonStringIds);
+		LOGGER.debug("Gremlin Query - Delete Vertex: {}", query);
+		return client.submit(query).all().get();
 	}
 
 	@Override
 	public void deleteVertices() 
 			throws InterruptedException, ExecutionException {
-		client.submit(GremlinRecipes.deleteVertices()).all().get();
+		String query = GremlinRecipes.deleteVertices();
+		LOGGER.debug("Gremlin Query - Delete Vertices: {}", query);
+		client.submit(query).all().get();
 	}
 
 	@Override
 	public void deleteVertices(String propertyKey, Object propertyValue) 
 			throws InterruptedException, ExecutionException {
-		client.submit(
-				GremlinRecipes.deleteVertices(propertyKey, propertyValue))
-			.all().get();
+		String query = GremlinRecipes.deleteVertices(
+				propertyKey, propertyValue);
+		LOGGER.debug("Gremlin Query - Delete Vertices: {}", query);
+		client.submit(query).all().get();
 	}
 	
 	/**************************************************************************
@@ -304,16 +325,18 @@ public class GremlinRemoteGraphDatabaseService implements GraphDatabaseService {
 	@Override
 	public List<Result> getEdges() 
 			throws InterruptedException, ExecutionException {
-		ResultSet results = client.submit(
-				GremlinRecipes.getEdges(supportsTraversalsBy));
+		String query = GremlinRecipes.getEdges(supportsTraversalsBy);
+		LOGGER.debug("Gremlin Query - Get Edges: {}", query);
+		ResultSet results = client.submit(query);
 		return getResultList(results);
 	}
 
 	@Override
 	public List<Result> getEdges(String label) 
 			throws InterruptedException, ExecutionException {
-		ResultSet results = client.submit(
-				GremlinRecipes.getEdges(label, supportsTraversalsBy));
+		String query = GremlinRecipes.getEdges(label, supportsTraversalsBy);
+		LOGGER.debug("Gremlin Query - Get Edges: {}", query);
+		ResultSet results = client.submit(query);
 		return getResultList(results);
 	}
 
@@ -321,9 +344,10 @@ public class GremlinRemoteGraphDatabaseService implements GraphDatabaseService {
 	public List<Result> getEdges(
 			String label, String propertyKey, Object propertyValue) 
 					throws InterruptedException, ExecutionException {
-		ResultSet results = client.submit(
-				GremlinRecipes.getEdges(label, 
-						propertyKey, propertyValue, supportsTraversalsBy));
+		String query = GremlinRecipes.getEdges(label, 
+				propertyKey, propertyValue, supportsTraversalsBy);
+		LOGGER.debug("Gremlin Query - Get Edges: {}", query);
+		ResultSet results = client.submit(query);
 		return getResultList(results);
 	}
 
@@ -331,9 +355,10 @@ public class GremlinRemoteGraphDatabaseService implements GraphDatabaseService {
 	public List<Result> getEdges(
 			String propertyKey, Object propertyValue) 
 					throws InterruptedException, ExecutionException {
-		ResultSet results = client.submit(
-				GremlinRecipes.getEdges(
-						propertyKey, propertyValue, supportsTraversalsBy));
+		String query = GremlinRecipes.getEdges(
+				propertyKey, propertyValue, supportsTraversalsBy);
+		LOGGER.debug("Gremlin Query - Get Edges: {}", query);
+		ResultSet results = client.submit(query);
 		return getResultList(results);
 	}
 
@@ -341,9 +366,10 @@ public class GremlinRemoteGraphDatabaseService implements GraphDatabaseService {
 	public Result getEdge(long edgeId) 
 			throws NoSuchElementException, InterruptedException, 
 			ExecutionException {
-		ResultSet results = client.submit(
-				GremlinRecipes.getEdge(
-						edgeId, supportsNonStringIds, supportsTraversalsBy));
+		String query = GremlinRecipes.getEdge(
+				edgeId, supportsNonStringIds, supportsTraversalsBy);
+		LOGGER.debug("Gremlin Query - Get Edge: {}", query);
+		ResultSet results = client.submit(query);
 		return getResult(results);
 	}
 
@@ -351,9 +377,10 @@ public class GremlinRemoteGraphDatabaseService implements GraphDatabaseService {
 	public Result getEdge(
 			String label, String propertyKey, Object propertyValue) 
 					throws InterruptedException, ExecutionException {
-		ResultSet results = client.submit(
-				GremlinRecipes.getEdges(label, 
-						propertyKey, propertyValue, supportsTraversalsBy));
+		String query = GremlinRecipes.getEdges(label, 
+				propertyKey, propertyValue, supportsTraversalsBy);
+		LOGGER.debug("Gremlin Query - Get Edge: {}", query);
+		ResultSet results = client.submit(query);
 		return getResult(results);
 	}
 
@@ -361,9 +388,10 @@ public class GremlinRemoteGraphDatabaseService implements GraphDatabaseService {
 	public Result getEdge(
 			String propertyKey, Object propertyValue) 
 					throws InterruptedException, ExecutionException {
-		ResultSet results = client.submit(
-				GremlinRecipes.getEdges(
-						propertyKey, propertyValue, supportsTraversalsBy));
+		String query = GremlinRecipes.getEdges(
+				propertyKey, propertyValue, supportsTraversalsBy);
+		LOGGER.debug("Gremlin Query - Get Edge: {}", query);
+		ResultSet results = client.submit(query);
 		return getResult(results);
 	}
 
@@ -372,12 +400,13 @@ public class GremlinRemoteGraphDatabaseService implements GraphDatabaseService {
 			throws InterruptedException, ExecutionException {
 		if ( !edges.isEmpty() ) {
 			for (SimpleGraphEdge edge : edges) {
-				client.submit(GremlinRecipes.addEdge(
+				String query = GremlinRecipes.addEdge(
 						edge.getSourceVertexId(), 
 						edge.getTargetVertexId(), 
 						edge.getLabel(), 
-						edge.getProperties(), supportsNonStringIds))
-					.all().get();
+						edge.getProperties(), supportsNonStringIds);
+				LOGGER.debug("Gremlin Query - Add Edge: {}", query);
+				client.submit(query).all().get();
 			}
 		}
 	}
@@ -387,12 +416,14 @@ public class GremlinRemoteGraphDatabaseService implements GraphDatabaseService {
 			Vertex sourceVertex, Vertex targetVertex, 
 			String label, Map<String, Object> properties) 
 					throws InterruptedException, ExecutionException {
-		client.submit(GremlinRecipes.addEdge(
+		String query = GremlinRecipes.addEdge(
 				(Long) sourceVertex.id(), 
 				(Long) targetVertex.id(), 
 				label, 
 				properties, 
-				supportsNonStringIds)).all().get();
+				supportsNonStringIds);
+		LOGGER.debug("Gremlin Query - Add Edge: {}", query);
+		client.submit(query).all().get();
 		return null;
 	}
 
@@ -401,10 +432,10 @@ public class GremlinRemoteGraphDatabaseService implements GraphDatabaseService {
 			long edgeId, String propertyKey, Object propertyValue) 
 					throws NoSuchElementException, InterruptedException, 
 					ExecutionException {
-		client.submit(
-				GremlinRecipes.updateEdge(edgeId, 
-						propertyKey, propertyValue, supportsNonStringIds))
-			.all().get();
+		String query = GremlinRecipes.updateEdge(edgeId, 
+				propertyKey, propertyValue, supportsNonStringIds);
+		LOGGER.debug("Gremlin Query - Update Edge: {}", query);
+		client.submit(query).all().get();
 		return getEdge(edgeId);
 	}
 
@@ -412,9 +443,10 @@ public class GremlinRemoteGraphDatabaseService implements GraphDatabaseService {
 	public Result updateEdge(long edgeId, Map<String, Object> properties) 
 			throws NoSuchElementException, InterruptedException, 
 			ExecutionException {
-		client.submit(GremlinRecipes.updateEdge(
-				edgeId, properties, supportsNonStringIds))
-			.all().get();
+		String query = GremlinRecipes.updateEdge(
+				edgeId, properties, supportsNonStringIds);
+		LOGGER.debug("Gremlin Query - Update Edge: {}", query);
+		client.submit(query).all().get();
 		return getEdge(edgeId);
 	}
 
@@ -422,29 +454,35 @@ public class GremlinRemoteGraphDatabaseService implements GraphDatabaseService {
 	public List<Result> deleteEdge(long edgeId) 
 			throws NoSuchElementException, InterruptedException, 
 			ExecutionException {
-		return client.submit(GremlinRecipes.deleteEdge(
-				edgeId, supportsNonStringIds)).all().get();
+		String query = GremlinRecipes.deleteEdge(
+				edgeId, supportsNonStringIds);
+		LOGGER.debug("Gremlin Query - Delete Edge: {}", query);
+		return client.submit(query).all().get();
 	}
 
 	@Override
 	public void deleteEdges() throws InterruptedException, ExecutionException {
-		client.submit(GremlinRecipes.deleteEdges()).all().get();
+		String query = GremlinRecipes.deleteEdges();
+		LOGGER.debug("Gremlin Query - Delete Edges: {}", query);
+		client.submit(query).all().get();
 	}
 
 	@Override
 	public void deleteEdges(String propertyKey, Object propertyValue) 
 			throws InterruptedException, ExecutionException {
-		client.submit(GremlinRecipes.deleteEdges(propertyKey, propertyValue))
-			.all().get();
+		String query = GremlinRecipes.deleteEdges(propertyKey, propertyValue);
+		LOGGER.debug("Gremlin Query - Delete Edges: {}", query);
+		client.submit(query).all().get();
 	}
 	
 	/**************************************************************************
-	 * QUERY MANAGEMENT
+	 * CUSTOM QUERY MANAGEMENT
 	 *************************************************************************/
 
 	@Override
 	public List<Result> query(String gremlinQuery) 
 			throws ScriptException, InterruptedException, ExecutionException {
+		LOGGER.debug("Gremlin Query - Custom Query: {}", gremlinQuery);
 		ResultSet results = client.submit(gremlinQuery);
 		return getResultList(results);
 	}
