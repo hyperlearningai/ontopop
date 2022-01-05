@@ -331,8 +331,8 @@ public class GremlinRemoteGraphDatabaseService implements GraphDatabaseService {
 		if ( !edges.isEmpty() ) {
 			for (SimpleGraphEdge edge : edges) {
 				client.submit(GremlinRecipes.addEdge(
-						(Long) edge.getSourceVertex().id(), 
-						(Long) edge.getTargetVertex().id(), 
+						edge.getSourceVertexId(), 
+						edge.getTargetVertexId(), 
 						edge.getLabel(), 
 						edge.getProperties()));
 			}

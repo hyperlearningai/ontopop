@@ -17,7 +17,9 @@ public class SimpleGraphEdge implements Serializable {
 	private static final long serialVersionUID = 1133567718026149941L;
 	private String label;
 	private Vertex sourceVertex;
+	private long sourceVertexId;
 	private Vertex targetVertex;
+	private long targetVertexId;
 	private Map<String, Object> properties;
 	
 	public SimpleGraphEdge() {
@@ -30,7 +32,19 @@ public class SimpleGraphEdge implements Serializable {
 			Map<String, Object> properties) {
 		this.label = label;
 		this.sourceVertex = sourceVertex;
+		this.sourceVertexId = (Long) sourceVertex.id();
 		this.targetVertex = targetVertex;
+		this.targetVertexId = (Long) targetVertex.id();
+		this.properties = properties;
+	}
+	
+	public SimpleGraphEdge(String label, 
+			long sourceVertexId, 
+			long targetVertexId, 
+			Map<String, Object> properties) {
+		this.label = label;
+		this.sourceVertexId = sourceVertexId;
+		this.targetVertexId = targetVertexId;
 		this.properties = properties;
 	}
 
@@ -48,6 +62,15 @@ public class SimpleGraphEdge implements Serializable {
 
 	public void setSourceVertex(Vertex sourceVertex) {
 		this.sourceVertex = sourceVertex;
+		this.sourceVertexId = (Long) sourceVertex.id();
+	}
+
+	public long getSourceVertexId() {
+		return sourceVertexId;
+	}
+
+	public void setSourceVertexId(long sourceVertexId) {
+		this.sourceVertexId = sourceVertexId;
 	}
 
 	public Vertex getTargetVertex() {
@@ -56,6 +79,15 @@ public class SimpleGraphEdge implements Serializable {
 
 	public void setTargetVertex(Vertex targetVertex) {
 		this.targetVertex = targetVertex;
+		this.targetVertexId = (Long) targetVertex.id();
+	}
+
+	public long getTargetVertexId() {
+		return targetVertexId;
+	}
+
+	public void setTargetVertexId(long targetVertexId) {
+		this.targetVertexId = targetVertexId;
 	}
 
 	public Map<String, Object> getProperties() {
@@ -71,7 +103,9 @@ public class SimpleGraphEdge implements Serializable {
 		return "SimpleGraphEdge ["
 				+ "label=" + label + ", "
 				+ "sourceVertex=" + sourceVertex + ", "
+				+ "sourceVertexId=" + sourceVertexId + ", "
 				+ "targetVertex=" + targetVertex + ", "
+				+ "targetVertexId=" + targetVertexId + ", "
 				+ "properties=" + properties 
 				+ "]";
 	}

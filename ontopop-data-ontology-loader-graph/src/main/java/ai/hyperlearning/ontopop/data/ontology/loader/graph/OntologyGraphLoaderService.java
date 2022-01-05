@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.slf4j.Logger;
@@ -205,9 +206,12 @@ public class OntologyGraphLoaderService {
 	/**
 	 * Load the modelled ontology into the relevant graph database
 	 * @throws IOException
+	 * @throws ExecutionException 
+	 * @throws InterruptedException 
 	 */
 	
-	private void load() throws IOException {
+	private void load() 
+			throws IOException, InterruptedException, ExecutionException {
 		
 		LOGGER.info("Ontology Graph Loading Service - "
 				+ "Started loading the modelled resource into "
@@ -249,20 +253,35 @@ public class OntologyGraphLoaderService {
 		List<SimpleGraphEdge> edges = new ArrayList<>();
 		for (SimpleOntologyEdge edge : simpleOntologyPropertyGraph.getEdges()) {
 			edge.preparePropertiesForLoading();
-			Vertex sourceVertex = graphDatabaseService.getVertex(
+			Object sourceVertex = graphDatabaseService.getVertex(
 					SimpleOntologyVertex.LABEL, 
 					KEY_PROPERTY_KEY, 
 					edge.getSourceVertexKey());
-			Vertex targetVertex = graphDatabaseService.getVertex(
+			Object targetVertex = graphDatabaseService.getVertex(
 					SimpleOntologyVertex.LABEL, 
 					KEY_PROPERTY_KEY, 
 					edge.getTargetVertexKey());
 			if ( sourceVertex != null && targetVertex != null ) {
-				edges.add(new SimpleGraphEdge(
-						SimpleOntologyEdge.LABEL, 
-						sourceVertex, 
-						targetVertex, 
-						edge.getProperties()));
+				
+				// Gremlin graph databases supporting byte code queries
+				if ( sourceVertex instanceof Vertex 
+						&& targetVertex instanceof Vertex ) {
+					edges.add(new SimpleGraphEdge(
+							SimpleOntologyEdge.LABEL, 
+							(Vertex) sourceVertex, 
+							(Vertex) targetVertex, 
+							edge.getProperties()));
+				} 
+				
+				// Gremlin remote graphs and client using string-based queries
+				else {
+					edges.add(new SimpleGraphEdge(
+							SimpleOntologyEdge.LABEL, 
+							edge.getSourceVertexId(), 
+							edge.getTargetVertexId(), 
+							edge.getProperties()));
+				}
+				
 			}
 		}
 		
