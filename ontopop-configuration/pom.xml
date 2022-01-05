@@ -99,6 +99,7 @@
                     <include>${conf.bootstrap-properties.filename}</include>
                     <include>${conf.application-properties.filename}</include>
                     <include>${conf.gremlin-graph-properties.filename}</include>
+                    <include>${conf.gremlin-graph-remote-properties.filename}</include>
                 </includes>
                 <filtering>true</filtering>
             </resource>
