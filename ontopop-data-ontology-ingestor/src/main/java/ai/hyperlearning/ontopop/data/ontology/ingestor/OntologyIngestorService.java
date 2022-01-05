@@ -20,6 +20,8 @@ import org.springframework.integration.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 
 import ai.hyperlearning.ontopop.data.jpa.repositories.OntologyRepository;
@@ -342,10 +344,11 @@ public class OntologyIngestorService {
 	/**
 	 * Publish messages to the shared messaging system for each valid
 	 * webhook event indicating successful ingestion of an updated ontology.
+	 * @throws JsonProcessingException 
 	 * @throws IOException
 	 */
 	
-	private void publish() {
+	private void publish() throws JsonProcessingException {
 		
 		LOGGER.info("Ontology Ingestion Service - "
 				+ "Started publishing messages.");
@@ -363,8 +366,10 @@ public class OntologyIngestorService {
 							webhookEvent.getId(), filenameIdsSeparator));
 			
 			// Publish the message to the shared messaging system
+			ObjectMapper mapper = new ObjectMapper();
 			dataPipelineIngestorSource.ingestedPublicationChannel()
-				.send(MessageBuilder.withPayload(ontologyMessage).build());
+				.send(MessageBuilder.withPayload(
+						mapper.writeValueAsString(ontologyMessage)).build());
 			
 		}
 		

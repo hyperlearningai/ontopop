@@ -11,6 +11,9 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import ai.hyperlearning.ontopop.messaging.processors.DataPipelineValidatedLoaderSource;
 import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 import ai.hyperlearning.ontopop.storage.ObjectStorageService;
@@ -225,14 +228,17 @@ public class OntologyTriplestoreLoaderService {
 	
 	/**
 	 * Publish a message to the shared messaging system
+	 * @throws JsonProcessingException 
 	 */
 	
-	private void publish() {
+	private void publish() throws JsonProcessingException {
 		
 		LOGGER.info("Ontology Triplestore Loading Service - "
 				+ "Started publishing message.");
+		ObjectMapper mapper = new ObjectMapper();
 		dataPipelineValidatedLoaderSource.validatedLoadedPublicationChannel()
-			.send(MessageBuilder.withPayload(ontologyMessage).build());
+			.send(MessageBuilder.withPayload(
+					mapper.writeValueAsString(ontologyMessage)).build());
 		LOGGER.info("Ontology Triplestore Loading Service - "
 				+ "Finished publishing message.");
 		
