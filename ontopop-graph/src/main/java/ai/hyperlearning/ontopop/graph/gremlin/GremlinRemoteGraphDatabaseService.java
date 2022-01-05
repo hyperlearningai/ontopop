@@ -13,9 +13,7 @@ import javax.script.ScriptException;
 import org.apache.tinkerpop.gremlin.driver.Client;
 import org.apache.tinkerpop.gremlin.driver.Result;
 import org.apache.tinkerpop.gremlin.driver.ResultSet;
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.util.TransactionException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +35,6 @@ import ai.hyperlearning.ontopop.graph.model.SimpleGraphVertex;
 public class GremlinRemoteGraphDatabaseService implements GraphDatabaseService {
 	
 	private static final String VERTEX_ID_PROPERTY_KEY = "vertexId";
-	private static final String EDGE_ID_PROPERTY_KEY = "edgeId";
 	
 	@Autowired
 	@Qualifier("gremlinRemoteGraphClient")
@@ -266,98 +263,125 @@ public class GremlinRemoteGraphDatabaseService implements GraphDatabaseService {
 	
 	/**************************************************************************
 	 * EDGE MANAGEMENT
+	 * @throws ExecutionException 
+	 * @throws InterruptedException 
 	 *************************************************************************/
 
 	@Override
-	public GraphTraversal<Edge, Edge> getEdges() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Result> getEdges() 
+			throws InterruptedException, ExecutionException {
+		ResultSet results = client.submit(GremlinRecipes.getEdges());
+		return getResultList(results);
 	}
 
 	@Override
-	public GraphTraversal<Edge, Edge> getEdges(String label) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Result> getEdges(String label) 
+			throws InterruptedException, ExecutionException {
+		ResultSet results = client.submit(GremlinRecipes.getEdges(label));
+		return getResultList(results);
 	}
 
 	@Override
-	public GraphTraversal<Edge, Edge> getEdges(
-			String label, String propertyKey, Object propertyValue) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Result> getEdges(
+			String label, String propertyKey, Object propertyValue) 
+					throws InterruptedException, ExecutionException {
+		ResultSet results = client.submit(
+				GremlinRecipes.getEdges(label, propertyKey, propertyValue));
+		return getResultList(results);
 	}
 
 	@Override
-	public GraphTraversal<Edge, Edge> getEdges(
-			String propertyKey, Object propertyValue) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Result> getEdges(
+			String propertyKey, Object propertyValue) 
+					throws InterruptedException, ExecutionException {
+		ResultSet results = client.submit(
+				GremlinRecipes.getEdges(propertyKey, propertyValue));
+		return getResultList(results);
 	}
 
 	@Override
-	public Edge getEdge(long edgeId) throws NoSuchElementException {
-		// TODO Auto-generated method stub
-		return null;
+	public Result getEdge(long edgeId) 
+			throws NoSuchElementException, InterruptedException, 
+			ExecutionException {
+		ResultSet results = client.submit(
+				GremlinRecipes.getEdge(edgeId));
+		return getResult(results);
 	}
 
 	@Override
-	public Edge getEdge(
-			String label, String propertyKey, Object propertyValue) {
-		// TODO Auto-generated method stub
-		return null;
+	public Result getEdge(
+			String label, String propertyKey, Object propertyValue) 
+					throws InterruptedException, ExecutionException {
+		ResultSet results = client.submit(
+				GremlinRecipes.getEdges(label, propertyKey, propertyValue));
+		return getResult(results);
 	}
 
 	@Override
-	public Edge getEdge(String propertyKey, Object propertyValue) {
-		// TODO Auto-generated method stub
-		return null;
+	public Result getEdge(
+			String propertyKey, Object propertyValue) 
+					throws InterruptedException, ExecutionException {
+		ResultSet results = client.submit(
+				GremlinRecipes.getEdges(propertyKey, propertyValue));
+		return getResult(results);
 	}
 
 	@Override
 	public void addEdges(List<SimpleGraphEdge> edges) {
-		// TODO Auto-generated method stub
-		
+		if ( !edges.isEmpty() ) {
+			for (SimpleGraphEdge edge : edges) {
+				client.submit(GremlinRecipes.addEdge(
+						(Long) edge.getSourceVertex().id(), 
+						(Long) edge.getTargetVertex().id(), 
+						edge.getLabel(), 
+						edge.getProperties()));
+			}
+		}
 	}
 
 	@Override
-	public Edge addEdge(
+	public Result addEdge(
 			Vertex sourceVertex, Vertex targetVertex, 
 			String label, Map<String, Object> properties) {
-		// TODO Auto-generated method stub
+		client.submit(GremlinRecipes.addEdge(
+				(Long) sourceVertex.id(), 
+				(Long) targetVertex.id(), 
+				label, 
+				properties));
 		return null;
 	}
 
 	@Override
-	public Edge updateEdge(
+	public Result updateEdge(
 			long edgeId, String propertyKey, Object propertyValue) 
-					throws NoSuchElementException {
-		// TODO Auto-generated method stub
-		return null;
+					throws NoSuchElementException, InterruptedException, 
+					ExecutionException {
+		client.submit(
+				GremlinRecipes.updateEdge(edgeId, propertyKey, propertyValue));
+		return getEdge(edgeId);
 	}
 
 	@Override
-	public Edge updateEdge(long edgeId, Map<String, Object> properties) 
-			throws NoSuchElementException {
-		// TODO Auto-generated method stub
-		return null;
+	public Result updateEdge(long edgeId, Map<String, Object> properties) 
+			throws NoSuchElementException, InterruptedException, 
+			ExecutionException {
+		client.submit(GremlinRecipes.updateEdge(edgeId, properties));
+		return getEdge(edgeId);
 	}
 
 	@Override
-	public Edge deleteEdge(long edgeId) throws NoSuchElementException {
-		// TODO Auto-generated method stub
-		return null;
+	public ResultSet deleteEdge(long edgeId) throws NoSuchElementException {
+		return client.submit(GremlinRecipes.deleteEdge(edgeId));
 	}
 
 	@Override
 	public void deleteEdges() {
-		// TODO Auto-generated method stub
-		
+		client.submit(GremlinRecipes.deleteEdges());
 	}
 
 	@Override
 	public void deleteEdges(String propertyKey, Object propertyValue) {
-		// TODO Auto-generated method stub
-		
+		client.submit(GremlinRecipes.deleteEdges(propertyKey, propertyValue));
 	}
 	
 	/**************************************************************************

@@ -108,24 +108,31 @@ public interface GraphDatabaseService {
 	 * EDGE MANAGEMENT
 	 *************************************************************************/
 	
-	public Object getEdges();
+	public Object getEdges() 
+			throws InterruptedException, ExecutionException;
 	
-	public Object getEdges(String label);
+	public Object getEdges(String label) 
+			throws InterruptedException, ExecutionException;
 	
 	public Object getEdges(
-			String label, String propertyKey, Object propertyValue);
+			String label, String propertyKey, Object propertyValue)
+					throws InterruptedException, ExecutionException;
 	
 	public Object getEdges(
-			String propertyKey, Object propertyValue);
+			String propertyKey, Object propertyValue) 
+					throws InterruptedException, ExecutionException;
 	
 	public Object getEdge(long edgeId) 
-			throws NoSuchElementException;
+			throws NoSuchElementException, InterruptedException, 
+			ExecutionException;
 	
 	public Object getEdge(
-			String label, String propertyKey, Object propertyValue);
+			String label, String propertyKey, Object propertyValue) 
+					throws InterruptedException, ExecutionException;
 	
 	public Object getEdge(
-			String propertyKey, Object propertyValue);
+			String propertyKey, Object propertyValue)
+					throws InterruptedException, ExecutionException;
 	
 	public void addEdges(List<SimpleGraphEdge> edges);
 	
@@ -134,10 +141,12 @@ public interface GraphDatabaseService {
 	
 	public Object updateEdge(long edgeId, 
 			String propertyKey, Object propertyValue) 
-					throws NoSuchElementException;
+					throws NoSuchElementException, InterruptedException, 
+					ExecutionException;
 	
 	public Object updateEdge(long edgeId, Map<String, Object> properties) 
-			throws NoSuchElementException;
+			throws NoSuchElementException, InterruptedException, 
+			ExecutionException;
 	
 	public Object deleteEdge(long edgeId) 
 			throws NoSuchElementException;

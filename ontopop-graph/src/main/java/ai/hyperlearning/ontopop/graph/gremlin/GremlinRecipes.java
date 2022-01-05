@@ -383,6 +383,82 @@ public class GremlinRecipes {
 	}
 	
 	/**
+	 * Get all edges given an edge label
+	 * @return
+	 */
+	
+	public static String getEdges(String label) {
+		return "g.V()"
+				+ ".bothE()"
+				+ ".hasLabel('" + label + "')"
+				+ ".project("
+					+ "'sourceVertexKey', "
+					+ "'sourceVertexId', "
+					+ "'targetVertexKey', "
+					+ "'targetVertexId', "
+					+ "'ontologyId', "
+					+ "'latestWebhookEventId', "
+					+ "'relationship')"
+				+ ".by(id())"
+				+ ".by(valueMap(true))"
+				+ ".by(outV().id())"
+				+ ".by(inV().id())"
+				+ ".by(unfold())";
+	}
+	
+	/**
+	 * Get all edges given an edge label and a property key/value pair
+	 * @return
+	 */
+	
+	public static String getEdges(
+			String label, String propertyKey, Object propertyValue) {
+		return "g.V()"
+				+ ".bothE()"
+				+ ".hasLabel('" + label + "')"
+				+ ".has('" + propertyKey + "', " 
+					+ resolveHasPropertyValue(propertyValue) + ")"
+				+ ".project("
+					+ "'sourceVertexKey', "
+					+ "'sourceVertexId', "
+					+ "'targetVertexKey', "
+					+ "'targetVertexId', "
+					+ "'ontologyId', "
+					+ "'latestWebhookEventId', "
+					+ "'relationship')"
+				+ ".by(id())"
+				+ ".by(valueMap(true))"
+				+ ".by(outV().id())"
+				+ ".by(inV().id())"
+				+ ".by(unfold())";
+	}
+	
+	/**
+	 * Get all edges given a property key/value pair
+	 * @return
+	 */
+	
+	public static String getEdges(String propertyKey, Object propertyValue) {
+		return "g.V()"
+				+ ".bothE()"
+				+ ".has('" + propertyKey + "', " 
+					+ resolveHasPropertyValue(propertyValue) + ")"
+				+ ".project("
+					+ "'sourceVertexKey', "
+					+ "'sourceVertexId', "
+					+ "'targetVertexKey', "
+					+ "'targetVertexId', "
+					+ "'ontologyId', "
+					+ "'latestWebhookEventId', "
+					+ "'relationship')"
+				+ ".by(id())"
+				+ ".by(valueMap(true))"
+				+ ".by(outV().id())"
+				+ ".by(inV().id())"
+				+ ".by(unfold())";
+	}
+	
+	/**
 	 * Get a specific edge given an edge ID
 	 * @param id
 	 * @return
@@ -403,6 +479,60 @@ public class GremlinRecipes {
 				+ ".by(outV().id())"
 				+ ".by(inV().id())"
 				+ ".by(unfold())";
+	}
+	
+	/**
+	 * Add an edge given the source vertex ID, target vertex ID, 
+	 * edge label and edge property map
+	 * @param sourceVertexId
+	 * @param targetVertexId
+	 * @param label
+	 * @param properties
+	 */
+	
+	public static String addEdge(long sourceVertexId, long targetVertexId, 
+			String label, Map<String, Object> properties) {
+		StringBuffer query = new StringBuffer(
+				"g.V(" + sourceVertexId + ")"
+					+ ".addE('" + label + "')"
+					+ ".to(g.V(" + targetVertexId + "))");
+		for (Map.Entry<String, Object> entry : properties.entrySet()) {
+			query.append(".property('" + entry.getKey() + "', " 
+					+ resolveHasPropertyValue(entry.getValue()) + ")");
+		}
+		return query.toString();
+	}
+	
+	/**
+	 * Update an edge property key/value pair
+	 * @param edgeId
+	 * @param propertyKey
+	 * @param propertyValue
+	 * @return
+	 */
+	
+	public static String updateEdge(long edgeId, 
+			String propertyKey, Object propertyValue) {
+		return "g.E(" + edgeId + ")"
+				+ ".property('" + propertyKey + "', " 
+					+ resolveHasPropertyValue(propertyValue) + ")";
+	}
+	
+	/**
+	 * Update edge property key/value pairs
+	 * @param edgeId
+	 * @param properties
+	 * @return
+	 */
+	
+	public static String updateEdge(
+			long edgeId, Map<String, Object> properties) {
+		StringBuffer query = new StringBuffer("g.E(" + edgeId + ")");
+		for (Map.Entry<String, Object> entry : properties.entrySet()) {
+			query.append(".property('" + entry.getKey() + "', " 
+					+ resolveHasPropertyValue(entry.getValue()) + ")");
+		}
+		return query.toString();
 	}
 	
 	/**
@@ -428,6 +558,17 @@ public class GremlinRecipes {
 				"'" + propertyValue + "'" : propertyValue.toString(); 
 		return "g.E()"
 				+ ".has('" + propertyKey + "', " + hasPropertyValue + ")"
+				+ ".drop()";
+	}
+	
+	/**
+	 * Delete a specific edge given an edge ID
+	 * @param edgeId
+	 * @return
+	 */
+	
+	public static String deleteEdge(long edgeId) {
+		return "g.E(" + edgeId + ")"
 				+ ".drop()";
 	}
 	
