@@ -19,6 +19,10 @@ public class GremlinRecipes {
 			"key";
 	private static final String EDGE_PROPERTY_KEY_ONTOLOGY_ID = 
 			"ontologyId";
+	private static final String PROPERTY_KEY_ONTOLOGY_LABEL = 
+			"label";
+	private static final String PROPERTY_KEY_ONTOLOGY_LABEL_REPLACEMENT = 
+			"rdfsLabel";
 	
 	private GremlinRecipes() {
 		throw new IllegalStateException("Gremlin Recipes utility class "
@@ -301,8 +305,11 @@ public class GremlinRecipes {
 				"g.addV('" + label + "')"
 						+ ".property('id', '" + vertexId + "')");
 		for (Map.Entry<String, Object> entry : properties.entrySet()) {
+			String key = entry.getKey()
+					.equalsIgnoreCase(PROPERTY_KEY_ONTOLOGY_LABEL) ? 
+					PROPERTY_KEY_ONTOLOGY_LABEL_REPLACEMENT : entry.getKey();
 			query.append(
-					".property('" + entry.getKey() + "', " 
+					".property('" + key + "', " 
 							+ resolveHasPropertyValue(entry.getValue()) + ")");
 		}
 		return query.toString();
@@ -319,8 +326,10 @@ public class GremlinRecipes {
 	public static String updateVertex(
 			long vertexId, String propertyKey, Object propertyValue, 
 			boolean supportsNonStringIds) {
+		String key = propertyKey.equalsIgnoreCase(PROPERTY_KEY_ONTOLOGY_LABEL) ? 
+				PROPERTY_KEY_ONTOLOGY_LABEL_REPLACEMENT : propertyKey;
 		return resolveVertexId(vertexId, supportsNonStringIds)
-				+ ".property('" + propertyKey + "', " 
+				+ ".property('" + key + "', " 
 					+ resolveHasPropertyValue(propertyValue) + ")";
 	}
 	
@@ -337,8 +346,11 @@ public class GremlinRecipes {
 		StringBuilder query = new StringBuilder(
 				resolveVertexId(vertexId, supportsNonStringIds));
 		for (Map.Entry<String, Object> entry : properties.entrySet()) {
+			String key = entry.getKey()
+					.equalsIgnoreCase(PROPERTY_KEY_ONTOLOGY_LABEL) ? 
+					PROPERTY_KEY_ONTOLOGY_LABEL_REPLACEMENT : entry.getKey();
 			query.append(
-					".property('" + entry.getKey() + "', " 
+					".property('" + key + "', " 
 							+ resolveHasPropertyValue(entry.getValue()) + ")");
 		}
 		return query.toString();
@@ -585,7 +597,10 @@ public class GremlinRecipes {
 						+ ".addE('" + label + "')"
 						+ ".to(g.V('" + targetVertexId + "'))");
 		for (Map.Entry<String, Object> entry : properties.entrySet()) {
-			query.append(".property('" + entry.getKey() + "', " 
+			String key = entry.getKey()
+					.equalsIgnoreCase(PROPERTY_KEY_ONTOLOGY_LABEL) ? 
+					PROPERTY_KEY_ONTOLOGY_LABEL_REPLACEMENT : entry.getKey();
+			query.append(".property('" + key + "', " 
 					+ resolveHasPropertyValue(entry.getValue()) + ")");
 		}
 		return query.toString();
@@ -602,8 +617,10 @@ public class GremlinRecipes {
 	public static String updateEdge(long edgeId, 
 			String propertyKey, Object propertyValue, 
 			boolean supportsNonStringIds) {
+		String key = propertyKey.equalsIgnoreCase(PROPERTY_KEY_ONTOLOGY_LABEL) ? 
+				PROPERTY_KEY_ONTOLOGY_LABEL_REPLACEMENT : propertyKey;
 		return resolveEdgeId(edgeId, supportsNonStringIds)
-				+ ".property('" + propertyKey + "', " 
+				+ ".property('" + key + "', " 
 					+ resolveHasPropertyValue(propertyValue) + ")";
 	}
 	
@@ -620,7 +637,10 @@ public class GremlinRecipes {
 		StringBuilder query = new StringBuilder(
 				resolveEdgeId(edgeId, supportsNonStringIds));
 		for (Map.Entry<String, Object> entry : properties.entrySet()) {
-			query.append(".property('" + entry.getKey() + "', " 
+			String key = entry.getKey()
+					.equalsIgnoreCase(PROPERTY_KEY_ONTOLOGY_LABEL) ? 
+					PROPERTY_KEY_ONTOLOGY_LABEL_REPLACEMENT : entry.getKey();
+			query.append(".property('" + key + "', " 
 					+ resolveHasPropertyValue(entry.getValue()) + ")");
 		}
 		return query.toString();
