@@ -9,9 +9,7 @@ import java.util.concurrent.ExecutionException;
 
 import javax.script.ScriptException;
 
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.util.TransactionException;
 
@@ -57,39 +55,49 @@ public interface GraphDatabaseService {
 	 * VERTEX MANAGEMENT
 	 *************************************************************************/
 	
-	public GraphTraversal<Vertex, Vertex> getVertices();
+	public Object getVertices() 
+			throws InterruptedException, ExecutionException;
 	
-	public GraphTraversal<Vertex, Vertex> getVertices(String label);
+	public Object getVertices(String label) 
+			throws InterruptedException, ExecutionException;
 	
-	public GraphTraversal<Vertex, Vertex> getVertices(
-			String label, String propertyKey, Object propertyValue);
+	public Object getVertices(
+			String label, String propertyKey, Object propertyValue) 
+					throws InterruptedException, ExecutionException;
 	
-	public GraphTraversal<Vertex, Vertex> getVertices(
-			String propertyKey, Object propertyValue);
+	public Object getVertices(
+			String propertyKey, Object propertyValue) 
+					throws InterruptedException, ExecutionException;
 	
-	public Vertex getVertex(long vertexId) 
-			throws NoSuchElementException;
+	public Object getVertex(long vertexId) 
+			throws NoSuchElementException, InterruptedException, 
+			ExecutionException;
 	
-	public Vertex getVertex(
-			String label, String propertyKey, Object propertyValue);
+	public Object getVertex(
+			String label, String propertyKey, Object propertyValue) 
+					throws InterruptedException, ExecutionException;
 	
-	public Vertex getVertex(
-			String propertyKey, Object propertyValue);
+	public Object getVertex(
+			String propertyKey, Object propertyValue) 
+					throws InterruptedException, ExecutionException;
 	
 	public void addVertices(String label, Set<SimpleGraphVertex> vertices);
 	
 	public void addVertices(String label, List<Map<String, Object>> propertyMaps);
 	
-	public Vertex addVertex(String label, Map<String, Object> properties);
+	public Object addVertex(String label, Map<String, Object> properties) 
+			throws InterruptedException, ExecutionException;
 	
-	public Vertex updateVertex(long vertexId, 
+	public Object updateVertex(long vertexId, 
 			String propertyKey, Object propertyValue) 
-					throws NoSuchElementException;
+					throws NoSuchElementException, 
+					InterruptedException, ExecutionException;
 	
-	public Vertex updateVertex(long vertexId, Map<String, Object> properties) 
-			throws NoSuchElementException;
+	public Object updateVertex(long vertexId, Map<String, Object> properties) 
+			throws NoSuchElementException, 
+			InterruptedException, ExecutionException;
 	
-	public Vertex deleteVertex(long vertexId) 
+	public Object deleteVertex(long vertexId) 
 			throws NoSuchElementException;
 	
 	public void deleteVertices();
@@ -100,38 +108,38 @@ public interface GraphDatabaseService {
 	 * EDGE MANAGEMENT
 	 *************************************************************************/
 	
-	public GraphTraversal<Edge, Edge> getEdges();
+	public Object getEdges();
 	
-	public GraphTraversal<Edge, Edge> getEdges(String label);
+	public Object getEdges(String label);
 	
-	public GraphTraversal<Edge, Edge> getEdges(
+	public Object getEdges(
 			String label, String propertyKey, Object propertyValue);
 	
-	public GraphTraversal<Edge, Edge> getEdges(
+	public Object getEdges(
 			String propertyKey, Object propertyValue);
 	
-	public Edge getEdge(long edgeId) 
+	public Object getEdge(long edgeId) 
 			throws NoSuchElementException;
 	
-	public Edge getEdge(
+	public Object getEdge(
 			String label, String propertyKey, Object propertyValue);
 	
-	public Edge getEdge(
+	public Object getEdge(
 			String propertyKey, Object propertyValue);
 	
 	public void addEdges(List<SimpleGraphEdge> edges);
 	
-	public Edge addEdge(Vertex sourceVertex, Vertex targetVertex, String label, 
+	public Object addEdge(Vertex sourceVertex, Vertex targetVertex, String label, 
 			Map<String, Object> properties);
 	
-	public Edge updateEdge(long edgeId, 
+	public Object updateEdge(long edgeId, 
 			String propertyKey, Object propertyValue) 
 					throws NoSuchElementException;
 	
-	public Edge updateEdge(long edgeId, Map<String, Object> properties) 
+	public Object updateEdge(long edgeId, Map<String, Object> properties) 
 			throws NoSuchElementException;
 	
-	public Edge deleteEdge(long edgeId) 
+	public Object deleteEdge(long edgeId) 
 			throws NoSuchElementException;
 	
 	public void deleteEdges();
@@ -142,7 +150,7 @@ public interface GraphDatabaseService {
 	 * QUERY MANAGEMENT
 	 *************************************************************************/
 	
-	public List<Object> query(String gremlinQuery) 
+	public Object query(String gremlinQuery) 
 			throws ScriptException, InterruptedException, ExecutionException;
 	
 }

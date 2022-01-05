@@ -13,6 +13,7 @@ import java.util.Map;
 public enum GraphDatabaseServiceType {
 	
 	GREMLIN_GRAPH("GREMLIN-GRAPH"), 
+	GREMLIN_REMOTE_GRAPH("GREMLIN-REMOTE-GRAPH"), 
 	TINKERGRAPH("TINKERGRAPH"), 
 	AWS_NEPTUNE("AWS-NEPTUNE");
 	

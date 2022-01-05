@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import ai.hyperlearning.ontopop.graph.aws.neptune.AwsNeptuneGraphDatabaseService;
 import ai.hyperlearning.ontopop.graph.gremlin.GremlinGraphDatabaseService;
+import ai.hyperlearning.ontopop.graph.gremlin.GremlinRemoteGraphDatabaseService;
 import ai.hyperlearning.ontopop.graph.tinkergraph.TinkerGraphDatabaseService;
 
 /**
@@ -19,6 +20,9 @@ public class GraphDatabaseServiceFactory {
 	
 	@Autowired
 	private GremlinGraphDatabaseService gremlinGraphDatabaseService;
+	
+	@Autowired
+	private GremlinRemoteGraphDatabaseService gremlinRemoteGraphDatabaseService;
 	
 	@Autowired
 	private TinkerGraphDatabaseService tinkerGraphDatabaseService;
@@ -39,6 +43,8 @@ public class GraphDatabaseServiceFactory {
 		switch ( graphDatabaseServiceType ) {
 			case GREMLIN_GRAPH:
 				return gremlinGraphDatabaseService;
+			case GREMLIN_REMOTE_GRAPH:
+				return gremlinRemoteGraphDatabaseService;
 			case TINKERGRAPH:
 				return tinkerGraphDatabaseService;
 			case AWS_NEPTUNE:
@@ -55,6 +61,8 @@ public class GraphDatabaseServiceFactory {
 		switch ( graphDatabaseServiceType ) {
 			case GREMLIN_GRAPH:
 				return gremlinGraphDatabaseService;
+			case GREMLIN_REMOTE_GRAPH:
+				return gremlinRemoteGraphDatabaseService;
 			case TINKERGRAPH:
 				return tinkerGraphDatabaseService;
 			case AWS_NEPTUNE:

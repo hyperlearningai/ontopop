@@ -1,5 +1,7 @@
 package ai.hyperlearning.ontopop.graph.gremlin;
 
+import java.util.Map;
+
 /**
  * Gremlin Recipes
  *
@@ -19,6 +21,34 @@ public class GremlinRecipes {
 			"ontologyId";
 	
 	/**************************************************************************
+	 * GRAPH-CENTRIC GREMLIN RECIPES
+	 *************************************************************************/
+	
+	/**
+	 * Export graph data to disk. This supports IO.graphson, IO.graphml and
+	 * IO.gryo formats.
+	 * @param filePath
+	 * @param format
+	 * @return
+	 */
+	
+	public static String writeGraph(String filePath, String format) {
+		return "g.io(" + filePath + ")"
+				+ ".with(IO.writer,IO." + format + ")"
+				+ ".write()"
+				+ ".iterate()";
+	}
+	
+	/**************************************************************************
+	 * GREMLIN QUERY PROPERTY VALUE RESOLVER
+	 *************************************************************************/
+	
+	private static String resolveHasPropertyValue(Object propertyValue) {
+		return propertyValue instanceof String ? 
+				"'" + propertyValue + "'" : propertyValue.toString(); 
+	}
+	
+	/**************************************************************************
 	 * VERTEX-CENTRIC GREMLIN RECIPES
 	 *************************************************************************/
 	
@@ -29,6 +59,53 @@ public class GremlinRecipes {
 	
 	public static String getVertices() {
 		return "g.V()"
+				+ ".valueMap(true)"
+				+ ".by(unfold())";
+	}
+	
+	/**
+	 * Get all vertices of a given label
+	 * @param label
+	 * @return
+	 */
+	
+	public static String getVertices(String label) {
+		return "g.V()"
+				+ ".hasLabel('" + label + "')"
+				+ ".valueMap(true)"
+				+ ".by(unfold())";
+	}
+	
+	/**
+	 * Get all vertices of a given label with a given property key/value pair
+	 * @param label
+	 * @param propertyKey
+	 * @param propertyValue
+	 * @return
+	 */
+	
+	public static String getVertices(String label, 
+			String propertyKey, Object propertyValue) {
+		return "g.V()"
+				+ ".hasLabel('" + label + "')"
+				+ ".has('" + propertyKey + "', " 
+					+ resolveHasPropertyValue(propertyValue) + ")"
+				+ ".valueMap(true)"
+				+ ".by(unfold())";
+	}
+	
+	/**
+	 * Get all vertices with a given property key/value pair
+	 * @param propertyKey
+	 * @param propertyValue
+	 * @return
+	 */
+	
+	public static String getVertices(
+			String propertyKey, Object propertyValue) {
+		return "g.V()"
+				+ ".has('" + propertyKey + "', " 
+					+ resolveHasPropertyValue(propertyValue) + ")"
 				+ ".valueMap(true)"
 				+ ".by(unfold())";
 	}
@@ -137,6 +214,98 @@ public class GremlinRecipes {
 				+ ".dedup()";
 	}
 	
+	
+	/**
+	 * Add a new vertex given the vertex label, vertex ID and 
+	 * map of property key/value pairs 
+	 * @param label
+	 * @param properties
+	 * @return
+	 */
+	
+	public static String addVertex(
+			String label, long vertexId, Map<String, Object> properties) {
+		StringBuffer query = new StringBuffer(
+				"g.addV('" + label + "')"
+					+ ".property('id', " + vertexId + ")");
+		for (Map.Entry<String, Object> entry : properties.entrySet()) {
+			query.append(
+					".property('" + entry.getKey() + "', " 
+							+ resolveHasPropertyValue(entry.getValue()) + ")");
+		}
+		return query.toString();
+	}
+	
+	/**
+	 * Update a vertex property key/value pair
+	 * @param vertexId
+	 * @param propertyKey
+	 * @param propertyValue
+	 * @return
+	 */
+	
+	public static String updateVertex(
+			long vertexId, String propertyKey, Object propertyValue) {
+		return "g.V(" + vertexId + ")"
+				+ ".property('" + propertyKey + "', " 
+					+ resolveHasPropertyValue(propertyValue) + ")";
+	}
+	
+	/**
+	 * Update vertex property key/value pairs
+	 * @param vertexId
+	 * @param properties
+	 * @return
+	 */
+	
+	public static String updateVertex(
+			long vertexId, Map<String, Object> properties) {
+		StringBuffer query = new StringBuffer(
+				"g.V(" + vertexId + ")");
+		for (Map.Entry<String, Object> entry : properties.entrySet()) {
+			query.append(
+					".property('" + entry.getKey() + "', " 
+							+ resolveHasPropertyValue(entry.getValue()) + ")");
+		}
+		return query.toString();
+	}
+	
+	/**
+	 * Delete all vertices
+	 * @return
+	 */
+	
+	public static String deleteVertices() {
+		return "g.V()"
+				+ ".drop()";
+	}
+	
+	/**
+	 * Delete all vertices with a given property key/value pair
+	 * @param propertyKey
+	 * @param propertyValue
+	 * @return
+	 */
+	
+	public static String deleteVertices(String propertyKey, 
+			Object propertyValue) {
+		return "g.V()"
+				+ ".has('" + propertyKey + "', " 
+					+ resolveHasPropertyValue(propertyValue) + ")"
+				+ ".drop()";
+	}
+	
+	/**
+	 * Delete a vertex given its vertex ID
+	 * @param vertexId
+	 * @return
+	 */
+	
+	public static String deleteVertex(long vertexId) {
+		return "g.V(" + vertexId + ")"
+				+ ".drop()";
+	}
+	
 	/**************************************************************************
 	 * VERTEX AND ONTOLOGY-CENTRIC GREMLIN RECIPES
 	 *************************************************************************/
@@ -234,6 +403,32 @@ public class GremlinRecipes {
 				+ ".by(outV().id())"
 				+ ".by(inV().id())"
 				+ ".by(unfold())";
+	}
+	
+	/**
+	 * Delete all edges
+	 * @return
+	 */
+	
+	public static String deleteEdges() {
+		return "g.E()"
+				+ ".drop()";
+	}
+	
+	/**
+	 * Delete all edges with a given property key/value pair
+	 * @param propertyKey
+	 * @param propertyValue
+	 * @return
+	 */
+	
+	public static String deleteEdges(String propertyKey, 
+			Object propertyValue) {
+		String hasPropertyValue = propertyValue instanceof String ? 
+				"'" + propertyValue + "'" : propertyValue.toString(); 
+		return "g.E()"
+				+ ".has('" + propertyKey + "', " + hasPropertyValue + ")"
+				+ ".drop()";
 	}
 	
 	/**************************************************************************
