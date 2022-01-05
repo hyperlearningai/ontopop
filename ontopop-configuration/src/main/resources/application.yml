@@ -177,6 +177,8 @@ storage:
         service: tinkergraph
         gremlin-graph:
             configuration-filename: gremlin-graph.properties
+        gremlin-remote-graph:
+            configuration-filename: gremlin-graph-remote.yaml
     search:
         service: elasticsearch
         indexNamePrefix: ontopop
