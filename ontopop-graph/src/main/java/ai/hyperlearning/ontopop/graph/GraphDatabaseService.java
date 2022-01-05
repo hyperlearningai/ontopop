@@ -81,9 +81,11 @@ public interface GraphDatabaseService {
 			String propertyKey, Object propertyValue) 
 					throws InterruptedException, ExecutionException;
 	
-	public void addVertices(String label, Set<SimpleGraphVertex> vertices);
+	public void addVertices(String label, Set<SimpleGraphVertex> vertices) 
+			throws InterruptedException, ExecutionException;
 	
-	public void addVertices(String label, List<Map<String, Object>> propertyMaps);
+	public void addVertices(String label, List<Map<String, Object>> propertyMaps) 
+			throws InterruptedException, ExecutionException;
 	
 	public Object addVertex(String label, Map<String, Object> properties) 
 			throws InterruptedException, ExecutionException;
@@ -98,11 +100,14 @@ public interface GraphDatabaseService {
 			InterruptedException, ExecutionException;
 	
 	public Object deleteVertex(long vertexId) 
-			throws NoSuchElementException;
+			throws NoSuchElementException, InterruptedException, 
+			ExecutionException;
 	
-	public void deleteVertices();
+	public void deleteVertices() 
+			throws InterruptedException, ExecutionException;
 	
-	public void deleteVertices(String propertyKey, Object propertyValue);
+	public void deleteVertices(String propertyKey, Object propertyValue) 
+			throws InterruptedException, ExecutionException;
 	
 	/**************************************************************************
 	 * EDGE MANAGEMENT
@@ -134,10 +139,12 @@ public interface GraphDatabaseService {
 			String propertyKey, Object propertyValue)
 					throws InterruptedException, ExecutionException;
 	
-	public void addEdges(List<SimpleGraphEdge> edges);
+	public void addEdges(List<SimpleGraphEdge> edges) 
+			throws InterruptedException, ExecutionException;
 	
 	public Object addEdge(Vertex sourceVertex, Vertex targetVertex, String label, 
-			Map<String, Object> properties);
+			Map<String, Object> properties) 
+					throws InterruptedException, ExecutionException;
 	
 	public Object updateEdge(long edgeId, 
 			String propertyKey, Object propertyValue) 
@@ -149,11 +156,13 @@ public interface GraphDatabaseService {
 			ExecutionException;
 	
 	public Object deleteEdge(long edgeId) 
-			throws NoSuchElementException;
+			throws NoSuchElementException, InterruptedException, 
+			ExecutionException;
 	
-	public void deleteEdges();
+	public void deleteEdges() throws InterruptedException, ExecutionException;
 	
-	public void deleteEdges(String propertyKey, Object propertyValue);
+	public void deleteEdges(String propertyKey, Object propertyValue) 
+			throws InterruptedException, ExecutionException;
 	
 	/**************************************************************************
 	 * QUERY MANAGEMENT

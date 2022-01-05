@@ -186,6 +186,9 @@ storage:
             serializer:
                 className: org.apache.tinkerpop.gremlin.driver.ser.GraphSONMessageSerializerV2d0
                 serializeResultToString: true
+            supportsTraversals:
+                by: false
+            supportsNonStringIds: false
     search:
         service: elasticsearch
         indexNamePrefix: ontopop
