@@ -29,7 +29,7 @@ public interface GraphDatabaseService {
 	 * GRAPH INSTANCE MANAGEMENT
 	 *************************************************************************/
 
-	public GraphTraversalSource openGraph() throws IOException;
+	public Object openGraph() throws IOException;
 	
 	public void closeGraph() throws Exception;
 	

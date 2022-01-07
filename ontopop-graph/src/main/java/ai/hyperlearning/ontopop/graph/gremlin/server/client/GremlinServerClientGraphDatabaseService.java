@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.graph.gremlin.server;
+package ai.hyperlearning.ontopop.graph.gremlin.server.client;
 
 import java.io.IOException;
 import java.util.List;
@@ -13,7 +13,6 @@ import javax.script.ScriptException;
 import org.apache.tinkerpop.gremlin.driver.Client;
 import org.apache.tinkerpop.gremlin.driver.Result;
 import org.apache.tinkerpop.gremlin.driver.ResultSet;
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.util.TransactionException;
 import org.slf4j.Logger;
@@ -45,7 +44,7 @@ public class GremlinServerClientGraphDatabaseService implements GraphDatabaseSer
 	
 	@Autowired
 	@Qualifier("gremlinServerClient")
-	private Client client;
+	private Client gremlinServerClient;
 	
 	@Value("${storage.graph.engine.supportsNonStringIds}")
 	protected boolean supportsNonStringIds;
@@ -61,14 +60,17 @@ public class GremlinServerClientGraphDatabaseService implements GraphDatabaseSer
 	
 	@Value("${storage.graph.engine.supportsTraversals.by}")
 	protected boolean supportsTraversalsBy;
+	
+	protected Client client;
 
 	/**************************************************************************
 	 * GRAPH INSTANCE MANAGEMENT
 	 *************************************************************************/
 	
 	@Override
-	public GraphTraversalSource openGraph() throws IOException {
-		return null;
+	public Client openGraph() throws IOException {
+		this.client = gremlinServerClient;
+		return client;
 	}
 
 	@Override

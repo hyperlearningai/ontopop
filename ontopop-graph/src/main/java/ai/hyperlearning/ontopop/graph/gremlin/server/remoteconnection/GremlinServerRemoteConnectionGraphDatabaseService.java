@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.graph.gremlin.server;
+package ai.hyperlearning.ontopop.graph.gremlin.server.remoteconnection;
 
 import java.io.IOException;
 
@@ -18,7 +18,7 @@ import ai.hyperlearning.ontopop.graph.gremlin.GremlinGraphDatabaseService;
  */
 
 @Service
-public class GremlinServerByteCodeGraphDatabaseService extends GremlinGraphDatabaseService {
+public class GremlinServerRemoteConnectionGraphDatabaseService extends GremlinGraphDatabaseService {
 	
 	@Autowired
 	@Qualifier("gremlinServerTraversalSource")

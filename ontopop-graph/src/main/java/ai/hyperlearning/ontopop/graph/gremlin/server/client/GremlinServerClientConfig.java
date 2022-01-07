@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.graph.gremlin.server;
+package ai.hyperlearning.ontopop.graph.gremlin.server.client;
 
 import java.io.FileNotFoundException;
 import java.lang.reflect.Constructor;
@@ -45,7 +45,7 @@ public class GremlinServerClientConfig {
 	private boolean serializeResultToString;
 	
 	@Bean("gremlinServerClient")
-	public Client getClient() 
+	public Client getGremlinServerClient() 
 			throws FileNotFoundException, ClassNotFoundException, 
 			NoSuchMethodException, SecurityException, InstantiationException, 
 			IllegalAccessException, IllegalArgumentException, 

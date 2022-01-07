@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.graph.gremlin.server;
+package ai.hyperlearning.ontopop.graph.gremlin.server.remoteconnection;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.AnonymousTraversalSource.traversal;
 
@@ -24,7 +24,7 @@ import org.springframework.context.annotation.Configuration;
  */
 
 @Configuration
-public class GremlinServerTraversalSourceConfig {
+public class GremlinServerRemoteConnectionTraversalSourceConfig {
 	
 	@Value("${storage.graph.gremlin-server.host}")
 	private String host;

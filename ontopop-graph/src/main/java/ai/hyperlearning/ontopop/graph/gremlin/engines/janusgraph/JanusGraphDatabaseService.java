@@ -6,7 +6,7 @@ import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.schema.JanusGraphManagement;
 import org.springframework.stereotype.Service;
 
-import ai.hyperlearning.ontopop.graph.gremlin.server.GremlinServerByteCodeGraphDatabaseService;
+import ai.hyperlearning.ontopop.graph.gremlin.server.remoteconnection.GremlinServerRemoteConnectionGraphDatabaseService;
 
 /**
  * TinkerGraph Database Service
@@ -16,7 +16,7 @@ import ai.hyperlearning.ontopop.graph.gremlin.server.GremlinServerByteCodeGraphD
  */
 
 @Service
-public class JanusGraphDatabaseService extends GremlinServerByteCodeGraphDatabaseService {
+public class JanusGraphDatabaseService extends GremlinServerRemoteConnectionGraphDatabaseService {
 	
 	public JanusGraphDatabaseService() {
 		super.supportsNonStringIds = true;
