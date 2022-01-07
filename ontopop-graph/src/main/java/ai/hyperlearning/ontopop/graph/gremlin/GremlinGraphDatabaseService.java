@@ -21,6 +21,7 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.util.TransactionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Iterables;
@@ -55,9 +56,21 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
 	protected GraphTraversalSource g;
 	protected GremlinExecutor gremlinExecutor;
 	protected ConcurrentBindings bindings = new ConcurrentBindings();
-	protected boolean supportsSchema = false;
-	protected boolean supportsTransactions = false;
-	protected boolean supportsGeoshape = false;
+	
+	@Value("${storage.graph.engine.supportsNonStringIds}")
+	protected boolean supportsNonStringIds;
+	
+	@Value("${storage.graph.engine.supportsSchema}")
+	protected boolean supportsSchema;
+	
+	@Value("${storage.graph.engine.supportsTransactions}")
+	protected boolean supportsTransactions;
+	
+	@Value("${storage.graph.engine.supportsGeoshape}")
+	protected boolean supportsGeoshape;
+	
+	@Value("${storage.graph.engine.supportsTraversals.by}")
+	protected boolean supportsTraversalsBy;
 	
 	/**************************************************************************
 	 * GRAPH INSTANCE MANAGEMENT

@@ -61,6 +61,8 @@
         <gremlin-driver.version>3.5.1</gremlin-driver.version>
         <gremlin-groovy.version>3.5.1</gremlin-groovy.version>
         <guava.version>31.0.1-jre</guava.version>
+        <janusgraph-core.version>0.6.0</janusgraph-core.version>
+        <janusgraph-driver.version>0.6.0</janusgraph-driver.version>
         <java.version>11</java.version>
         <javax.activation.version>1.1.1</javax.activation.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
@@ -229,6 +231,18 @@
                 <groupId>net.sourceforge.owlapi</groupId>
                 <artifactId>org.semanticweb.hermit</artifactId>
                 <version>${org.semanticweb.hermit.version}</version>
+            </dependency>
+            
+            <!-- JanusGraph -->
+            <dependency>
+                <groupId>org.janusgraph</groupId>
+                <artifactId>janusgraph-core</artifactId>
+                <version>${janusgraph-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.janusgraph</groupId>
+                <artifactId>janusgraph-driver</artifactId>
+                <version>${janusgraph-driver.version}</version>
             </dependency>
             
             <!-- JavaBeans Activation Framework for JAXB-API Implementation -->

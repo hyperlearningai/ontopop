@@ -12,10 +12,11 @@ import java.util.Map;
 
 public enum GraphDatabaseServiceType {
 	
-	GREMLIN_GRAPH("GREMLIN-GRAPH"), 
-	GREMLIN_REMOTE_GRAPH("GREMLIN-REMOTE-GRAPH"), 
+	GREMLIN_GRAPH("GREMLIN-GRAPH-"), 
+	GREMLIN_SERVER_BYTECODE("GREMLIN-SERVER-BYTECODE"), 
+	GREMLIN_SERVER_CLIENT("GREMLIN-SERVER-CLIENT"), 
 	TINKERGRAPH("TINKERGRAPH"), 
-	AWS_NEPTUNE("AWS-NEPTUNE");
+	JANUSGRAPH("JANUSGRAPH");
 	
 	private final String label;
 	private static final Map<String, GraphDatabaseServiceType> LABEL_MAP = 

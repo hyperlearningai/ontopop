@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.graph.gremlin;
+package ai.hyperlearning.ontopop.graph.gremlin.server;
 
 import java.io.IOException;
 import java.util.List;
@@ -24,33 +24,43 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import ai.hyperlearning.ontopop.graph.GraphDatabaseService;
+import ai.hyperlearning.ontopop.graph.gremlin.GremlinRecipes;
 import ai.hyperlearning.ontopop.graph.model.SimpleGraphEdge;
 import ai.hyperlearning.ontopop.graph.model.SimpleGraphVertex;
 
 /**
- * Gremlin Remote Graph Database Service
+ * Gremlin Server Client Graph Database Service
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
 @Service
-public class GremlinRemoteGraphDatabaseService implements GraphDatabaseService {
+public class GremlinServerClientGraphDatabaseService implements GraphDatabaseService {
 	
 	private static final Logger LOGGER = 
-			LoggerFactory.getLogger(GremlinRemoteGraphDatabaseService.class);
+			LoggerFactory.getLogger(GremlinServerClientGraphDatabaseService.class);
 	
 	private static final String VERTEX_ID_PROPERTY_KEY = "vertexId";
 	
 	@Autowired
-	@Qualifier("gremlinRemoteGraphClient")
+	@Qualifier("gremlinServerClient")
 	private Client client;
 	
-	@Value("${storage.graph.gremlin-remote-graph.supportsNonStringIds}")
-	private boolean supportsNonStringIds;
+	@Value("${storage.graph.engine.supportsNonStringIds}")
+	protected boolean supportsNonStringIds;
 	
-	@Value("${storage.graph.gremlin-remote-graph.supportsTraversals.by}")
-	private boolean supportsTraversalsBy;
+	@Value("${storage.graph.engine.supportsSchema}")
+	protected boolean supportsSchema;
+	
+	@Value("${storage.graph.engine.supportsTransactions}")
+	protected boolean supportsTransactions;
+	
+	@Value("${storage.graph.engine.supportsGeoshape}")
+	protected boolean supportsGeoshape;
+	
+	@Value("${storage.graph.engine.supportsTraversals.by}")
+	protected boolean supportsTraversalsBy;
 
 	/**************************************************************************
 	 * GRAPH INSTANCE MANAGEMENT

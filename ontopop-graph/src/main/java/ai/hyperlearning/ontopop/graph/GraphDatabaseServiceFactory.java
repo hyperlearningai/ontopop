@@ -3,10 +3,11 @@ package ai.hyperlearning.ontopop.graph;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ai.hyperlearning.ontopop.graph.aws.neptune.AwsNeptuneGraphDatabaseService;
 import ai.hyperlearning.ontopop.graph.gremlin.GremlinGraphDatabaseService;
-import ai.hyperlearning.ontopop.graph.gremlin.GremlinRemoteGraphDatabaseService;
-import ai.hyperlearning.ontopop.graph.tinkergraph.TinkerGraphDatabaseService;
+import ai.hyperlearning.ontopop.graph.gremlin.engines.janusgraph.JanusGraphDatabaseService;
+import ai.hyperlearning.ontopop.graph.gremlin.engines.tinkergraph.TinkerGraphDatabaseService;
+import ai.hyperlearning.ontopop.graph.gremlin.server.GremlinServerByteCodeGraphDatabaseService;
+import ai.hyperlearning.ontopop.graph.gremlin.server.GremlinServerClientGraphDatabaseService;
 
 /**
  * Graph Database Service Factory
@@ -22,13 +23,16 @@ public class GraphDatabaseServiceFactory {
 	private GremlinGraphDatabaseService gremlinGraphDatabaseService;
 	
 	@Autowired
-	private GremlinRemoteGraphDatabaseService gremlinRemoteGraphDatabaseService;
+	private GremlinServerByteCodeGraphDatabaseService gremlinServerByteCodeGraphDatabaseService;
+	
+	@Autowired
+	private GremlinServerClientGraphDatabaseService gremlinServerClientGraphDatabaseService;
 	
 	@Autowired
 	private TinkerGraphDatabaseService tinkerGraphDatabaseService;
 	
 	@Autowired
-	private AwsNeptuneGraphDatabaseService awsNeptuneGraphDatabaseService;
+	private JanusGraphDatabaseService janusGraphDatabaseService;
 	
 	/**
 	 * Select the relevant object storage service
@@ -43,14 +47,16 @@ public class GraphDatabaseServiceFactory {
 		switch ( graphDatabaseServiceType ) {
 			case GREMLIN_GRAPH:
 				return gremlinGraphDatabaseService;
-			case GREMLIN_REMOTE_GRAPH:
-				return gremlinRemoteGraphDatabaseService;
+			case GREMLIN_SERVER_BYTECODE:
+				return gremlinServerByteCodeGraphDatabaseService;
+			case GREMLIN_SERVER_CLIENT:
+				return gremlinServerClientGraphDatabaseService;
 			case TINKERGRAPH:
 				return tinkerGraphDatabaseService;
-			case AWS_NEPTUNE:
-				return awsNeptuneGraphDatabaseService;
+			case JANUSGRAPH:
+				return janusGraphDatabaseService;
 			default:
-				return gremlinGraphDatabaseService;
+				return gremlinServerClientGraphDatabaseService;
 		}
 		
 	}
@@ -61,14 +67,16 @@ public class GraphDatabaseServiceFactory {
 		switch ( graphDatabaseServiceType ) {
 			case GREMLIN_GRAPH:
 				return gremlinGraphDatabaseService;
-			case GREMLIN_REMOTE_GRAPH:
-				return gremlinRemoteGraphDatabaseService;
+			case GREMLIN_SERVER_BYTECODE:
+				return gremlinServerByteCodeGraphDatabaseService;
+			case GREMLIN_SERVER_CLIENT:
+				return gremlinServerClientGraphDatabaseService;
 			case TINKERGRAPH:
 				return tinkerGraphDatabaseService;
-			case AWS_NEPTUNE:
-				return awsNeptuneGraphDatabaseService;
+			case JANUSGRAPH:
+				return janusGraphDatabaseService;
 			default:
-				return gremlinGraphDatabaseService;
+				return gremlinServerClientGraphDatabaseService;
 		}
 		
 	}

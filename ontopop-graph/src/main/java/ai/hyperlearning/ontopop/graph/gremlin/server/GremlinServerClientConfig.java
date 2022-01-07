@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.graph.gremlin;
+package ai.hyperlearning.ontopop.graph.gremlin.server;
 
 import java.io.FileNotFoundException;
 import java.lang.reflect.Constructor;
@@ -14,37 +14,37 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Gremlin Remote Graph Database Client Bean
+ * Gremlin Server Graph Database Client Bean
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
 @Configuration
-public class GremlinRemoteClientConfig {
+public class GremlinServerClientConfig {
 	
-	@Value("${storage.graph.gremlin-remote-graph.host}")
+	@Value("${storage.graph.gremlin-server.host}")
 	private String host;
 	
-	@Value("${storage.graph.gremlin-remote-graph.port}")
+	@Value("${storage.graph.gremlin-server.port}")
 	private int port;
 	
-	@Value("${storage.graph.gremlin-remote-graph.username}")
+	@Value("${storage.graph.gremlin-server.username}")
 	private String username;
 	
-	@Value("${storage.graph.gremlin-remote-graph.password}")
+	@Value("${storage.graph.gremlin-server.password}")
 	private String password;
 	
-	@Value("${storage.graph.gremlin-remote-graph.enableSsl}")
+	@Value("${storage.graph.gremlin-server.enableSsl}")
 	private boolean enableSsl;
 	
-	@Value("${storage.graph.gremlin-remote-graph.serializer.className}")
+	@Value("${storage.graph.gremlin-server.serializer.className}")
 	private String serializerClassName;
 	
-	@Value("${storage.graph.gremlin-remote-graph.serializer.serializeResultToString}")
+	@Value("${storage.graph.gremlin-server.serializer.serializeResultToString}")
 	private boolean serializeResultToString;
 	
-	@Bean("gremlinRemoteGraphClient")
+	@Bean("gremlinServerClient")
 	public Client getClient() 
 			throws FileNotFoundException, ClassNotFoundException, 
 			NoSuchMethodException, SecurityException, InstantiationException, 
