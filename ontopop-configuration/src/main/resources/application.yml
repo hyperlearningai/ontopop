@@ -174,21 +174,27 @@ storage:
         ontotext-graphdb:
             url: ${ontotext-graphdb-url}
     graph:
-        service: gremlin-remote-graph
+        service: janusgraph
+        engine:
+            supportsNonStringIds: true
+            supportsSchema: true
+            supportsTransactions: true
+            supportsGeoshape: true
+            supportsTraversals:
+                by: true
         gremlin-graph:
             configuration-filename: gremlin-graph.properties
-        gremlin-remote-graph:
-            host: ${gremlin-remote-graph-host}
-            port: ${gremlin-remote-graph-port}
-            username: ${gremlin-remote-graph-username}
-            password: ${gremlin-remote-graph-password}
-            enableSsl: true
+        gremlin-server:
+            host: ${gremlin-server-host}
+            port: ${gremlin-server-port}
+            username: ${gremlin-server-username}
+            password: ${gremlin-server-password}
+            enableSsl: false
+            remoteTraversalSourceName: g
             serializer:
-                className: org.apache.tinkerpop.gremlin.driver.ser.GraphSONMessageSerializerV2d0
-                serializeResultToString: true
-            supportsTraversals:
-                by: false
-            supportsNonStringIds: false
+                className: org.apache.tinkerpop.gremlin.driver.ser.GryoMessageSerializerV1d0
+                ioRegistries: org.janusgraph.graphdb.tinkerpop.JanusGraphIoRegistry
+                serializeResultToString: false
     search:
         service: elasticsearch
         indexNamePrefix: ontopop
