@@ -1,9 +1,15 @@
 package ai.hyperlearning.ontopop.graph.gremlin.engines.janusgraph;
 
+import java.io.IOException;
+
+import org.apache.tinkerpop.gremlin.groovy.engine.GremlinExecutor;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.schema.JanusGraphManagement;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import ai.hyperlearning.ontopop.graph.gremlin.server.remoteconnection.GremlinServerRemoteConnectionGraphDatabaseService;
@@ -17,6 +23,14 @@ import ai.hyperlearning.ontopop.graph.gremlin.server.remoteconnection.GremlinSer
 
 @Service
 public class JanusGraphDatabaseService extends GremlinServerRemoteConnectionGraphDatabaseService {
+    
+    @Autowired
+    @Qualifier("janusGraphGremlinServerTraversalSource")
+    private GraphTraversalSource janusGraphGremlinServerTraversalSource;
+    
+    @Autowired
+    @Qualifier("janusGraphGremlinServerManagementApiTraversalSource")
+    private GraphTraversalSource janusGraphGremlinServerManagementApiTraversalSource;
 	
 	public JanusGraphDatabaseService() {
 		super.supportsNonStringIds = true;
@@ -27,6 +41,30 @@ public class JanusGraphDatabaseService extends GremlinServerRemoteConnectionGrap
 	}
 	
 	/**************************************************************************
+     * GRAPH INSTANCE MANAGEMENT
+     *************************************************************************/
+    
+	@Override
+    public GraphTraversalSource openGraph() throws IOException {
+        super.g = janusGraphGremlinServerTraversalSource;
+        bindings.putIfAbsent("g", g);
+        bindings.putIfAbsent("graph", g.getGraph());
+        gremlinExecutor = GremlinExecutor.build()
+                .evaluationTimeout(15000L)
+                .globalBindings(bindings)
+                .create();
+        return g;
+    }
+	
+    @Override
+    public void closeGraph() throws Exception {
+        if ( g != null )
+            g.close();
+        if (janusGraphGremlinServerManagementApiTraversalSource != null)
+            janusGraphGremlinServerManagementApiTraversalSource.close();
+    }
+	
+	/**************************************************************************
 	 * SCHEMA MANAGEMENT
 	 *************************************************************************/
 
@@ -34,7 +72,8 @@ public class JanusGraphDatabaseService extends GremlinServerRemoteConnectionGrap
 	public void createSchema() {
 		
 		// Get the JanusGraph management service
-		final JanusGraph graph = (JanusGraph) g.getGraph();
+		final JanusGraph graph = (JanusGraph) 
+		        janusGraphGremlinServerManagementApiTraversalSource.getGraph();
 		final JanusGraphManagement management = graph.openManagement();
 		try {
 			
