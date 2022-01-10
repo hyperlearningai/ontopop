@@ -4,12 +4,14 @@ import static org.apache.tinkerpop.gremlin.process.traversal.AnonymousTraversalS
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tinkerpop.gremlin.driver.Cluster;
 import org.apache.tinkerpop.gremlin.driver.remote.DriverRemoteConnection;
+import org.apache.tinkerpop.gremlin.driver.ser.GraphBinaryMessageSerializerV1;
 import org.apache.tinkerpop.gremlin.driver.ser.MessageTextSerializer;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.springframework.beans.factory.annotation.Value;
@@ -62,14 +64,29 @@ public class GremlinServerRemoteConnectionTraversalSourceConfig {
 		// Configure the serializer
 		final Map<String, Object> serializerSettings = new HashMap<>();
 		serializerSettings.put(
-				"ioRegistries", ioRegistries);
+				"ioRegistries", Arrays.asList(ioRegistries));
 		serializerSettings.put(
 				"serializeResultToString", serializeResultToString);
 		Class<?> clazz = Class.forName(serializerClassName);
 		Constructor<?> constructor = clazz.getConstructor();
-		MessageTextSerializer<?> serializer = 
-				(MessageTextSerializer<?>) constructor.newInstance();
-        serializer.configure(serializerSettings, null);
+		MessageTextSerializer<?> messageTextSerializer = null;
+		GraphBinaryMessageSerializerV1 defaultSerializer = null;
+		boolean successfulCast = false;
+		try {
+		    
+		    // Attempt to cast the serializer as a MessageTextSerializer
+		    messageTextSerializer = (MessageTextSerializer<?>) 
+		            constructor.newInstance();
+		    messageTextSerializer.configure(serializerSettings, null);
+		    successfulCast = true;
+		    
+		} catch (ClassCastException e) {
+		    
+		    // Revert to a default serializer
+		    defaultSerializer = new GraphBinaryMessageSerializerV1();
+		    defaultSerializer.configure(serializerSettings, null);
+		    
+		}
         
 	    // Create the connection to the remote Gremlin server
         Cluster cluster = StringUtils.isBlank(username) ? 
@@ -77,14 +94,20 @@ public class GremlinServerRemoteConnectionTraversalSourceConfig {
         			.addContactPoint(host)
         			.port(port)
         			.enableSsl(enableSsl)
-        			.serializer(serializer)
+        			.serializer(
+        			        successfulCast ? 
+        			                messageTextSerializer : 
+        			                    defaultSerializer)
         			.create() : 
         				Cluster.build()
 	            			.addContactPoint(host)
 	            			.port(port)
 	            			.credentials(username, password)
 	            			.enableSsl(enableSsl)
-	            			.serializer(serializer)
+	            			.serializer(
+	            			        successfulCast ? 
+	            			                messageTextSerializer : 
+	            			                    defaultSerializer)
 	            			.create();
 		
 		// Generate a reusable Graph Traversal Source
