@@ -77,16 +77,7 @@
         <!-- JanusGraph -->
         <dependency>
             <groupId>org.janusgraph</groupId>
-            <artifactId>janusgraph-core</artifactId>
-            <exclusions>
-            
-                <!-- Remove due to java.util package conflict -->
-                <exclusion>
-                    <groupId>com.boundary</groupId>
-                    <artifactId>high-scale-lib</artifactId>
-                </exclusion>
-                
-            </exclusions>
+            <artifactId>janusgraph-driver</artifactId>
         </dependency>
     
         <!-- Spring Context -->
