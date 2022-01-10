@@ -192,7 +192,7 @@ storage:
             enableSsl: false
             remoteTraversalSourceName: g
             serializer:
-                className: org.apache.tinkerpop.gremlin.driver.ser.GryoMessageSerializerV1d0
+                className: org.apache.tinkerpop.gremlin.driver.ser.GraphBinaryMessageSerializerV1
                 ioRegistries: org.janusgraph.graphdb.tinkerpop.JanusGraphIoRegistry
                 serializeResultToString: false
     search:
