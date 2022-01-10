@@ -134,7 +134,7 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 			
 			// Add the new simple ontology vertex to the set of vertices
 			vertex.setProperties(vertexProperties);
-			this.vertices.put(vertex.getKey(), vertex);
+			this.vertices.put(vertex.getVertexKey(), vertex);
 			
 		}
 		
@@ -180,9 +180,9 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 						// Create a new simple ontology edge object for each 
 						// OWL class parent relationship
 						SimpleOntologyEdge edge = new SimpleOntologyEdge();
-						edge.setSourceVertexKey(sourceVertex.getKey());
+						edge.setSourceVertexKey(sourceVertex.getVertexKey());
 						edge.setSourceVertexId(sourceVertex.getVertexId());
-						edge.setTargetVertexKey(targetVertex.getKey());
+						edge.setTargetVertexKey(targetVertex.getVertexKey());
 						edge.setTargetVertexId(targetVertex.getVertexId());
 						edge.setOntologyId(id);
 						edge.setLatestWebhookEventId(latestWebhookEventId);

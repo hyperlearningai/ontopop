@@ -27,7 +27,7 @@ public class SimpleOntologyVertex implements Serializable {
 	public static final String LABEL = "class";
 	private String iri;
 	private Integer ontologyId;
-	private String key;
+	private String vertexKey;
 	private long vertexId;
 	private long latestWebhookEventId;
 	private Map<String, Object> properties = new LinkedHashMap<>();
@@ -48,7 +48,7 @@ public class SimpleOntologyVertex implements Serializable {
 			Map<String, Object> properties) {
 		this.iri = iri;
 		this.ontologyId = ontologyId;
-		this.key = iri + VERTEX_KEY_DELIMITER + ontologyId;
+		this.vertexKey = iri + VERTEX_KEY_DELIMITER + ontologyId;
 		this.latestWebhookEventId = latestWebhookEventId;
 		this.properties = properties;
 	}
@@ -60,8 +60,8 @@ public class SimpleOntologyVertex implements Serializable {
 	public void setIri(String iri) {
 		this.iri = iri;
 		if ( this.ontologyId != null ) {
-			this.key = iri + VERTEX_KEY_DELIMITER + this.ontologyId;
-			String hashCode = (String.valueOf(key.hashCode()))
+			this.vertexKey = iri + VERTEX_KEY_DELIMITER + this.ontologyId;
+			String hashCode = (String.valueOf(vertexKey.hashCode()))
 					.replace("-", "");
 			this.vertexId = Long.parseLong(hashCode 
 					+ VERTEX_ID_ONTOLOGY_ID_PADDING 
@@ -77,8 +77,8 @@ public class SimpleOntologyVertex implements Serializable {
 	public void setOntologyId(int ontologyId) {
 		this.ontologyId = ontologyId;
 		if ( this.iri != null ) {
-			this.key = this.iri + VERTEX_KEY_DELIMITER + ontologyId;
-			String hashCode = (String.valueOf(key.hashCode()))
+			this.vertexKey = this.iri + VERTEX_KEY_DELIMITER + ontologyId;
+			String hashCode = (String.valueOf(vertexKey.hashCode()))
 					.replace("-", "");
 			this.vertexId = Long.parseLong(hashCode 
 					+ VERTEX_ID_ONTOLOGY_ID_PADDING 
@@ -86,8 +86,8 @@ public class SimpleOntologyVertex implements Serializable {
 		}
 	}
 	
-	public String getKey() {
-		return key;
+	public String getVertexKey() {
+		return vertexKey;
 	}
 	
 	public long getVertexId() {
@@ -113,7 +113,7 @@ public class SimpleOntologyVertex implements Serializable {
 	public void preparePropertiesForLoading() {
 		this.properties.put("iri", this.iri);
 		this.properties.put("ontologyId", this.ontologyId);
-		this.properties.put("key", this.key);
+		this.properties.put("vertexKey", this.vertexKey);
 		this.properties.put("vertexId", this.vertexId);
 		this.properties.put("latestWebhookEventId", this.latestWebhookEventId);
 	}
@@ -160,7 +160,7 @@ public class SimpleOntologyVertex implements Serializable {
 				+ "label=" + LABEL + ", "
 				+ "iri=" + iri + ", "
 				+ "ontologyId=" + ontologyId + ", "
-				+ "key=" + key + ", "
+				+ "vertexKey=" + vertexKey + ", "
 				+ "vertexId=" + vertexId + ", "
 				+ "latestWebhookEventId=" + latestWebhookEventId + ", "
 				+ "properties=" + properties + ", "

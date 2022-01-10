@@ -16,7 +16,7 @@ public class GremlinRecipes {
 	private static final String VERTEX_PROPERTY_KEY_IRI = 
 			"iri";
 	private static final String VERTEX_PROPERTY_KEY_KEY = 
-			"key";
+			"vertexKey";
 	private static final String EDGE_PROPERTY_KEY_ONTOLOGY_ID = 
 			"ontologyId";
 	private static final String PROPERTY_KEY_ONTOLOGY_LABEL = 

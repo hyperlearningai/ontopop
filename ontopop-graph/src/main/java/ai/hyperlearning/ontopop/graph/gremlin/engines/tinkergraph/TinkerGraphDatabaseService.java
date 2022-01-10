@@ -40,7 +40,7 @@ public class TinkerGraphDatabaseService extends GremlinGraphDatabaseService {
         	graph.createIndex("iri", Vertex.class);
         	graph.createIndex("ontologyId", Vertex.class);
         	graph.createIndex("latestWebhookEventId", Vertex.class);
-        	graph.createIndex("key", Vertex.class);
+        	graph.createIndex("vertexKey", Vertex.class);
         	graph.createIndex("vertexId", Vertex.class);
         }
         

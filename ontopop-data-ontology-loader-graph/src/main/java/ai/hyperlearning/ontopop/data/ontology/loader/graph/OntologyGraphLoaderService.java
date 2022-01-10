@@ -50,7 +50,7 @@ public class OntologyGraphLoaderService {
 			LoggerFactory.getLogger(OntologyGraphLoaderService.class);
 	
 	private static final String ONTOLOGY_ID_PROPERTY_KEY = "ontologyId";
-	private static final String KEY_PROPERTY_KEY = "key";
+	private static final String KEY_PROPERTY_KEY = "vertexKey";
 	
 	@Autowired
 	private ObjectStorageServiceFactory objectStorageServiceFactory;
