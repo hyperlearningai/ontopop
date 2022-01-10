@@ -22,7 +22,7 @@ public class GremlinServerRemoteConnectionGraphDatabaseService extends GremlinGr
 	
 	@Autowired
 	@Qualifier("gremlinServerTraversalSource")
-	private GraphTraversalSource gremlinServerTraversalSource;
+	protected GraphTraversalSource gremlinServerTraversalSource;
 	
 	/**************************************************************************
 	 * GRAPH INSTANCE MANAGEMENT
