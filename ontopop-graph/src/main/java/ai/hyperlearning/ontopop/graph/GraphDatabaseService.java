@@ -9,7 +9,6 @@ import java.util.concurrent.ExecutionException;
 
 import javax.script.ScriptException;
 
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.util.TransactionException;
 
