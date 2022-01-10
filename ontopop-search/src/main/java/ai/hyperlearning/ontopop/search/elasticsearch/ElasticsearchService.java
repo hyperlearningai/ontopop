@@ -2,6 +2,7 @@ package ai.hyperlearning.ontopop.search.elasticsearch;
 
 import static org.elasticsearch.index.query.QueryBuilders.fuzzyQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
+import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 
 import java.util.Set;
 
@@ -133,6 +134,15 @@ public class ElasticsearchService implements SearchService {
 	public void indexDocument(String indexName, 
 			SimpleIndexVertex vertex) {
 		elasticsearchTemplate.save(vertex, IndexCoordinates.of(indexName));
+	}
+	
+	@Override
+	public void deleteAllDocuments(String indexName) {
+	    final Query deleteQuery = new NativeSearchQueryBuilder()
+	            .withQuery(matchAllQuery())
+	            .build();
+	    elasticsearchTemplate.delete(deleteQuery, 
+	            IndexCoordinates.of(indexName));
 	}
 
 }

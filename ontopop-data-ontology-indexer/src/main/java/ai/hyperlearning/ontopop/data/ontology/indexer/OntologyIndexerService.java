@@ -79,6 +79,7 @@ public class OntologyIndexerService {
 	private String readObjectUri;
 	private String writeDirectoryUri;
 	private String downloadedFileUri;
+	private String indexName;
 	
 	/**
 	 * Run the Ontology Indexing service end-to-end pipeline
@@ -164,13 +165,18 @@ public class OntologyIndexerService {
 			
 		}
 		
-		// 3. Select the relevant graph database service
+		// 3. Select the relevant search service
 		SearchServiceType searchServiceType = SearchServiceType.valueOfLabel(
 						storageSearchService.toUpperCase());
 		searchService = searchServiceFactory
 				.getSearchService(searchServiceType);
 		LOGGER.debug("Using the {} search service.", 
 				searchServiceType);
+		
+		// 4. Create the search index if required
+		indexName = searchIndexNamePrefix + ontologyMessage.getOntologyId();
+		LOGGER.debug("Creatingf index: {}", indexName);
+		searchService.createIndex(indexName);
 		
 	}
 	
@@ -210,10 +216,9 @@ public class OntologyIndexerService {
 				mapper.readValue(new File(downloadedFileUri), 
 						SimpleOntologyPropertyGraph.class);
 		
-		// Delete the index for this ontology if it already exists
-		String indexName = searchIndexNamePrefix + 
-				ontologyMessage.getOntologyId();
-		searchService.deleteIndex(indexName);
+		// Delete all documents in this index
+		LOGGER.debug("Deleting all documents in index: {}", indexName);
+		searchService.deleteAllDocuments(indexName);
 		
 		// Generate a set of SimpleIndexVertex objects
 		Set<SimpleIndexVertex> vertices = new LinkedHashSet<>();

@@ -35,10 +35,10 @@ public interface SearchService {
 	
 	public SimpleIndexVertex getDocument(String indexName, long vertexId);
 	
-	public SearchHits<SimpleIndexVertex> search(String indexName, 
+	public Object search(String indexName, 
 			String propertyKey, String query, boolean exact, boolean and);
 	
-	public SearchHits<SimpleIndexVertex> search(String indexName, 
+	public Object search(String indexName, 
 			String propertyKey, String query, boolean and,  
 			int minimumShouldMatchPercentage);
 	
@@ -47,5 +47,7 @@ public interface SearchService {
 	
 	public void indexDocument(String indexName, 
 			SimpleIndexVertex vertex);
+	
+	public void deleteAllDocuments(String indexName);
 	
 }
