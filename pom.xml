@@ -61,6 +61,7 @@
         <gremlin-driver.version>3.5.1</gremlin-driver.version>
         <gremlin-groovy.version>3.5.1</gremlin-groovy.version>
         <guava.version>31.0.1-jre</guava.version>
+        <janusgraph-all.version>0.6.0</janusgraph-all.version>
         <janusgraph-core.version>0.6.0</janusgraph-core.version>
         <janusgraph-driver.version>0.6.0</janusgraph-driver.version>
         <java.version>11</java.version>
@@ -236,6 +237,11 @@
             <!-- JanusGraph -->
             <dependency>
                 <groupId>org.janusgraph</groupId>
+                <artifactId>janusgraph-all</artifactId>
+                <version>${janusgraph-all.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-core</artifactId>
                 <version>${janusgraph-core.version}</version>
             </dependency>
@@ -273,11 +279,6 @@
             <dependency>
                 <groupId>ai.hyperlearning.ontopop</groupId>
                 <artifactId>ontopop-secrets</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-utils</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
@@ -342,6 +343,11 @@
             </dependency>
             <dependency>
                 <groupId>ai.hyperlearning.ontopop</groupId>
+                <artifactId>ontopop-utils</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>ai.hyperlearning.ontopop</groupId>
                 <artifactId>ontopop-data-ontology-ingestor</artifactId>
                 <version>${revision}</version>
             </dependency>
@@ -385,7 +391,6 @@
         <module>ontopop-configuration</module>
         <module>ontopop-configuration-client</module>
         <module>ontopop-secrets</module>
-        <module>ontopop-utils</module>
         <module>ontopop-model</module>
         <module>ontopop-mappers</module>
         <module>ontopop-logging</module>
@@ -398,6 +403,7 @@
         <module>ontopop-owl</module>
         <module>ontopop-jpa</module>
         <module>ontopop-search</module>
+        <module>ontopop-utils</module>
         <module>ontopop-data-ontology-ingestor</module>
         <module>ontopop-data-ontology-validator</module>
         <module>ontopop-data-ontology-loader-triplestore</module>
