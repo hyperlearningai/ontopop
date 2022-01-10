@@ -20,10 +20,10 @@ public class ObjectStorageServiceFactory {
 	@Autowired
 	private LocalFileStorageService localFileStorageService;
 	
-	@Autowired
+	@Autowired(required=false)
 	private AwsS3StorageService awsS3StorageService;
 	
-	@Autowired
+	@Autowired(required=false)
 	private AzureStorageBlobStorageService azureStorageBlobStorageService;
 	
 	/**

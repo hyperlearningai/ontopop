@@ -1,6 +1,7 @@
 package ai.hyperlearning.ontopop.storage.azure.storage;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,6 +18,9 @@ import com.azure.storage.common.StorageSharedKeyCredential;
  */
 
 @Configuration
+@ConditionalOnProperty(
+        value="storage.object.service", 
+        havingValue = "azure-storage")
 public class AzureStorageBlobContainerClientConfig {
 	
 	@Value("${storage.object.azure-storage.account-name}")
