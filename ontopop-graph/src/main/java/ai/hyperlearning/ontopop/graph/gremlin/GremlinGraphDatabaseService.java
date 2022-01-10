@@ -279,11 +279,11 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
 			String propertyKey, Object propertyValue) 
 					throws NoSuchElementException {
 		
-		Vertex vertex = g.V(vertexId).next();
 		String key = propertyKey.equalsIgnoreCase(PROPERTY_KEY_ONTOLOGY_LABEL) ? 
 				PROPERTY_KEY_ONTOLOGY_LABEL_REPLACEMENT : propertyKey;
-		vertex.property(key, propertyValue);
-		return vertex;
+		GraphTraversal<Vertex, Vertex> vertex = 
+		        g.V(vertexId).property(key, propertyValue);
+		return vertex.next();
 		
 	}
 
@@ -291,7 +291,7 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
 	public Vertex updateVertex(long vertexId, Map<String, Object> properties) 
 			throws NoSuchElementException {
 		
-		Vertex vertex = g.V(vertexId).next();
+	    GraphTraversal<Vertex, Vertex> vertex = g.V(vertexId);
 		for (Map.Entry<String, Object> entry : properties.entrySet()) {
 			String key = entry.getKey()
 					.equalsIgnoreCase(PROPERTY_KEY_ONTOLOGY_LABEL) ? 
@@ -299,17 +299,13 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
 						entry.getKey();
 			vertex.property(key, entry.getValue());
 		}
-		return vertex;
+		return vertex.next();
 		
 	}
 
 	@Override
-	public Vertex deleteVertex(long vertexId) throws NoSuchElementException {
-		
-		Vertex vertex = g.V(vertexId).next();
-		vertex.remove();
-		return vertex;
-		
+	public void deleteVertex(long vertexId) throws NoSuchElementException {
+		g.V(vertexId).remove();
 	}
 	
 	@Override
@@ -381,13 +377,14 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
 	public Edge addEdge(Vertex sourceVertex, Vertex targetVertex, 
 			String label, Map<String, Object> properties) {
 		
-		Edge edge = null;
+	    GraphTraversal<Vertex,Edge> edge = g.V(sourceVertex.id())
+	            .addE(label)
+	            .to(g.V(targetVertex.id()));
 		if ( properties.containsKey(EDGE_ID_PROPERTY_KEY) 
 		        && supportsUserDefinedIds ) {
 			long edgeId = (long) properties.get(EDGE_ID_PROPERTY_KEY);
-			edge = sourceVertex.addEdge(label, targetVertex, T.id, edgeId);
-		} else
-			edge = sourceVertex.addEdge(label, targetVertex);
+			edge.property(T.id, edgeId);
+		}
 		for (Map.Entry<String, Object> entry : properties.entrySet()) {
 			String key = entry.getKey()
 					.equalsIgnoreCase(PROPERTY_KEY_ONTOLOGY_LABEL) ? 
@@ -395,7 +392,7 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
 						entry.getKey();
 			edge.property(key, entry.getValue());
 		}
-		return edge;
+		return edge.next();
 		
 	}
 
@@ -403,12 +400,13 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
 	public Edge updateEdge(long edgeId, 
 			String propertyKey, Object propertyValue) 
 					throws NoSuchElementException {
-		
-		Edge edge = g.E(edgeId).next();
+	    
 		String key = propertyKey.equalsIgnoreCase(PROPERTY_KEY_ONTOLOGY_LABEL) ? 
 				PROPERTY_KEY_ONTOLOGY_LABEL_REPLACEMENT : propertyKey;
+		GraphTraversal<Edge,Edge> edge = g.E(edgeId)
+		        .property(key, propertyValue);
 		edge.property(key, propertyValue);	
-		return edge;
+		return edge.next();
 		
 	}
 
@@ -416,7 +414,7 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
 	public Edge updateEdge(long edgeId, Map<String, Object> properties) 
 			throws NoSuchElementException {
 		
-		Edge edge = g.E(edgeId).next();
+	    GraphTraversal<Edge,Edge> edge = g.E(edgeId);
 		for (Map.Entry<String, Object> entry : properties.entrySet()) {
 			String key = entry.getKey()
 					.equalsIgnoreCase(PROPERTY_KEY_ONTOLOGY_LABEL) ? 
@@ -424,16 +422,13 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
 						entry.getKey();
 			edge.property(key, entry.getValue());
 		}
-		return edge;
+		return edge.next();
 		
 	}
 
 	@Override
-	public Edge deleteEdge(long edgeId) throws NoSuchElementException {
-		
-		Edge edge = g.E(edgeId).next();
-		edge.remove();
-		return edge;
+	public void deleteEdge(long edgeId) throws NoSuchElementException {
+		g.E(edgeId).remove();
 		
 	}
 	
