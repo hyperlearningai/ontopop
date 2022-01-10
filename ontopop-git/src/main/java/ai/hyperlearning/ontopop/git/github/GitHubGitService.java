@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,7 @@ public class GitHubGitService implements GitService  {
 	private static final String WEBHOOK_REQUEST_HEADER_SIGNATURE_VALUE_PREFIX = "sha256=";
 	
 	@Autowired
+	@Qualifier("gitHubWebClient")
 	private WebClient webClient;
 	
 	/**
