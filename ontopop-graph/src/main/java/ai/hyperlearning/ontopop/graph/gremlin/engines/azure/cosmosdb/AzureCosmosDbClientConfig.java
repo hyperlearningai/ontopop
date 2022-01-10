@@ -7,6 +7,7 @@ import org.apache.tinkerpop.gremlin.driver.Client;
 import org.apache.tinkerpop.gremlin.driver.Cluster;
 import org.apache.tinkerpop.gremlin.driver.ser.GraphSONMessageSerializerV2d0;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,6 +19,9 @@ import org.springframework.context.annotation.Configuration;
  */
 
 @Configuration
+@ConditionalOnProperty(
+        value="storage.graph.service", 
+        havingValue = "azure-cosmosdb")
 public class AzureCosmosDbClientConfig {
 	
 	@Value("${storage.graph.gremlin-server.host}")

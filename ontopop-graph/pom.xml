@@ -80,6 +80,12 @@
             <artifactId>janusgraph-driver</artifactId>
         </dependency>
     
+        <!-- Spring Boot AutoConfigure -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+    
         <!-- Spring Context -->
         <dependency>
             <groupId>org.springframework</groupId>

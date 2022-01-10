@@ -6,9 +6,10 @@ import org.apache.tinkerpop.gremlin.groovy.engine.GremlinExecutor;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
-import ai.hyperlearning.ontopop.graph.gremlin.server.remoteconnection.GremlinServerRemoteConnectionGraphDatabaseService;
+import ai.hyperlearning.ontopop.graph.gremlin.GremlinGraphDatabaseService;
 
 /**
  * TinkerGraph Database Service
@@ -18,7 +19,10 @@ import ai.hyperlearning.ontopop.graph.gremlin.server.remoteconnection.GremlinSer
  */
 
 @Service
-public class JanusGraphDatabaseService extends GremlinServerRemoteConnectionGraphDatabaseService {
+@ConditionalOnProperty(
+        value="storage.graph.service", 
+        havingValue = "janusgraph")
+public class JanusGraphDatabaseService extends GremlinGraphDatabaseService {
     
     @Autowired
     @Qualifier("janusGraphGremlinServerTraversalSource")

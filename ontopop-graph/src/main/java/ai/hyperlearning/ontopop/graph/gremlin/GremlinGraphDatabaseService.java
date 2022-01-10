@@ -22,6 +22,7 @@ import org.apache.tinkerpop.gremlin.structure.util.TransactionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Iterables;
@@ -39,6 +40,11 @@ import ai.hyperlearning.ontopop.graph.model.SimpleGraphVertex;
  */
 
 @Service
+@ConditionalOnExpression(
+        "'${storage.graph.service}'.equals('gremlin-graph') or "
+        + "'${storage.graph.service}'.equals('gremlin-server-remote-connection') or "
+        + "'${storage.graph.service}'.equals('janusgraph') or "
+        + "'${storage.graph.service}'.equals('tinkergraph')")
 public class GremlinGraphDatabaseService implements GraphDatabaseService {
 
 	private static final String VERTEX_ID_PROPERTY_KEY = "vertexId";
@@ -49,7 +55,7 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
 	private static final String PROPERTY_KEY_ONTOLOGY_LABEL_REPLACEMENT = 
 			"rdfsLabel";
 	
-	@Autowired
+	@Autowired(required=false)
 	@Qualifier("gremlinGraphTraversalSource")
 	private GraphTraversalSource gremlinGraphTraversalSource;
 	

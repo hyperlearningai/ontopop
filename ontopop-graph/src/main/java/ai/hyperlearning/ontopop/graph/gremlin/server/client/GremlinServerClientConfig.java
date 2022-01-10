@@ -10,6 +10,7 @@ import org.apache.tinkerpop.gremlin.driver.Cluster;
 import org.apache.tinkerpop.gremlin.driver.ser.GraphSONMessageSerializerV2d0;
 import org.apache.tinkerpop.gremlin.driver.ser.MessageTextSerializer;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,6 +22,9 @@ import org.springframework.context.annotation.Configuration;
  */
 
 @Configuration
+@ConditionalOnProperty(
+        value="storage.graph.service", 
+        havingValue = "gremlin-server-client")
 public class GremlinServerClientConfig {
 	
 	@Value("${storage.graph.gremlin-server.host}")

@@ -3,6 +3,7 @@ package ai.hyperlearning.ontopop.graph.gremlin.engines.tinkergraph;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import ai.hyperlearning.ontopop.graph.gremlin.GremlinGraphDatabaseService;
@@ -15,6 +16,9 @@ import ai.hyperlearning.ontopop.graph.gremlin.GremlinGraphDatabaseService;
  */
 
 @Service
+@ConditionalOnProperty(
+        value="storage.graph.service", 
+        havingValue = "tinkergraph")
 public class TinkerGraphDatabaseService extends GremlinGraphDatabaseService {
 	
 	public TinkerGraphDatabaseService() {

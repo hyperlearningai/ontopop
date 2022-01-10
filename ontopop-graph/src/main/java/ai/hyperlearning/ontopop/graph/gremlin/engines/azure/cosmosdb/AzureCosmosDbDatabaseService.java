@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.apache.tinkerpop.gremlin.driver.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import ai.hyperlearning.ontopop.graph.gremlin.server.client.GremlinServerClientGraphDatabaseService;
@@ -17,6 +18,9 @@ import ai.hyperlearning.ontopop.graph.gremlin.server.client.GremlinServerClientG
  */
 
 @Service
+@ConditionalOnProperty(
+        value="storage.graph.service", 
+        havingValue = "azure-cosmosdb")
 public class AzureCosmosDbDatabaseService extends GremlinServerClientGraphDatabaseService {
 	
 	@Autowired

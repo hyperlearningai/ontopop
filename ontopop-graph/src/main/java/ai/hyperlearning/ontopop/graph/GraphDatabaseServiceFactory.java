@@ -20,22 +20,22 @@ import ai.hyperlearning.ontopop.graph.gremlin.server.remoteconnection.GremlinSer
 @Service
 public class GraphDatabaseServiceFactory {
 	
-	@Autowired
+	@Autowired(required=false)
 	private GremlinGraphDatabaseService gremlinGraphDatabaseService;
 	
-	@Autowired
+	@Autowired(required=false)
 	private GremlinServerRemoteConnectionGraphDatabaseService gremlinServerRemoteConnectionGraphDatabaseService;
 	
-	@Autowired
+	@Autowired(required=false)
 	private GremlinServerClientGraphDatabaseService gremlinServerClientGraphDatabaseService;
 	
-	@Autowired
+	@Autowired(required=false)
 	private TinkerGraphDatabaseService tinkerGraphDatabaseService;
 	
-	@Autowired
+	@Autowired(required=false)
 	private JanusGraphDatabaseService janusGraphDatabaseService;
 	
-	@Autowired
+	@Autowired(required=false)
 	private AzureCosmosDbDatabaseService azureCosmosDbDatabaseService;
 	
 	/**

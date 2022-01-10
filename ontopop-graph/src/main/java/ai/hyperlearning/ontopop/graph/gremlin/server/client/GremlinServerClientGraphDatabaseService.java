@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Service;
 
 import ai.hyperlearning.ontopop.graph.GraphDatabaseService;
@@ -35,6 +36,9 @@ import ai.hyperlearning.ontopop.graph.model.SimpleGraphVertex;
  */
 
 @Service
+@ConditionalOnExpression(
+        "'${storage.graph.service}'.equals('gremlin-server-client') or "
+        + "'${storage.graph.service}'.equals('azure-cosmosdb')")
 public class GremlinServerClientGraphDatabaseService implements GraphDatabaseService {
 	
 	private static final Logger LOGGER = 
@@ -42,7 +46,7 @@ public class GremlinServerClientGraphDatabaseService implements GraphDatabaseSer
 	
 	private static final String VERTEX_ID_PROPERTY_KEY = "vertexId";
 	
-	@Autowired
+	@Autowired(required=false)
 	@Qualifier("gremlinServerClient")
 	private Client gremlinServerClient;
 	
