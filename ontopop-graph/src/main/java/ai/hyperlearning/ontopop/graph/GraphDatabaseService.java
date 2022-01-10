@@ -98,7 +98,7 @@ public interface GraphDatabaseService {
 			throws NoSuchElementException, 
 			InterruptedException, ExecutionException;
 	
-	public Object deleteVertex(long vertexId) 
+	public void deleteVertex(long vertexId) 
 			throws NoSuchElementException, InterruptedException, 
 			ExecutionException;
 	
@@ -154,7 +154,7 @@ public interface GraphDatabaseService {
 			throws NoSuchElementException, InterruptedException, 
 			ExecutionException;
 	
-	public Object deleteEdge(long edgeId) 
+	public void deleteEdge(long edgeId) 
 			throws NoSuchElementException, InterruptedException, 
 			ExecutionException;
 	

@@ -307,13 +307,13 @@ public class GremlinServerClientGraphDatabaseService implements GraphDatabaseSer
 	}
 
 	@Override
-	public List<Result> deleteVertex(long vertexId) 
+	public void deleteVertex(long vertexId) 
 			throws NoSuchElementException, InterruptedException, 
 			ExecutionException {
 		String query = GremlinRecipes.deleteVertex(
 				vertexId, supportsNonStringIds);
 		LOGGER.debug("Gremlin Query - Delete Vertex: {}", query);
-		return client.submit(query).all().get();
+		client.submit(query).all().get();
 	}
 
 	@Override
@@ -468,13 +468,13 @@ public class GremlinServerClientGraphDatabaseService implements GraphDatabaseSer
 	}
 
 	@Override
-	public List<Result> deleteEdge(long edgeId) 
+	public void deleteEdge(long edgeId) 
 			throws NoSuchElementException, InterruptedException, 
 			ExecutionException {
 		String query = GremlinRecipes.deleteEdge(
 				edgeId, supportsNonStringIds);
 		LOGGER.debug("Gremlin Query - Delete Edge: {}", query);
-		return client.submit(query).all().get();
+		client.submit(query).all().get();
 	}
 
 	@Override
