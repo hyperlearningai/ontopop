@@ -1,6 +1,7 @@
 package ai.hyperlearning.ontopop.security.secrets.azure.keyvault;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import com.azure.core.util.polling.SyncPoller;
@@ -18,6 +19,9 @@ import ai.hyperlearning.ontopop.security.secrets.SecretsService;
  */
 
 @Service
+@ConditionalOnProperty(
+        value="security.secrets.service", 
+        havingValue = "azure-key-vault")
 public class AzureKeyVaultSecretsService implements SecretsService {
 	
 	@Autowired

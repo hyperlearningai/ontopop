@@ -16,10 +16,10 @@ import ai.hyperlearning.ontopop.security.secrets.azure.keyvault.AzureKeyVaultSec
 @Service
 public class SecretsServiceFactory {
 	
-	@Autowired
+	@Autowired(required=false)
 	private AwsSecretsManagerSecretsService awsSecretsManagerSecretsService;
 	
-	@Autowired
+	@Autowired(required=false)
 	private AzureKeyVaultSecretsService azureKeyVaultSecretsService;
 	
 	/**

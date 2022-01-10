@@ -1,6 +1,7 @@
 package ai.hyperlearning.ontopop.security.secrets.aws.secretsmanager;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import com.amazonaws.services.secretsmanager.AWSSecretsManager;
@@ -18,6 +19,9 @@ import ai.hyperlearning.ontopop.security.secrets.SecretsService;
  */
 
 @Service
+@ConditionalOnProperty(
+        value="security.secrets.service", 
+        havingValue = "aws-secrets-manager")
 public class AwsSecretsManagerSecretsService implements SecretsService {
 	
 	@Autowired

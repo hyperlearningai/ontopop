@@ -1,6 +1,7 @@
 package ai.hyperlearning.ontopop.security.secrets.aws.secretsmanager;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,6 +20,9 @@ import com.amazonaws.services.secretsmanager.AWSSecretsManagerClientBuilder;
  */
 
 @Configuration
+@ConditionalOnProperty(
+        value="security.secrets.service", 
+        havingValue = "aws-secrets-manager")
 public class AwsSecretsManagerClientConfig {
 	
 	@Value("${security.secrets.aws-secrets-manager.access-key-id}")

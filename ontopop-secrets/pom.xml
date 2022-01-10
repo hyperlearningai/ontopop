@@ -73,6 +73,12 @@
             <groupId>ai.hyperlearning.ontopop</groupId>
             <artifactId>ontopop-configuration</artifactId>
         </dependency>
+        
+        <!-- Spring Boot AutoConfigure -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
     
     </dependencies>
     
