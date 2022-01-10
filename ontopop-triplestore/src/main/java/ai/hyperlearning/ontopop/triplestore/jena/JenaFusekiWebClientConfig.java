@@ -16,7 +16,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 @ConditionalOnProperty(
-        value="storage.object.triplestore", 
+        value="storage.triplestore.service", 
         havingValue = "apache-jena")
 public class JenaFusekiWebClientConfig {
 	

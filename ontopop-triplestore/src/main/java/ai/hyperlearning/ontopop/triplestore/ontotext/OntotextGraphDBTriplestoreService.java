@@ -34,7 +34,7 @@ import ai.hyperlearning.ontopop.triplestore.TriplestoreService;
 
 @Service
 @ConditionalOnProperty(
-        value="storage.object.triplestore", 
+        value="storage.triplestore.service", 
         havingValue = "ontotext-graphdb")
 public class OntotextGraphDBTriplestoreService implements TriplestoreService {
 	

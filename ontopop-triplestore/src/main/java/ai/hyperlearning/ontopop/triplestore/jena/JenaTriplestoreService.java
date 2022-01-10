@@ -33,7 +33,7 @@ import reactor.core.publisher.Mono;
 
 @Service
 @ConditionalOnProperty(
-        value="storage.object.triplestore", 
+        value="storage.triplestore.service", 
         havingValue = "apache-jena")
 public class JenaTriplestoreService implements TriplestoreService {
 
