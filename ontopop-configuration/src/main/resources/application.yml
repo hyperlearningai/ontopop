@@ -176,6 +176,7 @@ storage:
     graph:
         service: janusgraph
         engine:
+            supportsUserDefinedIds: false
             supportsNonStringIds: true
             supportsSchema: true
             supportsTransactions: true

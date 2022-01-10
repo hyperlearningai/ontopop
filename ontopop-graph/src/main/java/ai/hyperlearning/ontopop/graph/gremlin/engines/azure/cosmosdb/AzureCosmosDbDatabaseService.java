@@ -24,7 +24,8 @@ public class AzureCosmosDbDatabaseService extends GremlinServerClientGraphDataba
 	private Client azureCosmosDbgremlinServerClient;
 	
 	public AzureCosmosDbDatabaseService() {
-		super.supportsNonStringIds = false;
+		super.supportsUserDefinedIds = true;
+	    super.supportsNonStringIds = false;
 		super.supportsSchema = false;
 		super.supportsTransactions = false;
 		super.supportsGeoshape = false;

@@ -57,6 +57,9 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
 	protected GremlinExecutor gremlinExecutor;
 	protected ConcurrentBindings bindings = new ConcurrentBindings();
 	
+	@Value("${storage.graph.engine.supportsUserDefinedIds}")
+	protected boolean supportsUserDefinedIds;
+	
 	@Value("${storage.graph.engine.supportsNonStringIds}")
 	protected boolean supportsNonStringIds;
 	
@@ -196,7 +199,8 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
 				for (SimpleGraphVertex vertex : verticesSubList) {
 					if ( counter > 0 )
 						graphTraversal.addV(label);
-					graphTraversal.property(T.id, vertex.getVertexId());
+					if ( supportsUserDefinedIds )
+					    graphTraversal.property(T.id, vertex.getVertexId());
 					for (Map.Entry<String, Object> entry : vertex.getProperties().entrySet()) {
 						String key = entry.getKey()
 								.equalsIgnoreCase(PROPERTY_KEY_ONTOLOGY_LABEL) ? 
@@ -215,7 +219,8 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
 	}
 	
 	@Override
-	public void addVertices(String label, List<Map<String, Object>> propertyMaps) {
+	public void addVertices(String label, 
+	        List<Map<String, Object>> propertyMaps) {
 		
 		if ( !propertyMaps.isEmpty() ) {
 		
@@ -236,7 +241,8 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
 								PROPERTY_KEY_ONTOLOGY_LABEL_REPLACEMENT : 
 									entry.getKey();
 						graphTraversal.property(key, entry.getValue());
-						if ( entry.getKey().equalsIgnoreCase(VERTEX_ID_PROPERTY_KEY) )
+						if ( entry.getKey().equalsIgnoreCase(VERTEX_ID_PROPERTY_KEY) 
+						        && supportsUserDefinedIds )
 							graphTraversal.property(T.id, entry.getValue());
 					}
 					counter++;
@@ -259,7 +265,8 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
 					PROPERTY_KEY_ONTOLOGY_LABEL_REPLACEMENT : 
 						entry.getKey();
 			graphTraversal.property(key, entry.getValue());
-			if ( entry.getKey().equalsIgnoreCase(VERTEX_ID_PROPERTY_KEY) )
+			if ( entry.getKey().equalsIgnoreCase(VERTEX_ID_PROPERTY_KEY) 
+			        && supportsUserDefinedIds)
 				graphTraversal.property(T.id, entry.getValue());
 		}
 		final Vertex vertex = graphTraversal.next();
@@ -375,7 +382,8 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
 			String label, Map<String, Object> properties) {
 		
 		Edge edge = null;
-		if ( properties.containsKey(EDGE_ID_PROPERTY_KEY) ) {
+		if ( properties.containsKey(EDGE_ID_PROPERTY_KEY) 
+		        && supportsUserDefinedIds ) {
 			long edgeId = (long) properties.get(EDGE_ID_PROPERTY_KEY);
 			edge = sourceVertex.addEdge(label, targetVertex, T.id, edgeId);
 		} else

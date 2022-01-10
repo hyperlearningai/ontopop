@@ -18,6 +18,7 @@ import ai.hyperlearning.ontopop.graph.gremlin.GremlinGraphDatabaseService;
 public class TinkerGraphDatabaseService extends GremlinGraphDatabaseService {
 	
 	public TinkerGraphDatabaseService() {
+	    super.supportsUserDefinedIds = true;
 		super.supportsNonStringIds = true;
 		super.supportsSchema = true;
 		super.supportsTransactions = false;

@@ -25,6 +25,7 @@ public class JanusGraphDatabaseService extends GremlinServerRemoteConnectionGrap
     private GraphTraversalSource janusGraphGremlinServerTraversalSource;
 	
 	public JanusGraphDatabaseService() {
+	    super.supportsUserDefinedIds = false;
 		super.supportsNonStringIds = true;
 		super.supportsSchema = true;
 		super.supportsTransactions = true;

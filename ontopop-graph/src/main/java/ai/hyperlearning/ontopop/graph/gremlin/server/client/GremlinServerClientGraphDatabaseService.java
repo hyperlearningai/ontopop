@@ -46,6 +46,9 @@ public class GremlinServerClientGraphDatabaseService implements GraphDatabaseSer
 	@Qualifier("gremlinServerClient")
 	private Client gremlinServerClient;
 	
+	@Value("${storage.graph.engine.supportsUserDefinedIds}")
+    protected boolean supportsUserDefinedIds;
+	
 	@Value("${storage.graph.engine.supportsNonStringIds}")
 	protected boolean supportsNonStringIds;
 	
@@ -243,7 +246,7 @@ public class GremlinServerClientGraphDatabaseService implements GraphDatabaseSer
 						label, 
 						vertex.getVertexId(),
 						vertex.getProperties(), 
-						supportsNonStringIds);
+						supportsNonStringIds, supportsUserDefinedIds);
 				LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
 				client.submit(query).all().get();
 			}
@@ -258,7 +261,8 @@ public class GremlinServerClientGraphDatabaseService implements GraphDatabaseSer
 			for ( Map<String, Object> properties : propertyMaps ) {
 				long vertexId = (Long) properties.get(VERTEX_ID_PROPERTY_KEY);
 				String query = GremlinRecipes.addVertex(label, 
-						vertexId, properties, supportsNonStringIds);
+						vertexId, properties, 
+						supportsNonStringIds, supportsUserDefinedIds);
 				LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
 				client.submit(query).all().get();
 			}
@@ -271,7 +275,8 @@ public class GremlinServerClientGraphDatabaseService implements GraphDatabaseSer
 			ExecutionException {
 		long vertexId = (Long) properties.get(VERTEX_ID_PROPERTY_KEY);
 		String query = GremlinRecipes.addVertex(label, 
-				vertexId, properties, supportsNonStringIds);
+				vertexId, properties, 
+				supportsNonStringIds, supportsUserDefinedIds);
 		LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
 		client.submit(query).all().get();
 		return getVertex(vertexId);

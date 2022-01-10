@@ -298,12 +298,12 @@ public class GremlinRecipes {
 	
 	public static String addVertex(
 			String label, long vertexId, Map<String, Object> properties, 
-			boolean supportsNonStringIds) {
-		StringBuilder  query = new StringBuilder(supportsNonStringIds ? 
-				"g.addV('" + label + "')"
-					+ ".property('id', " + vertexId + ")" : 
-				"g.addV('" + label + "')"
-						+ ".property('id', '" + vertexId + "')");
+			boolean supportsNonStringIds, boolean supportsUserDefinedIds) {
+		StringBuilder query = new StringBuilder("g.addV('" + label + "')");
+		if ( supportsUserDefinedIds )
+	        query.append(supportsNonStringIds ? 
+	                ".property('id', " + vertexId + ")" : 
+	                    ".property('id', '" + vertexId + "')");
 		for (Map.Entry<String, Object> entry : properties.entrySet()) {
 			String key = entry.getKey()
 					.equalsIgnoreCase(PROPERTY_KEY_ONTOLOGY_LABEL) ? 
