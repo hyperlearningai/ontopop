@@ -4,10 +4,6 @@ import java.io.IOException;
 
 import org.apache.tinkerpop.gremlin.groovy.engine.GremlinExecutor;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-import org.apache.tinkerpop.gremlin.structure.Edge;
-import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.janusgraph.core.JanusGraph;
-import org.janusgraph.core.schema.JanusGraphManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -27,10 +23,6 @@ public class JanusGraphDatabaseService extends GremlinServerRemoteConnectionGrap
     @Autowired
     @Qualifier("janusGraphGremlinServerTraversalSource")
     private GraphTraversalSource janusGraphGremlinServerTraversalSource;
-    
-    @Autowired
-    @Qualifier("janusGraphGremlinServerManagementApiTraversalSource")
-    private GraphTraversalSource janusGraphGremlinServerManagementApiTraversalSource;
 	
 	public JanusGraphDatabaseService() {
 		super.supportsNonStringIds = true;
@@ -56,14 +48,6 @@ public class JanusGraphDatabaseService extends GremlinServerRemoteConnectionGrap
         return g;
     }
 	
-    @Override
-    public void closeGraph() throws Exception {
-        if ( g != null )
-            g.close();
-        if (janusGraphGremlinServerManagementApiTraversalSource != null)
-            janusGraphGremlinServerManagementApiTraversalSource.close();
-    }
-	
 	/**************************************************************************
 	 * SCHEMA MANAGEMENT
 	 *************************************************************************/
@@ -71,124 +55,15 @@ public class JanusGraphDatabaseService extends GremlinServerRemoteConnectionGrap
 	@Override
 	public void createSchema() {
 		
-		// Get the JanusGraph management service
-		final JanusGraph graph = (JanusGraph) 
-		        janusGraphGremlinServerManagementApiTraversalSource.getGraph();
-		final JanusGraphManagement management = graph.openManagement();
-		try {
-			
-			if (!doesSchemaExist(management)) {
-				createProperties(management);
-				createVertexLabels(management);
-				createEdgeLabels(management);
-				createCompositeIndexes(management);
-				management.commit();
-			}
-			
-		} catch (Exception e) {
-			management.rollback();
-		}
-		
-	}
-	
-	/**
-	 * Naive check as to whether the schema already exists
-	 * @param management
-	 * @return
-	 */
-	
-	private boolean doesSchemaExist(
-			final JanusGraphManagement management) {
-		return management.getPropertyKey("class") == null ? false : true;
-	}
-	
-	/**
-	 * Create vertex labels
-	 * @param management
-	 */
-	
-	private void createVertexLabels(
-			final JanusGraphManagement management) {
-		management.makeVertexLabel("class").make();
-	}
-	
-	/**
-	 * Create edge labels
-	 * @param management
-	 */
-	
-	private void createEdgeLabels(
-			final JanusGraphManagement management) {
-		management.makeEdgeLabel("subClassOf").make();
-	}
-	
-	/**
-	 * Create vertex and edge properties
-	 * @param management
-	 */
-	
-	private void createProperties(
-			final JanusGraphManagement management) {
-		
-		// Common vertex properties
-		management.makePropertyKey("iri")
-			.dataType(String.class).make();
-		management.makePropertyKey("ontologyId")
-			.dataType(Integer.class).make();
-		management.makePropertyKey("latestWebhookEventId")
-			.dataType(Long.class).make();
-		management.makePropertyKey("key")
-			.dataType(String.class).make();
-		management.makePropertyKey("vertexId")
-			.dataType(Long.class).make();
-		
-		// Common edge properties
-		management.makePropertyKey("sourceVertexKey")
-			.dataType(String.class).make();
-		management.makePropertyKey("sourceVertexId")
-			.dataType(Long.class).make();
-		management.makePropertyKey("targetVertexKey")
-			.dataType(String.class).make();
-		management.makePropertyKey("targetVertexId")
-			.dataType(Long.class).make();
-		
-	}
-	
-	/**
-	 * Create vertex and edge composite indexes for exact match lookups
-	 * @param management
-	 */
-	
-	private void createCompositeIndexes(
-			final JanusGraphManagement management) {
-		
-		// Vertex-centric indexes
-		management.buildIndex("iriIndex", Vertex.class)
-			.addKey(management.getPropertyKey("iri"))
-			.buildCompositeIndex();
-		management.buildIndex("ontologyIdIndex", Vertex.class)
-			.addKey(management.getPropertyKey("ontologyId"))
-			.buildCompositeIndex();
-		management.buildIndex("keyIndex", Vertex.class)
-			.addKey(management.getPropertyKey("key"))
-			.buildCompositeIndex();
-		management.buildIndex("vertexIdIndex", Vertex.class)
-			.addKey(management.getPropertyKey("vertexId"))
-			.buildCompositeIndex();
-		
-		// Edge-centric indexes
-		management.buildIndex("sourceVertexKeyIndex", Edge.class)
-			.addKey(management.getPropertyKey("sourceVertexKey"))
-			.buildCompositeIndex();
-		management.buildIndex("sourceVertexIdIndex", Edge.class)
-			.addKey(management.getPropertyKey("sourceVertexId"))
-			.buildCompositeIndex();
-		management.buildIndex("targetVertexKeyIndex", Edge.class)
-			.addKey(management.getPropertyKey("targetVertexKey"))
-			.buildCompositeIndex();
-		management.buildIndex("targetVertexIdIndex", Edge.class)
-			.addKey(management.getPropertyKey("targetVertexId"))
-			.buildCompositeIndex();
+		// See ontopop-utils: 
+	    // ai.hyperlearning.ontopop.graph.gremlin.engines.janusgraph.JanusGraphCreateSchemaApp
+	    // This was moved to a separate module due to the fact that
+	    // JanusGraph v0.6.0 only supports Java 8. Consequently the 
+	    // janusgraph-core (and hence janusgraph-all) Maven dependency
+	    // required to access the JanusGraph Management API
+	    // introduces breaking conflicts such as java.util base package
+	    // conflicts via the com.boundary:high-scale-lib transitive
+	    // dependency and other conflicts with the Spring Framework.
 		
 	}
 
