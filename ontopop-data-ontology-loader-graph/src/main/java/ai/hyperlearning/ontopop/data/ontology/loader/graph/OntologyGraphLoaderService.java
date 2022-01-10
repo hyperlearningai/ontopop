@@ -225,6 +225,8 @@ public class OntologyGraphLoaderService {
 						SimpleOntologyPropertyGraph.class);
 		
 		// Delete all existing vertices with this ontology ID
+		LOGGER.debug("Deleting all vertices with ontology ID: {}", 
+		        ontologyMessage.getOntologyId());
 		graphDatabaseService.deleteVertices(
 				ONTOLOGY_ID_PROPERTY_KEY, ontologyMessage.getOntologyId());
 		graphDatabaseService.commit();
@@ -246,6 +248,8 @@ public class OntologyGraphLoaderService {
 		LOGGER.debug("Loaded {} vertices.", vertices.size());
 		
 		// Delete all existing edges with this ontology ID
+		LOGGER.debug("Deleting all edges with ontology ID: {}", 
+                ontologyMessage.getOntologyId());
 		graphDatabaseService.deleteEdges(
 				ONTOLOGY_ID_PROPERTY_KEY, ontologyMessage.getOntologyId());
 		graphDatabaseService.commit();
