@@ -15,7 +15,7 @@ import ai.hyperlearning.ontopop.search.elasticsearch.ElasticsearchService;
 @Service
 public class SearchServiceFactory {
 	
-	@Autowired
+	@Autowired(required=false)
 	private ElasticsearchService elasticsearchService;
 	
 	/**

@@ -9,6 +9,7 @@ import org.elasticsearch.index.query.Operator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
@@ -27,6 +28,9 @@ import ai.hyperlearning.ontopop.search.model.SimpleIndexVertex;
  */
 
 @Service
+@ConditionalOnProperty(
+        value="storage.search.service", 
+        havingValue = "elasticsearch")
 public class ElasticsearchService implements SearchService {
 	
 	private static final Logger LOGGER = 
