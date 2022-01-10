@@ -16,10 +16,10 @@ import ai.hyperlearning.ontopop.triplestore.ontotext.OntotextGraphDBTriplestoreS
 @Service
 public class TriplestoreServiceFactory {
 	
-	@Autowired
+	@Autowired(required=false)
 	private JenaTriplestoreService jenaTriplestoreService;
 	
-	@Autowired
+	@Autowired(required=false)
 	private OntotextGraphDBTriplestoreService ontotextGraphDBTriplestoreService;
 	
 	/**

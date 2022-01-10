@@ -20,6 +20,7 @@ import org.eclipse.rdf4j.rio.RDFParser;
 import org.eclipse.rdf4j.rio.Rio;
 import org.eclipse.rdf4j.rio.helpers.StatementCollector;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import ai.hyperlearning.ontopop.triplestore.TriplestoreService;
@@ -32,6 +33,9 @@ import ai.hyperlearning.ontopop.triplestore.TriplestoreService;
  */
 
 @Service
+@ConditionalOnProperty(
+        value="storage.object.triplestore", 
+        havingValue = "ontotext-graphdb")
 public class OntotextGraphDBTriplestoreService implements TriplestoreService {
 	
 	private static final String REPOSITORY_DEFAULT_CONFIGURATION_FILENAME = 
