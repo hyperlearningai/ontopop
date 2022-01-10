@@ -377,9 +377,10 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
 	public Edge addEdge(Vertex sourceVertex, Vertex targetVertex, 
 			String label, Map<String, Object> properties) {
 		
-	    GraphTraversal<Vertex,Edge> edge = g.V(sourceVertex.id())
+	    GraphTraversal<Vertex,Edge> edge = g.V(sourceVertex.id()).as("a")
+	            .V(targetVertex.id())
 	            .addE(label)
-	            .to(g.V(targetVertex.id()));
+	            .from("a");
 		if ( properties.containsKey(EDGE_ID_PROPERTY_KEY) 
 		        && supportsUserDefinedIds ) {
 			long edgeId = (long) properties.get(EDGE_ID_PROPERTY_KEY);
