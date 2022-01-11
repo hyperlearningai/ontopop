@@ -2,6 +2,7 @@ package ai.hyperlearning.ontopop.search.azure.search;
 
 import java.io.Serializable;
 
+import com.azure.search.documents.indexes.SearchableField;
 import com.azure.search.documents.indexes.SimpleField;
 
 /**
@@ -18,51 +19,32 @@ public class AzureSimpleIndexVertex implements Serializable {
     // Common Vertex Properties
     
     // Azure Search only supports string-based ID fields
-    @SimpleField(isKey = true, isFilterable = true, isSortable = false)
     private String vertexId;
-    
-    @SimpleField(isFilterable = true, isSortable = true)
     private String label;
-    
-    @SimpleField(isFilterable = false, isSortable = false)
     private String rdfsLabel;
-    
-    @SimpleField(isFilterable = true, isSortable = false)
     private String iri;
-    
-    @SimpleField(isFilterable = false, isSortable = false)
     private int ontologyId;
-    
-    @SimpleField(isFilterable = false, isSortable = false)
     private String key;
-    
-    @SimpleField(isFilterable = false, isSortable = false)
     private long latestWebhookEventId;
     
     // Example domain-specific Vertex Properties
-    
-    @SimpleField(isFilterable = false, isSortable = false)
     private String definition;
-    
-    @SimpleField(isFilterable = true, isSortable = true)
     private String businessArea;
-    
-    @SimpleField(isFilterable = true, isSortable = true)
     private String subdomain;
-    
-    @SimpleField(isFilterable = true, isSortable = true)
     private String dataSource;
-    
-    @SimpleField(isFilterable = false, isSortable = false)
     private String synonym;
-    
-    @SimpleField(isFilterable = false, isSortable = false)
     private String example;
     
     public AzureSimpleIndexVertex() {
         
     }
+    
+    public AzureSimpleIndexVertex(String vertexId) {
+        this.vertexId = vertexId;
+    }
 
+    // Azure Search only supports string-based ID fields
+    @SimpleField(isKey = true, isFilterable = true, isSortable = false)
     public String getVertexId() {
         return vertexId;
     }
@@ -71,6 +53,7 @@ public class AzureSimpleIndexVertex implements Serializable {
         this.vertexId = vertexId;
     }
 
+    @SearchableField(isFilterable = true, isSortable = true)
     public String getLabel() {
         return label;
     }
@@ -79,6 +62,7 @@ public class AzureSimpleIndexVertex implements Serializable {
         this.label = label;
     }
 
+    @SearchableField(isFilterable = false, isSortable = false)
     public String getRdfsLabel() {
         return rdfsLabel;
     }
@@ -87,6 +71,7 @@ public class AzureSimpleIndexVertex implements Serializable {
         this.rdfsLabel = rdfsLabel;
     }
 
+    @SearchableField(isFilterable = true, isSortable = false)
     public String getIri() {
         return iri;
     }
@@ -95,6 +80,7 @@ public class AzureSimpleIndexVertex implements Serializable {
         this.iri = iri;
     }
 
+    @SimpleField(isFilterable = true, isSortable = true)
     public int getOntologyId() {
         return ontologyId;
     }
@@ -103,6 +89,7 @@ public class AzureSimpleIndexVertex implements Serializable {
         this.ontologyId = ontologyId;
     }
 
+    @SearchableField(isFilterable = false, isSortable = false)
     public String getKey() {
         return key;
     }
@@ -111,6 +98,7 @@ public class AzureSimpleIndexVertex implements Serializable {
         this.key = key;
     }
 
+    @SimpleField(isFilterable = true, isSortable = true)
     public long getLatestWebhookEventId() {
         return latestWebhookEventId;
     }
@@ -119,6 +107,7 @@ public class AzureSimpleIndexVertex implements Serializable {
         this.latestWebhookEventId = latestWebhookEventId;
     }
 
+    @SearchableField(isFilterable = false, isSortable = false)
     public String getDefinition() {
         return definition;
     }
@@ -127,6 +116,7 @@ public class AzureSimpleIndexVertex implements Serializable {
         this.definition = definition;
     }
 
+    @SearchableField(isFilterable = true, isSortable = true)
     public String getBusinessArea() {
         return businessArea;
     }
@@ -135,6 +125,7 @@ public class AzureSimpleIndexVertex implements Serializable {
         this.businessArea = businessArea;
     }
 
+    @SearchableField(isFilterable = true, isSortable = true)
     public String getSubdomain() {
         return subdomain;
     }
@@ -143,6 +134,7 @@ public class AzureSimpleIndexVertex implements Serializable {
         this.subdomain = subdomain;
     }
 
+    @SearchableField(isFilterable = true, isSortable = true)
     public String getDataSource() {
         return dataSource;
     }
@@ -151,6 +143,7 @@ public class AzureSimpleIndexVertex implements Serializable {
         this.dataSource = dataSource;
     }
 
+    @SearchableField(isFilterable = false, isSortable = false)
     public String getSynonym() {
         return synonym;
     }
@@ -159,6 +152,7 @@ public class AzureSimpleIndexVertex implements Serializable {
         this.synonym = synonym;
     }
 
+    @SearchableField(isFilterable = false, isSortable = false)
     public String getExample() {
         return example;
     }
