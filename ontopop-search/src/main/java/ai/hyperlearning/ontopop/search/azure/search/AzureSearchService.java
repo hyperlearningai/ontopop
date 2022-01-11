@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
@@ -99,25 +98,24 @@ public class AzureSearchService implements SearchService {
         SearchIndex existingIndex = null;
         try {
             existingIndex = searchIndexClient.getIndex(indexName);
-        } catch (HttpResponseException e) {
+        } catch (Exception e) {
+            LOGGER.debug("Index does not already exist. "
+                    + "Creating index: {}.", indexName);
+        }
+        
+        // Do not create the index if it already exists
+        if (existingIndex != null) {
             LOGGER.warn("Index '{}' already exists. Skipping index creation.",
                     indexName);
             return;
         }
         
-        // If the search index does not already exist
-        if (existingIndex == null) {
-            
-            List<SearchField> indexFields = SearchIndexClient
-                    .buildSearchFields(AzureSimpleIndexVertex.class, 
-                            new FieldBuilderOptions());
-            SearchIndex newIndex = new SearchIndex(indexName, indexFields);
-            searchIndexClient.createIndex(newIndex);
-            
-        } else {
-            LOGGER.warn("Index '{}' already exists. Skipping index creation.",
-                    indexName);
-        }
+        // Create the search index using the AzureSimpleIndexVertex model
+        List<SearchField> indexFields = SearchIndexClient
+            .buildSearchFields(AzureSimpleIndexVertex.class, 
+                    new FieldBuilderOptions());
+        SearchIndex newIndex = new SearchIndex(indexName, indexFields);
+        searchIndexClient.createIndex(newIndex);
         
     }
 
