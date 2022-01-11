@@ -16,28 +16,27 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 @ConditionalOnProperty(
-        value="storage.triplestore.service", 
+        value = "storage.triplestore.service",
         havingValue = "apache-jena")
 public class JenaFusekiWebClientConfig {
-	
-	@Value("${storage.triplestore.apache-jena.fuseki.url}")
-	private String fusekiUrl;
-	
-	@Value("${web.client.codecs.maxInMemorySize}")
-	private int webClientMaxInMemorySize;
-	
-	@Bean("fusekiWebClient")
-	public WebClient fusekiWebClient() {
-		
-		return WebClient.builder()
-				.exchangeStrategies(ExchangeStrategies.builder()
-			            .codecs(configurer -> configurer
-			                      .defaultCodecs()
-			                      .maxInMemorySize(webClientMaxInMemorySize * 1024 * 1024))
-			            		.build())
-				.baseUrl(fusekiUrl)
-				.build();
-		
-	}
+
+    @Value("${storage.triplestore.apache-jena.fuseki.url}")
+    private String fusekiUrl;
+
+    @Value("${web.client.codecs.maxInMemorySize}")
+    private int webClientMaxInMemorySize;
+
+    @Bean("fusekiWebClient")
+    public WebClient fusekiWebClient() {
+
+        return WebClient.builder()
+                .exchangeStrategies(ExchangeStrategies.builder()
+                        .codecs(configurer -> configurer.defaultCodecs()
+                                .maxInMemorySize(
+                                        webClientMaxInMemorySize * 1024 * 1024))
+                        .build())
+                .baseUrl(fusekiUrl).build();
+
+    }
 
 }

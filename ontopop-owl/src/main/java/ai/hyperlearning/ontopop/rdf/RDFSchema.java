@@ -18,36 +18,37 @@ import ai.hyperlearning.ontopop.owl.OWLAPI;
  */
 
 public class RDFSchema {
-	
-	private static final String RDF_SCHEMA_FILENAME = "rdf-schema.ttl";
-	
-	/**
-	 * Read the RDF schema and return an OWL 2 ontology representation
-	 * @return
-	 * @throws OWLOntologyCreationException
-	 * @throws IOException
-	 */
-	
-	public static OWLOntology loadRdfSchema() 
-			throws OWLOntologyCreationException, IOException {
-		ClassLoader classLoader = 
-				RDFSchema.class.getClassLoader();
-		try (InputStream inputStream = 
-				classLoader.getResourceAsStream(RDF_SCHEMA_FILENAME)) {
-			return OWLAPI.loadOntology(inputStream);
-		}
-	}
-	
-	/**
-	 * Parse the RDF schema and generate a map of Annotation Property IRI to
-	 * OntoPop Simple Annotation Property objects
-	 * @param rdfSchema
-	 * @return
-	 */
-	
-	public static Map<String, SimpleAnnotationProperty> parseAnnotationProperties(
-			OWLOntology rdfSchema) {
-		return OWLAPI.parseAnnotationProperties(rdfSchema);
-	}
+
+    private static final String RDF_SCHEMA_FILENAME = "rdf-schema.ttl";
+
+    /**
+     * Read the RDF schema and return an OWL 2 ontology representation
+     * 
+     * @return
+     * @throws OWLOntologyCreationException
+     * @throws IOException
+     */
+
+    public static OWLOntology loadRdfSchema()
+            throws OWLOntologyCreationException, IOException {
+        ClassLoader classLoader = RDFSchema.class.getClassLoader();
+        try (InputStream inputStream =
+                classLoader.getResourceAsStream(RDF_SCHEMA_FILENAME)) {
+            return OWLAPI.loadOntology(inputStream);
+        }
+    }
+
+    /**
+     * Parse the RDF schema and generate a map of Annotation Property IRI to
+     * OntoPop Simple Annotation Property objects
+     * 
+     * @param rdfSchema
+     * @return
+     */
+
+    public static Map<String, SimpleAnnotationProperty> parseAnnotationProperties(
+            OWLOntology rdfSchema) {
+        return OWLAPI.parseAnnotationProperties(rdfSchema);
+    }
 
 }

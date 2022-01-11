@@ -17,35 +17,35 @@ import ai.hyperlearning.ontopop.data.ontology.ingestor.OntologyIngestorService;
  */
 
 @Component
-public class OntologyIngestorFunction implements Function<OntologyIngestorFunctionModel, Boolean> {
+public class OntologyIngestorFunction
+        implements Function<OntologyIngestorFunctionModel, Boolean> {
 
-	private static final Logger LOGGER = 
-			LoggerFactory.getLogger(OntologyIngestorFunction.class);
-	
-	@Autowired
-	private OntologyIngestorService ontologyIngestorService;
-	
-	@Override
-	public Boolean apply(
-			OntologyIngestorFunctionModel ontologyIngestorFunctionModel) {
-		
-		// Log the HTTP request headers for debugging purposes
-		LOGGER.debug("New HTTP POST request: Ontology ingestion webhook.");
-		ontologyIngestorFunctionModel.getHeaders().forEach((key, value) -> {
-	        LOGGER.debug(String.format("Header '%s' = %s", key, value));
-	    });
-		
-		// Log the HTTP request body payload for debugging purposes
-		LOGGER.debug("Ontology ingestion webhook payload: {}", 
-				ontologyIngestorFunctionModel.getPayload());
-		
-		// Run the Ontology Ingestion Service pipeline
-		ontologyIngestorService.run(
-				ontologyIngestorFunctionModel.getHeaders(), 
-				ontologyIngestorFunctionModel.getPayload());
-		
-		return true;
-		
-	}
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(OntologyIngestorFunction.class);
+
+    @Autowired
+    private OntologyIngestorService ontologyIngestorService;
+
+    @Override
+    public Boolean apply(
+            OntologyIngestorFunctionModel ontologyIngestorFunctionModel) {
+
+        // Log the HTTP request headers for debugging purposes
+        LOGGER.debug("New HTTP POST request: Ontology ingestion webhook.");
+        ontologyIngestorFunctionModel.getHeaders().forEach((key, value) -> {
+            LOGGER.debug(String.format("Header '%s' = %s", key, value));
+        });
+
+        // Log the HTTP request body payload for debugging purposes
+        LOGGER.debug("Ontology ingestion webhook payload: {}",
+                ontologyIngestorFunctionModel.getPayload());
+
+        // Run the Ontology Ingestion Service pipeline
+        ontologyIngestorService.run(ontologyIngestorFunctionModel.getHeaders(),
+                ontologyIngestorFunctionModel.getPayload());
+
+        return true;
+
+    }
 
 }

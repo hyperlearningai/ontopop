@@ -19,30 +19,28 @@ import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 
 @Configuration
 @ConditionalOnProperty(
-        value="storage.search.service", 
+        value = "storage.search.service",
         havingValue = "elasticsearch")
 public class ElasticsearchClientConfig {
-	
-	@Value("${storage.search.elasticsearch.url}")
-	private String elasticsearchUrl;
-	
-	@Bean
+
+    @Value("${storage.search.elasticsearch.url}")
+    private String elasticsearchUrl;
+
+    @Bean
     public RestHighLevelClient client() {
-		ClientConfiguration clientConfiguration = ClientConfiguration.builder()
-				.connectedTo(removeHttpProtocolFromUrl(elasticsearchUrl))
-				.build();
-        return RestClients
-        		.create(clientConfiguration)
-        		.rest();
+        ClientConfiguration clientConfiguration = ClientConfiguration.builder()
+                .connectedTo(removeHttpProtocolFromUrl(elasticsearchUrl))
+                .build();
+        return RestClients.create(clientConfiguration).rest();
     }
-	
-	@Bean
+
+    @Bean
     public ElasticsearchOperations elasticsearchTemplate() {
         return new ElasticsearchRestTemplate(client());
     }
-	
-	private static String removeHttpProtocolFromUrl(String url) {
-		return url.replaceFirst("^(http[s]?://www\\.|http[s]?://|www\\.)","");
-	}
+
+    private static String removeHttpProtocolFromUrl(String url) {
+        return url.replaceFirst("^(http[s]?://www\\.|http[s]?://|www\\.)", "");
+    }
 
 }

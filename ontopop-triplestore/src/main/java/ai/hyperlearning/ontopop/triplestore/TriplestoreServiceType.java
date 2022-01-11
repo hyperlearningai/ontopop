@@ -11,31 +11,31 @@ import java.util.Map;
  */
 
 public enum TriplestoreServiceType {
-	
-	APACHE_JENA("APACHE-JENA"), 
-	ONTOTEXT_GRAPHDB("ONTOTEXT-GRAPHDB");
-	
-	private final String label;
-	private static final Map<String, TriplestoreServiceType> LABEL_MAP = 
-			new HashMap<>();
-	
-	static {
-        for (TriplestoreServiceType f: values()) {
-        		LABEL_MAP.put(f.label, f);
+
+    APACHE_JENA("APACHE-JENA"), 
+    ONTOTEXT_GRAPHDB("ONTOTEXT-GRAPHDB");
+
+    private final String label;
+    private static final Map<String, TriplestoreServiceType> LABEL_MAP =
+            new HashMap<>();
+
+    static {
+        for (TriplestoreServiceType f : values()) {
+            LABEL_MAP.put(f.label, f);
         }
     }
-	
-	private TriplestoreServiceType(final String label) {
-		this.label = label;
-	}
-	
-	public static TriplestoreServiceType valueOfLabel(String label) {
+
+    private TriplestoreServiceType(final String label) {
+        this.label = label;
+    }
+
+    public static TriplestoreServiceType valueOfLabel(String label) {
         return LABEL_MAP.get(label);
     }
-	
-	@Override
-	public String toString() {
-		return label;
-	}
+
+    @Override
+    public String toString() {
+        return label;
+    }
 
 }

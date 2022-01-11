@@ -21,31 +21,27 @@ import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 
 @Configuration
 @ConditionalOnProperty(
-        value="storage.search.service", 
+        value = "storage.search.service",
         havingValue = "azure-search")
 public class AzureSearchIndexClientConfig {
-    
+
     @Value("${storage.search.azure-search.endpoint}")
     private String endpoint;
-    
+
     @Value("${storage.search.azure-search.key}")
     private String key;
-    
+
     @Bean("azureSearchIndexNoIndexClient")
     public SearchIndexClient getSearchIndexNoIndexClient() {
-        return new SearchIndexClientBuilder()
-                .endpoint(endpoint)
-                .credential(new AzureKeyCredential(key))
-                .buildClient();
+        return new SearchIndexClientBuilder().endpoint(endpoint)
+                .credential(new AzureKeyCredential(key)).buildClient();
     }
-    
+
     @Bean("azureSearchClient")
     @Scope(value = "prototype")
     public SearchClient getSearchClient(String indexName) {
-        return new SearchClientBuilder()
-                .endpoint(endpoint)
-                .credential(new AzureKeyCredential(key))
-                .indexName(indexName)
+        return new SearchClientBuilder().endpoint(endpoint)
+                .credential(new AzureKeyCredential(key)).indexName(indexName)
                 .buildClient();
     }
 

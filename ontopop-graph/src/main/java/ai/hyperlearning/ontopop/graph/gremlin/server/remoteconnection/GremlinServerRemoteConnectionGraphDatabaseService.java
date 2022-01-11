@@ -20,28 +20,27 @@ import ai.hyperlearning.ontopop.graph.gremlin.GremlinGraphDatabaseService;
 
 @Service
 @ConditionalOnProperty(
-        value="storage.graph.service", 
+        value = "storage.graph.service",
         havingValue = "gremlin-server-remote-connection")
-public class GremlinServerRemoteConnectionGraphDatabaseService extends GremlinGraphDatabaseService {
-	
-	@Autowired(required=false)
-	@Qualifier("gremlinServerTraversalSource")
-	protected GraphTraversalSource gremlinServerTraversalSource;
-	
-	/**************************************************************************
-	 * GRAPH INSTANCE MANAGEMENT
-	 *************************************************************************/
-	
-	@Override
-	public GraphTraversalSource openGraph() throws IOException {
-		super.g = gremlinServerTraversalSource;
-		bindings.putIfAbsent("g", g);
-		bindings.putIfAbsent("graph", g.getGraph());
-		gremlinExecutor = GremlinExecutor.build()
-				.evaluationTimeout(15000L)
-				.globalBindings(bindings)
-				.create();
-		return g;
-	}
+public class GremlinServerRemoteConnectionGraphDatabaseService
+        extends GremlinGraphDatabaseService {
+
+    @Autowired(required = false)
+    @Qualifier("gremlinServerTraversalSource")
+    protected GraphTraversalSource gremlinServerTraversalSource;
+
+    /**************************************************************************
+     * GRAPH INSTANCE MANAGEMENT
+     *************************************************************************/
+
+    @Override
+    public GraphTraversalSource openGraph() throws IOException {
+        super.g = gremlinServerTraversalSource;
+        bindings.putIfAbsent("g", g);
+        bindings.putIfAbsent("graph", g.getGraph());
+        gremlinExecutor = GremlinExecutor.build().evaluationTimeout(15000L)
+                .globalBindings(bindings).create();
+        return g;
+    }
 
 }

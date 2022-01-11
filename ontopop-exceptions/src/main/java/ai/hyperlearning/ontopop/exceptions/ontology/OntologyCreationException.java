@@ -9,10 +9,10 @@ package ai.hyperlearning.ontopop.exceptions.ontology;
 
 public class OntologyCreationException extends RuntimeException {
 
-	private static final long serialVersionUID = -151692995690722571L;
-	
-	public OntologyCreationException() {
-		super("An error was encountered when creating a new ontology.");
-	}
+    private static final long serialVersionUID = -151692995690722571L;
+
+    public OntologyCreationException() {
+        super("An error was encountered when creating a new ontology.");
+    }
 
 }

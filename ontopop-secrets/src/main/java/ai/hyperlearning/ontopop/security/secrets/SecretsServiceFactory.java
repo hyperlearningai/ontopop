@@ -15,50 +15,51 @@ import ai.hyperlearning.ontopop.security.secrets.azure.keyvault.AzureKeyVaultSec
 
 @Service
 public class SecretsServiceFactory {
-	
-	@Autowired(required=false)
-	private AwsSecretsManagerSecretsService awsSecretsManagerSecretsService;
-	
-	@Autowired(required=false)
-	private AzureKeyVaultSecretsService azureKeyVaultSecretsService;
-	
-	/**
-	 * Select the relevant object storage service
-	 * @param type
-	 * @return
-	 */
-	
-	public SecretsService getSecretsService(String type) {
-		
-		SecretsServiceType secretsServiceType = 
-				SecretsServiceType.valueOfLabel(type.toUpperCase());
-		switch ( secretsServiceType ) {
-			case HASHICORP_VAULT:
-				return null;
-			case AWS_SECRETS_MANAGER:
-				return awsSecretsManagerSecretsService;
-			case AZURE_KEY_VAULT:
-				return azureKeyVaultSecretsService;
-			default:
-				return null;
-		}
-		
-	}
-	
-	public SecretsService getSecretsService(
-			SecretsServiceType secretsServiceType) {
-			
-		switch ( secretsServiceType ) {
-			case HASHICORP_VAULT:
-				return null;
-			case AWS_SECRETS_MANAGER:
-				return awsSecretsManagerSecretsService;
-			case AZURE_KEY_VAULT:
-				return azureKeyVaultSecretsService;
-			default:
-				return null;
-		}
-			
-	}
+
+    @Autowired(required = false)
+    private AwsSecretsManagerSecretsService awsSecretsManagerSecretsService;
+
+    @Autowired(required = false)
+    private AzureKeyVaultSecretsService azureKeyVaultSecretsService;
+
+    /**
+     * Select the relevant object storage service
+     * 
+     * @param type
+     * @return
+     */
+
+    public SecretsService getSecretsService(String type) {
+
+        SecretsServiceType secretsServiceType =
+                SecretsServiceType.valueOfLabel(type.toUpperCase());
+        switch (secretsServiceType) {
+            case HASHICORP_VAULT:
+                return null;
+            case AWS_SECRETS_MANAGER:
+                return awsSecretsManagerSecretsService;
+            case AZURE_KEY_VAULT:
+                return azureKeyVaultSecretsService;
+            default:
+                return null;
+        }
+
+    }
+
+    public SecretsService getSecretsService(
+            SecretsServiceType secretsServiceType) {
+
+        switch (secretsServiceType) {
+            case HASHICORP_VAULT:
+                return null;
+            case AWS_SECRETS_MANAGER:
+                return awsSecretsManagerSecretsService;
+            case AZURE_KEY_VAULT:
+                return azureKeyVaultSecretsService;
+            default:
+                return null;
+        }
+
+    }
 
 }

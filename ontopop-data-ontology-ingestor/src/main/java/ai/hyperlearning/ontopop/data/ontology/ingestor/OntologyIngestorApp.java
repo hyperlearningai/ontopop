@@ -16,9 +16,9 @@ import org.springframework.context.annotation.ComponentScan;
 @EntityScan("ai.hyperlearning.ontopop.model")
 @SpringBootApplication
 public class OntologyIngestorApp {
-	
-	public static void main(String[] args) {
-		SpringApplication.run(OntologyIngestorApp.class, args);
-	}
+
+    public static void main(String[] args) {
+        SpringApplication.run(OntologyIngestorApp.class, args);
+    }
 
 }

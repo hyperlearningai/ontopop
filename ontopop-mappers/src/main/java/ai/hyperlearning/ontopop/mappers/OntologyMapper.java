@@ -17,8 +17,10 @@ import ai.hyperlearning.ontopop.model.ontology.OntologyNonSecretData;
 
 @Mapper(componentModel = "spring")
 public interface OntologyMapper {
-	
-	@BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
-	void updateOntology(OntologyNonSecretData ontologyNonSecretData, @MappingTarget Ontology ontology);
+
+    @BeanMapping(
+            nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
+    void updateOntology(OntologyNonSecretData ontologyNonSecretData,
+            @MappingTarget Ontology ontology);
 
 }

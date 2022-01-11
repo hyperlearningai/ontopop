@@ -11,10 +11,10 @@ import org.slf4j.LoggerFactory;
  */
 
 public class JanusGraphDropGraphApp {
-    
-    private static final Logger LOGGER = 
+
+    private static final Logger LOGGER =
             LoggerFactory.getLogger(JanusGraphDropGraphApp.class);
-    
+
     public static void main(String[] args) {
         LOGGER.info("Running the JanusGraph graph deletion service.");
         try {
@@ -22,8 +22,9 @@ public class JanusGraphDropGraphApp {
             JanusGraphUtilityServices.deleteGraph(args[0]);
             LOGGER.info("Finished deleting the JanusGraph graph.");
         } catch (Exception e) {
-            LOGGER.error("Error encountered when deleting the "
-                    + "JanusGraph graph", e);
+            LOGGER.error(
+                    "Error encountered when deleting the " + "JanusGraph graph",
+                    e);
         }
         LOGGER.info("Finished running the JanusGraph graph deletion service.");
         System.exit(0);

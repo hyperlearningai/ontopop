@@ -12,76 +12,75 @@ import java.util.Map;
 
 public class SimpleGraphVertex implements Serializable {
 
-	private static final long serialVersionUID = 9091136164674497432L;
-	private long vertexId;
-	private String label;
-	private Map<String, Object> properties;
-	
-	public SimpleGraphVertex() {
-		
-	}
+    private static final long serialVersionUID = 9091136164674497432L;
+    private long vertexId;
+    private String label;
+    private Map<String, Object> properties;
 
-	public SimpleGraphVertex(long vertexId, 
-			String label, 
-			Map<String, Object> properties) {
-		this.vertexId = vertexId;
-		this.label = label;
-		this.properties = properties;
-	}
+    public SimpleGraphVertex() {
 
-	public long getVertexId() {
-		return vertexId;
-	}
+    }
 
-	public void setVertexId(long vertexId) {
-		this.vertexId = vertexId;
-	}
+    public SimpleGraphVertex(long vertexId, String label,
+            Map<String, Object> properties) {
+        this.vertexId = vertexId;
+        this.label = label;
+        this.properties = properties;
+    }
 
-	public String getLabel() {
-		return label;
-	}
+    public long getVertexId() {
+        return vertexId;
+    }
 
-	public void setLabel(String label) {
-		this.label = label;
-	}
+    public void setVertexId(long vertexId) {
+        this.vertexId = vertexId;
+    }
 
-	public Map<String, Object> getProperties() {
-		return properties;
-	}
+    public String getLabel() {
+        return label;
+    }
 
-	public void setProperties(Map<String, Object> properties) {
-		this.properties = properties;
-	}
+    public void setLabel(String label) {
+        this.label = label;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (int) (vertexId ^ (vertexId >>> 32));
-		return result;
-	}
+    public Map<String, Object> getProperties() {
+        return properties;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		SimpleGraphVertex other = (SimpleGraphVertex) obj;
-		if (vertexId != other.vertexId)
-			return false;
-		return true;
-	}
+    public void setProperties(Map<String, Object> properties) {
+        this.properties = properties;
+    }
 
-	@Override
-	public String toString() {
-		return "SimpleGraphVertex ["
-				+ "vertexId=" + vertexId + ", "
-				+ "label=" + label + ", "
-				+ "properties=" + properties 
-				+ "]";
-	}
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (int) (vertexId ^ (vertexId >>> 32));
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        SimpleGraphVertex other = (SimpleGraphVertex) obj;
+        if (vertexId != other.vertexId)
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "SimpleGraphVertex [" 
+                + "vertexId=" + vertexId + ", " 
+                + "label=" + label + ", " 
+                + "properties=" + properties 
+                + "]";
+    }
 
 }

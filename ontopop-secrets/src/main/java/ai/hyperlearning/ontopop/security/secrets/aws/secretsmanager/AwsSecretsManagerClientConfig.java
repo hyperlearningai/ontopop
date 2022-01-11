@@ -21,29 +21,26 @@ import com.amazonaws.services.secretsmanager.AWSSecretsManagerClientBuilder;
 
 @Configuration
 @ConditionalOnProperty(
-        value="security.secrets.service", 
+        value = "security.secrets.service",
         havingValue = "aws-secrets-manager")
 public class AwsSecretsManagerClientConfig {
-	
-	@Value("${security.secrets.aws-secrets-manager.access-key-id}")
-	private String accessKeyId;
-	
-	@Value("${security.secrets.aws-secrets-manager.access-key-secret}")
-	private String accessKeySecret;
-	
-	@Value("${security.secrets.aws-secrets-manager.region}")
-	private String region;
-	
-	@Bean
-	public AWSSecretsManager getSecretsManagerClient() {
-		AWSCredentials credentials = new BasicAWSCredentials(
-				accessKeyId, accessKeySecret);
-		return AWSSecretsManagerClientBuilder
-					.standard()
-					.withCredentials(
-							new AWSStaticCredentialsProvider(credentials))
-					.withRegion(Regions.fromName(region))
-					.build();
-	}
+
+    @Value("${security.secrets.aws-secrets-manager.access-key-id}")
+    private String accessKeyId;
+
+    @Value("${security.secrets.aws-secrets-manager.access-key-secret}")
+    private String accessKeySecret;
+
+    @Value("${security.secrets.aws-secrets-manager.region}")
+    private String region;
+
+    @Bean
+    public AWSSecretsManager getSecretsManagerClient() {
+        AWSCredentials credentials =
+                new BasicAWSCredentials(accessKeyId, accessKeySecret);
+        return AWSSecretsManagerClientBuilder.standard()
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(Regions.fromName(region)).build();
+    }
 
 }

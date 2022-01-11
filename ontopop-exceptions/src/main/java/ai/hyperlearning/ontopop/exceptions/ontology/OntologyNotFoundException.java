@@ -9,10 +9,10 @@ package ai.hyperlearning.ontopop.exceptions.ontology;
 
 public class OntologyNotFoundException extends RuntimeException {
 
-	private static final long serialVersionUID = -4019048840462057702L;
-	
-	public OntologyNotFoundException(int id) {
-		super("The ontology with ID " + id + " was not found.");
-	}
-	
+    private static final long serialVersionUID = -4019048840462057702L;
+
+    public OntologyNotFoundException(int id) {
+        super("The ontology with ID " + id + " was not found.");
+    }
+
 }

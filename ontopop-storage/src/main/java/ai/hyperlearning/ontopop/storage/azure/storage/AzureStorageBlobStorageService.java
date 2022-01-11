@@ -26,100 +26,96 @@ import ai.hyperlearning.ontopop.storage.ObjectStorageService;
 
 @Service
 @ConditionalOnProperty(
-        value="storage.object.service", 
+        value = "storage.object.service",
         havingValue = "azure-storage")
 public class AzureStorageBlobStorageService implements ObjectStorageService {
 
-	@Autowired
-	private BlobContainerClient blobContainerClient;
-	
-	@Override
-	public boolean doesObjectExist(String uri) {
-		
-		// Instantiate a client that references a blob
-		// in the given Azure Storage account
-		BlockBlobClient blobClient = blobContainerClient
-				.getBlobClient(uri)
-				.getBlockBlobClient();
-		return blobClient.exists();
-		
-	}
+    @Autowired
+    private BlobContainerClient blobContainerClient;
 
-	@Override
-	public boolean doesContainerExist(String uri) {
-		
-		// Returns whether the specified container exists
-		return blobContainerClient.exists();
-		
-	}
+    @Override
+    public boolean doesObjectExist(String uri) {
 
-	@Override
-	public void createContainer(String uri) throws IOException {
-		
-		// Create the specified container
-		blobContainerClient.create();
-		
-	}
+        // Instantiate a client that references a blob
+        // in the given Azure Storage account
+        BlockBlobClient blobClient =
+                blobContainerClient.getBlobClient(uri).getBlockBlobClient();
+        return blobClient.exists();
 
-	@Override
-	public void copyObject(String sourceUri, String targetUri) 
-			throws IOException {
-		
-	}
+    }
 
-	@Override
-	public void copyContainerContents(
-			String sourceContainerUri, String targetContainerUri) 
-					throws IOException {
-		
-	}
+    @Override
+    public boolean doesContainerExist(String uri) {
 
-	@Override
-	public void uploadObject(String localSourceUri, String targetUri) 
-			throws IOException {
-		
-		// Instantiate a client that references a to-be-created blob
-		// in the given Azure Storage account
-		BlockBlobClient blobClient = blobContainerClient
-				.getBlobClient(targetUri)
-				.getBlockBlobClient();
-		
-		// Upload the source file using the blob client
-		File sourceFile = new File(localSourceUri);
-		try (InputStream dataStream = new ByteArrayInputStream(
-				FileUtils.readFileToByteArray(sourceFile))) {
-			blobClient.upload(dataStream, sourceFile.length());
-		}
-		
-	}
+        // Returns whether the specified container exists
+        return blobContainerClient.exists();
 
-	@Override
-	public String downloadObject(String sourceUri, String filename) 
-			throws IOException {
-		
-		// Instantiate a client that references a blob
-		// in the given Azure Storage account
-		BlockBlobClient blobClient = blobContainerClient
-				.getBlobClient(sourceUri)
-				.getBlockBlobClient();
-		
-		// Download the source file to a local temporary file
-		Path temporaryFile = Files.createTempFile("", filename);
-		blobClient.downloadToFile(
-				temporaryFile.toAbsolutePath().toString(), true);
-		return temporaryFile.toAbsolutePath().toString();
-		
-	}
+    }
 
-	@Override
-	public void downloadObject(String sourceUri, String targetContainerUri, 
-			String filename) throws IOException {
-		
-	}
-	
-	@Override
-	public void cleanup() throws IOException {
-		
-	}
+    @Override
+    public void createContainer(String uri) throws IOException {
+
+        // Create the specified container
+        blobContainerClient.create();
+
+    }
+
+    @Override
+    public void copyObject(String sourceUri, String targetUri)
+            throws IOException {
+
+    }
+
+    @Override
+    public void copyContainerContents(String sourceContainerUri,
+            String targetContainerUri) throws IOException {
+
+    }
+
+    @Override
+    public void uploadObject(String localSourceUri, String targetUri)
+            throws IOException {
+
+        // Instantiate a client that references a to-be-created blob
+        // in the given Azure Storage account
+        BlockBlobClient blobClient = blobContainerClient
+                .getBlobClient(targetUri).getBlockBlobClient();
+
+        // Upload the source file using the blob client
+        File sourceFile = new File(localSourceUri);
+        try (InputStream dataStream = new ByteArrayInputStream(
+                FileUtils.readFileToByteArray(sourceFile))) {
+            blobClient.upload(dataStream, sourceFile.length());
+        }
+
+    }
+
+    @Override
+    public String downloadObject(String sourceUri, String filename)
+            throws IOException {
+
+        // Instantiate a client that references a blob
+        // in the given Azure Storage account
+        BlockBlobClient blobClient = blobContainerClient
+                .getBlobClient(sourceUri).getBlockBlobClient();
+
+        // Download the source file to a local temporary file
+        Path temporaryFile = Files.createTempFile("", filename);
+        blobClient.downloadToFile(temporaryFile.toAbsolutePath().toString(),
+                true);
+        return temporaryFile.toAbsolutePath().toString();
+
+    }
+
+    @Override
+    public void downloadObject(String sourceUri, String targetContainerUri,
+            String filename) throws IOException {
+
+    }
+
+    @Override
+    public void cleanup() throws IOException {
+
+    }
 
 }

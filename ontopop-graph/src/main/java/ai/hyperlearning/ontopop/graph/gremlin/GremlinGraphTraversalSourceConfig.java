@@ -20,28 +20,27 @@ import org.springframework.context.annotation.Configuration;
  */
 
 @Configuration
-@ConditionalOnExpression(
-        "'${storage.graph.service}'.equals('gremlin-graph') or "
+@ConditionalOnExpression("'${storage.graph.service}'.equals('gremlin-graph') or "
         + "'${storage.graph.service}'.equals('tinkergraph')")
 public class GremlinGraphTraversalSourceConfig {
-	
-	@Value("${storage.graph.gremlin-graph.configuration-filename}")
-	private String gremlinConfigurationFilename;
-	
-	@Bean("gremlinGraphTraversalSource")
-	public GraphTraversalSource getGremlinGraphTraversalSource() 
-			throws ConfigurationException {
-		
-		// Load the Gremlin Graph configuration
-		Configurations configurations = new Configurations();
-		org.apache.commons.configuration2.Configuration configuration = 
-				configurations.properties(
-						new File(gremlinConfigurationFilename));
-		
-		// Generate a reusable Graph Traversal Source
-		Graph graph = GraphFactory.open(configuration);
-		return graph.traversal();
-		
-	}
+
+    @Value("${storage.graph.gremlin-graph.configuration-filename}")
+    private String gremlinConfigurationFilename;
+
+    @Bean("gremlinGraphTraversalSource")
+    public GraphTraversalSource getGremlinGraphTraversalSource()
+            throws ConfigurationException {
+
+        // Load the Gremlin Graph configuration
+        Configurations configurations = new Configurations();
+        org.apache.commons.configuration2.Configuration configuration =
+                configurations
+                        .properties(new File(gremlinConfigurationFilename));
+
+        // Generate a reusable Graph Traversal Source
+        Graph graph = GraphFactory.open(configuration);
+        return graph.traversal();
+
+    }
 
 }

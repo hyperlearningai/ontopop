@@ -27,46 +27,46 @@ import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 @SpringBootApplication
 @EnableBinding(DataPipelineModellerSource.class)
 public class OntologyPropertyGraphModellerApp {
-	
-	private static final Logger LOGGER = 
-			LoggerFactory.getLogger(OntologyPropertyGraphModellerApp.class);
-	
-	@Autowired
-	private OntologyPropertyGraphModellingService ontologyPropertyGraphModellingService;
-	
-	public static void main(String[] args) {
+
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(OntologyPropertyGraphModellerApp.class);
+
+    @Autowired
+    private OntologyPropertyGraphModellingService ontologyPropertyGraphModellingService;
+
+    public static void main(String[] args) {
         SpringApplication.run(OntologyPropertyGraphModellerApp.class, args);
-	}
-	
-	@StreamListener("parsedConsumptionChannel")
-	public void processParsedOntology(String payload) {
-		
-		try {
-			
-			// Explicitly check that the string payload 
-			// models an OntologyMessage object
-			ObjectMapper mapper = new ObjectMapper();
-			OntologyMessage ontologyMessage = 
-					mapper.readValue(payload, OntologyMessage.class);
-			
-			// Log the consumed payload for debugging purposes
-			LOGGER.debug("New ontology parsed event detected and consumed "
-					+ "via the shared messaging service and the "
-					+ "parsedConsumptionChannel channel.");
-			LOGGER.debug("Ontology parsed message payload: {}", payload);
-			
-			// Run the Ontology Property Graph modelling service pipeline
-			ontologyPropertyGraphModellingService.run(ontologyMessage);
-			
-		} catch (JsonProcessingException e) {
-			
-			LOGGER.info("New parsed event detected and consumed via "
-					+ "the shared messaging service and the "
-					+ "parsedConsumptionChannel channel.");
-			LOGGER.info("The parsed object is NOT an ontology. Skipping.");
-			
-		}
-		
-	}
-			
+    }
+
+    @StreamListener("parsedConsumptionChannel")
+    public void processParsedOntology(String payload) {
+
+        try {
+
+            // Explicitly check that the string payload
+            // models an OntologyMessage object
+            ObjectMapper mapper = new ObjectMapper();
+            OntologyMessage ontologyMessage =
+                    mapper.readValue(payload, OntologyMessage.class);
+
+            // Log the consumed payload for debugging purposes
+            LOGGER.debug("New ontology parsed event detected and consumed "
+                    + "via the shared messaging service and the "
+                    + "parsedConsumptionChannel channel.");
+            LOGGER.debug("Ontology parsed message payload: {}", payload);
+
+            // Run the Ontology Property Graph modelling service pipeline
+            ontologyPropertyGraphModellingService.run(ontologyMessage);
+
+        } catch (JsonProcessingException e) {
+
+            LOGGER.info("New parsed event detected and consumed via "
+                    + "the shared messaging service and the "
+                    + "parsedConsumptionChannel channel.");
+            LOGGER.info("The parsed object is NOT an ontology. Skipping.");
+
+        }
+
+    }
+
 }

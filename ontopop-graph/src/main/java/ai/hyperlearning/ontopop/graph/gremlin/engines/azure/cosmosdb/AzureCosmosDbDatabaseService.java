@@ -19,31 +19,32 @@ import ai.hyperlearning.ontopop.graph.gremlin.server.client.GremlinServerClientG
 
 @Service
 @ConditionalOnProperty(
-        value="storage.graph.service", 
+        value = "storage.graph.service",
         havingValue = "azure-cosmosdb")
-public class AzureCosmosDbDatabaseService extends GremlinServerClientGraphDatabaseService {
-	
-	@Autowired
-	@Qualifier("azureCosmosDbgremlinServerClient")
-	private Client azureCosmosDbgremlinServerClient;
-	
-	public AzureCosmosDbDatabaseService() {
-		super.supportsUserDefinedIds = true;
-	    super.supportsNonStringIds = false;
-		super.supportsSchema = false;
-		super.supportsTransactions = false;
-		super.supportsGeoshape = false;
-		super.supportsTraversalsBy = false;
-	}
-	
-	/**************************************************************************
-	 * GRAPH INSTANCE MANAGEMENT
-	 *************************************************************************/
-	
-	@Override
-	public Client openGraph() throws IOException {
-		super.client = azureCosmosDbgremlinServerClient;
-		return client;
-	}
+public class AzureCosmosDbDatabaseService
+        extends GremlinServerClientGraphDatabaseService {
+
+    @Autowired
+    @Qualifier("azureCosmosDbgremlinServerClient")
+    private Client azureCosmosDbgremlinServerClient;
+
+    public AzureCosmosDbDatabaseService() {
+        super.supportsUserDefinedIds = true;
+        super.supportsNonStringIds = false;
+        super.supportsSchema = false;
+        super.supportsTransactions = false;
+        super.supportsGeoshape = false;
+        super.supportsTraversalsBy = false;
+    }
+
+    /**************************************************************************
+     * GRAPH INSTANCE MANAGEMENT
+     *************************************************************************/
+
+    @Override
+    public Client openGraph() throws IOException {
+        super.client = azureCosmosDbgremlinServerClient;
+        return client;
+    }
 
 }

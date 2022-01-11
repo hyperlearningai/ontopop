@@ -9,11 +9,11 @@ package ai.hyperlearning.ontopop.exceptions.ontology;
 
 public class OntologyUpdateSecretDataException extends RuntimeException {
 
-	private static final long serialVersionUID = 499327861970184179L;
-	
-	public OntologyUpdateSecretDataException(int id) {
-		super("An error was encountered when updating the secret data "
-				+ "of the ontology with ID " + id + ".");
-	}
+    private static final long serialVersionUID = 499327861970184179L;
+
+    public OntologyUpdateSecretDataException(int id) {
+        super("An error was encountered when updating the secret data "
+                + "of the ontology with ID " + id + ".");
+    }
 
 }

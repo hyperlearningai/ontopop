@@ -15,46 +15,46 @@ import ai.hyperlearning.ontopop.search.elasticsearch.ElasticsearchService;
 
 @Service
 public class SearchServiceFactory {
-	
-	@Autowired(required=false)
-	private ElasticsearchService elasticsearchService;
-	
-	@Autowired(required=false)
-	private AzureSearchService azureSearchService;
-	
-	/**
-	 * Select the relevant object storage service
-	 * @param type
-	 * @return
-	 */
-	
-	public SearchService getSearchService(String type) {
-		
-		SearchServiceType searchServiceType = 
-				SearchServiceType.valueOfLabel(type.toUpperCase());
-		switch ( searchServiceType ) {
-			case ELASTICSEARCH:
-				return elasticsearchService;
-			case AZURE_SEARCH:
-			    return azureSearchService;
-			default:
-				return elasticsearchService;
-		}
-		
-	}
-	
-	public SearchService getSearchService(
-			SearchServiceType searchServiceType) {
-			
-		switch ( searchServiceType ) {
-			case ELASTICSEARCH:
-				return elasticsearchService;
-			case AZURE_SEARCH:
+
+    @Autowired(required = false)
+    private ElasticsearchService elasticsearchService;
+
+    @Autowired(required = false)
+    private AzureSearchService azureSearchService;
+
+    /**
+     * Select the relevant object storage service
+     * 
+     * @param type
+     * @return
+     */
+
+    public SearchService getSearchService(String type) {
+
+        SearchServiceType searchServiceType =
+                SearchServiceType.valueOfLabel(type.toUpperCase());
+        switch (searchServiceType) {
+            case ELASTICSEARCH:
+                return elasticsearchService;
+            case AZURE_SEARCH:
                 return azureSearchService;
-			default:
-				return elasticsearchService;
-		}
-		
-	}
+            default:
+                return elasticsearchService;
+        }
+
+    }
+
+    public SearchService getSearchService(SearchServiceType searchServiceType) {
+
+        switch (searchServiceType) {
+            case ELASTICSEARCH:
+                return elasticsearchService;
+            case AZURE_SEARCH:
+                return azureSearchService;
+            default:
+                return elasticsearchService;
+        }
+
+    }
 
 }

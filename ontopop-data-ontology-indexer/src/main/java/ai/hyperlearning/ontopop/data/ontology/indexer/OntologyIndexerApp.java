@@ -27,46 +27,46 @@ import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 @SpringBootApplication
 @EnableBinding(DataPipelineModelledIndexerSource.class)
 public class OntologyIndexerApp {
-	
-	private static final Logger LOGGER = 
-			LoggerFactory.getLogger(OntologyIndexerApp.class);
-	
-	@Autowired
-	private OntologyIndexerService ontologyIndexerService;
-	
-	public static void main(String[] args) {
+
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(OntologyIndexerApp.class);
+
+    @Autowired
+    private OntologyIndexerService ontologyIndexerService;
+
+    public static void main(String[] args) {
         SpringApplication.run(OntologyIndexerApp.class, args);
-	}
-	
-	@StreamListener("modelledConsumptionChannel")
-	public void processModelledOntology(String payload) {
-		
-		try {
-			
-			// Explicitly check that the string payload 
-			// models an OntologyMessage object
-			ObjectMapper mapper = new ObjectMapper();
-			OntologyMessage ontologyMessage = 
-					mapper.readValue(payload, OntologyMessage.class);
-			
-			// Log the consumed payload for debugging purposes
-			LOGGER.debug("New ontology modelled event detected and consumed "
-					+ "via the shared messaging service and the "
-					+ "modelledConsumptionChannel channel.");
-			LOGGER.debug("Ontology modelled message payload: {}", payload);
-			
-			// Run the Ontology Indexing Service pipeline
-			ontologyIndexerService.run(ontologyMessage);
-			
-		} catch (JsonProcessingException e) {
-			
-			LOGGER.info("New modelled event detected and consumed via "
-					+ "the shared messaging service and the "
-					+ "modelledConsumptionChannel channel.");
-			LOGGER.info("The validated object is NOT an ontology. Skipping.");
-			
-		}
-		
-	}
+    }
+
+    @StreamListener("modelledConsumptionChannel")
+    public void processModelledOntology(String payload) {
+
+        try {
+
+            // Explicitly check that the string payload
+            // models an OntologyMessage object
+            ObjectMapper mapper = new ObjectMapper();
+            OntologyMessage ontologyMessage =
+                    mapper.readValue(payload, OntologyMessage.class);
+
+            // Log the consumed payload for debugging purposes
+            LOGGER.debug("New ontology modelled event detected and consumed "
+                    + "via the shared messaging service and the "
+                    + "modelledConsumptionChannel channel.");
+            LOGGER.debug("Ontology modelled message payload: {}", payload);
+
+            // Run the Ontology Indexing Service pipeline
+            ontologyIndexerService.run(ontologyMessage);
+
+        } catch (JsonProcessingException e) {
+
+            LOGGER.info("New modelled event detected and consumed via "
+                    + "the shared messaging service and the "
+                    + "modelledConsumptionChannel channel.");
+            LOGGER.info("The validated object is NOT an ontology. Skipping.");
+
+        }
+
+    }
 
 }

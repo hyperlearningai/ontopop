@@ -12,40 +12,38 @@ import ai.hyperlearning.ontopop.search.model.SimpleIndexVertex;
  */
 
 public interface SearchService {
-	
-	/**************************************************************************
-	 * SEARCH CLIENT MANAGEMENT
-	 *************************************************************************/
-	
-	public void cleanup() throws Exception;
-	
-	/**************************************************************************
-	 * SEARCH INDEX MANAGEMENT
-	 *************************************************************************/
 
-	public void createIndex(String indexName);
-	
-	public void deleteIndex(String indexName);
-	
-	/**************************************************************************
-	 * DOCUMENT MANAGEMENT
-	 *************************************************************************/
-	
-	public Object getDocument(String indexName, long vertexId);
-	
-	public Object search(String indexName, 
-			String propertyKey, String query, boolean exact, boolean and);
-	
-	public Object search(String indexName, 
-			String propertyKey, String query, boolean and,  
-			int minimumShouldMatchPercentage);
-	
-	public void indexDocuments(String indexName, 
-			Set<SimpleIndexVertex> vertices);
-	
-	public void indexDocument(String indexName, 
-			SimpleIndexVertex vertex);
-	
-	public void deleteAllDocuments(String indexName);
-	
+    /**************************************************************************
+     * SEARCH CLIENT MANAGEMENT
+     *************************************************************************/
+
+    public void cleanup() throws Exception;
+
+    /**************************************************************************
+     * SEARCH INDEX MANAGEMENT
+     *************************************************************************/
+
+    public void createIndex(String indexName);
+
+    public void deleteIndex(String indexName);
+
+    /**************************************************************************
+     * DOCUMENT MANAGEMENT
+     *************************************************************************/
+
+    public Object getDocument(String indexName, long vertexId);
+
+    public Object search(String indexName, String propertyKey, String query,
+            boolean exact, boolean and);
+
+    public Object search(String indexName, String propertyKey, String query,
+            boolean and, int minimumShouldMatchPercentage);
+
+    public void indexDocuments(String indexName,
+            Set<SimpleIndexVertex> vertices);
+
+    public void indexDocument(String indexName, SimpleIndexVertex vertex);
+
+    public void deleteAllDocuments(String indexName);
+
 }

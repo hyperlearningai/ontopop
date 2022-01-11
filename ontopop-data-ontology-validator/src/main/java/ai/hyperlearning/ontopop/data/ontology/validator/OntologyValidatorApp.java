@@ -27,46 +27,46 @@ import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 @SpringBootApplication
 @EnableBinding(DataPipelineValidatorSource.class)
 public class OntologyValidatorApp {
-	
-	private static final Logger LOGGER = 
-			LoggerFactory.getLogger(OntologyValidatorApp.class);
-	
-	@Autowired
-	private OntologyValidatorService ontologyValidatorService;
-	
-	public static void main(String[] args) {
+
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(OntologyValidatorApp.class);
+
+    @Autowired
+    private OntologyValidatorService ontologyValidatorService;
+
+    public static void main(String[] args) {
         SpringApplication.run(OntologyValidatorApp.class, args);
-	}
-	
-	@StreamListener("ingestedConsumptionChannel")
-	public void processIngestedOntology(String payload) {
-		
-		try {
-			
-			// Explicitly check that the string payload 
-			// models an OntologyMessage object
-			ObjectMapper mapper = new ObjectMapper();
-			OntologyMessage ontologyMessage = 
-					mapper.readValue(payload, OntologyMessage.class);
-			
-			// Log the consumed payload for debugging purposes
-			LOGGER.debug("New ontology ingestion event detected and consumed "
-					+ "via the shared messaging service and the "
-					+ "ingestedConsumptionChannel channel.");
-			LOGGER.debug("Ontology ingestion message payload: {}", payload);
-			
-			// Run the Ontology Validation Service pipeline
-			ontologyValidatorService.run(ontologyMessage);
-			
-		} catch (JsonProcessingException e) {
-			
-			LOGGER.info("New ingestion event detected and consumed via "
-					+ "the shared messaging service and the "
-					+ "ingestedConsumptionChannel channel.");
-			LOGGER.info("The ingested object is NOT an ontology. Skipping.");
-			
-		}
-		
-	}
+    }
+
+    @StreamListener("ingestedConsumptionChannel")
+    public void processIngestedOntology(String payload) {
+
+        try {
+
+            // Explicitly check that the string payload
+            // models an OntologyMessage object
+            ObjectMapper mapper = new ObjectMapper();
+            OntologyMessage ontologyMessage =
+                    mapper.readValue(payload, OntologyMessage.class);
+
+            // Log the consumed payload for debugging purposes
+            LOGGER.debug("New ontology ingestion event detected and consumed "
+                    + "via the shared messaging service and the "
+                    + "ingestedConsumptionChannel channel.");
+            LOGGER.debug("Ontology ingestion message payload: {}", payload);
+
+            // Run the Ontology Validation Service pipeline
+            ontologyValidatorService.run(ontologyMessage);
+
+        } catch (JsonProcessingException e) {
+
+            LOGGER.info("New ingestion event detected and consumed via "
+                    + "the shared messaging service and the "
+                    + "ingestedConsumptionChannel channel.");
+            LOGGER.info("The ingested object is NOT an ontology. Skipping.");
+
+        }
+
+    }
 
 }

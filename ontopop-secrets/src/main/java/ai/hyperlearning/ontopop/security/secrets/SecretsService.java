@@ -8,11 +8,11 @@ package ai.hyperlearning.ontopop.security.secrets;
  */
 
 public interface SecretsService {
-	
-	public String get(String key);
-	
-	public void set(String key, Object value) throws Exception;
-	
-	public void delete(String key) throws Exception;
+
+    public String get(String key);
+
+    public void set(String key, Object value) throws Exception;
+
+    public void delete(String key) throws Exception;
 
 }

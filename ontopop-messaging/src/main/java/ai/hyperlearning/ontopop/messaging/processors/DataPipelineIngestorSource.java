@@ -12,8 +12,8 @@ import org.springframework.messaging.MessageChannel;
 
 @SuppressWarnings("deprecation")
 public interface DataPipelineIngestorSource {
-	
-	@Output
-	MessageChannel ingestedPublicationChannel();
+
+    @Output
+    MessageChannel ingestedPublicationChannel();
 
 }

@@ -17,10 +17,9 @@ import ai.hyperlearning.ontopop.model.ontology.Ontology;
 
 @Repository
 public interface OntologyRepository extends CrudRepository<Ontology, Integer> {
-	
-	@Query("SELECT o FROM Ontology o WHERE o.repoUrl = ?1 AND o.repoOwner = ?2 AND o.repoResourcePath = ?3 AND o.repoBranch = ?4")
-	List<Ontology> findByRepoUrlOwnerPathBranch(
-			String repoUrl, String repoOwner, 
-			String repoResourcePath, String repoBranch);
+
+    @Query("SELECT o FROM Ontology o WHERE o.repoUrl = ?1 AND o.repoOwner = ?2 AND o.repoResourcePath = ?3 AND o.repoBranch = ?4")
+    List<Ontology> findByRepoUrlOwnerPathBranch(String repoUrl,
+            String repoOwner, String repoResourcePath, String repoBranch);
 
 }

@@ -15,10 +15,10 @@ import org.springframework.messaging.SubscribableChannel;
 @SuppressWarnings("deprecation")
 public interface DataPipelineValidatorSource {
 
-	@Input
-	SubscribableChannel ingestedConsumptionChannel();
-	
-	@Output
-	MessageChannel validatedPublicationChannel();
-	
+    @Input
+    SubscribableChannel ingestedConsumptionChannel();
+
+    @Output
+    MessageChannel validatedPublicationChannel();
+
 }

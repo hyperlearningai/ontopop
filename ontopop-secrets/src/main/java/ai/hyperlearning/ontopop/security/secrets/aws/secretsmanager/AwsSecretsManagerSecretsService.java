@@ -20,39 +20,37 @@ import ai.hyperlearning.ontopop.security.secrets.SecretsService;
 
 @Service
 @ConditionalOnProperty(
-        value="security.secrets.service", 
+        value = "security.secrets.service",
         havingValue = "aws-secrets-manager")
 public class AwsSecretsManagerSecretsService implements SecretsService {
-	
-	@Autowired
-	private AWSSecretsManager secretsManager;
 
-	@Override
-	public String get(String key) {
-		try {
-			GetSecretValueRequest getSecretValueRequest =
-				      new GetSecretValueRequest().withSecretId(key);
-			 return secretsManager.getSecretValue(getSecretValueRequest)
-					 .getSecretString();
-		} catch (Exception e) {
-			return null;
-		}
-	}
+    @Autowired
+    private AWSSecretsManager secretsManager;
 
-	@Override
-	public void set(String key, Object value) throws Exception {
-		CreateSecretRequest createSecretRequest = new CreateSecretRequest()
-				.withName(key)
-				.withSecretString(value.toString());
-		secretsManager.createSecret(createSecretRequest);
-	}
+    @Override
+    public String get(String key) {
+        try {
+            GetSecretValueRequest getSecretValueRequest =
+                    new GetSecretValueRequest().withSecretId(key);
+            return secretsManager.getSecretValue(getSecretValueRequest)
+                    .getSecretString();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
-	@Override
-	public void delete(String key) throws Exception {
-		DeleteSecretRequest deleteSecretRequest = new DeleteSecretRequest()
-				.withSecretId(key)
-				.withForceDeleteWithoutRecovery(true);
-		secretsManager.deleteSecret(deleteSecretRequest);
-	}
+    @Override
+    public void set(String key, Object value) throws Exception {
+        CreateSecretRequest createSecretRequest = new CreateSecretRequest()
+                .withName(key).withSecretString(value.toString());
+        secretsManager.createSecret(createSecretRequest);
+    }
+
+    @Override
+    public void delete(String key) throws Exception {
+        DeleteSecretRequest deleteSecretRequest = new DeleteSecretRequest()
+                .withSecretId(key).withForceDeleteWithoutRecovery(true);
+        secretsManager.deleteSecret(deleteSecretRequest);
+    }
 
 }

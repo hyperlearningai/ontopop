@@ -10,16 +10,15 @@ import java.io.IOException;
  */
 
 public interface TriplestoreService {
-	
-	Object getRepository(int id) throws IOException;
-	
-	void createRepository(int id) throws IOException;
-	
-	void deleteRepository(int id) throws IOException;
-	
-	void loadOntologyOwlRdfXml(int id, String owlSourceUri) 
-			throws IOException;
-	
-	void cleanup() throws IOException;
+
+    Object getRepository(int id) throws IOException;
+
+    void createRepository(int id) throws IOException;
+
+    void deleteRepository(int id) throws IOException;
+
+    void loadOntologyOwlRdfXml(int id, String owlSourceUri) throws IOException;
+
+    void cleanup() throws IOException;
 
 }

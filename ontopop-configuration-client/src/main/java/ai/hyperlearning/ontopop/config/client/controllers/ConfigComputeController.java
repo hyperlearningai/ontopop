@@ -16,7 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/api/config/services/compute")
 @Tag(name = "config", description = "Configuration API - Compute Services")
 public class ConfigComputeController {
-	
-	
+
+
 
 }

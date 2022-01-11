@@ -18,19 +18,18 @@ import com.azure.security.keyvault.secrets.SecretClientBuilder;
 
 @Configuration
 @ConditionalOnProperty(
-        value="security.secrets.service", 
+        value = "security.secrets.service",
         havingValue = "azure-key-vault")
 public class AzureKeyVaultSecretClientConfig {
-	
-	@Value("${security.secrets.azure-key-vault.url}")
-	private String vaultUrl;
-	
-	@Bean
-	public SecretClient getSecretClient() {
-		return new SecretClientBuilder()
-			.vaultUrl(vaultUrl)
-			.credential(new DefaultAzureCredentialBuilder().build())
-			.buildClient();
-	}
+
+    @Value("${security.secrets.azure-key-vault.url}")
+    private String vaultUrl;
+
+    @Bean
+    public SecretClient getSecretClient() {
+        return new SecretClientBuilder().vaultUrl(vaultUrl)
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .buildClient();
+    }
 
 }

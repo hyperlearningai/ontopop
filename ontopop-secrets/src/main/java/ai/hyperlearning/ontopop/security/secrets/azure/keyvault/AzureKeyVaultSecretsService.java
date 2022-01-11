@@ -20,34 +20,34 @@ import ai.hyperlearning.ontopop.security.secrets.SecretsService;
 
 @Service
 @ConditionalOnProperty(
-        value="security.secrets.service", 
+        value = "security.secrets.service",
         havingValue = "azure-key-vault")
 public class AzureKeyVaultSecretsService implements SecretsService {
-	
-	@Autowired
-	private SecretClient secretClient;
-	
-	@Override
-	public String get(String key) {
-		try {
-			return secretClient.getSecret(key).getValue();
-		} catch (Exception e) {
-			return null;
-		}
-	}
 
-	@Override
-	public void set(String key, Object value) throws Exception {
-		secretClient.setSecret(new KeyVaultSecret(key, value.toString()));
-	}
+    @Autowired
+    private SecretClient secretClient;
 
-	@Override
-	public void delete(String key) throws Exception {
-		SyncPoller<DeletedSecret, Void> deletedSecretPoller = 
-				secretClient.beginDeleteSecret(key);
-		deletedSecretPoller.poll();
-		deletedSecretPoller.waitForCompletion();
-		secretClient.purgeDeletedSecret(key);
-	}
+    @Override
+    public String get(String key) {
+        try {
+            return secretClient.getSecret(key).getValue();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    public void set(String key, Object value) throws Exception {
+        secretClient.setSecret(new KeyVaultSecret(key, value.toString()));
+    }
+
+    @Override
+    public void delete(String key) throws Exception {
+        SyncPoller<DeletedSecret, Void> deletedSecretPoller =
+                secretClient.beginDeleteSecret(key);
+        deletedSecretPoller.poll();
+        deletedSecretPoller.waitForCompletion();
+        secretClient.purgeDeletedSecret(key);
+    }
 
 }

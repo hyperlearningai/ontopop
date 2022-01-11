@@ -14,11 +14,11 @@ import org.springframework.messaging.SubscribableChannel;
 
 @SuppressWarnings("deprecation")
 public interface DataPipelineModelledIndexerSource {
-	
-	@Input
-	SubscribableChannel modelledConsumptionChannel();
-	
-	@Output
-	MessageChannel modelledIndexedPublicationChannel();
+
+    @Input
+    SubscribableChannel modelledConsumptionChannel();
+
+    @Output
+    MessageChannel modelledIndexedPublicationChannel();
 
 }

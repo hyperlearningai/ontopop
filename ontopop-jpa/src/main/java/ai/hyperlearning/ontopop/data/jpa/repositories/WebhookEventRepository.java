@@ -17,13 +17,14 @@ import ai.hyperlearning.ontopop.model.git.WebhookEvent;
  */
 
 @Repository
-public interface WebhookEventRepository extends CrudRepository<WebhookEvent, Long> {
-	
-	@Query("SELECT w FROM WebhookEvent w WHERE w.ontology.id = ?1")
-	List<WebhookEvent> findByOntologyId(int ontologyId);
-	
-	@Query("SELECT w FROM WebhookEvent w WHERE w.ontology.id = ?1 AND w.id = ?2")
-	Optional<WebhookEvent> findByOntologyIdAdnWebhookEventId(
-			int ontologyId, long webhookEventId);
+public interface WebhookEventRepository
+        extends CrudRepository<WebhookEvent, Long> {
+
+    @Query("SELECT w FROM WebhookEvent w WHERE w.ontology.id = ?1")
+    List<WebhookEvent> findByOntologyId(int ontologyId);
+
+    @Query("SELECT w FROM WebhookEvent w WHERE w.ontology.id = ?1 AND w.id = ?2")
+    Optional<WebhookEvent> findByOntologyIdAdnWebhookEventId(int ontologyId,
+            long webhookEventId);
 
 }

@@ -11,10 +11,10 @@ import org.slf4j.LoggerFactory;
  */
 
 public class JanusGraphCreateSchemaApp {
-    
-    private static final Logger LOGGER = 
+
+    private static final Logger LOGGER =
             LoggerFactory.getLogger(JanusGraphCreateSchemaApp.class);
-    
+
     public static void main(String[] args) {
         LOGGER.info("Running the JanusGraph schema creation service.");
         try {

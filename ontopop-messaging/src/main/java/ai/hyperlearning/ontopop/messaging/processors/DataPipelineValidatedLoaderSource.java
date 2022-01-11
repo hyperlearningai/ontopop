@@ -14,11 +14,11 @@ import org.springframework.messaging.SubscribableChannel;
 
 @SuppressWarnings("deprecation")
 public interface DataPipelineValidatedLoaderSource {
-	
-	@Input
-	SubscribableChannel validatedConsumptionChannel();
-	
-	@Output
-	MessageChannel validatedLoadedPublicationChannel();
+
+    @Input
+    SubscribableChannel validatedConsumptionChannel();
+
+    @Output
+    MessageChannel validatedLoadedPublicationChannel();
 
 }

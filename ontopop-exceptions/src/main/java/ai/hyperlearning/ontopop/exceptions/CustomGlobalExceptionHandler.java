@@ -22,22 +22,21 @@ import ai.hyperlearning.ontopop.exceptions.ontology.OntologyUpdateSecretDataExce
  */
 
 @ControllerAdvice
-public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
-	
-	@ExceptionHandler({
-		OntologyNotFoundException.class, 
-		WebhookEventNotFoundException.class})
-	public void springHandleNotFound(HttpServletResponse response) 
-			throws IOException {
-		response.sendError(HttpStatus.NOT_FOUND.value());
-	}
-	
-	@ExceptionHandler({
-		OntologyCreationException.class, 
-		OntologyUpdateSecretDataException.class})
-	public void springHandleCreationException(HttpServletResponse response) 
-			throws IOException {
-		response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
-	}
+public class CustomGlobalExceptionHandler
+        extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler({OntologyNotFoundException.class,
+            WebhookEventNotFoundException.class})
+    public void springHandleNotFound(HttpServletResponse response)
+            throws IOException {
+        response.sendError(HttpStatus.NOT_FOUND.value());
+    }
+
+    @ExceptionHandler({OntologyCreationException.class,
+            OntologyUpdateSecretDataException.class})
+    public void springHandleCreationException(HttpServletResponse response)
+            throws IOException {
+        response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+    }
 
 }

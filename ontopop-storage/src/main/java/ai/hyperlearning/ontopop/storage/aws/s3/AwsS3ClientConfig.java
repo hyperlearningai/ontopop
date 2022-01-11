@@ -20,32 +20,28 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
  */
 
 @Configuration
-@ConditionalOnProperty(
-        value="storage.object.service", 
-        havingValue = "aws-s3")
+@ConditionalOnProperty(value = "storage.object.service", havingValue = "aws-s3")
 public class AwsS3ClientConfig {
-	
-	@Value("${storage.object.aws-s3.access-key-id}")
-	private String accessKeyId;
-	
-	@Value("${storage.object.aws-s3.access-key-secret}")
-	private String accessKeySecret;
-	
-	@Value("${storage.object.aws-s3.region}")
-	private String region;
-	
-	@Bean
-	public AmazonS3 getS3Client() {
-		
-		// Instantiate a client to AWS S3
-		AWSCredentials credentials = new BasicAWSCredentials(
-				accessKeyId, accessKeySecret);
-		return AmazonS3ClientBuilder
-				.standard()
-				.withCredentials(new AWSStaticCredentialsProvider(credentials))
-				.withRegion(Regions.fromName(region))
-				.build();
-		
-	}
+
+    @Value("${storage.object.aws-s3.access-key-id}")
+    private String accessKeyId;
+
+    @Value("${storage.object.aws-s3.access-key-secret}")
+    private String accessKeySecret;
+
+    @Value("${storage.object.aws-s3.region}")
+    private String region;
+
+    @Bean
+    public AmazonS3 getS3Client() {
+
+        // Instantiate a client to AWS S3
+        AWSCredentials credentials =
+                new BasicAWSCredentials(accessKeyId, accessKeySecret);
+        return AmazonS3ClientBuilder.standard()
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(Regions.fromName(region)).build();
+
+    }
 
 }

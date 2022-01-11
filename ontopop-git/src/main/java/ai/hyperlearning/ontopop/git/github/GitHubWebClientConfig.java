@@ -15,24 +15,23 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class GitHubWebClientConfig {
-	
-	private static final String BASE_URL = "https://api.github.com";
-	
-	@Value("${web.client.codecs.maxInMemorySize}")
-	private int webClientMaxInMemorySize;
-	
-	@Bean("gitHubWebClient")
-	public WebClient getWebClient() {
-		
-		return WebClient.builder()
-				.exchangeStrategies(ExchangeStrategies.builder()
-			            .codecs(configurer -> configurer
-			                      .defaultCodecs()
-			                      .maxInMemorySize(webClientMaxInMemorySize * 1024 * 1024))
-			            		.build())
-				.baseUrl(BASE_URL)
-				.build();
-		
-	}
+
+    private static final String BASE_URL = "https://api.github.com";
+
+    @Value("${web.client.codecs.maxInMemorySize}")
+    private int webClientMaxInMemorySize;
+
+    @Bean("gitHubWebClient")
+    public WebClient getWebClient() {
+
+        return WebClient.builder()
+                .exchangeStrategies(ExchangeStrategies.builder()
+                        .codecs(configurer -> configurer.defaultCodecs()
+                                .maxInMemorySize(
+                                        webClientMaxInMemorySize * 1024 * 1024))
+                        .build())
+                .baseUrl(BASE_URL).build();
+
+    }
 
 }

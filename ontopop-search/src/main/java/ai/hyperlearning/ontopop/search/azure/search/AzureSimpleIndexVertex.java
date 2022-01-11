@@ -1,7 +1,6 @@
 package ai.hyperlearning.ontopop.search.azure.search;
 
 import java.io.Serializable;
-
 import com.azure.search.documents.indexes.SearchableField;
 import com.azure.search.documents.indexes.SimpleField;
 
@@ -15,9 +14,9 @@ import com.azure.search.documents.indexes.SimpleField;
 public class AzureSimpleIndexVertex implements Serializable {
 
     private static final long serialVersionUID = 5275340446327869288L;
-    
+
     // Common Vertex Properties
-    
+
     // Azure Search only supports string-based ID fields
     private String vertexId;
     private String label;
@@ -26,7 +25,7 @@ public class AzureSimpleIndexVertex implements Serializable {
     private int ontologyId;
     private String key;
     private long latestWebhookEventId;
-    
+
     // Example domain-specific Vertex Properties
     private String definition;
     private String businessArea;
@@ -34,11 +33,11 @@ public class AzureSimpleIndexVertex implements Serializable {
     private String dataSource;
     private String synonym;
     private String example;
-    
+
     public AzureSimpleIndexVertex() {
-        
+
     }
-    
+
     public AzureSimpleIndexVertex(String vertexId) {
         this.vertexId = vertexId;
     }
@@ -189,14 +188,15 @@ public class AzureSimpleIndexVertex implements Serializable {
 
     @Override
     public String toString() {
-        return "AzureSimpleIndexVertex ["
+        return "AzureSimpleIndexVertex [" 
                 + "vertexId=" + vertexId + ", "
-                + "label=" + label + ", "
+                + "label=" + label + ", " 
                 + "rdfsLabel=" + rdfsLabel + ", "
-                + "iri=" + iri + ", "
+                + "iri=" + iri + ", " 
                 + "ontologyId=" + ontologyId + ", "
-                + "key=" + key + ", "
-                + "latestWebhookEventId=" + latestWebhookEventId + "]";
+                + "key=" + key + ", " 
+                + "latestWebhookEventId=" + latestWebhookEventId 
+                + "]";
     }
-    
+
 }

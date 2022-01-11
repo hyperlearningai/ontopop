@@ -8,18 +8,18 @@ package ai.hyperlearning.ontopop.git;
  */
 
 public enum GitServiceType {
-	
-	LOCAL("LOCAL"), 
-	GITHUB("GITHUB");
-	
-	private final String text;
-	
-	GitServiceType(final String text) {
-		this.text = text;
-	}
-	
-	public String toString() {
-		return text;
-	}
+
+    LOCAL("LOCAL"), 
+    GITHUB("GITHUB");
+
+    private final String text;
+
+    GitServiceType(final String text) {
+        this.text = text;
+    }
+
+    public String toString() {
+        return text;
+    }
 
 }

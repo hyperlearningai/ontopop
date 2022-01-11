@@ -39,261 +39,264 @@ import ai.hyperlearning.ontopop.storage.ObjectStorageServiceType;
 @Service
 @EnableBinding(DataPipelineModelledIndexerSource.class)
 public class OntologyIndexerService {
-	
-	private static final Logger LOGGER = 
-			LoggerFactory.getLogger(OntologyIndexerService.class);
-	
-	@Autowired
-	private ObjectStorageServiceFactory objectStorageServiceFactory;
-	
-	@Autowired
-	private SearchServiceFactory searchServiceFactory;
-	
-	@Autowired
-	private DataPipelineModelledIndexerSource dataPipelineModelledIndexerSource;
-	
-	@Value("${storage.object.service}")
-	private String storageObjectService;
-	
-	@Value("${storage.object.local.baseUri}")
-	private String storageLocalBaseUri;
-	
-	@Value("${storage.object.containers.modelled}")
-	private String modelledDirectoryName;
-	
-	@Value("${storage.object.containers.indexed}")
-	private String indexedDirectoryName;
-	
-	@Value("${storage.object.patterns.fileNameIdsSeparator}")
-	private String filenameIdsSeparator;
-	
-	@Value("${storage.search.service}")
-	private String storageSearchService;
-	
-	@Value("${storage.search.indexNamePrefix}")
-	private String searchIndexNamePrefix;
-	
-	private OntologyMessage ontologyMessage;
-	private ObjectStorageService objectStorageService;
-	private SearchService searchService;
-	private String readObjectUri;
-	private String writeDirectoryUri;
-	private String downloadedFileUri;
-	private String indexName;
-	
-	/**
-	 * Run the Ontology Indexing service end-to-end pipeline
-	 */
-	
-	public void run(OntologyMessage ontologyMessage) {
-		
-		LOGGER.info("Ontology Indexing Service started.");
-		this.ontologyMessage = ontologyMessage;
-		
-		try {
-			
-			// 1. Environment setup
-			setup();
-			
-			// 2. Download the modelled ontology from persistent storage
-			download();
-			
-			// 3. Index the ontology into a search index
-			index();
-			
-			// 4. Copy the modelled ontology to the indexed directory 
-			// in persistent storage 
-			copy();
-			
-			// 5. Publish a message to the shared messaging system
-			publish();
-			
-			// 6. Cleanup resources
-			cleanup();
-			
-		} catch (Exception e) {
-			LOGGER.error("Ontology Indexing Service "
-					+ "encountered an error.", e);
-		}
-		
-		LOGGER.info("Ontology Indexing Service finished.");
-		
-	}
-	
-	/**
-	 * Instantiate the relevant object storage service
-	 * @throws IOException
-	 */
-	
-	private void setup() throws IOException {
-		
-		// 1. Select the relevant persistent storage service and 
-		// create the target directory if it does not already exist
-		ObjectStorageServiceType objectStorageServiceType = 
-				ObjectStorageServiceType.valueOfLabel(
-						storageObjectService.toUpperCase());
-		objectStorageService = objectStorageServiceFactory
-				.getObjectStorageService(objectStorageServiceType);
-		LOGGER.debug("Using the {} object storage service.", 
-				objectStorageServiceType);
-		
-		// 2. Define and create (if required) the relevant 
-		// target indexed directory
-		switch ( objectStorageServiceType ) {
-			
-			case LOCAL:
-				
-				// Create (if required) the local target indexed directory
-				readObjectUri = storageLocalBaseUri 
-					+ File.separator + modelledDirectoryName 
-					+ File.separator + ontologyMessage.getJsonProcessedFilename();
-				writeDirectoryUri = storageLocalBaseUri + 
-					File.separator + indexedDirectoryName;
-				if ( !objectStorageService.doesContainerExist(writeDirectoryUri) )
-					objectStorageService.createContainer(writeDirectoryUri);
-				break;
-				
-			default:
-				
-				// Create (if required) the Azure Storage container 
-				// or AWS S3 bucket
-				readObjectUri = modelledDirectoryName + "/" 
-						+ ontologyMessage.getJsonProcessedFilename();
-				writeDirectoryUri = indexedDirectoryName;
-				if ( !objectStorageService.doesContainerExist(writeDirectoryUri) )
-					objectStorageService.createContainer(writeDirectoryUri);
-			
-		}
-		
-		// 3. Select the relevant search service
-		SearchServiceType searchServiceType = SearchServiceType.valueOfLabel(
-						storageSearchService.toUpperCase());
-		searchService = searchServiceFactory
-				.getSearchService(searchServiceType);
-		LOGGER.debug("Using the {} search service.", 
-				searchServiceType);
-		
-		// 4. Create the search index if required
-		indexName = searchIndexNamePrefix + ontologyMessage.getOntologyId();
-		LOGGER.debug("Creating index: {}", indexName);
-		searchService.createIndex(indexName);
-		
-	}
-	
-	/**
-	 * Download the modelled ontology from persistent storage
-	 * to a temporary file in local storage
-	 * @throws IOException
-	 */
-	
-	private void download() throws IOException {
-		
-		LOGGER.info("Ontology Indexing Service - "
-				+ "Started downloading the modelled resource.");
-		downloadedFileUri = objectStorageService.downloadObject(readObjectUri, 
-				filenameIdsSeparator + ontologyMessage.getJsonProcessedFilename());
-		LOGGER.debug("Downloaded modelled resource to '{}'.", 
-				downloadedFileUri);
-		LOGGER.info("Ontology Indexing Service - "
-				+ "Finished downloading the modelled resource.");
-		
-	}
-	
-	/**
-	 * Index the modelled ontology into the relevant search index
-	 * @throws IOException
-	 */
-	
-	private void index() throws IOException {
-		
-		LOGGER.info("Ontology Indexing Service - "
-				+ "Started indexing the modelled resource into "
-				+ "the search index.");
-		
-		// Deserialize the Simple Ontology Property Graph object from JSON
-		ObjectMapper mapper = new ObjectMapper();
-		SimpleOntologyPropertyGraph simpleOntologyPropertyGraph = 
-				mapper.readValue(new File(downloadedFileUri), 
-						SimpleOntologyPropertyGraph.class);
-		
-		// Delete all documents in this index
-		LOGGER.debug("Deleting all documents in index: {}", indexName);
-		searchService.deleteAllDocuments(indexName);
-		
-		// Generate a set of SimpleIndexVertex objects
-		Set<SimpleIndexVertex> vertices = new LinkedHashSet<>();
-		for (var entry : simpleOntologyPropertyGraph.getVertices().entrySet()) {
-			SimpleOntologyVertex vertex = entry.getValue();
-			vertex.preparePropertiesForLoading();
-			vertices.add(new SimpleIndexVertex(
-					vertex.getVertexId(), 
-					SimpleOntologyVertex.LABEL, 
-					vertex.getProperties()));	
-		}
-		
-		// Bulk index the vertices/classes
-		searchService.indexDocuments(indexName, vertices);
-		LOGGER.debug("Indexed {} vertices.", vertices.size());
-		
-		LOGGER.info("Ontology Indexing Service - "
-				+ "Finished indexing the modelled resource into "
-				+ "the search index.");
-		
-	}
-	
-	/**
-	 * Copy the modelled ontology to the indexed directory 
-	 * in persistent storage 
-	 * @throws IOException
-	 */
-	
-	private void copy() throws IOException {
-		
-		LOGGER.info("Ontology Indexing Service - "
-				+ "Started the persistence of the loaded resource.");
-		String targetFilepath = writeDirectoryUri + "/" + 
-				ontologyMessage.getJsonProcessedFilename();
-		objectStorageService.uploadObject(
-				downloadedFileUri, 
-				targetFilepath);
-		LOGGER.debug("Successfully persisted loaded ontology "
-				+ "resource to '{}'.", targetFilepath);
-		LOGGER.info("Ontology Indexing Service - "
-				+ "Finished the persistence of the loaded resource.");
-		
-	}
-	
-	/**
-	 * Publish a message to the shared messaging system
-	 * @throws JsonProcessingException 
-	 */
-	
-	private void publish() throws JsonProcessingException {
-		
-		LOGGER.info("Ontology Indexing Service - "
-				+ "Started publishing message.");
-		ObjectMapper mapper = new ObjectMapper();
-		dataPipelineModelledIndexerSource.modelledIndexedPublicationChannel()
-			.send(MessageBuilder.withPayload(
-					mapper.writeValueAsString(ontologyMessage)).build());
-		LOGGER.info("Ontology Indexing Service - "
-				+ "Finished publishing message.");
-		
-	}
-	
-	/**
-	 * Cleanup any open resources
-	 * @throws Exception 
-	 */
-	
-	private void cleanup() throws Exception {
-		
-		// Close any storage service clients
-		objectStorageService.cleanup();
-		
-		// Close any search service clients
-		searchService.cleanup();
-		
-	}
+
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(OntologyIndexerService.class);
+
+    @Autowired
+    private ObjectStorageServiceFactory objectStorageServiceFactory;
+
+    @Autowired
+    private SearchServiceFactory searchServiceFactory;
+
+    @Autowired
+    private DataPipelineModelledIndexerSource dataPipelineModelledIndexerSource;
+
+    @Value("${storage.object.service}")
+    private String storageObjectService;
+
+    @Value("${storage.object.local.baseUri}")
+    private String storageLocalBaseUri;
+
+    @Value("${storage.object.containers.modelled}")
+    private String modelledDirectoryName;
+
+    @Value("${storage.object.containers.indexed}")
+    private String indexedDirectoryName;
+
+    @Value("${storage.object.patterns.fileNameIdsSeparator}")
+    private String filenameIdsSeparator;
+
+    @Value("${storage.search.service}")
+    private String storageSearchService;
+
+    @Value("${storage.search.indexNamePrefix}")
+    private String searchIndexNamePrefix;
+
+    private OntologyMessage ontologyMessage;
+    private ObjectStorageService objectStorageService;
+    private SearchService searchService;
+    private String readObjectUri;
+    private String writeDirectoryUri;
+    private String downloadedFileUri;
+    private String indexName;
+
+    /**
+     * Run the Ontology Indexing service end-to-end pipeline
+     */
+
+    public void run(OntologyMessage ontologyMessage) {
+
+        LOGGER.info("Ontology Indexing Service started.");
+        this.ontologyMessage = ontologyMessage;
+
+        try {
+
+            // 1. Environment setup
+            setup();
+
+            // 2. Download the modelled ontology from persistent storage
+            download();
+
+            // 3. Index the ontology into a search index
+            index();
+
+            // 4. Copy the modelled ontology to the indexed directory
+            // in persistent storage
+            copy();
+
+            // 5. Publish a message to the shared messaging system
+            publish();
+
+            // 6. Cleanup resources
+            cleanup();
+
+        } catch (Exception e) {
+            LOGGER.error("Ontology Indexing Service " + "encountered an error.",
+                    e);
+        }
+
+        LOGGER.info("Ontology Indexing Service finished.");
+
+    }
+
+    /**
+     * Instantiate the relevant object storage service
+     * 
+     * @throws IOException
+     */
+
+    private void setup() throws IOException {
+
+        // 1. Select the relevant persistent storage service and
+        // create the target directory if it does not already exist
+        ObjectStorageServiceType objectStorageServiceType =
+                ObjectStorageServiceType
+                        .valueOfLabel(storageObjectService.toUpperCase());
+        objectStorageService = objectStorageServiceFactory
+                .getObjectStorageService(objectStorageServiceType);
+        LOGGER.debug("Using the {} object storage service.",
+                objectStorageServiceType);
+
+        // 2. Define and create (if required) the relevant
+        // target indexed directory
+        switch (objectStorageServiceType) {
+
+            case LOCAL:
+
+                // Create (if required) the local target indexed directory
+                readObjectUri = storageLocalBaseUri + File.separator
+                        + modelledDirectoryName + File.separator
+                        + ontologyMessage.getJsonProcessedFilename();
+                writeDirectoryUri = storageLocalBaseUri + File.separator
+                        + indexedDirectoryName;
+                if (!objectStorageService.doesContainerExist(writeDirectoryUri))
+                    objectStorageService.createContainer(writeDirectoryUri);
+                break;
+
+            default:
+
+                // Create (if required) the Azure Storage container
+                // or AWS S3 bucket
+                readObjectUri = modelledDirectoryName + "/"
+                        + ontologyMessage.getJsonProcessedFilename();
+                writeDirectoryUri = indexedDirectoryName;
+                if (!objectStorageService.doesContainerExist(writeDirectoryUri))
+                    objectStorageService.createContainer(writeDirectoryUri);
+
+        }
+
+        // 3. Select the relevant search service
+        SearchServiceType searchServiceType = SearchServiceType
+                .valueOfLabel(storageSearchService.toUpperCase());
+        searchService =
+                searchServiceFactory.getSearchService(searchServiceType);
+        LOGGER.debug("Using the {} search service.", searchServiceType);
+
+        // 4. Create the search index if required
+        indexName = searchIndexNamePrefix + ontologyMessage.getOntologyId();
+        LOGGER.debug("Creating index: {}", indexName);
+        searchService.createIndex(indexName);
+
+    }
+
+    /**
+     * Download the modelled ontology from persistent storage to a temporary
+     * file in local storage
+     * 
+     * @throws IOException
+     */
+
+    private void download() throws IOException {
+
+        LOGGER.info("Ontology Indexing Service - "
+                + "Started downloading the modelled resource.");
+        downloadedFileUri = objectStorageService.downloadObject(readObjectUri,
+                filenameIdsSeparator
+                        + ontologyMessage.getJsonProcessedFilename());
+        LOGGER.debug("Downloaded modelled resource to '{}'.",
+                downloadedFileUri);
+        LOGGER.info("Ontology Indexing Service - "
+                + "Finished downloading the modelled resource.");
+
+    }
+
+    /**
+     * Index the modelled ontology into the relevant search index
+     * 
+     * @throws IOException
+     */
+
+    private void index() throws IOException {
+
+        LOGGER.info("Ontology Indexing Service - "
+                + "Started indexing the modelled resource into "
+                + "the search index.");
+
+        // Deserialize the Simple Ontology Property Graph object from JSON
+        ObjectMapper mapper = new ObjectMapper();
+        SimpleOntologyPropertyGraph simpleOntologyPropertyGraph =
+                mapper.readValue(new File(downloadedFileUri),
+                        SimpleOntologyPropertyGraph.class);
+
+        // Delete all documents in this index
+        LOGGER.debug("Deleting all documents in index: {}", indexName);
+        searchService.deleteAllDocuments(indexName);
+
+        // Generate a set of SimpleIndexVertex objects
+        Set<SimpleIndexVertex> vertices = new LinkedHashSet<>();
+        for (var entry : simpleOntologyPropertyGraph.getVertices().entrySet()) {
+            SimpleOntologyVertex vertex = entry.getValue();
+            vertex.preparePropertiesForLoading();
+            vertices.add(new SimpleIndexVertex(vertex.getVertexId(),
+                    SimpleOntologyVertex.LABEL, vertex.getProperties()));
+        }
+
+        // Bulk index the vertices/classes
+        searchService.indexDocuments(indexName, vertices);
+        LOGGER.debug("Indexed {} vertices.", vertices.size());
+
+        LOGGER.info("Ontology Indexing Service - "
+                + "Finished indexing the modelled resource into "
+                + "the search index.");
+
+    }
+
+    /**
+     * Copy the modelled ontology to the indexed directory in persistent storage
+     * 
+     * @throws IOException
+     */
+
+    private void copy() throws IOException {
+
+        LOGGER.info("Ontology Indexing Service - "
+                + "Started the persistence of the loaded resource.");
+        String targetFilepath = writeDirectoryUri + "/"
+                + ontologyMessage.getJsonProcessedFilename();
+        objectStorageService.uploadObject(downloadedFileUri, targetFilepath);
+        LOGGER.debug(
+                "Successfully persisted loaded ontology " + "resource to '{}'.",
+                targetFilepath);
+        LOGGER.info("Ontology Indexing Service - "
+                + "Finished the persistence of the loaded resource.");
+
+    }
+
+    /**
+     * Publish a message to the shared messaging system
+     * 
+     * @throws JsonProcessingException
+     */
+
+    private void publish() throws JsonProcessingException {
+
+        LOGGER.info(
+                "Ontology Indexing Service - " + "Started publishing message.");
+        ObjectMapper mapper = new ObjectMapper();
+        dataPipelineModelledIndexerSource.modelledIndexedPublicationChannel()
+                .send(MessageBuilder
+                        .withPayload(mapper.writeValueAsString(ontologyMessage))
+                        .build());
+        LOGGER.info("Ontology Indexing Service - "
+                + "Finished publishing message.");
+
+    }
+
+    /**
+     * Cleanup any open resources
+     * 
+     * @throws Exception
+     */
+
+    private void cleanup() throws Exception {
+
+        // Close any storage service clients
+        objectStorageService.cleanup();
+
+        // Close any search service clients
+        searchService.cleanup();
+
+    }
 
 }
