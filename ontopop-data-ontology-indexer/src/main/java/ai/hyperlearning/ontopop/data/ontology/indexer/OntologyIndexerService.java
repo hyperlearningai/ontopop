@@ -13,6 +13,7 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ai.hyperlearning.ontopop.messaging.processors.DataPipelineModelledIndexerSource;
@@ -78,6 +79,7 @@ public class OntologyIndexerService {
 	private String readObjectUri;
 	private String writeDirectoryUri;
 	private String downloadedFileUri;
+	private String indexName;
 	
 	/**
 	 * Run the Ontology Indexing service end-to-end pipeline
@@ -163,13 +165,18 @@ public class OntologyIndexerService {
 			
 		}
 		
-		// 3. Select the relevant graph database service
+		// 3. Select the relevant search service
 		SearchServiceType searchServiceType = SearchServiceType.valueOfLabel(
 						storageSearchService.toUpperCase());
 		searchService = searchServiceFactory
 				.getSearchService(searchServiceType);
 		LOGGER.debug("Using the {} search service.", 
 				searchServiceType);
+		
+		// 4. Create the search index if required
+		indexName = searchIndexNamePrefix + ontologyMessage.getOntologyId();
+		LOGGER.debug("Creating index: {}", indexName);
+		searchService.createIndex(indexName);
 		
 	}
 	
@@ -209,10 +216,9 @@ public class OntologyIndexerService {
 				mapper.readValue(new File(downloadedFileUri), 
 						SimpleOntologyPropertyGraph.class);
 		
-		// Delete the index for this ontology if it already exists
-		String indexName = searchIndexNamePrefix + 
-				ontologyMessage.getOntologyId();
-		searchService.deleteIndex(indexName);
+		// Delete all documents in this index
+		LOGGER.debug("Deleting all documents in index: {}", indexName);
+		searchService.deleteAllDocuments(indexName);
 		
 		// Generate a set of SimpleIndexVertex objects
 		Set<SimpleIndexVertex> vertices = new LinkedHashSet<>();
@@ -259,14 +265,17 @@ public class OntologyIndexerService {
 	
 	/**
 	 * Publish a message to the shared messaging system
+	 * @throws JsonProcessingException 
 	 */
 	
-	private void publish() {
+	private void publish() throws JsonProcessingException {
 		
 		LOGGER.info("Ontology Indexing Service - "
 				+ "Started publishing message.");
+		ObjectMapper mapper = new ObjectMapper();
 		dataPipelineModelledIndexerSource.modelledIndexedPublicationChannel()
-			.send(MessageBuilder.withPayload(ontologyMessage).build());
+			.send(MessageBuilder.withPayload(
+					mapper.writeValueAsString(ontologyMessage)).build());
 		LOGGER.info("Ontology Indexing Service - "
 				+ "Finished publishing message.");
 		

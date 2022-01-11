@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ai.hyperlearning.ontopop.graph.GraphDatabaseService;
@@ -48,7 +50,7 @@ public class OntologyGraphLoaderService {
 			LoggerFactory.getLogger(OntologyGraphLoaderService.class);
 	
 	private static final String ONTOLOGY_ID_PROPERTY_KEY = "ontologyId";
-	private static final String KEY_PROPERTY_KEY = "key";
+	private static final String KEY_PROPERTY_KEY = "vertexKey";
 	
 	@Autowired
 	private ObjectStorageServiceFactory objectStorageServiceFactory;
@@ -205,9 +207,12 @@ public class OntologyGraphLoaderService {
 	/**
 	 * Load the modelled ontology into the relevant graph database
 	 * @throws IOException
+	 * @throws ExecutionException 
+	 * @throws InterruptedException 
 	 */
 	
-	private void load() throws IOException {
+	private void load() 
+			throws IOException, InterruptedException, ExecutionException {
 		
 		LOGGER.info("Ontology Graph Loading Service - "
 				+ "Started loading the modelled resource into "
@@ -220,6 +225,8 @@ public class OntologyGraphLoaderService {
 						SimpleOntologyPropertyGraph.class);
 		
 		// Delete all existing vertices with this ontology ID
+		LOGGER.debug("Deleting all vertices with ontology ID: {}", 
+		        ontologyMessage.getOntologyId());
 		graphDatabaseService.deleteVertices(
 				ONTOLOGY_ID_PROPERTY_KEY, ontologyMessage.getOntologyId());
 		graphDatabaseService.commit();
@@ -241,6 +248,8 @@ public class OntologyGraphLoaderService {
 		LOGGER.debug("Loaded {} vertices.", vertices.size());
 		
 		// Delete all existing edges with this ontology ID
+		LOGGER.debug("Deleting all edges with ontology ID: {}", 
+                ontologyMessage.getOntologyId());
 		graphDatabaseService.deleteEdges(
 				ONTOLOGY_ID_PROPERTY_KEY, ontologyMessage.getOntologyId());
 		graphDatabaseService.commit();
@@ -249,20 +258,35 @@ public class OntologyGraphLoaderService {
 		List<SimpleGraphEdge> edges = new ArrayList<>();
 		for (SimpleOntologyEdge edge : simpleOntologyPropertyGraph.getEdges()) {
 			edge.preparePropertiesForLoading();
-			Vertex sourceVertex = graphDatabaseService.getVertex(
+			Object sourceVertex = graphDatabaseService.getVertex(
 					SimpleOntologyVertex.LABEL, 
 					KEY_PROPERTY_KEY, 
 					edge.getSourceVertexKey());
-			Vertex targetVertex = graphDatabaseService.getVertex(
+			Object targetVertex = graphDatabaseService.getVertex(
 					SimpleOntologyVertex.LABEL, 
 					KEY_PROPERTY_KEY, 
 					edge.getTargetVertexKey());
 			if ( sourceVertex != null && targetVertex != null ) {
-				edges.add(new SimpleGraphEdge(
-						SimpleOntologyEdge.LABEL, 
-						sourceVertex, 
-						targetVertex, 
-						edge.getProperties()));
+				
+				// Gremlin graph databases supporting byte code queries
+				if ( sourceVertex instanceof Vertex 
+						&& targetVertex instanceof Vertex ) {
+					edges.add(new SimpleGraphEdge(
+							SimpleOntologyEdge.LABEL, 
+							(Vertex) sourceVertex, 
+							(Vertex) targetVertex, 
+							edge.getProperties()));
+				} 
+				
+				// Gremlin remote graphs and client using string-based queries
+				else {
+					edges.add(new SimpleGraphEdge(
+							SimpleOntologyEdge.LABEL, 
+							edge.getSourceVertexId(), 
+							edge.getTargetVertexId(), 
+							edge.getProperties()));
+				}
+				
 			}
 		}
 		
@@ -301,14 +325,17 @@ public class OntologyGraphLoaderService {
 	
 	/**
 	 * Publish a message to the shared messaging system
+	 * @throws JsonProcessingException 
 	 */
 	
-	private void publish() {
+	private void publish() throws JsonProcessingException {
 		
 		LOGGER.info("Ontology Graph Loading Service - "
 				+ "Started publishing message.");
+		ObjectMapper mapper = new ObjectMapper();
 		dataPipelineModelledLoaderSource.modelledLoadedPublicationChannel()
-			.send(MessageBuilder.withPayload(ontologyMessage).build());
+			.send(MessageBuilder.withPayload(
+					mapper.writeValueAsString(ontologyMessage)).build());
 		LOGGER.info("Ontology Graph Loading Service - "
 				+ "Finished publishing message.");
 		

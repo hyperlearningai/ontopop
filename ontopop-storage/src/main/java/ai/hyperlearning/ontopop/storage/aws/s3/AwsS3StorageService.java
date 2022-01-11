@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 import com.amazonaws.services.s3.AmazonS3;
@@ -24,6 +25,9 @@ import ai.hyperlearning.ontopop.storage.ObjectStorageService;
  */
 
 @Service
+@ConditionalOnProperty(
+        value="storage.object.service", 
+        havingValue = "aws-s3")
 public class AwsS3StorageService implements ObjectStorageService {
 	
 	@Autowired

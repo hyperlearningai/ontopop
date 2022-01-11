@@ -19,9 +19,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.vault.core.VaultTemplate;
-import org.springframework.vault.core.VaultKeyValueOperationsSupport.KeyValueBackend;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 
 import ai.hyperlearning.ontopop.data.jpa.repositories.OntologyRepository;
@@ -32,8 +32,8 @@ import ai.hyperlearning.ontopop.messaging.processors.DataPipelineIngestorSource;
 import ai.hyperlearning.ontopop.model.git.WebhookEvent;
 import ai.hyperlearning.ontopop.model.ontology.Ontology;
 import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
-import ai.hyperlearning.ontopop.model.ontology.OntologySecretData;
-import ai.hyperlearning.ontopop.security.vault.Vault;
+import ai.hyperlearning.ontopop.security.secrets.managers.OntologySecretDataManager;
+import ai.hyperlearning.ontopop.security.secrets.model.OntologySecretData;
 import ai.hyperlearning.ontopop.storage.ObjectStorageService;
 import ai.hyperlearning.ontopop.storage.ObjectStorageServiceFactory;
 import ai.hyperlearning.ontopop.storage.ObjectStorageServiceType;
@@ -67,16 +67,10 @@ public class OntologyIngestorService {
 	private ObjectStorageServiceFactory objectStorageServiceFactory;
 	
 	@Autowired
-	private VaultTemplate vaultTemplate;
-	
-	@Autowired
 	private DataPipelineIngestorSource dataPipelineIngestorSource;
 	
-	@Value("${spring.cloud.vault.kv.backend}")
-	private String springCloudVaultKvBackend;
-	
-	@Value("${spring.cloud.vault.kv.default-context}")
-	private String springCloudVaultKvDefaultContext;
+	@Autowired
+	private OntologySecretDataManager ontologySecretDataManager;
 	
 	@Value("${storage.object.service}")
 	private String storageObjectService;
@@ -89,9 +83,6 @@ public class OntologyIngestorService {
 	
 	@Value("${storage.object.patterns.fileNameIdsSeparator}")
 	private String filenameIdsSeparator;
-	
-	@Value("${security.vault.paths.subpaths.ontologies}")
-	private String vaultSubpathOntologies;
 	
 	private Map<String, String> headers;
 	private String payload;
@@ -189,10 +180,10 @@ public class OntologyIngestorService {
 	 * separate but relevant resource path. We know if a resource path is
 	 * relevant if there exists an Ontology object that defines that
 	 * resource path to watch.
-	 * @throws IOException
+	 * @throws Exception 
 	 */
 	
-	private void parse() throws IOException {
+	private void parse() throws Exception {
 		
 		LOGGER.info("Ontology Ingestion Service - "
 				+ "Started parsing of webhook events.");
@@ -228,14 +219,8 @@ public class OntologyIngestorService {
 			ontologyCounter++;
 			
 			// 3.1. Get the ontology secret data
-			OntologySecretData ontologySecretData = Vault.get(
-					vaultTemplate, 
-					springCloudVaultKvBackend, 
-					KeyValueBackend.KV_2, 
-					springCloudVaultKvDefaultContext 
-						+ vaultSubpathOntologies 
-							+ ontology.getId(), 
-					OntologySecretData.class).getData();
+			OntologySecretData ontologySecretData = 
+					ontologySecretDataManager.get(ontology.getId());
 			ontology.setRepoToken(
 					ontologySecretData.getRepoToken());
 			ontology.setRepoWebhookSecret(
@@ -359,10 +344,11 @@ public class OntologyIngestorService {
 	/**
 	 * Publish messages to the shared messaging system for each valid
 	 * webhook event indicating successful ingestion of an updated ontology.
+	 * @throws JsonProcessingException 
 	 * @throws IOException
 	 */
 	
-	private void publish() {
+	private void publish() throws JsonProcessingException {
 		
 		LOGGER.info("Ontology Ingestion Service - "
 				+ "Started publishing messages.");
@@ -380,8 +366,10 @@ public class OntologyIngestorService {
 							webhookEvent.getId(), filenameIdsSeparator));
 			
 			// Publish the message to the shared messaging system
+			ObjectMapper mapper = new ObjectMapper();
 			dataPipelineIngestorSource.ingestedPublicationChannel()
-				.send(MessageBuilder.withPayload(ontologyMessage).build());
+				.send(MessageBuilder.withPayload(
+						mapper.writeValueAsString(ontologyMessage)).build());
 			
 		}
 		

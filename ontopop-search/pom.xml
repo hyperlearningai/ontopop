@@ -43,6 +43,18 @@
     
     <!-- Module Dependencies -->
     <dependencies>
+    
+        <!-- Microsoft Azure Search -->
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-search-documents</artifactId>
+        </dependency>
+        
+        <!-- Spring Boot AutoConfigure -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
         
         <!-- Spring Data Elasticsearch -->
         <dependency>

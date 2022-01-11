@@ -12,7 +12,8 @@ import java.util.Map;
 
 public enum SearchServiceType {
 	
-	ELASTICSEARCH("ELASTICSEARCH");
+	ELASTICSEARCH("ELASTICSEARCH"), 
+	AZURE_SEARCH("AZURE-SEARCH");
 	
 	private final String label;
 	private static final Map<String, SearchServiceType> LABEL_MAP = 

@@ -1,6 +1,7 @@
 package ai.hyperlearning.ontopop.triplestore.jena;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
@@ -14,6 +15,9 @@ import org.springframework.web.reactive.function.client.WebClient;
  */
 
 @Configuration
+@ConditionalOnProperty(
+        value="storage.triplestore.service", 
+        havingValue = "apache-jena")
 public class JenaFusekiWebClientConfig {
 	
 	@Value("${storage.triplestore.apache-jena.fuseki.url}")
@@ -22,7 +26,7 @@ public class JenaFusekiWebClientConfig {
 	@Value("${web.client.codecs.maxInMemorySize}")
 	private int webClientMaxInMemorySize;
 	
-	@Bean
+	@Bean("fusekiWebClient")
 	public WebClient fusekiWebClient() {
 		
 		return WebClient.builder()

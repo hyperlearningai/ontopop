@@ -2,6 +2,7 @@ package ai.hyperlearning.ontopop.search.elasticsearch;
 
 import static org.elasticsearch.index.query.QueryBuilders.fuzzyQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
+import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 
 import java.util.Set;
 
@@ -9,6 +10,7 @@ import org.elasticsearch.index.query.Operator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
@@ -27,6 +29,9 @@ import ai.hyperlearning.ontopop.search.model.SimpleIndexVertex;
  */
 
 @Service
+@ConditionalOnProperty(
+        value="storage.search.service", 
+        havingValue = "elasticsearch")
 public class ElasticsearchService implements SearchService {
 	
 	private static final Logger LOGGER = 
@@ -71,7 +76,6 @@ public class ElasticsearchService implements SearchService {
 					indexName);
 		}
 	}
-	
 	/**************************************************************************
 	 * DOCUMENT MANAGEMENT
 	 *************************************************************************/
@@ -129,6 +133,15 @@ public class ElasticsearchService implements SearchService {
 	public void indexDocument(String indexName, 
 			SimpleIndexVertex vertex) {
 		elasticsearchTemplate.save(vertex, IndexCoordinates.of(indexName));
+	}
+	
+	@Override
+	public void deleteAllDocuments(String indexName) {
+	    final Query deleteQuery = new NativeSearchQueryBuilder()
+	            .withQuery(matchAllQuery())
+	            .build();
+	    elasticsearchTemplate.delete(deleteQuery, 
+	            IndexCoordinates.of(indexName));
 	}
 
 }

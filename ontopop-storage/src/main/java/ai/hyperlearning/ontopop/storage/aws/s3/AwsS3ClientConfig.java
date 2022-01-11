@@ -1,6 +1,7 @@
 package ai.hyperlearning.ontopop.storage.aws.s3;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,6 +20,9 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
  */
 
 @Configuration
+@ConditionalOnProperty(
+        value="storage.object.service", 
+        havingValue = "aws-s3")
 public class AwsS3ClientConfig {
 	
 	@Value("${storage.object.aws-s3.access-key-id}")

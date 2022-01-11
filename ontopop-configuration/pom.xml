@@ -44,10 +44,11 @@
     <!-- Module Dependencies -->
     <dependencies>
     
-        <!-- Springdoc OpenAPI UI -->
+        <!-- Microsoft Azure Key Vault Secrets Spring Boot Starter -->
+        <!-- Bootstrap configuration stored in Microsoft Azure Key Vault -->
         <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
+            <groupId>com.azure.spring</groupId>
+            <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
         </dependency>
         
         <!-- Spring Boot Starter Validation -->
@@ -77,6 +78,7 @@
         -->
         
         <!-- Spring Cloud Starter Vault Config -->
+        <!-- Bootstrap configuration stored in Hashicorp Vault -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-vault-config</artifactId>

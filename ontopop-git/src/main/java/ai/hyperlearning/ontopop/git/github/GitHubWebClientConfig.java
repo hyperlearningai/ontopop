@@ -21,7 +21,7 @@ public class GitHubWebClientConfig {
 	@Value("${web.client.codecs.maxInMemorySize}")
 	private int webClientMaxInMemorySize;
 	
-	@Bean
+	@Bean("gitHubWebClient")
 	public WebClient getWebClient() {
 		
 		return WebClient.builder()

@@ -16,6 +16,7 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
@@ -263,14 +264,17 @@ public class OntologyParserService {
 	
 	/**
 	 * Publish a message to the shared messaging system
+	 * @throws JsonProcessingException 
 	 */
 	
-	private void publish() {
+	private void publish() throws JsonProcessingException {
 		
 		LOGGER.info("Ontology Parsing Service - "
 				+ "Started publishing message.");
+		ObjectMapper mapper = new ObjectMapper();
 		dataPipelineParserSource.parsedPublicationChannel()
-			.send(MessageBuilder.withPayload(ontologyMessage).build());
+			.send(MessageBuilder.withPayload(
+					mapper.writeValueAsString(ontologyMessage)).build());
 		LOGGER.info("Ontology Parsing Service - "
 				+ "Finished publishing message.");
 		

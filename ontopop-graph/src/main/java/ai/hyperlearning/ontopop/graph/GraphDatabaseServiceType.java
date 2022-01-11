@@ -13,8 +13,11 @@ import java.util.Map;
 public enum GraphDatabaseServiceType {
 	
 	GREMLIN_GRAPH("GREMLIN-GRAPH"), 
+	GREMLIN_SERVER_REMOTE_CONNECTION("GREMLIN-SERVER-REMOTE-CONNECTION"), 
+	GREMLIN_SERVER_CLIENT("GREMLIN-SERVER-CLIENT"), 
 	TINKERGRAPH("TINKERGRAPH"), 
-	AWS_NEPTUNE("AWS-NEPTUNE");
+	JANUSGRAPH("JANUSGRAPH"), 
+	AZURE_COSMOSDB("AZURE-COSMOSDB");
 	
 	private final String label;
 	private static final Map<String, GraphDatabaseServiceType> LABEL_MAP = 

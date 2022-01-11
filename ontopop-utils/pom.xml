@@ -14,7 +14,7 @@
     <artifactId>ontopop-utils</artifactId>
     <name>ontopop-utils</name>
     <packaging>jar</packaging>
-    <description>OntoPop - Helper Functions</description>
+    <description>OntoPop - Helper Functions and Services</description>
     <url>https://ontopop.com</url>
     <organization>
         <name>HyperLearning AI</name>
@@ -43,6 +43,28 @@
     
     <!-- Module Dependencies -->
     <dependencies>
+    
+        <!-- JanusGraph -->
+        <dependency>
+            <groupId>org.janusgraph</groupId>
+            <artifactId>janusgraph-all</artifactId>
+        </dependency>
+        
+        <!-- Logback -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+
+        <!-- SLF4J -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
     
     </dependencies>
     

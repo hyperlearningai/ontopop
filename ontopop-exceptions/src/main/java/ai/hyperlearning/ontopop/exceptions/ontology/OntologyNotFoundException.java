@@ -12,7 +12,7 @@ public class OntologyNotFoundException extends RuntimeException {
 	private static final long serialVersionUID = -4019048840462057702L;
 	
 	public OntologyNotFoundException(int id) {
-		super("Ontology with ID " + id + " not found.");
+		super("The ontology with ID " + id + " was not found.");
 	}
 	
 }

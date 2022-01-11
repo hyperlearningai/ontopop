@@ -7,6 +7,8 @@ import java.io.IOException;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,9 @@ import reactor.core.publisher.Mono;
  */
 
 @Service
+@ConditionalOnProperty(
+        value="storage.triplestore.service", 
+        havingValue = "apache-jena")
 public class JenaTriplestoreService implements TriplestoreService {
 
 	private static final String FUSEKI_DATASETS_ENDPOINT = "/$/datasets";
@@ -40,6 +45,7 @@ public class JenaTriplestoreService implements TriplestoreService {
 	private static final String FUSEKI_DATASET_TYPE_VALUE = "tdb2";
 	
 	@Autowired
+	@Qualifier("fusekiWebClient")
 	private WebClient webClient;
 	
 	@Override

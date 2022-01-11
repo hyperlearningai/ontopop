@@ -56,6 +56,12 @@
             <groupId>com.ontotext.graphdb</groupId>
             <artifactId>graphdb-free-runtime</artifactId>
         </dependency>
+        
+        <!-- Spring Boot AutoConfigure -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
     
         <!-- Spring Context -->
         <dependency>
