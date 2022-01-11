@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+    xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
-    
+
     <!-- Parent Project -->
     <parent>
         <groupId>ai.hyperlearning.ontopop</groupId>
         <artifactId>ontopop-cloud-azure</artifactId>
         <version>${revision}</version>
     </parent>
-    
+
     <!-- Module Metadata -->
     <artifactId>ontopop-azure-data-ontology-ingestor</artifactId>
     <name>ontopop-azure-data-ontology-ingestor</name>
@@ -35,7 +35,7 @@
             <timezone>Europe/London</timezone>
         </developer>
     </developers>
-    
+
     <!-- Module Properties -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -45,16 +45,16 @@
         <deployment.azure.function.region>${env.ONTOPOP_DATA_ONTOLOGY_INGESTOR_AZURE_FUNCTION_REGION}</deployment.azure.function.region>
         <start-class>ai.hyperlearning.ontopop.data.ontology.ingestor.OntologyIngestorApp</start-class>
     </properties>
-    
+
     <!-- Module Dependencies -->
     <dependencies>
-        
+
         <!-- OntoPop -->
         <dependency>
             <groupId>ai.hyperlearning.ontopop</groupId>
             <artifactId>ontopop-data-ontology-ingestor</artifactId>
         </dependency>
-        
+
         <!-- Spring Cloud Function -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -65,15 +65,15 @@
             <artifactId>spring-cloud-starter-function-webflux</artifactId>
             <scope>provided</scope>
         </dependency>
-    
+
     </dependencies>
-    
+
     <!-- Module Build -->
     <build>
-    
+
         <!-- Plugins -->
         <plugins>
-        
+
             <!-- Azure Functions Maven Plugin -->
             <plugin>
                 <groupId>com.microsoft.azure</groupId>
@@ -107,7 +107,7 @@
                     </execution>
                 </executions>
             </plugin>
-            
+
             <!-- Maven Resources Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -136,7 +136,7 @@
                     </execution>
                 </executions>
             </plugin>
-            
+
             <!-- Maven Dependency Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -158,7 +158,7 @@
                     </execution>
                 </executions>
             </plugin>
-            
+
             <!-- Maven Clean Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -171,15 +171,15 @@
                     </filesets>
                 </configuration>
             </plugin>
-            
+
             <!-- Spring Boot Maven Plugin -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-        
+
         </plugins>
-    
+
     </build>
-    
+
 </project>

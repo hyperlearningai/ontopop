@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    
+
     <!-- Parent Project -->
     <parent>
         <groupId>ai.hyperlearning.ontopop</groupId>
         <artifactId>ontopop</artifactId>
         <version>${revision}</version>
     </parent>
-    
+
     <!-- Module Metadata -->
     <artifactId>ontopop-cloud-azure</artifactId>
     <name>ontopop-cloud-azure</name>
@@ -34,24 +35,24 @@
             <timezone>Europe/London</timezone>
         </developer>
     </developers>
-    
+
     <!-- Module Properties -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    
+
     <!-- Module Dependency Management -->
     <dependencyManagement>
         <dependencies>
-        
+
             <!-- OntoPop Cloud Azure -->
-        
+
         </dependencies>
     </dependencyManagement>
-    
+
     <!-- Child Modules -->
     <modules>
         <module>ontopop-azure-data-ontology-ingestor</module>
     </modules>
-    
+
 </project>

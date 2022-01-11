@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+    xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
-    
+
     <!-- Parent Project -->
     <parent>
         <groupId>ai.hyperlearning.ontopop</groupId>
         <artifactId>ontopop</artifactId>
         <version>${revision}</version>
     </parent>
-    
+
     <!-- Module Metadata -->
     <artifactId>ontopop-graph</artifactId>
     <name>ontopop-graph</name>
@@ -35,21 +35,21 @@
             <timezone>Europe/London</timezone>
         </developer>
     </developers>
-    
+
     <!-- Module Properties -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    
+
     <!-- Module Dependencies -->
     <dependencies>
-    
+
         <!-- Apache Commons BeanUtils -->
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
         </dependency>
-    
+
         <!-- Apache TinkerPop -->
         <dependency>
             <groupId>org.apache.tinkerpop</groupId>
@@ -67,31 +67,31 @@
             <groupId>org.apache.tinkerpop</groupId>
             <artifactId>tinkergraph-gremlin</artifactId>
         </dependency>
-        
+
         <!-- Guava -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
-        
+
         <!-- JanusGraph -->
         <dependency>
             <groupId>org.janusgraph</groupId>
             <artifactId>janusgraph-driver</artifactId>
         </dependency>
-    
+
         <!-- Spring Boot AutoConfigure -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
-    
+
         <!-- Spring Context -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
         </dependency>
-    
+
     </dependencies>
-    
+
 </project>

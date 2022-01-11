@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+    xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
-    
+
     <!-- Parent Project -->
     <parent>
         <groupId>ai.hyperlearning.ontopop</groupId>
         <artifactId>ontopop</artifactId>
         <version>${revision}</version>
     </parent>
-    
+
     <!-- Module Metadata -->
     <artifactId>ontopop-messaging</artifactId>
     <name>ontopop-messaging</name>
@@ -35,33 +35,33 @@
             <timezone>Europe/London</timezone>
         </developer>
     </developers>
-    
+
     <!-- Module Properties -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    
+
     <!-- Module Dependencies -->
     <dependencies>
-    
+
         <!-- Microsoft Azure Spring Cloud Stream Binder Service Bus -->
         <dependency>
             <groupId>com.azure.spring</groupId>
             <artifactId>azure-spring-cloud-stream-binder-servicebus-topic</artifactId>
         </dependency>
-    
+
         <!-- Spring Cloud Stream Binder RabbitMQ -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-stream-binder-rabbit</artifactId>
         </dependency>
-    
+
         <!-- Spring Context -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
         </dependency>
-    
+
     </dependencies>
-    
+
 </project>

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    
+
     <!-- Project Metadata -->
     <groupId>ai.hyperlearning.ontopop</groupId>
     <artifactId>ontopop</artifactId>
@@ -29,14 +30,14 @@
             <timezone>Europe/London</timezone>
         </developer>
     </developers>
-    
+
     <!-- Spring Boot Parent -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.6.2</version>
     </parent>
-    
+
     <!-- Properties and Dependency Versions -->
     <properties>
         <apache-jena-libs.version>4.3.1</apache-jena-libs.version>
@@ -78,17 +79,17 @@
         <springdoc-openapi-ui.version>1.5.12</springdoc-openapi-ui.version>
         <tinkergraph-gremlin.version>3.5.1</tinkergraph-gremlin.version>
     </properties>
-    
+
     <!-- Project Dependencies -->
     <dependencies>
-    
+
         <!-- JUnit -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <scope>test</scope>
         </dependency>
-        
+
         <!-- Spring Boot Starter Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -101,34 +102,34 @@
                 </exclusion>
             </exclusions>
         </dependency>
-    
+
     </dependencies>
-    
+
     <!-- Project Dependency Management -->
     <dependencyManagement>
         <dependencies>
-            
+
             <!-- Apache Commons BeanUtils -->
             <dependency>
                 <groupId>commons-beanutils</groupId>
                 <artifactId>commons-beanutils</artifactId>
                 <version>${commons-beanutils.version}</version>
             </dependency>
-            
+
             <!-- Apache Commons IO -->
             <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons-io.version}</version>
             </dependency>
-            
+
             <!-- Apache Commons Text -->
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-text</artifactId>
                 <version>${commons-text.version}</version>
             </dependency>
-            
+
             <!-- Apache Jena -->
             <dependency>
                 <groupId>org.apache.jena</groupId>
@@ -136,7 +137,7 @@
                 <version>${apache-jena-libs.version}</version>
                 <type>pom</type>
             </dependency>
-            
+
             <!-- Apache TinkerPop -->
             <dependency>
                 <groupId>org.apache.tinkerpop</groupId>
@@ -158,14 +159,14 @@
                 <artifactId>tinkergraph-gremlin</artifactId>
                 <version>${tinkergraph-gremlin.version}</version>
             </dependency>
-            
+
             <!-- AWS Java SDK -->
             <dependency>
                 <groupId>com.amazonaws</groupId>
                 <artifactId>aws-java-sdk</artifactId>
                 <version>${aws-java-sdk.version}</version>
             </dependency>
-            
+
             <!-- AWS SDK BOM -->
             <dependency>
                 <groupId>software.amazon.awssdk</groupId>
@@ -173,21 +174,21 @@
                 <version>${aws-sdk-bom.version}</version>
                 <type>pom</type>
             </dependency>
-            
+
             <!-- AWS Secrets Manager -->
-	        <dependency>
-	            <groupId>software.amazon.awssdk</groupId>
-	            <artifactId>secretsmanager</artifactId>
-	            <version>${aws-secretsmanager.version}</version>
-	        </dependency>
-            
+            <dependency>
+                <groupId>software.amazon.awssdk</groupId>
+                <artifactId>secretsmanager</artifactId>
+                <version>${aws-secretsmanager.version}</version>
+            </dependency>
+
             <!-- Azure Functions Java Library -->
             <dependency>
                 <groupId>com.microsoft.azure.functions</groupId>
                 <artifactId>azure-functions-java-library</artifactId>
                 <version>${azure-functions-java-library.version}</version>
             </dependency>
-            
+
             <!-- Azure SDK BOM (Azure client libraries e.g. storage client) -->
             <dependency>
                 <groupId>com.azure</groupId>
@@ -196,7 +197,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            
+
             <!-- Azure Spring Boot BOM -->
             <dependency>
                 <groupId>com.azure.spring</groupId>
@@ -205,35 +206,35 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            
+
             <!-- Azure Spring Boot Starter Storage -->
             <dependency>
                 <groupId>com.azure.spring</groupId>
                 <artifactId>azure-spring-boot-starter-storage</artifactId>
                 <version>${azure-spring-boot-starter-storage.version}</version>
             </dependency>
-            
+
             <!-- Azure Spring Cloud Stream Binder Service Bus -->
             <dependency>
                 <groupId>com.azure.spring</groupId>
                 <artifactId>azure-spring-cloud-stream-binder-servicebus-topic</artifactId>
                 <version>${azure-spring-cloud-stream-binder-servicebus-topic.version}</version>
             </dependency>
-            
+
             <!-- Guava -->
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
             </dependency>
-            
+
             <!-- HermiT -->
             <dependency>
                 <groupId>net.sourceforge.owlapi</groupId>
                 <artifactId>org.semanticweb.hermit</artifactId>
                 <version>${org.semanticweb.hermit.version}</version>
             </dependency>
-            
+
             <!-- JanusGraph -->
             <dependency>
                 <groupId>org.janusgraph</groupId>
@@ -250,16 +251,16 @@
                 <artifactId>janusgraph-driver</artifactId>
                 <version>${janusgraph-driver.version}</version>
             </dependency>
-            
+
             <!-- JavaBeans Activation Framework for JAXB-API Implementation -->
-	        <dependency>
-	            <groupId>javax.activation</groupId>
-	            <artifactId>activation</artifactId>
-	            <version>${javax.activation.version}</version>
-	        </dependency>
-	        
-	        <!-- MapStruct -->
-	        <dependency>
+            <dependency>
+                <groupId>javax.activation</groupId>
+                <artifactId>activation</artifactId>
+                <version>${javax.activation.version}</version>
+            </dependency>
+
+            <!-- MapStruct -->
+            <dependency>
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct</artifactId>
                 <version>${mapstruct.version}</version>
@@ -269,7 +270,7 @@
                 <artifactId>mapstruct-processor</artifactId>
                 <version>${mapstruct-processor.version}</version>
             </dependency>
-            
+
             <!-- OntoPop -->
             <dependency>
                 <groupId>ai.hyperlearning.ontopop</groupId>
@@ -351,28 +352,28 @@
                 <artifactId>ontopop-data-ontology-ingestor</artifactId>
                 <version>${revision}</version>
             </dependency>
-            
+
             <!-- Ontotext GraphDB -->
-	        <dependency>
-	            <groupId>com.ontotext.graphdb</groupId>
-	            <artifactId>graphdb-free-runtime</artifactId>
-	            <version>${graphdb-free-runtime.version}</version>
-	        </dependency>
-            
+            <dependency>
+                <groupId>com.ontotext.graphdb</groupId>
+                <artifactId>graphdb-free-runtime</artifactId>
+                <version>${graphdb-free-runtime.version}</version>
+            </dependency>
+
             <!-- OWL API -->
             <dependency>
                 <groupId>net.sourceforge.owlapi</groupId>
                 <artifactId>owlapi-distribution</artifactId>
                 <version>${owlapi-distribution.version}</version>
             </dependency>
-            
+
             <!-- Springdoc OpenAPI UI -->
             <dependency>
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-ui</artifactId>
                 <version>${springdoc-openapi-ui.version}</version>
             </dependency>
-            
+
             <!-- Spring Cloud Dependencies POM -->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
@@ -381,10 +382,10 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-        
+
         </dependencies>
     </dependencyManagement>
-    
+
     <!-- Child Modules -->
     <modules>
         <module>ontopop-configuration-server</module>
@@ -414,14 +415,14 @@
         <module>ontopop-api-ontology</module>
         <module>ontopop-cloud-azure</module>
     </modules>
-    
+
     <!-- Project Build Configuration -->
     <build>
-    
+
         <!-- Project Resources -->
         <resources>
-        
-            <!-- Build Version  -->
+
+            <!-- Build Version -->
             <resource>
                 <directory>${project.basedir}</directory>
                 <filtering>true</filtering>
@@ -429,33 +430,33 @@
                     <include>VERSION.txt</include>
                 </includes>
             </resource>
-            
+
         </resources>
-        
+
         <!-- Project Plugin Management -->
         <pluginManagement>
             <plugins>
-        
+
                 <!-- Microsoft Azure Functions Maven Plugin -->
                 <plugin>
                     <groupId>com.microsoft.azure</groupId>
                     <artifactId>azure-functions-maven-plugin</artifactId>
                     <version>${azure-functions-maven-plugin.version}</version>
                 </plugin>
-        
+
                 <!-- Microsoft Azure Webapp Maven Plugin -->
                 <plugin>
                     <groupId>com.microsoft.azure</groupId>
                     <artifactId>azure-webapp-maven-plugin</artifactId>
                     <version>${azure-webapp-maven-plugin.version}</version>
                 </plugin>
-        
+
             </plugins>
         </pluginManagement>
-        
+
         <!-- Project Plugins -->
         <plugins>
-        
+
             <!-- Compiler Management -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -465,9 +466,9 @@
                     <target>${maven.compiler.target}</target>
                 </configuration>
             </plugin>
-        
+
         </plugins>
-        
+
     </build>
 
 </project>

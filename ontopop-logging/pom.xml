@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+    xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
-    
+
     <!-- Parent Project -->
     <parent>
         <groupId>ai.hyperlearning.ontopop</groupId>
         <artifactId>ontopop</artifactId>
         <version>${revision}</version>
     </parent>
-    
+
     <!-- Module Metadata -->
     <artifactId>ontopop-logging</artifactId>
     <name>ontopop-logging</name>
@@ -35,21 +35,21 @@
             <timezone>Europe/London</timezone>
         </developer>
     </developers>
-    
+
     <!-- Module Properties -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    
+
     <!-- Module Dependencies -->
     <dependencies>
-    
+
         <!-- Spring Boot Starter Web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-    
+
     </dependencies>
-    
+
 </project>

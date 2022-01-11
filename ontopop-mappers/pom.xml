@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+    xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
-    
+
     <!-- Parent Project -->
     <parent>
         <groupId>ai.hyperlearning.ontopop</groupId>
         <artifactId>ontopop</artifactId>
         <version>${revision}</version>
     </parent>
-    
+
     <!-- Module Metadata -->
     <artifactId>ontopop-mappers</artifactId>
     <name>ontopop-mappers</name>
@@ -35,36 +35,36 @@
             <timezone>Europe/London</timezone>
         </developer>
     </developers>
-    
+
     <!-- Module Properties -->
     <properties>
         <m2e.apt.activation>jdt_apt</m2e.apt.activation> <!-- Requires m2e-apt Eclipse plugin to be installed -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    
+
     <!-- Module Dependencies -->
     <dependencies>
-    
+
         <!-- MapStruct -->
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
         </dependency>
-        
+
         <!-- OntoPop -->
         <dependency>
             <groupId>ai.hyperlearning.ontopop</groupId>
             <artifactId>ontopop-model</artifactId>
         </dependency>
-    
+
     </dependencies>
-    
+
     <!-- Module Build Configuration -->
     <build>
-    
+
         <!-- Module Plugins -->
         <plugins>
-        
+
             <!-- Compiler Management -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -81,9 +81,9 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
-        
+
         </plugins>
-    
+
     </build>
-    
+
 </project>
