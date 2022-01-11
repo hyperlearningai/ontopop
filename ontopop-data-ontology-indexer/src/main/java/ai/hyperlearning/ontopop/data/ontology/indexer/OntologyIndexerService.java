@@ -175,7 +175,7 @@ public class OntologyIndexerService {
 		
 		// 4. Create the search index if required
 		indexName = searchIndexNamePrefix + ontologyMessage.getOntologyId();
-		LOGGER.debug("Creatingf index: {}", indexName);
+		LOGGER.debug("Creating index: {}", indexName);
 		searchService.createIndex(indexName);
 		
 	}
