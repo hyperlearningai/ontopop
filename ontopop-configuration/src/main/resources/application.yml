@@ -203,6 +203,9 @@ storage:
             url: ${elasticsearch-url}
             shards: 1
             replicas: 0
+        azure-search:
+            endpoint: ${azure-search-endpoint}
+            key: ${azure-search-key}
 web:
     client:
         codecs:
