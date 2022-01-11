@@ -76,7 +76,6 @@ public class ElasticsearchService implements SearchService {
 					indexName);
 		}
 	}
-	
 	/**************************************************************************
 	 * DOCUMENT MANAGEMENT
 	 *************************************************************************/

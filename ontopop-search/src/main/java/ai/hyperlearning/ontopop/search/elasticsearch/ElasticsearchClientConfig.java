@@ -21,7 +21,7 @@ import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 @ConditionalOnProperty(
         value="storage.search.service", 
         havingValue = "elasticsearch")
-public class ElasticsearchConfiguration {
+public class ElasticsearchClientConfig {
 	
 	@Value("${storage.search.elasticsearch.url}")
 	private String elasticsearchUrl;
