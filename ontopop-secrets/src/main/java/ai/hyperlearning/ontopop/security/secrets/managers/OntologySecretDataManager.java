@@ -1,12 +1,10 @@
 package ai.hyperlearning.ontopop.security.secrets.managers;
 
 import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.vault.core.VaultTemplate;
-
 import ai.hyperlearning.ontopop.security.secrets.SecretsService;
 import ai.hyperlearning.ontopop.security.secrets.SecretsServiceFactory;
 import ai.hyperlearning.ontopop.security.secrets.SecretsServiceType;
@@ -28,7 +26,7 @@ public class OntologySecretDataManager {
     private static final String ONTOLOGY_SECRET_REPO_WEBHOOK_SECRET_KEY =
             "ontologyRepoWebhookSecret";
 
-    @Autowired
+    @Autowired(required = false)
     private VaultTemplate vaultTemplate;
 
     @Autowired
