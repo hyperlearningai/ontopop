@@ -203,3 +203,6 @@ web:
     client:
         codecs:
             maxInMemorySize: 10
+    azure:
+        webapps:
+            port: 80

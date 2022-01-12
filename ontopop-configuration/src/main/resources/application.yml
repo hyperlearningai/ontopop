@@ -106,6 +106,7 @@ spring:
             default:
                 contentType: application/json
         vault:
+            enabled: true
             host: localhost
             port: 8200
             scheme: http
@@ -213,3 +214,6 @@ web:
     client:
         codecs:
             maxInMemorySize: 10
+    azure:
+        webapps:
+            port: 80
