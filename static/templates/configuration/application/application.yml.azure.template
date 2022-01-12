@@ -126,6 +126,9 @@ security:
             region: 
         azure-key-vault:
             url: ${azure-key-vault-url}
+            clientId: ${azure-key-vault-client-id}
+            clientSecret: ${azure-key-vault-client-secret}
+            tenantId: ${azure-key-vault-tenant-id}
         hashicorp-vault:
             paths:
                 subpaths:
