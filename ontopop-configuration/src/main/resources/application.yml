@@ -116,7 +116,7 @@ spring:
                 backend: secret
                 default-context: ontopop/development
     datasource:
-        driver-class-name: org.hsqldb.jdbc.JDBCDriver
+        driver-class-name: ${spring-datasource-driver-class-name}
         url: ${spring-datasource-url}
         username: ${spring-datasource-username}
         password: ${spring-datasource-password}
