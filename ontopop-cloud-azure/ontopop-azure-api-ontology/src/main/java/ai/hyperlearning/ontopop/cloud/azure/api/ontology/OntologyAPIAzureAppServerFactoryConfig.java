@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class OntologyAPIServerFactoryConfig implements WebServerFactoryCustomizer<ConfigurableWebServerFactory> {
+public class OntologyAPIAzureAppServerFactoryConfig implements WebServerFactoryCustomizer<ConfigurableWebServerFactory> {
 
     @Value("${web.azure.webapps.port:80}")
     private int port;

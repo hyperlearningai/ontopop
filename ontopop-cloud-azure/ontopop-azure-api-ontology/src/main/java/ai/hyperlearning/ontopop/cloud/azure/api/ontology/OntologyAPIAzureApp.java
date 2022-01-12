@@ -23,10 +23,10 @@ import org.springframework.context.annotation.FilterType;
                         })})
 @EntityScan("ai.hyperlearning.ontopop.model")
 @SpringBootApplication
-public class OntologyAPIApp {
+public class OntologyAPIAzureApp {
     
     public static void main(String[] args) {
-        SpringApplication.run(OntologyAPIApp.class, args);
+        SpringApplication.run(OntologyAPIAzureApp.class, args);
     }
 
 }

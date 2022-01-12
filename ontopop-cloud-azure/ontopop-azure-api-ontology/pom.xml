@@ -39,12 +39,14 @@
     <!-- Module Properties -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <deployment.azure.function.subscriptionId>${env.ONTOPOP_DATA_ONTOLOGY_INGESTOR_AZURE_FUNCTION_SUBSCRIPTION_ID}</deployment.azure.function.subscriptionId>
-        <deployment.azure.function.resourceGroup>${env.ONTOPOP_DATA_ONTOLOGY_INGESTOR_AZURE_FUNCTION_RESOURCE_GROUP_NAME}</deployment.azure.function.resourceGroup>
-        <deployment.azure.function.appName>${env.ONTOPOP_DATA_ONTOLOGY_INGESTOR_AZURE_FUNCTION_NAME}</deployment.azure.function.appName>
-        <deployment.azure.function.region>${env.ONTOPOP_DATA_ONTOLOGY_INGESTOR_AZURE_FUNCTION_REGION}</deployment.azure.function.region>
-        <deployment.azure.function.extension.version>~4</deployment.azure.function.extension.version>
-        <start-class>ai.hyperlearning.ontopop.data.ontology.ingestor.OntologyIngestorApp</start-class>
+        <deployment.azure.subscriptionId>${env.ONTOPOP_API_ONTOLOGY_AZURE_SUBSCRIPTION_ID}</deployment.azure.subscriptionId>
+        <deployment.azure.resourceGroup>${env.ONTOPOP_API_ONTOLOGY_AZURE_RESOURCE_GROUP_NAME}</deployment.azure.resourceGroup>
+        <deployment.azure.appName>${env.ONTOPOP_API_ONTOLOGY_AZURE_APP_NAME}</deployment.azure.appName>
+        <deployment.azure.pricingTier>${env.ONTOPOP_API_ONTOLOGY_AZURE_PRICING_TIER}</deployment.azure.pricingTier>
+        <deployment.azure.region>${env.ONTOPOP_API_ONTOLOGY_AZURE_REGION}</deployment.azure.region>
+        <deployment.azure.appServicePlanName>${env.ONTOPOP_API_ONTOLOGY_AZURE_APP_SERVICE_PLAN_NAME}</deployment.azure.appServicePlanName>
+        <deployment.azure.appServicePlanResourceGroup>${env.ONTOPOP_API_ONTOLOGY_AZURE_APP_SERVICE_PLAN_RESOURCE_GROUP}</deployment.azure.appServicePlanResourceGroup>
+        <main-class>ai.hyperlearning.ontopop.cloud.azure.api.ontology.OntologyAPIAzureApp</main-class>
     </properties>
 
     <!-- Module Dependencies -->
@@ -67,8 +69,62 @@
 
         <!-- Plugins -->
         <plugins>
-
+        
+            <!-- Build a FAT JAR -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>${main-class}</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>repackage</id>
+                        <configuration>
+                            <classifier>exec</classifier>
+                            <finalName>${project.name}-${project.version}</finalName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             
+            <!-- Azure Webapp Maven Plugin -->
+            <plugin>
+                <groupId>com.microsoft.azure</groupId>
+                <artifactId>azure-webapp-maven-plugin</artifactId>
+                <configuration>
+                    <schemaVersion>v2</schemaVersion>
+                    <subscriptionId>${deployment.azure.subscriptionId}</subscriptionId>
+                    <resourceGroup>${deployment.azure.resourceGroup}</resourceGroup>
+                    <appName>${deployment.azure.appName}</appName>
+                    <pricingTier>${deployment.azure.pricingTier}</pricingTier>
+                    <region>${deployment.azure.region}</region>
+                    <appServicePlanName>${deployment.azure.appServicePlanName}</appServicePlanName>
+                    <appServicePlanResourceGroup>${deployment.azure.appServicePlanResourceGroup}</appServicePlanResourceGroup>
+                    <runtime>
+                        <os>Linux</os>
+                        <javaVersion>Java 11</javaVersion>
+                        <webContainer>Java SE</webContainer>
+                    </runtime>
+                    <deployment>
+                        <resources>
+                            <resource>
+                                <directory>${project.basedir}/target</directory>
+                                <includes>
+                                    <include>${project.name}-${project.version}-exec.jar</include>
+                                </includes>
+                            </resource>
+                        </resources>
+                    </deployment>
+                </configuration>
+            </plugin>
 
         </plugins>
 
