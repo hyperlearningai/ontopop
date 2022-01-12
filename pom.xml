@@ -352,6 +352,11 @@
                 <artifactId>ontopop-data-ontology-ingestor</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <dependency>
+                <groupId>ai.hyperlearning.ontopop</groupId>
+                <artifactId>ontopop-api-ontology</artifactId>
+                <version>${revision}</version>
+            </dependency>
 
             <!-- Ontotext GraphDB -->
             <dependency>
