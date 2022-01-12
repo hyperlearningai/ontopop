@@ -10,10 +10,10 @@ spring:
                     environment:
                         spring:
                             rabbitmq:
-                                host: ${rabbitmq-host}
-                                port: ${rabbitmq-port}
-                                username: ${rabbitmq-username}
-                                password: ${rabbitmq-password}
+                                host: 
+                                port: 
+                                username: 
+                                password: 
                                 virtual-host: /
                 azure_service_bus:
                     type: servicebus-topic
@@ -27,53 +27,53 @@ spring:
             bindings:
                 ingestedPublicationChannel:
                     destination: ontopop.data.ingested
-                    binder: rabbitmq
+                    binder: azure_service_bus
                 ingestedConsumptionChannel:
                     destination: ontopop.data.ingested
                     group: ontopop.data.ingested.consumers
-                    binder: rabbitmq
+                    binder: azure_service_bus
                 validatedPublicationChannel:
                     destination: ontopop.data.validated
-                    binder: rabbitmq
+                    binder: azure_service_bus
                 validatedConsumptionChannel:
                     destination: ontopop.data.validated
                     group: ontopop.data.validated.consumers
-                    binder: rabbitmq
+                    binder: azure_service_bus
                 parsedPublicationChannel:
                     destination: ontopop.data.parsed
-                    binder: rabbitmq
+                    binder: azure_service_bus
                 parsedConsumptionChannel:
                     destination: ontopop.data.parsed
                     group: ontopop.data.parsed.consumers
-                    binder: rabbitmq
+                    binder: azure_service_bus
                 modelledPublicationChannel:
                     destination: ontopop.data.modelled
-                    binder: rabbitmq
+                    binder: azure_service_bus
                 modelledConsumptionChannel:
                     destination: ontopop.data.modelled
                     group: ontopop.data.modelled.consumers
-                    binder: rabbitmq
+                    binder: azure_service_bus
                 modelledLoadedPublicationChannel:
                     destination: ontopop.data.modelled.loaded
-                    binder: rabbitmq
+                    binder: azure_service_bus
                 modelledLoadedConsumptionChannel:
                     destination: ontopop.data.modelled.loaded
                     group: ontopop.data.modelled.loaded.consumers
-                    binder: rabbitmq
+                    binder: azure_service_bus
                 modelledIndexedPublicationChannel:
                     destination: ontopop.data.modelled.indexed
-                    binder: rabbitmq
+                    binder: azure_service_bus
                 modelledIndexedConsumptionChannel:
                     destination: ontopop.data.modelled.indexed
                     group: ontopop.data.modelled.indexed.consumers
-                    binder: rabbitmq
+                    binder: azure_service_bus
                 validatedLoadedPublicationChannel:
                     destination: ontopop.data.validated.loaded
-                    binder: rabbitmq
+                    binder: azure_service_bus
                 validatedLoadedConsumptionChannel:
                     destination: ontopop.data.validated.loaded
                     group: ontopop.data.validated.loaded.consumers
-                    binder: rabbitmq
+                    binder: azure_service_bus
             servicebus:
                 topic:
                     bindings:
@@ -105,18 +105,8 @@ spring:
                 initial-delay: 0
             default:
                 contentType: application/json
-        vault:
-            host: localhost
-            port: 8200
-            scheme: http
-            authentication: TOKEN
-            token: ${VAULT_TOKEN}
-            kv:
-                enabled: true
-                backend: secret
-                default-context: ontopop/development
     datasource:
-        driver-class-name: org.hsqldb.jdbc.JDBCDriver
+        driver-class-name: ${spring-datasource-driver-class-name}
         url: ${spring-datasource-url}
         username: ${spring-datasource-username}
         password: ${spring-datasource-password}
@@ -129,11 +119,11 @@ spring:
         show-sql: false
 security:
     secrets:
-        service: hashicorp-vault
+        service: azure-key-vault
         aws-secrets-manager: 
-            access-key-id: ${aws-secrets-manager-access-key-id}
-            access-key-secret: ${aws-secrets-manager-access-key-secret}
-            region: eu-west-2
+            access-key-id: 
+            access-key-secret: 
+            region: 
         azure-key-vault:
             url: ${azure-key-vault-url}
         hashicorp-vault:
@@ -142,14 +132,14 @@ security:
                     ontologies: /ontologies/
 storage:
     object:
-        service: local
+        service: azure-storage
         local:
-            baseUri: ${local-storage-base-directory-path}
+            baseUri: 
         aws-s3:
-            access-key-id: ${aws-s3-access-key-id}
-            access-key-secret: ${aws-s3-access-key-secret}
-            region: eu-west-2
-            bucket-name: ontopop
+            access-key-id: 
+            access-key-secret: 
+            region: 
+            bucket-name: 
         azure-storage:
             account-name: ${azure-storage-account-name}
             account-key: ${azure-storage-account-key}
@@ -170,11 +160,19 @@ storage:
         service: apache-jena
         apache-jena:
             fuseki:
-                url: ${jena-fuseki-url}
+                url: 
         ontotext-graphdb:
-            url: ${ontotext-graphdb-url}
+            url: 
     graph:
-        service: gremlin-server
+        service: azure-cosmosdb
+        engine:
+            supportsUserDefinedIds: false
+            supportsNonStringIds: true
+            supportsSchema: true
+            supportsTransactions: true
+            supportsGeoshape: true
+            supportsTraversals:
+                by: true
         gremlin-graph:
             configuration-filename: gremlin-graph.properties
         gremlin-server:
@@ -182,22 +180,22 @@ storage:
             port: ${gremlin-server-port}
             username: ${gremlin-server-username}
             password: ${gremlin-server-password}
-            enableSsl: true
+            enableSsl: false
             remoteTraversalSourceName: g
             serializer:
-                className: org.apache.tinkerpop.gremlin.driver.ser.GraphSONMessageSerializerV2d0
-                ioRegistry: org.janusgraph.graphdb.tinkerpop.JanusGraphIoRegistry
-                serializeResultToString: true
-            supportsTraversals:
-                by: false
-            supportsNonStringIds: false
+                className: org.apache.tinkerpop.gremlin.driver.ser.GraphBinaryMessageSerializerV1
+                ioRegistries: org.janusgraph.graphdb.tinkerpop.JanusGraphIoRegistry
+                serializeResultToString: false
     search:
-        service: elasticsearch
+        service: azure-search
         indexNamePrefix: ontopop
         elasticsearch:
-            url: ${elasticsearch-url}
+            url: 
             shards: 1
             replicas: 0
+        azure-search:
+            endpoint: ${azure-search-endpoint}
+            key: ${azure-search-key}
 web:
     client:
         codecs:

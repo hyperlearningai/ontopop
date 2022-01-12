@@ -1,6 +1,18 @@
 spring:
     application:
         name: ontopop
+    cloud:
+        vault:
+            enabled: false
+            host:
+            port:
+            scheme:
+            authentication:
+            token:
+            kv:
+                enabled:
+                backend:
+                default-context:
 azure:
     keyvault:
         client-id: ${AZURE_KEYVAULT_CLIENT_ID}
