@@ -45,8 +45,10 @@ public class OntologyIngestorFunctionModel implements Serializable {
 
     @Override
     public String toString() {
-        return "OntologyIngestorFunctionModel [" + "headers=" + headers + ", "
-                + "payload=" + payload + "]";
+        return "OntologyIngestorFunctionModel [" 
+                + "headers=" + headers + ", "
+                + "payload=" + payload + 
+                "]";
     }
 
 }
