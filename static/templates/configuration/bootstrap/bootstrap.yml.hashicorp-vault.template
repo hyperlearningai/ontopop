@@ -3,6 +3,7 @@ spring:
         name: ontopop
     cloud:
         vault:
+            enabled: true
             host: localhost
             port: 8200
             scheme: http
@@ -12,3 +13,10 @@ spring:
                 enabled: true
                 backend: secret
                 default-context: ontopop/development
+azure:
+    keyvault:
+        client-id: 
+        client-key: 
+        enabled: false
+        tenant-id: 
+        uri: 

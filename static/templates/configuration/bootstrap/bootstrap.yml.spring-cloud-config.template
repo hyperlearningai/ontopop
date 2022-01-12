@@ -4,4 +4,22 @@ spring:
     cloud:
         config:
             uri: http://localhost:8801
-            token: ""
+            token: ${SPRING_CLOUD_CONFIG_SERVER_TOKEN}
+        vault:
+            enabled: false
+            host:
+            port:
+            scheme:
+            authentication:
+            token:
+            kv:
+                enabled:
+                backend:
+                default-context:
+azure:
+    keyvault:
+        client-id: 
+        client-key: 
+        enabled: false
+        tenant-id: 
+        uri: 
