@@ -1,9 +1,7 @@
 package ai.hyperlearning.ontopop.cloud.azure.data.ontology.ingestor;
 
 import java.util.Map;
-
 import org.springframework.cloud.function.adapter.azure.FunctionInvoker;
-
 import com.microsoft.azure.functions.ExecutionContext;
 import com.microsoft.azure.functions.HttpMethod;
 import com.microsoft.azure.functions.HttpRequestMessage;
@@ -12,7 +10,6 @@ import com.microsoft.azure.functions.HttpStatus;
 import com.microsoft.azure.functions.annotation.AuthorizationLevel;
 import com.microsoft.azure.functions.annotation.FunctionName;
 import com.microsoft.azure.functions.annotation.HttpTrigger;
-
 import ai.hyperlearning.ontopop.data.ontology.ingestor.function.OntologyIngestorFunctionModel;
 
 /**
@@ -39,10 +36,12 @@ public class OntologyIngestorFunctionAzureHandler
      */
 
     @FunctionName("ontologyIngestorFunction")
-    public HttpResponseMessage ingest(@HttpTrigger(
-            name = "ontologyIngestorHttpRequest",
-            methods = {HttpMethod.POST},
-            authLevel = AuthorizationLevel.ANONYMOUS) HttpRequestMessage<?> request,
+    public HttpResponseMessage ingest(
+            @HttpTrigger(
+                    name = "ontologyIngestorHttpRequest",
+                    methods = {HttpMethod.POST},
+                    authLevel = AuthorizationLevel.ANONYMOUS) 
+                HttpRequestMessage<String> request,
             ExecutionContext context) {
 
         // Get the request headers and payload
