@@ -166,26 +166,26 @@ storage:
     graph:
         service: azure-cosmosdb
         engine:
-            supportsUserDefinedIds: false
-            supportsNonStringIds: true
-            supportsSchema: true
-            supportsTransactions: true
-            supportsGeoshape: true
+            supportsUserDefinedIds:
+            supportsNonStringIds:
+            supportsSchema:
+            supportsTransactions:
+            supportsGeoshape:
             supportsTraversals:
-                by: true
+                by:
         gremlin-graph:
-            configuration-filename: gremlin-graph.properties
+            configuration-filename:
         gremlin-server:
             host: ${gremlin-server-host}
             port: ${gremlin-server-port}
             username: ${gremlin-server-username}
             password: ${gremlin-server-password}
-            enableSsl: false
-            remoteTraversalSourceName: g
+            enableSsl:
+            remoteTraversalSourceName:
             serializer:
-                className: org.apache.tinkerpop.gremlin.driver.ser.GraphBinaryMessageSerializerV1
-                ioRegistries: org.janusgraph.graphdb.tinkerpop.JanusGraphIoRegistry
-                serializeResultToString: false
+                className: 
+                ioRegistries: 
+                serializeResultToString: 
     search:
         service: azure-search
         indexNamePrefix: ontopop
