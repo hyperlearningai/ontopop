@@ -1,3 +1,6 @@
+spring:
+    application:
+        name: ontopop
 azure:
     keyvault:
         client-id: ${AZURE_KEYVAULT_CLIENT_ID}
@@ -5,6 +8,3 @@ azure:
         enabled: true
         tenant-id: ${AZURE_KEYVAULT_TENANT_ID}
         uri: ${AZURE_KEYVAULT_URI}
-spring:
-    application:
-        name: ontopop
