@@ -4,7 +4,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.apache.tinkerpop.gremlin.driver.Client;
 import org.apache.tinkerpop.gremlin.driver.Cluster;
 import org.apache.tinkerpop.gremlin.driver.ser.GraphSONMessageSerializerV2d0;
@@ -39,7 +38,7 @@ public class GremlinServerClientConfig {
     @Value("${storage.graph.gremlin-server.password}")
     private String password;
 
-    @Value("${storage.graph.gremlin-server.enableSsl}")
+    @Value("${storage.graph.gremlin-server.enableSsl:true}")
     private boolean enableSsl;
 
     @Value("${storage.graph.gremlin-server.serializer.className}")

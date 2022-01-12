@@ -7,9 +7,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-
 import javax.script.ScriptException;
-
 import org.apache.tinkerpop.gremlin.groovy.engine.GremlinExecutor;
 import org.apache.tinkerpop.gremlin.jsr223.ConcurrentBindings;
 import org.apache.tinkerpop.gremlin.process.traversal.IO;
@@ -24,10 +22,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Service;
-
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-
 import ai.hyperlearning.ontopop.graph.GraphDatabaseService;
 import ai.hyperlearning.ontopop.graph.model.SimpleGraphEdge;
 import ai.hyperlearning.ontopop.graph.model.SimpleGraphVertex;
@@ -61,22 +57,22 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
     protected GremlinExecutor gremlinExecutor;
     protected ConcurrentBindings bindings = new ConcurrentBindings();
 
-    @Value("${storage.graph.engine.supportsUserDefinedIds}")
+    @Value("${storage.graph.engine.supportsUserDefinedIds:true}")
     protected boolean supportsUserDefinedIds;
 
-    @Value("${storage.graph.engine.supportsNonStringIds}")
+    @Value("${storage.graph.engine.supportsNonStringIds:true}")
     protected boolean supportsNonStringIds;
 
-    @Value("${storage.graph.engine.supportsSchema}")
+    @Value("${storage.graph.engine.supportsSchema:false}")
     protected boolean supportsSchema;
 
-    @Value("${storage.graph.engine.supportsTransactions}")
+    @Value("${storage.graph.engine.supportsTransactions:false}")
     protected boolean supportsTransactions;
 
-    @Value("${storage.graph.engine.supportsGeoshape}")
+    @Value("${storage.graph.engine.supportsGeoshape:false}")
     protected boolean supportsGeoshape;
 
-    @Value("${storage.graph.engine.supportsTraversals.by}")
+    @Value("${storage.graph.engine.supportsTraversals.by:true}")
     protected boolean supportsTraversalsBy;
 
     /**************************************************************************

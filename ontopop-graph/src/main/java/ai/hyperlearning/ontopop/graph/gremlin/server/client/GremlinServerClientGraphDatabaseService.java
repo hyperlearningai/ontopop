@@ -7,9 +7,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-
 import javax.script.ScriptException;
-
 import org.apache.tinkerpop.gremlin.driver.Client;
 import org.apache.tinkerpop.gremlin.driver.Result;
 import org.apache.tinkerpop.gremlin.driver.ResultSet;
@@ -22,7 +20,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Service;
-
 import ai.hyperlearning.ontopop.graph.GraphDatabaseService;
 import ai.hyperlearning.ontopop.graph.gremlin.GremlinRecipes;
 import ai.hyperlearning.ontopop.graph.model.SimpleGraphEdge;
@@ -50,22 +47,22 @@ public class GremlinServerClientGraphDatabaseService
     @Qualifier("gremlinServerClient")
     private Client gremlinServerClient;
 
-    @Value("${storage.graph.engine.supportsUserDefinedIds}")
+    @Value("${storage.graph.engine.supportsUserDefinedIds:true}")
     protected boolean supportsUserDefinedIds;
 
-    @Value("${storage.graph.engine.supportsNonStringIds}")
+    @Value("${storage.graph.engine.supportsNonStringIds:false}")
     protected boolean supportsNonStringIds;
 
-    @Value("${storage.graph.engine.supportsSchema}")
+    @Value("${storage.graph.engine.supportsSchema:false}")
     protected boolean supportsSchema;
 
-    @Value("${storage.graph.engine.supportsTransactions}")
+    @Value("${storage.graph.engine.supportsTransactions:false}")
     protected boolean supportsTransactions;
 
-    @Value("${storage.graph.engine.supportsGeoshape}")
+    @Value("${storage.graph.engine.supportsGeoshape:false}")
     protected boolean supportsGeoshape;
 
-    @Value("${storage.graph.engine.supportsTraversals.by}")
+    @Value("${storage.graph.engine.supportsTraversals.by:false}")
     protected boolean supportsTraversalsBy;
 
     protected Client client;

@@ -1,13 +1,11 @@
 package ai.hyperlearning.ontopop.graph.gremlin.server.remoteconnection;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.AnonymousTraversalSource.traversal;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tinkerpop.gremlin.driver.Cluster;
 import org.apache.tinkerpop.gremlin.driver.remote.DriverRemoteConnection;
@@ -44,10 +42,10 @@ public class GremlinServerRemoteConnectionTraversalSourceConfig {
     @Value("${storage.graph.gremlin-server.password}")
     private String password;
 
-    @Value("${storage.graph.gremlin-server.enableSsl}")
+    @Value("${storage.graph.gremlin-server.enableSsl:true}")
     private boolean enableSsl;
 
-    @Value("${storage.graph.gremlin-server.remoteTraversalSourceName}")
+    @Value("${storage.graph.gremlin-server.remoteTraversalSourceName:g}")
     private String remoteTraversalSourceName;
 
     @Value("${storage.graph.gremlin-server.serializer.className}")
