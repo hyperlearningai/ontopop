@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.data.ontology;
+package ai.hyperlearning.ontopop.api.ontology;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.data.ontology;
+package ai.hyperlearning.ontopop.api.ontology;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,10 +15,10 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages = {"ai.hyperlearning.ontopop"})
 @EntityScan("ai.hyperlearning.ontopop.model")
 @SpringBootApplication
-public class OntologyApp {
+public class OntologyAPIApp {
 
     public static void main(String[] args) {
-        SpringApplication.run(OntologyApp.class, args);
+        SpringApplication.run(OntologyAPIApp.class, args);
     }
 
 }
