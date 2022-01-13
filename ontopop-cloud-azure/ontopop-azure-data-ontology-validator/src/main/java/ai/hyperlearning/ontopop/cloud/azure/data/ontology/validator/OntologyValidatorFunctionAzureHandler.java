@@ -45,6 +45,11 @@ public class OntologyValidatorFunctionAzureHandler
                 String message,
         final ExecutionContext context) {
         
+        // Log the service bus trigger and message for debugging purposes
+        context.getLogger().info("Ontology Validator Function triggered: "
+                + "New service bus event - Ontology ingestion event.");
+        context.getLogger().info("Service bus message payload: " + message);
+        
         // Execute the Ontology Validation function
         OntologyValidatorFunctionModel ontologyValidatorFunctionModel = 
                 new OntologyValidatorFunctionModel(message);
