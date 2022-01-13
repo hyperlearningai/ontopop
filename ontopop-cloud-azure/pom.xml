@@ -52,6 +52,7 @@
     <!-- Child Modules -->
     <modules>
         <module>ontopop-azure-data-ontology-ingestor</module>
+        <module>ontopop-azure-data-ontology-validator</module>
         <module>ontopop-azure-api-ontology</module>
     </modules>
 
