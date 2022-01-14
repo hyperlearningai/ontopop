@@ -53,6 +53,11 @@
     <modules>
         <module>ontopop-app-data-ontology-ingestor</module>
         <module>ontopop-app-data-ontology-validator</module>
+        <module>ontopop-app-data-ontology-loader-triplestore</module>
+        <module>ontopop-app-data-ontology-parser</module>
+        <module>ontopop-app-data-ontology-modeller-graph</module>
+        <module>ontopop-app-data-ontology-loader-graph</module>
+        <module>ontopop-app-data-ontology-indexer-graph</module>
     </modules>
 
 </project>
