@@ -1,57 +1,55 @@
-package ai.hyperlearning.ontopop.data.ontology.modeller.graph;
+package ai.hyperlearning.ontopop.data.ontology.modeller.graph.function;
+
+import java.util.function.Function;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.annotation.StreamListener;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ai.hyperlearning.ontopop.messaging.processors.DataPipelineModellerSource;
+
+import ai.hyperlearning.ontopop.data.ontology.modeller.graph.OntologyGraphModellerService;
 import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 
 /**
- * Ontology Property Graph Modelling Service - Spring Boot Application
+ * Ontology Graph Modeller Function
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
-@SuppressWarnings("deprecation")
-@ComponentScan(basePackages = {"ai.hyperlearning.ontopop"})
-@SpringBootApplication
-@EnableBinding(DataPipelineModellerSource.class)
-public class OntologyGraphModellerApp {
-
+@Component
+public class OntologyGraphModellerFunction 
+    implements Function<OntologyGraphModellerFunctionModel, Boolean> {
+    
     private static final Logger LOGGER =
-            LoggerFactory.getLogger(OntologyGraphModellerApp.class);
-
+            LoggerFactory.getLogger(OntologyGraphModellerFunction.class);
+    
     @Autowired
     private OntologyGraphModellerService ontologyGraphModellerService;
-
-    public static void main(String[] args) {
-        SpringApplication.run(OntologyGraphModellerApp.class, args);
-    }
-
-    @StreamListener("parsedConsumptionChannel")
-    public void processParsedOntology(String payload) {
-
+    
+    @Override
+    public Boolean apply(
+            OntologyGraphModellerFunctionModel ontologyGraphModellerFunctionModel) {
+        
         try {
 
             // Explicitly check that the string payload
             // models an OntologyMessage object
             ObjectMapper mapper = new ObjectMapper();
             OntologyMessage ontologyMessage =
-                    mapper.readValue(payload, OntologyMessage.class);
+                    mapper.readValue(
+                            ontologyGraphModellerFunctionModel.getPayload(), 
+                            OntologyMessage.class);
 
             // Log the consumed payload for debugging purposes
             LOGGER.debug("New ontology parsed event detected and consumed "
                     + "via the shared messaging service and the "
                     + "parsedConsumptionChannel channel.");
-            LOGGER.debug("Ontology parsed message payload: {}", payload);
+            LOGGER.debug("Ontology parsed message payload: {}", 
+                    ontologyGraphModellerFunctionModel.getPayload());
 
             // Run the Ontology Property Graph modelling service pipeline
             ontologyGraphModellerService.run(ontologyMessage);
@@ -64,7 +62,9 @@ public class OntologyGraphModellerApp {
             LOGGER.info("The parsed object is NOT an ontology. Skipping.");
 
         }
-
+        
+        return true;
+        
     }
 
 }
