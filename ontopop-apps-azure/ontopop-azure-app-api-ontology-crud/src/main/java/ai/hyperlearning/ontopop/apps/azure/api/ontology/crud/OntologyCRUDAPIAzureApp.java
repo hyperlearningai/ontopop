@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
- * Microsoft Azure Ontology CRUD API Service - Spring Boot Application
+ * Microsoft Azure Ontology CRUD API Service Web Application - Spring Boot Application
  *
  * @author jillurquddus
  * @since 2.0.0

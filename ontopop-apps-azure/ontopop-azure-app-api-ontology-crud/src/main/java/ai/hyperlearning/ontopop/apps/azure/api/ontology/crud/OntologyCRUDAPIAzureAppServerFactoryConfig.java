@@ -6,7 +6,7 @@ import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.stereotype.Component;
 
 /**
- * Microsoft Ontology CRUD API Service - Server Factory Configuration
+ * Microsoft Ontology CRUD API Service Web Application - Server Factory Configuration
  *
  * @author jillurquddus
  * @since 2.0.0
