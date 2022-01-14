@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+    xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Parent Project -->
+    <parent>
+        <groupId>ai.hyperlearning.ontopop</groupId>
+        <artifactId>ontopop</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <!-- Module Metadata -->
+    <artifactId>ontopop-api-ontology-crud</artifactId>
+    <name>ontopop-api-ontology-crud</name>
+    <packaging>jar</packaging>
+    <description>OntoPop - Ontology CRUD API Service</description>
+    <url>https://ontopop.com</url>
+    <organization>
+        <name>HyperLearning AI</name>
+        <url>https://hyperlearning.ai</url>
+    </organization>
+    <developers>
+        <developer>
+            <id>jillurquddus</id>
+            <name>Jillur Quddus</name>
+            <email>contactus@hyperlearning.ai</email>
+            <url>https://hyperlearning.ai/team/jillurquddus</url>
+            <organization>HyperLearning AI</organization>
+            <organizationUrl>https://hyperlearning.ai</organizationUrl>
+            <roles>
+                <role>Chief Data Scientist</role>
+                <role>Principal Polyglot Software Engineer</role>
+            </roles>
+            <timezone>Europe/London</timezone>
+        </developer>
+    </developers>
+
+    <!-- Module Properties -->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <!-- Module Dependencies -->
+    <dependencies>
+
+        <!-- Guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+
+        <!-- OntoPop -->
+        <dependency>
+            <groupId>ai.hyperlearning.ontopop</groupId>
+            <artifactId>ontopop-configuration</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ai.hyperlearning.ontopop</groupId>
+            <artifactId>ontopop-logging</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ai.hyperlearning.ontopop</groupId>
+            <artifactId>ontopop-exceptions</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ai.hyperlearning.ontopop</groupId>
+            <artifactId>ontopop-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ai.hyperlearning.ontopop</groupId>
+            <artifactId>ontopop-mappers</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ai.hyperlearning.ontopop</groupId>
+            <artifactId>ontopop-secrets</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ai.hyperlearning.ontopop</groupId>
+            <artifactId>ontopop-data-ontology-crud</artifactId>
+        </dependency>
+
+        <!-- Springdoc OpenAPI UI -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+        </dependency>
+
+    </dependencies>
+
+</project>

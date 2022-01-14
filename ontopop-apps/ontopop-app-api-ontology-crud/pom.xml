@@ -6,15 +6,15 @@
     <!-- Parent Project -->
     <parent>
         <groupId>ai.hyperlearning.ontopop</groupId>
-        <artifactId>ontopop</artifactId>
+        <artifactId>ontopop-apps</artifactId>
         <version>${revision}</version>
     </parent>
 
     <!-- Module Metadata -->
-    <artifactId>ontopop-api-ontology</artifactId>
-    <name>ontopop-api-ontology</name>
+    <artifactId>ontopop-app-api-ontology-crud</artifactId>
+    <name>ontopop-app-api-ontology-crud</name>
     <packaging>jar</packaging>
-    <description>OntoPop - Ontology API Service</description>
+    <description>OntoPop - Ontology CRUD API Service Spring Boot Application</description>
     <url>https://ontopop.com</url>
     <organization>
         <name>HyperLearning AI</name>
@@ -44,46 +44,10 @@
     <!-- Module Dependencies -->
     <dependencies>
 
-        <!-- Guava -->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
-
         <!-- OntoPop -->
         <dependency>
             <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-configuration</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-logging</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-exceptions</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-mappers</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-secrets</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-data-ontology-crud</artifactId>
-        </dependency>
-
-        <!-- Springdoc OpenAPI UI -->
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
+            <artifactId>ontopop-api-ontology-crud</artifactId>
         </dependency>
 
     </dependencies>

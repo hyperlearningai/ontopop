@@ -1,6 +1,7 @@
-package ai.hyperlearning.ontopop.api.ontology;
+package ai.hyperlearning.ontopop.api.ontology.crud;
 
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import ai.hyperlearning.ontopop.data.jpa.repositories.WebhookEventRepository;
 import ai.hyperlearning.ontopop.exceptions.git.WebhookEventNotFoundException;
 import ai.hyperlearning.ontopop.model.git.WebhookEvent;
@@ -18,7 +20,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
- * Ontology Service - Webhook Event Controller
+ * Ontology CRUD API Service - Webhook Event Controller
  *
  * @author jillurquddus
  * @since 2.0.0
@@ -27,10 +29,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/api/ontologies")
 @Tag(name = "webhook", description = "Ontology Webhooks REST API")
-public class OntologyWebhookEventController {
+public class OntologyWebhookEventCRUDController {
 
     private static final Logger LOGGER =
-            LoggerFactory.getLogger(OntologyWebhookEventController.class);
+            LoggerFactory.getLogger(OntologyWebhookEventCRUDController.class);
 
     @Autowired
     private WebhookEventRepository webhookEventRepository;

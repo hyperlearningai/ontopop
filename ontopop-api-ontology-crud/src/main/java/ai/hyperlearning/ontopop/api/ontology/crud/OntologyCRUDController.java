@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.api.ontology;
+package ai.hyperlearning.ontopop.api.ontology.crud;
 
 import java.util.List;
 
@@ -33,7 +33,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
- * Ontology Service - Controller
+ * Ontology CRUD API Service - Controller
  *
  * @author jillurquddus
  * @since 2.0.0
@@ -42,10 +42,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/api/ontologies")
 @Tag(name = "ontology", description = "Ontology REST API")
-public class OntologyController {
+public class OntologyCRUDController {
 
     private static final Logger LOGGER =
-            LoggerFactory.getLogger(OntologyController.class);
+            LoggerFactory.getLogger(OntologyCRUDController.class);
 
     @Autowired
     private OntologyRepository ontologyRepository;
