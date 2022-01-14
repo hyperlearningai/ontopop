@@ -50,7 +50,6 @@ public class OntologyValidatorFunction
 
             // Run the Ontology Validation Service pipeline
             ontologyValidatorService.run(ontologyMessage);
-            return true;
 
         } catch (JsonProcessingException e) {
 
@@ -61,7 +60,7 @@ public class OntologyValidatorFunction
 
         }
         
-        return false;
+        return true;
         
     }
 
