@@ -1,24 +1,24 @@
-package ai.hyperlearning.ontopop.data.ontology.validator.function;
+package ai.hyperlearning.ontopop.data.ontology.parser.function;
 
 import java.io.Serializable;
 
 /**
- * Ontology Validator Function Model
+ * Ontology Parser Function Model
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
-public class OntologyValidatorFunctionModel implements Serializable {
+public class OntologyParserFunctionModel implements Serializable {
 
-    private static final long serialVersionUID = 2192738870709009478L;
+    private static final long serialVersionUID = -4064820438065491037L;
     private String payload;
     
-    public OntologyValidatorFunctionModel() {
+    public OntologyParserFunctionModel() {
         
     }
 
-    public OntologyValidatorFunctionModel(String payload) {
+    public OntologyParserFunctionModel(String payload) {
         super();
         this.payload = payload;
     }
@@ -33,9 +33,9 @@ public class OntologyValidatorFunctionModel implements Serializable {
 
     @Override
     public String toString() {
-        return "OntologyValidatorFunctionModel ["
+        return "OntologyParserFunctionModel ["
                 + "payload=" + payload 
                 + "]";
     }
-    
+
 }

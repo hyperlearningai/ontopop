@@ -1,24 +1,24 @@
-package ai.hyperlearning.ontopop.data.ontology.validator.function;
+package ai.hyperlearning.ontopop.data.ontology.loader.triplestore.function;
 
 import java.io.Serializable;
 
 /**
- * Ontology Validator Function Model
+ * Ontology Triplestore Function Model
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
-public class OntologyValidatorFunctionModel implements Serializable {
+public class OntologyTriplestoreFunctionModel implements Serializable {
 
-    private static final long serialVersionUID = 2192738870709009478L;
+    private static final long serialVersionUID = 4586489147365113174L;
     private String payload;
     
-    public OntologyValidatorFunctionModel() {
+    public OntologyTriplestoreFunctionModel() {
         
     }
 
-    public OntologyValidatorFunctionModel(String payload) {
+    public OntologyTriplestoreFunctionModel(String payload) {
         super();
         this.payload = payload;
     }
@@ -33,9 +33,9 @@ public class OntologyValidatorFunctionModel implements Serializable {
 
     @Override
     public String toString() {
-        return "OntologyValidatorFunctionModel ["
+        return "OntologyTriplestoreFunctionModel ["
                 + "payload=" + payload 
                 + "]";
     }
-    
+
 }

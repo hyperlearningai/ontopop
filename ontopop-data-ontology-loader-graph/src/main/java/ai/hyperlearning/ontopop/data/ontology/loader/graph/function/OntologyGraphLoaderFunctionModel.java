@@ -1,24 +1,24 @@
-package ai.hyperlearning.ontopop.data.ontology.validator.function;
+package ai.hyperlearning.ontopop.data.ontology.loader.graph.function;
 
 import java.io.Serializable;
 
 /**
- * Ontology Validator Function Model
+ * Ontology Graph Loader Function Model
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
-public class OntologyValidatorFunctionModel implements Serializable {
+public class OntologyGraphLoaderFunctionModel implements Serializable {
 
-    private static final long serialVersionUID = 2192738870709009478L;
+    private static final long serialVersionUID = -5063740699426606255L;
     private String payload;
     
-    public OntologyValidatorFunctionModel() {
+    public OntologyGraphLoaderFunctionModel() {
         
     }
 
-    public OntologyValidatorFunctionModel(String payload) {
+    public OntologyGraphLoaderFunctionModel(String payload) {
         super();
         this.payload = payload;
     }
@@ -33,9 +33,9 @@ public class OntologyValidatorFunctionModel implements Serializable {
 
     @Override
     public String toString() {
-        return "OntologyValidatorFunctionModel ["
+        return "OntologyGraphLoaderFunctionModel ["
                 + "payload=" + payload 
                 + "]";
     }
-    
+
 }
