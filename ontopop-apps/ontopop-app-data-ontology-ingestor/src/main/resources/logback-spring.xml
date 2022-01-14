@@ -17,7 +17,7 @@
     <!-- Log File Appender -->
     <appender name="RollingFile"
         class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOGS}/ontopop-data-ontology-loader-graph/ontopop-data-ontology-loader-graph.log</file>
+        <file>${LOGS}/ontopop-app-data-ontology-ingestor/ontopop-app-data-ontology-ingestor.log</file>
         <encoder
             class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
@@ -27,7 +27,7 @@
             class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             
             <!-- Rollover - Either daily and/or when log file exceeds 10MB -->
-            <fileNamePattern>${LOGS}/ontopop-data-ontology-loader-graph/archived/ontopop-data-ontology-loader-graph-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOGS}/ontopop-app-data-ontology-ingestor/archived/ontopop-app-data-ontology-ingestor-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy
                 class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>10MB</maxFileSize>
