@@ -10,10 +10,10 @@
     </parent>
 
     <!-- Module Metadata -->
-    <artifactId>ontopop-cloud-azure</artifactId>
-    <name>ontopop-cloud-azure</name>
+    <artifactId>ontopop-apps-azure</artifactId>
+    <name>ontopop-apps-azure</name>
     <packaging>pom</packaging>
-    <description>OntoPop - Microsoft Azure Services POM</description>
+    <description>OntoPop - Microsoft Azure Cloud Applications POM</description>
     <url>https://ontopop.com</url>
     <organization>
         <name>HyperLearning AI</name>
@@ -51,9 +51,9 @@
 
     <!-- Child Modules -->
     <modules>
-        <module>ontopop-azure-data-ontology-ingestor</module>
-        <module>ontopop-azure-data-ontology-validator</module>
-        <module>ontopop-azure-api-ontology</module>
+        <module>ontopop-azure-function-app-data-ontology-ingestor</module>
+        <module>ontopop-azure-function-app-data-ontology-validator</module>
+        <module>ontopop-azure-app-api-ontology-crud</module>
     </modules>
 
 </project>
