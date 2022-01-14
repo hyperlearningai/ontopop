@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import ai.hyperlearning.ontopop.data.jpa.repositories.OntologyRepository;
+import ai.hyperlearning.ontopop.data.ontology.crud.OntologyCRUDService;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreationException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDeletionException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyNotFoundException;
@@ -50,7 +51,7 @@ public class OntologyController {
     private OntologyRepository ontologyRepository;
 
     @Autowired
-    private OntologyService ontologyService;
+    private OntologyCRUDService ontologyCRUDService;
 
     /**************************************************************************
      * 1. POST - Create Ontology
@@ -76,7 +77,7 @@ public class OntologyController {
     public Ontology newOntology(@RequestBody Ontology newOntology) {
         LOGGER.debug("New HTTP POST request: Create ontology.");
         try {
-            return ontologyService.create(newOntology);
+            return ontologyCRUDService.create(newOntology);
         } catch (Exception e) {
             throw new OntologyCreationException();
         }
@@ -153,7 +154,7 @@ public class OntologyController {
     public Ontology updateOntology(@PathVariable(required = true) int id,
             @RequestBody OntologyNonSecretData ontologyNonSecretData) {
         LOGGER.debug("New HTTP PATCH request: Update ontology by ID.");
-        return ontologyService.update(id, ontologyNonSecretData);
+        return ontologyCRUDService.update(id, ontologyNonSecretData);
     }
 
     /**************************************************************************
@@ -183,7 +184,7 @@ public class OntologyController {
             @RequestBody OntologySecretData ontologySecretData) {
         LOGGER.debug("New HTTP PATCH request: Update ontology secrets by ID.");
         try {
-            ontologyService.update(id, ontologySecretData);
+            ontologyCRUDService.update(id, ontologySecretData);
             return new ResponseEntity<>("Ontology update request processed",
                     HttpStatus.OK);
         } catch (Exception e) {
@@ -215,7 +216,7 @@ public class OntologyController {
             @PathVariable(required = true) int id) {
         LOGGER.debug("New HTTP DELETE request: Delete ontology by ID.");
         try {
-            ontologyService.delete(id);
+            ontologyCRUDService.delete(id);
             return new ResponseEntity<>("Ontology deletion request processed",
                     HttpStatus.OK);
         } catch (Exception e) {

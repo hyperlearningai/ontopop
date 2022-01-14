@@ -11,10 +11,10 @@
     </parent>
 
     <!-- Module Metadata -->
-    <artifactId>ontopop-api-ontology</artifactId>
-    <name>ontopop-api-ontology</name>
+    <artifactId>ontopop-data-ontology-crud</artifactId>
+    <name>ontopop-data-ontology-crud</name>
     <packaging>jar</packaging>
-    <description>OntoPop - Ontology API Service</description>
+    <description>OntoPop - Ontology CRUD Service</description>
     <url>https://ontopop.com</url>
     <organization>
         <name>HyperLearning AI</name>
@@ -43,7 +43,7 @@
 
     <!-- Module Dependencies -->
     <dependencies>
-
+    
         <!-- Guava -->
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -51,14 +51,6 @@
         </dependency>
 
         <!-- OntoPop -->
-        <dependency>
-            <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-configuration</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-logging</artifactId>
-        </dependency>
         <dependency>
             <groupId>ai.hyperlearning.ontopop</groupId>
             <artifactId>ontopop-exceptions</artifactId>
@@ -74,16 +66,6 @@
         <dependency>
             <groupId>ai.hyperlearning.ontopop</groupId>
             <artifactId>ontopop-secrets</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-data-ontology-crud</artifactId>
-        </dependency>
-
-        <!-- Springdoc OpenAPI UI -->
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
         </dependency>
 
     </dependencies>

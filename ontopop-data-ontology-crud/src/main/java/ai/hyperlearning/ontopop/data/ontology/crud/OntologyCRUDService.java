@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.api.ontology;
+package ai.hyperlearning.ontopop.data.ontology.crud;
 
 import java.time.LocalDateTime;
 
@@ -19,7 +19,7 @@ import ai.hyperlearning.ontopop.security.secrets.managers.OntologySecretDataMana
 import ai.hyperlearning.ontopop.security.secrets.model.OntologySecretData;
 
 /**
- * Ontology Service
+ * Ontology CRUD Service
  *
  * @author jillurquddus
  * @since 2.0.0
@@ -27,10 +27,10 @@ import ai.hyperlearning.ontopop.security.secrets.model.OntologySecretData;
 
 @Service
 @Transactional
-public class OntologyService {
-
+public class OntologyCRUDService {
+    
     private static final Logger LOGGER =
-            LoggerFactory.getLogger(OntologyService.class);
+            LoggerFactory.getLogger(OntologyCRUDService.class);
 
     @Autowired
     private OntologyRepository ontologyRepository;
@@ -49,7 +49,7 @@ public class OntologyService {
      * @throws Exception
      */
 
-    protected Ontology create(Ontology ontology) throws Exception {
+    public Ontology create(Ontology ontology) throws Exception {
 
         // Persist the new ontology
         ontology.setDateCreated(LocalDateTime.now());
@@ -78,7 +78,7 @@ public class OntologyService {
      * @return
      */
 
-    protected Ontology update(int id,
+    public Ontology update(int id,
             OntologyNonSecretData ontologyNonSecretData) {
 
         // Get the current ontology
@@ -102,7 +102,7 @@ public class OntologyService {
      * @throws Exception
      */
 
-    protected void update(int id, OntologySecretData ontologySecretData)
+    public void update(int id, OntologySecretData ontologySecretData)
             throws Exception {
 
         // Get the current sensitive attributes for this ontology
@@ -133,7 +133,7 @@ public class OntologyService {
      * @throws Exception
      */
 
-    protected void delete(int id) throws Exception {
+    public void delete(int id) throws Exception {
 
         // Delete the ontology from storage
         ontologyRepository.deleteById(id);

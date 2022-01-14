@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <!-- Project Metadata -->
@@ -349,6 +348,11 @@
             </dependency>
             <dependency>
                 <groupId>ai.hyperlearning.ontopop</groupId>
+                <artifactId>ontopop-data-ontology-crud</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>ai.hyperlearning.ontopop</groupId>
                 <artifactId>ontopop-data-ontology-ingestor</artifactId>
                 <version>${revision}</version>
             </dependency>
@@ -379,7 +383,7 @@
             </dependency>
             <dependency>
                 <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-data-ontology-indexer</artifactId>
+                <artifactId>ontopop-data-ontology-indexer-graph</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
@@ -440,15 +444,17 @@
         <module>ontopop-jpa</module>
         <module>ontopop-search</module>
         <module>ontopop-utils</module>
+        <module>ontopop-data-ontology-crud</module>
         <module>ontopop-data-ontology-ingestor</module>
         <module>ontopop-data-ontology-validator</module>
         <module>ontopop-data-ontology-loader-triplestore</module>
         <module>ontopop-data-ontology-parser</module>
         <module>ontopop-data-ontology-modeller-graph</module>
         <module>ontopop-data-ontology-loader-graph</module>
-        <module>ontopop-data-ontology-indexer</module>
+        <module>ontopop-data-ontology-indexer-graph</module>
         <module>ontopop-api-ontology</module>
-        <module>ontopop-cloud-azure</module>
+        <module>ontopop-apps</module>
+        <module>ontopop-apps-azure</module>
     </modules>
 
     <!-- Project Build Configuration -->
