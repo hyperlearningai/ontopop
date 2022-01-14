@@ -3,22 +3,22 @@ package ai.hyperlearning.ontopop.data.ontology.loader.triplestore.function;
 import java.io.Serializable;
 
 /**
- * Ontology Triplestore Function Model
+ * Ontology Triplestore Loader Function Model
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
-public class OntologyTriplestoreFunctionModel implements Serializable {
+public class OntologyTriplestoreLoaderFunctionModel implements Serializable {
 
     private static final long serialVersionUID = 4586489147365113174L;
     private String payload;
     
-    public OntologyTriplestoreFunctionModel() {
+    public OntologyTriplestoreLoaderFunctionModel() {
         
     }
 
-    public OntologyTriplestoreFunctionModel(String payload) {
+    public OntologyTriplestoreLoaderFunctionModel(String payload) {
         super();
         this.payload = payload;
     }
@@ -33,7 +33,7 @@ public class OntologyTriplestoreFunctionModel implements Serializable {
 
     @Override
     public String toString() {
-        return "OntologyTriplestoreFunctionModel ["
+        return "OntologyTriplestoreLoaderFunctionModel ["
                 + "payload=" + payload 
                 + "]";
     }
