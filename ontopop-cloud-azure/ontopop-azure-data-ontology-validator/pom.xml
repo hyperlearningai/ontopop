@@ -44,7 +44,7 @@
         <deployment.azure.function.appName>${env.ONTOPOP_DATA_ONTOLOGY_VALIDATOR_AZURE_FUNCTION_NAME}</deployment.azure.function.appName>
         <deployment.azure.function.region>${env.ONTOPOP_DATA_ONTOLOGY_VALIDATOR_AZURE_FUNCTION_REGION}</deployment.azure.function.region>
         <deployment.azure.function.extension.version>~4</deployment.azure.function.extension.version>
-        <start-class>ai.hyperlearning.ontopop.data.ontology.validator.OntologyValidatorApp</start-class>
+        <start-class>ai.hyperlearning.ontopop.cloud.azure.data.ontology.validator.OntologyValidatorFunctionAzureApp</start-class>
     </properties>
 
     <!-- Module Dependencies -->
