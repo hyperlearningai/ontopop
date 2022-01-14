@@ -14,7 +14,7 @@ import ai.hyperlearning.ontopop.data.ontology.validator.OntologyValidatorService
 import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 
 /**
- * Ontology Validator Cloud Function
+ * Ontology Validator Function
  *
  * @author jillurquddus
  * @since 2.0.0
