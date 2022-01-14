@@ -54,6 +54,7 @@
         <module>ontopop-azure-function-app-data-ontology-ingestor</module>
         <module>ontopop-azure-function-app-data-ontology-validator</module>
         <module>ontopop-azure-app-api-ontology-crud</module>
+        <module>ontopop-azure-app-data-ontology-ingestor</module>
     </modules>
 
 </project>
