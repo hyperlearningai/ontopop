@@ -8,10 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.context.annotation.ComponentScan;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import ai.hyperlearning.ontopop.messaging.processors.DataPipelineModellerSource;
 import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 
@@ -26,16 +24,16 @@ import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 @ComponentScan(basePackages = {"ai.hyperlearning.ontopop"})
 @SpringBootApplication
 @EnableBinding(DataPipelineModellerSource.class)
-public class OntologyPropertyGraphModellerApp {
+public class OntologyGraphModellerApp {
 
     private static final Logger LOGGER =
-            LoggerFactory.getLogger(OntologyPropertyGraphModellerApp.class);
+            LoggerFactory.getLogger(OntologyGraphModellerApp.class);
 
     @Autowired
-    private OntologyPropertyGraphModellingService ontologyPropertyGraphModellingService;
+    private OntologyGraphModellerService ontologyGraphModellerService;
 
     public static void main(String[] args) {
-        SpringApplication.run(OntologyPropertyGraphModellerApp.class, args);
+        SpringApplication.run(OntologyGraphModellerApp.class, args);
     }
 
     @StreamListener("parsedConsumptionChannel")
@@ -56,7 +54,7 @@ public class OntologyPropertyGraphModellerApp {
             LOGGER.debug("Ontology parsed message payload: {}", payload);
 
             // Run the Ontology Property Graph modelling service pipeline
-            ontologyPropertyGraphModellingService.run(ontologyMessage);
+            ontologyGraphModellerService.run(ontologyMessage);
 
         } catch (JsonProcessingException e) {
 

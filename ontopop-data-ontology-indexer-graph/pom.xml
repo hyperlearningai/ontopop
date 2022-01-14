@@ -11,10 +11,10 @@
     </parent>
 
     <!-- Module Metadata -->
-    <artifactId>ontopop-data-ontology-indexer</artifactId>
-    <name>ontopop-data-ontology-indexer</name>
+    <artifactId>ontopop-data-ontology-indexer-graph</artifactId>
+    <name>ontopop-data-ontology-indexer-graph</name>
     <packaging>jar</packaging>
-    <description>OntoPop - Ontology Indexer Service</description>
+    <description>OntoPop - Ontology Graph Indexer Service</description>
     <url>https://ontopop.com</url>
     <organization>
         <name>HyperLearning AI</name>

@@ -8,15 +8,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.context.annotation.ComponentScan;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import ai.hyperlearning.ontopop.messaging.processors.DataPipelineModelledIndexerSource;
 import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 
 /**
- * Ontology Indexer Service - Spring Boot Application
+ * Ontology Graph Indexer Service - Spring Boot Application
  *
  * @author jillurquddus
  * @since 2.0.0
@@ -26,16 +24,16 @@ import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 @ComponentScan(basePackages = {"ai.hyperlearning.ontopop"})
 @SpringBootApplication
 @EnableBinding(DataPipelineModelledIndexerSource.class)
-public class OntologyIndexerApp {
+public class OntologyGraphIndexerApp {
 
     private static final Logger LOGGER =
-            LoggerFactory.getLogger(OntologyIndexerApp.class);
+            LoggerFactory.getLogger(OntologyGraphIndexerApp.class);
 
     @Autowired
-    private OntologyIndexerService ontologyIndexerService;
+    private OntologyGraphIndexerService ontologyGraphIndexerService;
 
     public static void main(String[] args) {
-        SpringApplication.run(OntologyIndexerApp.class, args);
+        SpringApplication.run(OntologyGraphIndexerApp.class, args);
     }
 
     @StreamListener("modelledConsumptionChannel")
@@ -56,7 +54,7 @@ public class OntologyIndexerApp {
             LOGGER.debug("Ontology modelled message payload: {}", payload);
 
             // Run the Ontology Indexing Service pipeline
-            ontologyIndexerService.run(ontologyMessage);
+            ontologyGraphIndexerService.run(ontologyMessage);
 
         } catch (JsonProcessingException e) {
 

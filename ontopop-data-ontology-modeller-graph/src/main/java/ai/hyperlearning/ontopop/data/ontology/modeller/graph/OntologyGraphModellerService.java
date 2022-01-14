@@ -43,10 +43,10 @@ import ai.hyperlearning.ontopop.storage.ObjectStorageServiceType;
 @SuppressWarnings("deprecation")
 @Service
 @EnableBinding(DataPipelineModellerSource.class)
-public class OntologyPropertyGraphModellingService {
+public class OntologyGraphModellerService {
 
     private static final Logger LOGGER = LoggerFactory
-            .getLogger(OntologyPropertyGraphModellingService.class);
+            .getLogger(OntologyGraphModellerService.class);
 
     @Autowired
     private ObjectStorageServiceFactory objectStorageServiceFactory;

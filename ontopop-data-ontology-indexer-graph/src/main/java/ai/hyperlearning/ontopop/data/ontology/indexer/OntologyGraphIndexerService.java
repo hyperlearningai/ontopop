@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.stereotype.Service;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import ai.hyperlearning.ontopop.messaging.processors.DataPipelineModelledIndexerSource;
 import ai.hyperlearning.ontopop.model.graph.SimpleOntologyPropertyGraph;
 import ai.hyperlearning.ontopop.model.graph.SimpleOntologyVertex;
@@ -29,7 +26,7 @@ import ai.hyperlearning.ontopop.storage.ObjectStorageServiceFactory;
 import ai.hyperlearning.ontopop.storage.ObjectStorageServiceType;
 
 /**
- * Ontology Indexing Service
+ * Ontology Graph Indexing Service
  *
  * @author jillurquddus
  * @since 2.0.0
@@ -38,10 +35,10 @@ import ai.hyperlearning.ontopop.storage.ObjectStorageServiceType;
 @SuppressWarnings("deprecation")
 @Service
 @EnableBinding(DataPipelineModelledIndexerSource.class)
-public class OntologyIndexerService {
+public class OntologyGraphIndexerService {
 
     private static final Logger LOGGER =
-            LoggerFactory.getLogger(OntologyIndexerService.class);
+            LoggerFactory.getLogger(OntologyGraphIndexerService.class);
 
     @Autowired
     private ObjectStorageServiceFactory objectStorageServiceFactory;

@@ -14,7 +14,7 @@
     <artifactId>ontopop-data-ontology-modeller-graph</artifactId>
     <name>ontopop-data-ontology-modeller-graph</name>
     <packaging>jar</packaging>
-    <description>OntoPop - Ontology Property Graph Modelling Service</description>
+    <description>OntoPop - Ontology Graph Modelling Service</description>
     <url>https://ontopop.com</url>
     <organization>
         <name>HyperLearning AI</name>
