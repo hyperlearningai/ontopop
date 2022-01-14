@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.data.ontology.ingestor;
+package ai.hyperlearning.ontopop.apps.data.ontology.ingestor;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,7 +16,7 @@ import org.springframework.context.annotation.ComponentScan;
 @EntityScan("ai.hyperlearning.ontopop.model")
 @SpringBootApplication
 public class OntologyIngestorApp {
-
+    
     public static void main(String[] args) {
         SpringApplication.run(OntologyIngestorApp.class, args);
     }
