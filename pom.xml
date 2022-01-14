@@ -388,7 +388,7 @@
             </dependency>
             <dependency>
                 <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-api-ontology</artifactId>
+                <artifactId>ontopop-api-ontology-crud</artifactId>
                 <version>${revision}</version>
             </dependency>
 
@@ -452,7 +452,7 @@
         <module>ontopop-data-ontology-modeller-graph</module>
         <module>ontopop-data-ontology-loader-graph</module>
         <module>ontopop-data-ontology-indexer-graph</module>
-        <module>ontopop-api-ontology</module>
+        <module>ontopop-api-ontology-crud</module>
         <module>ontopop-apps</module>
         <module>ontopop-apps-azure</module>
     </modules>
