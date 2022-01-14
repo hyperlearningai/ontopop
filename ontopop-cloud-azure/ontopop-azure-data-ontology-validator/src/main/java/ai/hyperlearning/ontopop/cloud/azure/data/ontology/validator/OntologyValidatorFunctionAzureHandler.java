@@ -2,6 +2,8 @@ package ai.hyperlearning.ontopop.cloud.azure.data.ontology.validator;
 
 import org.springframework.cloud.function.adapter.azure.FunctionInvoker;
 import com.microsoft.azure.functions.ExecutionContext;
+import com.microsoft.azure.functions.annotation.AccessRights;
+import com.microsoft.azure.functions.annotation.Cardinality;
 import com.microsoft.azure.functions.annotation.FunctionName;
 import com.microsoft.azure.functions.annotation.ServiceBusTopicTrigger;
 import ai.hyperlearning.ontopop.data.ontology.validator.function.OntologyValidatorFunctionModel;
@@ -38,12 +40,16 @@ public class OntologyValidatorFunctionAzureHandler
     @FunctionName("ontologyValidatorFunction")
     public void run(
             @ServiceBusTopicTrigger(
-                    name = "ontologyValidatorServiceBusTopicTrigger",
+                    name = "message",
                     topicName = "%TOPIC_NAME%",
                     subscriptionName = "%SUBSCRIPTION_NAME%",
-                    connection = "AZURE_SERVICEBUS_CONNECTION_STRING") 
+                    connection = "AZURE_SERVICEBUS_CONNECTION_STRING", 
+                    access = AccessRights.LISTEN, 
+                    dataType = "string", 
+                    cardinality = Cardinality.ONE, 
+                    isSessionsEnabled = false) 
                 String message,
-        final ExecutionContext context) {
+            final ExecutionContext context) {
         
         // Log the service bus trigger and message for debugging purposes
         context.getLogger().info("Ontology Validator Function triggered: "
@@ -56,6 +62,5 @@ public class OntologyValidatorFunctionAzureHandler
         handleRequest(ontologyValidatorFunctionModel, context);
         
     }
-    
 
 }
