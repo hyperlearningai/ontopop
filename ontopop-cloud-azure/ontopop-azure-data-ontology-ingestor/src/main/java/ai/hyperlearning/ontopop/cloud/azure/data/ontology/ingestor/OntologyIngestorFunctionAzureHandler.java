@@ -38,7 +38,7 @@ public class OntologyIngestorFunctionAzureHandler
     @FunctionName("ontologyIngestorFunction")
     public HttpResponseMessage ingest(
             @HttpTrigger(
-                    name = "ontologyIngestorHttpRequest",
+                    name = "request",
                     methods = {HttpMethod.POST},
                     authLevel = AuthorizationLevel.ANONYMOUS) 
                 HttpRequestMessage<String> request,
