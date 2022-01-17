@@ -7,7 +7,9 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+
 import javax.script.ScriptException;
+
 import org.apache.tinkerpop.gremlin.groovy.engine.GremlinExecutor;
 import org.apache.tinkerpop.gremlin.jsr223.ConcurrentBindings;
 import org.apache.tinkerpop.gremlin.process.traversal.IO;
@@ -22,8 +24,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Service;
+
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+
 import ai.hyperlearning.ontopop.graph.GraphDatabaseService;
 import ai.hyperlearning.ontopop.graph.model.SimpleGraphEdge;
 import ai.hyperlearning.ontopop.graph.model.SimpleGraphVertex;
@@ -58,22 +62,22 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
     protected ConcurrentBindings bindings = new ConcurrentBindings();
 
     @Value("${storage.graph.engine.supportsUserDefinedIds:true}")
-    protected boolean supportsUserDefinedIds;
+    protected Boolean supportsUserDefinedIds;
 
     @Value("${storage.graph.engine.supportsNonStringIds:true}")
-    protected boolean supportsNonStringIds;
+    protected Boolean supportsNonStringIds;
 
     @Value("${storage.graph.engine.supportsSchema:false}")
-    protected boolean supportsSchema;
+    protected Boolean supportsSchema;
 
     @Value("${storage.graph.engine.supportsTransactions:false}")
-    protected boolean supportsTransactions;
+    protected Boolean supportsTransactions;
 
     @Value("${storage.graph.engine.supportsGeoshape:false}")
-    protected boolean supportsGeoshape;
+    protected Boolean supportsGeoshape;
 
     @Value("${storage.graph.engine.supportsTraversals.by:true}")
-    protected boolean supportsTraversalsBy;
+    protected Boolean supportsTraversalsBy;
 
     /**************************************************************************
      * GRAPH INSTANCE MANAGEMENT
