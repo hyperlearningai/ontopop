@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.data.ontology.indexer.function;
+package ai.hyperlearning.ontopop.data.ontology.indexer.graph.function;
 
 import java.io.Serializable;
 

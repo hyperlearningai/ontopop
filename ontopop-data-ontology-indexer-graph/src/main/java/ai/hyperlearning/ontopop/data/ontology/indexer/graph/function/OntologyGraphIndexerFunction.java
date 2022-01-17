@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.data.ontology.indexer.function;
+package ai.hyperlearning.ontopop.data.ontology.indexer.graph.function;
 
 import java.util.function.Function;
 
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ai.hyperlearning.ontopop.data.ontology.indexer.OntologyGraphIndexerService;
+import ai.hyperlearning.ontopop.data.ontology.indexer.graph.OntologyGraphIndexerService;
 import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 
 /**

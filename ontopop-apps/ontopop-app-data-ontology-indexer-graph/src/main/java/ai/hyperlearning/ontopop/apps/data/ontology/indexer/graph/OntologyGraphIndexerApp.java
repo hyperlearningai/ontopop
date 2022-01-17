@@ -7,8 +7,8 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.context.annotation.ComponentScan;
 
-import ai.hyperlearning.ontopop.data.ontology.indexer.function.OntologyGraphIndexerFunction;
-import ai.hyperlearning.ontopop.data.ontology.indexer.function.OntologyGraphIndexerFunctionModel;
+import ai.hyperlearning.ontopop.data.ontology.indexer.graph.function.OntologyGraphIndexerFunction;
+import ai.hyperlearning.ontopop.data.ontology.indexer.graph.function.OntologyGraphIndexerFunctionModel;
 import ai.hyperlearning.ontopop.messaging.processors.DataPipelineModelledIndexerSource;
 
 /**

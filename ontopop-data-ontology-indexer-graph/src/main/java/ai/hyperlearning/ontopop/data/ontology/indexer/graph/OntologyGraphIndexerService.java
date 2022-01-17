@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.data.ontology.indexer;
+package ai.hyperlearning.ontopop.data.ontology.indexer.graph;
 
 import java.io.File;
 import java.io.IOException;
