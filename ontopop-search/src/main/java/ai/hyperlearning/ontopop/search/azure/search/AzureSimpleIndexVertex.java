@@ -1,6 +1,7 @@
 package ai.hyperlearning.ontopop.search.azure.search;
 
 import java.io.Serializable;
+
 import com.azure.search.documents.indexes.SearchableField;
 import com.azure.search.documents.indexes.SimpleField;
 
@@ -23,7 +24,7 @@ public class AzureSimpleIndexVertex implements Serializable {
     private String rdfsLabel;
     private String iri;
     private int ontologyId;
-    private String key;
+    private String vertexKey;
     private long latestWebhookEventId;
 
     // Example domain-specific Vertex Properties
@@ -89,12 +90,12 @@ public class AzureSimpleIndexVertex implements Serializable {
     }
 
     @SearchableField(isFilterable = false, isSortable = false)
-    public String getKey() {
-        return key;
+    public String getVertexKey() {
+        return vertexKey;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setVertexKey(String vertexKey) {
+        this.vertexKey = vertexKey;
     }
 
     @SimpleField(isFilterable = true, isSortable = true)
@@ -194,7 +195,7 @@ public class AzureSimpleIndexVertex implements Serializable {
                 + "rdfsLabel=" + rdfsLabel + ", "
                 + "iri=" + iri + ", " 
                 + "ontologyId=" + ontologyId + ", "
-                + "key=" + key + ", " 
+                + "vertexKey=" + vertexKey + ", " 
                 + "latestWebhookEventId=" + latestWebhookEventId 
                 + "]";
     }

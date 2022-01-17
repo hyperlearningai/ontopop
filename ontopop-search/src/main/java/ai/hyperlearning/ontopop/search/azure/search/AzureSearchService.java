@@ -195,8 +195,8 @@ public class AzureSearchService implements SearchService {
             azureVertex.setOntologyId(properties.containsKey("ontologyId")
                     ? (Integer) properties.get("ontologyId")
                     : null);
-            azureVertex.setKey(properties.containsKey("key")
-                    ? (String) properties.get("key")
+            azureVertex.setVertexKey(properties.containsKey("vertexKey")
+                    ? (String) properties.get("vertexKey")
                     : null);
             azureVertex.setLatestWebhookEventId(
                     properties.containsKey("latestWebhookEventId")
