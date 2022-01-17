@@ -200,6 +200,10 @@ storage:
                 className: org.apache.tinkerpop.gremlin.driver.ser.GraphBinaryMessageSerializerV1
                 ioRegistries: org.janusgraph.graphdb.tinkerpop.JanusGraphIoRegistry
                 serializeResultToString: false
+            bulkExecutor:
+                rateLimiter:
+                    enabled: false
+                    actionsPerSecond: 100
     search:
         service: elasticsearch
         indexNamePrefix: ontopop
