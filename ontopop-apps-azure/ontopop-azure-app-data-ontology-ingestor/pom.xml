@@ -45,7 +45,7 @@
         <deployment.azure.pricingTier>${env.ONTOPOP_AZURE_APP_DATA_ONTOLOGY_INGESTOR_PRICING_TIER}</deployment.azure.pricingTier>
         <deployment.azure.region>${env.ONTOPOP_AZURE_APP_DATA_ONTOLOGY_INGESTOR_REGION}</deployment.azure.region>
         <deployment.azure.appServicePlanName>${env.ONTOPOP_AZURE_APP_DATA_ONTOLOGY_INGESTOR_APP_SERVICE_PLAN_NAME}</deployment.azure.appServicePlanName>
-        <deployment.azure.appServicePlanResourceGroup>${env.ONTOPOP_AZURE_APP_DATA_ONTOLOGY_INGESTOR_APP_SERVICE_PLAN_RESOURCE_GROUP}</deployment.azure.appServicePlanResourceGroup>
+        <deployment.azure.appServicePlanResourceGroup>${env.ONTOPOP_AZURE_APP_DATA_ONTOLOGY_INGESTOR_APP_SERVICE_PLAN_RESOURCE_GROUP_NAME}</deployment.azure.appServicePlanResourceGroup>
         <main-class>ai.hyperlearning.ontopop.apps.azure.data.ontology.ingestor.OntologyIngestorAzureApp</main-class>
     </properties>
 

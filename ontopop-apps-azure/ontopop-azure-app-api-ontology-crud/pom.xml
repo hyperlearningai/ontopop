@@ -45,7 +45,7 @@
         <deployment.azure.pricingTier>${env.ONTOPOP_AZURE_APP_API_ONTOLOGY_CRUD_PRICING_TIER}</deployment.azure.pricingTier>
         <deployment.azure.region>${env.ONTOPOP_AZURE_APP_API_ONTOLOGY_CRUD_REGION}</deployment.azure.region>
         <deployment.azure.appServicePlanName>${env.ONTOPOP_AZURE_APP_API_ONTOLOGY_CRUD_APP_SERVICE_PLAN_NAME}</deployment.azure.appServicePlanName>
-        <deployment.azure.appServicePlanResourceGroup>${env.ONTOPOP_AZURE_APP_API_ONTOLOGY_CRUD_APP_SERVICE_PLAN_RESOURCE_GROUP}</deployment.azure.appServicePlanResourceGroup>
+        <deployment.azure.appServicePlanResourceGroup>${env.ONTOPOP_AZURE_APP_API_ONTOLOGY_CRUD_APP_SERVICE_PLAN_RESOURCE_GROUP_NAME}</deployment.azure.appServicePlanResourceGroup>
         <main-class>ai.hyperlearning.ontopop.apps.azure.api.ontology.crud.OntologyCRUDAPIAzureApp</main-class>
     </properties>
 
