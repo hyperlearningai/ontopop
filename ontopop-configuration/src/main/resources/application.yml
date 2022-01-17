@@ -204,6 +204,7 @@ storage:
                 rateLimiter:
                     enabled: false
                     actionsPerSecond: 100
+                    maximumAttempts: 10
     search:
         service: elasticsearch
         indexNamePrefix: ontopop
