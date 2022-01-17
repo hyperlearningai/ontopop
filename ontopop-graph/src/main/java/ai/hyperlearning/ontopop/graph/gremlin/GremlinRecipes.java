@@ -58,7 +58,7 @@ public class GremlinRecipes {
 	 * @return
 	 */
 	
-	private static String resolveHasPropertyValue(Object propertyValue) {
+	public static String resolveHasPropertyValue(Object propertyValue) {
 		return propertyValue instanceof String ? 
 				"'" + propertyValue.toString()
 						.replace("'", "")
@@ -73,7 +73,7 @@ public class GremlinRecipes {
 	 * @return
 	 */
 	
-	private static String resolveVertexId(
+	public static String resolveVertexId(
 			long vertexId, boolean supportsNonStringIds) {
 		return supportsNonStringIds ? 
 				"g.V(" + vertexId + ")" : 
@@ -87,7 +87,7 @@ public class GremlinRecipes {
 	 * @return
 	 */
 	
-	private static String resolveEdgeId(
+	public static String resolveEdgeId(
 			long edgeId, boolean supportsNonStringIds) {
 		return supportsNonStringIds ? 
 				"g.E(" + edgeId + ")" :
