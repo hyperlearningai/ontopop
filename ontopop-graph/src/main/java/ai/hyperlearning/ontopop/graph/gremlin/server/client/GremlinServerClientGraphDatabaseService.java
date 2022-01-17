@@ -78,6 +78,9 @@ public class GremlinServerClientGraphDatabaseService
     
     @Value("${storage.graph.gremlin-server.bulkExecutor.rateLimiter.actionsPerSecond:100}")
     protected Integer rateLimiterActionsPerSecond;
+    
+    @Value("${storage.graph.gremlin-server.bulkExecutor.rateLimiter.maximumAttempts:10}")
+    protected Integer rateLimiterMaximumAttempts;
 
     protected Client client;
 
@@ -384,18 +387,73 @@ public class GremlinServerClientGraphDatabaseService
     @Override
     public void deleteVertices()
             throws InterruptedException, ExecutionException {
-        String query = GremlinRecipes.deleteVertices();
-        LOGGER.debug("Gremlin Query - Delete Vertices: {}", query);
-        client.submit(query).all().get();
+    
+        if ( rateLimiterEnabled ) {
+            
+            int counter = 0;
+            while(true) {
+                
+                try {
+                    
+                    String query = GremlinRecipes.deleteVertices();
+                    LOGGER.debug("Gremlin Query - Delete Vertices: {}", query);
+                    client.submit(query).all().get();
+                    TimeUnit.SECONDS.sleep(RATE_LIMITER_WAIT_SECONDS);
+                    break;
+                    
+                } catch (Exception e) {
+                    TimeUnit.SECONDS.sleep(RATE_LIMITER_WAIT_SECONDS);
+                    if (++counter == rateLimiterMaximumAttempts)
+                        throw e;
+                }
+                
+            }
+            
+        } else {
+            
+            String query = GremlinRecipes.deleteVertices();
+            LOGGER.debug("Gremlin Query - Delete Vertices: {}", query);
+            client.submit(query).all().get();
+            
+        }
+    
     }
 
     @Override
     public void deleteVertices(String propertyKey, Object propertyValue)
             throws InterruptedException, ExecutionException {
-        String query =
-                GremlinRecipes.deleteVertices(propertyKey, propertyValue);
-        LOGGER.debug("Gremlin Query - Delete Vertices: {}", query);
-        client.submit(query).all().get();
+        
+        if ( rateLimiterEnabled ) {
+            
+            int counter = 0;
+            while(true) {
+                
+                try {
+                    
+                    String query = GremlinRecipes.deleteVertices(
+                            propertyKey, propertyValue);
+                    LOGGER.debug("Gremlin Query - Delete Vertices: {}", query);
+                    client.submit(query).all().get();
+                    TimeUnit.SECONDS.sleep(RATE_LIMITER_WAIT_SECONDS);
+                    break;
+                    
+                } catch (Exception e) {
+                    TimeUnit.SECONDS.sleep(RATE_LIMITER_WAIT_SECONDS);
+                    if (++counter == rateLimiterMaximumAttempts)
+                        throw e;
+                }
+                
+            }
+            
+        } else {
+            
+            String query =
+                    GremlinRecipes.deleteVertices(propertyKey, propertyValue);
+            LOGGER.debug("Gremlin Query - Delete Vertices: {}", query);
+            client.submit(query).all().get();
+            
+        }
+        
     }
 
     /**************************************************************************
@@ -558,17 +616,73 @@ public class GremlinServerClientGraphDatabaseService
 
     @Override
     public void deleteEdges() throws InterruptedException, ExecutionException {
-        String query = GremlinRecipes.deleteEdges();
-        LOGGER.debug("Gremlin Query - Delete Edges: {}", query);
-        client.submit(query).all().get();
+        
+        if ( rateLimiterEnabled ) {
+            
+            int counter = 0;
+            while(true) {
+                
+                try {
+                    
+                    String query = GremlinRecipes.deleteEdges();
+                    LOGGER.debug("Gremlin Query - Delete Edges: {}", query);
+                    client.submit(query).all().get();
+                    TimeUnit.SECONDS.sleep(RATE_LIMITER_WAIT_SECONDS);
+                    break;
+                    
+                } catch (Exception e) {
+                    TimeUnit.SECONDS.sleep(RATE_LIMITER_WAIT_SECONDS);
+                    if (++counter == rateLimiterMaximumAttempts)
+                        throw e;
+                }
+                
+            }
+            
+        } else {
+            
+            String query = GremlinRecipes.deleteEdges();
+            LOGGER.debug("Gremlin Query - Delete Edges: {}", query);
+            client.submit(query).all().get();
+            
+        }
+        
     }
 
     @Override
     public void deleteEdges(String propertyKey, Object propertyValue)
             throws InterruptedException, ExecutionException {
-        String query = GremlinRecipes.deleteEdges(propertyKey, propertyValue);
-        LOGGER.debug("Gremlin Query - Delete Edges: {}", query);
-        client.submit(query).all().get();
+        
+        if ( rateLimiterEnabled ) {
+            
+            int counter = 0;
+            while(true) {
+                
+                try {
+                    
+                    String query = GremlinRecipes
+                            .deleteEdges(propertyKey, propertyValue);
+                    LOGGER.debug("Gremlin Query - Delete Edges: {}", query);
+                    client.submit(query).all().get();
+                    TimeUnit.SECONDS.sleep(RATE_LIMITER_WAIT_SECONDS);
+                    break;
+                    
+                } catch (Exception e) {
+                    TimeUnit.SECONDS.sleep(RATE_LIMITER_WAIT_SECONDS);
+                    if (++counter == rateLimiterMaximumAttempts)
+                        throw e;
+                }
+                
+            }
+            
+        } else {
+            
+            String query = GremlinRecipes
+                    .deleteEdges(propertyKey, propertyValue);
+            LOGGER.debug("Gremlin Query - Delete Edges: {}", query);
+            client.submit(query).all().get();
+            
+        }
+        
     }
 
     /**************************************************************************

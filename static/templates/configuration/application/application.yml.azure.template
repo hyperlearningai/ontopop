@@ -193,6 +193,7 @@ storage:
                 rateLimiter:
                     enabled: true
                     actionsPerSecond: 35
+                    maximumAttempts: 10
     search:
         service: azure-search
         indexNamePrefix: ontopop
