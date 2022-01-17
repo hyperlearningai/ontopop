@@ -1,0 +1,186 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+    xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Parent Project -->
+    <parent>
+        <groupId>ai.hyperlearning.ontopop</groupId>
+        <artifactId>ontopop-apps-azure</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <!-- Module Metadata -->
+    <artifactId>ontopop-azure-function-app-data-ontology-parser</artifactId>
+    <name>ontopop-azure-function-app-data-ontology-parser</name>
+    <packaging>jar</packaging>
+    <description>OntoPop - Microsoft Azure Ontology Parsing Service Serverless Function</description>
+    <url>https://ontopop.com</url>
+    <organization>
+        <name>HyperLearning AI</name>
+        <url>https://hyperlearning.ai</url>
+    </organization>
+    <developers>
+        <developer>
+            <id>jillurquddus</id>
+            <name>Jillur Quddus</name>
+            <email>contactus@hyperlearning.ai</email>
+            <url>https://hyperlearning.ai/team/jillurquddus</url>
+            <organization>HyperLearning AI</organization>
+            <organizationUrl>https://hyperlearning.ai</organizationUrl>
+            <roles>
+                <role>Chief Data Scientist</role>
+                <role>Principal Polyglot Software Engineer</role>
+            </roles>
+            <timezone>Europe/London</timezone>
+        </developer>
+    </developers>
+
+    <!-- Module Properties -->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <deployment.azure.function.subscriptionId>${env.ONTOPOP_AZURE_FUNCTION_APP_DATA_ONTOLOGY_PARSER_SUBSCRIPTION_ID}</deployment.azure.function.subscriptionId>
+        <deployment.azure.function.resourceGroup>${env.ONTOPOP_AZURE_FUNCTION_APP_DATA_ONTOLOGY_PARSER_RESOURCE_GROUP_NAME}</deployment.azure.function.resourceGroup>
+        <deployment.azure.function.appName>${env.ONTOPOP_AZURE_FUNCTION_APP_DATA_ONTOLOGY_PARSER_APP_NAME}</deployment.azure.function.appName>
+        <deployment.azure.function.region>${env.ONTOPOP_AZURE_FUNCTION_APP_DATA_ONTOLOGY_PARSER_REGION}</deployment.azure.function.region>
+        <deployment.azure.function.extension.version>~4</deployment.azure.function.extension.version>
+        <start-class>ai.hyperlearning.ontopop.apps.azure.functions.data.ontology.parser.OntologyParserAzureFunctionApp</start-class>
+    </properties>
+
+    <!-- Module Dependencies -->
+    <dependencies>
+
+        <!-- OntoPop -->
+        <dependency>
+            <groupId>ai.hyperlearning.ontopop</groupId>
+            <artifactId>ontopop-data-ontology-parser</artifactId>
+        </dependency>
+
+        <!-- Spring Cloud Function -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-function-adapter-azure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-function-webflux</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
+
+    <!-- Module Build -->
+    <build>
+
+        <!-- Plugins -->
+        <plugins>
+
+            <!-- Azure Functions Maven Plugin -->
+            <plugin>
+                <groupId>com.microsoft.azure</groupId>
+                <artifactId>azure-functions-maven-plugin</artifactId>
+                <configuration>
+                    <subscriptionId>${deployment.azure.function.subscriptionId}</subscriptionId>
+                    <resourceGroup>${deployment.azure.function.resourceGroup}</resourceGroup>
+                    <appName>${deployment.azure.function.appName}</appName>
+                    <region>${deployment.azure.function.region}</region>
+                    <runtime>
+                        <os>linux</os>
+                        <javaVersion>${java.version}</javaVersion>
+                    </runtime>
+                    <appSettings>
+                        <property>
+                            <name>FUNCTIONS_EXTENSION_VERSION</name>
+                            <value>${deployment.azure.function.extension.version}</value>
+                        </property>
+                        <property>
+                            <name>FUNCTIONS_WORKER_RUNTIME</name>
+                            <value>java</value>
+                        </property>
+                    </appSettings>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>package-functions</id>
+                        <goals>
+                            <goal>package</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Maven Resources Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <overwrite>true</overwrite>
+                            <outputDirectory>
+                                ${project.build.directory}/azure-functions/${deployment.azure.function.appName}
+                            </outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/src/main/azure</directory>
+                                    <includes>
+                                        <include>**</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Maven Dependency Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/azure-functions/${deployment.azure.function.appName}/lib</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                            <includeScope>runtime</includeScope>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Maven Clean Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>obj</directory>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+
+            <!-- Spring Boot Maven Plugin -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+</project>
