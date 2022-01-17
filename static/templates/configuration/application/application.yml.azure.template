@@ -189,6 +189,10 @@ storage:
                 className: 
                 ioRegistries: 
                 serializeResultToString: 
+            bulkExecutor:
+                rateLimiter:
+                    enabled: true
+                    actionsPerSecond: 35
     search:
         service: azure-search
         indexNamePrefix: ontopop
