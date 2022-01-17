@@ -7,7 +7,10 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
 import javax.script.ScriptException;
+
 import org.apache.tinkerpop.gremlin.driver.Client;
 import org.apache.tinkerpop.gremlin.driver.Result;
 import org.apache.tinkerpop.gremlin.driver.ResultSet;
@@ -20,6 +23,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+
 import ai.hyperlearning.ontopop.graph.GraphDatabaseService;
 import ai.hyperlearning.ontopop.graph.gremlin.GremlinRecipes;
 import ai.hyperlearning.ontopop.graph.model.SimpleGraphEdge;
@@ -41,29 +48,36 @@ public class GremlinServerClientGraphDatabaseService
     private static final Logger LOGGER = LoggerFactory
             .getLogger(GremlinServerClientGraphDatabaseService.class);
 
-    private static final String VERTEX_ID_PROPERTY_KEY = "vertexId";
+    protected static final String VERTEX_ID_PROPERTY_KEY = "vertexId";
+    protected static final int RATE_LIMITER_WAIT_SECONDS = 1;
 
     @Autowired(required = false)
     @Qualifier("gremlinServerClient")
     private Client gremlinServerClient;
 
     @Value("${storage.graph.engine.supportsUserDefinedIds:true}")
-    protected boolean supportsUserDefinedIds;
+    protected Boolean supportsUserDefinedIds;
 
     @Value("${storage.graph.engine.supportsNonStringIds:false}")
-    protected boolean supportsNonStringIds;
+    protected Boolean supportsNonStringIds;
 
     @Value("${storage.graph.engine.supportsSchema:false}")
-    protected boolean supportsSchema;
+    protected Boolean supportsSchema;
 
     @Value("${storage.graph.engine.supportsTransactions:false}")
-    protected boolean supportsTransactions;
+    protected Boolean supportsTransactions;
 
     @Value("${storage.graph.engine.supportsGeoshape:false}")
-    protected boolean supportsGeoshape;
+    protected Boolean supportsGeoshape;
 
     @Value("${storage.graph.engine.supportsTraversals.by:false}")
-    protected boolean supportsTraversalsBy;
+    protected Boolean supportsTraversalsBy;
+    
+    @Value("${storage.graph.gremlin-server.bulkExecutor.rateLimiter.enabled:false}")
+    protected Boolean rateLimiterEnabled;
+    
+    @Value("${storage.graph.gremlin-server.bulkExecutor.rateLimiter.actionsPerSecond:100}")
+    protected Integer rateLimiterActionsPerSecond;
 
     protected Client client;
 
@@ -239,31 +253,89 @@ public class GremlinServerClientGraphDatabaseService
     @Override
     public void addVertices(String label, Set<SimpleGraphVertex> vertices)
             throws InterruptedException, ExecutionException {
+        
         if (!vertices.isEmpty()) {
-            for (SimpleGraphVertex vertex : vertices) {
-                String query = GremlinRecipes.addVertex(label,
-                        vertex.getVertexId(), vertex.getProperties(),
-                        supportsNonStringIds, supportsUserDefinedIds);
-                LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
-                client.submit(query).all().get();
+            
+            if ( rateLimiterEnabled ) {
+                
+                // Partition the set of vertices
+                Iterable<List<SimpleGraphVertex>> verticesSubLists =
+                    Iterables.partition(vertices, rateLimiterActionsPerSecond);
+                for (List<SimpleGraphVertex> verticesSubList : verticesSubLists) {
+                    
+                    // Bulk load the vertices in this vertices sublist
+                    for (SimpleGraphVertex vertex : verticesSubList) {
+                        String query = GremlinRecipes.addVertex(label,
+                                vertex.getVertexId(), vertex.getProperties(),
+                                supportsNonStringIds, supportsUserDefinedIds);
+                        LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
+                        client.submit(query).all().get();
+                        
+                    }
+                    
+                    TimeUnit.SECONDS.sleep(RATE_LIMITER_WAIT_SECONDS);
+                    
+                }
+                
+            } else {
+                
+                for (SimpleGraphVertex vertex : vertices) {
+                    String query = GremlinRecipes.addVertex(label,
+                            vertex.getVertexId(), vertex.getProperties(),
+                            supportsNonStringIds, supportsUserDefinedIds);
+                    LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
+                    client.submit(query).all().get();
+                }
+                
             }
+            
         }
+        
     }
-
+    
     @Override
     public void addVertices(String label,
             List<Map<String, Object>> propertyMaps)
             throws InterruptedException, ExecutionException {
+        
         if (!propertyMaps.isEmpty()) {
-            for (Map<String, Object> properties : propertyMaps) {
-                long vertexId = (Long) properties.get(VERTEX_ID_PROPERTY_KEY);
-                String query =
-                        GremlinRecipes.addVertex(label, vertexId, properties,
-                                supportsNonStringIds, supportsUserDefinedIds);
-                LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
-                client.submit(query).all().get();
+            
+            if ( rateLimiterEnabled ) {
+                
+                // Partition the list of property maps
+                List<List<Map<String, Object>>> propertyMapsSubLists =
+                    Lists.partition(propertyMaps, rateLimiterActionsPerSecond);
+                for (List<Map<String, Object>> propertyMapsSubList : propertyMapsSubLists) {
+                    
+                    // Bulk load the vertices in this property map sublist
+                    for (Map<String, Object> properties : propertyMapsSubList) {
+                        long vertexId = (Long) properties.get(VERTEX_ID_PROPERTY_KEY);
+                        String query =
+                                GremlinRecipes.addVertex(label, vertexId, properties,
+                                        supportsNonStringIds, supportsUserDefinedIds);
+                        LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
+                        client.submit(query).all().get();
+                    }
+                    
+                    TimeUnit.SECONDS.sleep(RATE_LIMITER_WAIT_SECONDS);
+                    
+                }
+                
+            } else {
+                
+                for (Map<String, Object> properties : propertyMaps) {
+                    long vertexId = (Long) properties.get(VERTEX_ID_PROPERTY_KEY);
+                    String query =
+                            GremlinRecipes.addVertex(label, vertexId, properties,
+                                    supportsNonStringIds, supportsUserDefinedIds);
+                    LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
+                    client.submit(query).all().get();
+                }
+                
             }
+            
         }
+        
     }
 
     @Override
@@ -328,9 +400,6 @@ public class GremlinServerClientGraphDatabaseService
 
     /**************************************************************************
      * EDGE MANAGEMENT
-     * 
-     * @throws ExecutionException
-     * @throws InterruptedException
      *************************************************************************/
 
     @Override
@@ -406,15 +475,43 @@ public class GremlinServerClientGraphDatabaseService
     @Override
     public void addEdges(List<SimpleGraphEdge> edges)
             throws InterruptedException, ExecutionException {
+        
         if (!edges.isEmpty()) {
-            for (SimpleGraphEdge edge : edges) {
-                String query = GremlinRecipes.addEdge(edge.getSourceVertexId(),
-                        edge.getTargetVertexId(), edge.getLabel(),
-                        edge.getProperties(), supportsNonStringIds);
-                LOGGER.debug("Gremlin Query - Add Edge: {}", query);
-                client.submit(query).all().get();
+            
+            if ( rateLimiterEnabled ) {
+                
+                // Partition the list of edges
+                Iterable<List<SimpleGraphEdge>> edgesSubLists =
+                    Iterables.partition(edges, rateLimiterActionsPerSecond);
+                for (List<SimpleGraphEdge> edgesSubList : edgesSubLists) {
+                    
+                    // Bulk load the edges in this edges sublist
+                    for (SimpleGraphEdge edge : edgesSubList) {
+                        String query = GremlinRecipes.addEdge(edge.getSourceVertexId(),
+                                edge.getTargetVertexId(), edge.getLabel(),
+                                edge.getProperties(), supportsNonStringIds);
+                        LOGGER.debug("Gremlin Query - Add Edge: {}", query);
+                        client.submit(query).all().get();
+                    }
+                    
+                    TimeUnit.SECONDS.sleep(RATE_LIMITER_WAIT_SECONDS);
+                    
+                }
+                
+            } else {
+                
+                for (SimpleGraphEdge edge : edges) {
+                    String query = GremlinRecipes.addEdge(edge.getSourceVertexId(),
+                            edge.getTargetVertexId(), edge.getLabel(),
+                            edge.getProperties(), supportsNonStringIds);
+                    LOGGER.debug("Gremlin Query - Add Edge: {}", query);
+                    client.submit(query).all().get();
+                }
+                
             }
+            
         }
+        
     }
 
     @Override
