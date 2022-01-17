@@ -36,7 +36,7 @@ public class OntologyParserAzureFunctionHandler
         
         // Log the service bus trigger and message for debugging purposes
         context.getLogger().info("Ontology Parser Function triggered: "
-                + "New service bus event - Ontology validation event.");
+                + "New service bus event - Ontology validated event.");
         context.getLogger().info("Service bus message payload: " + message);
         
         // Execute the Ontology Parser function
