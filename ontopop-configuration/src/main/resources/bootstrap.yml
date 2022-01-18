@@ -3,6 +3,7 @@ spring:
         name: ontopop
     cloud:
         vault:
+            enabled: true
             host: localhost
             port: 8200
             scheme: http
@@ -19,3 +20,11 @@ azure:
         enabled: false
         tenant-id: ${AZURE_KEYVAULT_TENANT_ID}
         uri: ${AZURE_KEYVAULT_URI}
+aws:
+    secretsmanager:
+        enabled: false
+        name: ontopop
+        prefix: /secret
+        defaultContext: application
+        failFast: true
+        region: eu-west-2

@@ -1,0 +1,220 @@
+spring:
+    application:
+        name: ontopop
+    cloud:
+        stream:
+            binders:
+                rabbitmq:
+                    type: rabbit
+                    default-candidate: true
+                    environment:
+                        spring:
+                            rabbitmq:
+                                host: ${rabbitmq-host}
+                                port: ${rabbitmq-port}
+                                username: ${rabbitmq-username}
+                                password: ${rabbitmq-password}
+                                virtual-host: /
+                azure_service_bus:
+                    type: servicebus-topic
+                    default-candidate: false
+                    environment:
+                        spring:
+                            cloud:
+                                azure:
+                                    servicebus:
+                                        connection-string:
+            bindings:
+                ingestedPublicationChannel:
+                    destination: ontopop.data.ingested
+                    binder: rabbitmq
+                ingestedConsumptionChannel:
+                    destination: ontopop.data.ingested
+                    group: ontopop.data.ingested.consumers
+                    binder: rabbitmq
+                validatedPublicationChannel:
+                    destination: ontopop.data.validated
+                    binder: rabbitmq
+                validatedConsumptionChannel:
+                    destination: ontopop.data.validated
+                    group: ontopop.data.validated.consumers
+                    binder: rabbitmq
+                parsedPublicationChannel:
+                    destination: ontopop.data.parsed
+                    binder: rabbitmq
+                parsedConsumptionChannel:
+                    destination: ontopop.data.parsed
+                    group: ontopop.data.parsed.consumers
+                    binder: rabbitmq
+                modelledPublicationChannel:
+                    destination: ontopop.data.modelled
+                    binder: rabbitmq
+                modelledLoadersConsumptionChannel:
+                    destination: ontopop.data.modelled
+                    group: ontopop.data.modelled.consumers.loaders
+                    binder: rabbitmq
+                modelledIndexersConsumptionChannel:
+                    destination: ontopop.data.modelled
+                    group: ontopop.data.modelled.consumers.indexers
+                    binder: rabbitmq
+                modelledLoadedPublicationChannel:
+                    destination: ontopop.data.modelled.loaded
+                    binder: rabbitmq
+                modelledLoadedConsumptionChannel:
+                    destination: ontopop.data.modelled.loaded
+                    group: ontopop.data.modelled.loaded.consumers
+                    binder: rabbitmq
+                modelledIndexedPublicationChannel:
+                    destination: ontopop.data.modelled.indexed
+                    binder: rabbitmq
+                modelledIndexedConsumptionChannel:
+                    destination: ontopop.data.modelled.indexed
+                    group: ontopop.data.modelled.indexed.consumers
+                    binder: rabbitmq
+                validatedLoadedPublicationChannel:
+                    destination: ontopop.data.validated.loaded
+                    binder: rabbitmq
+                validatedLoadedConsumptionChannel:
+                    destination: ontopop.data.validated.loaded
+                    group: ontopop.data.validated.loaded.consumers
+                    binder: rabbitmq
+            servicebus:
+                topic:
+                    bindings:
+                        ingestedConsumptionChannel:
+                            consumer:
+                                checkpoint-mode: MANUAL
+                        validatedConsumptionChannel:
+                            consumer:
+                                checkpoint-mode: MANUAL
+                        parsedConsumptionChannel:
+                            consumer:
+                                checkpoint-mode: MANUAL
+                        modelledLoadersConsumptionChannel:
+                            consumer:
+                                checkpoint-mode: MANUAL
+                        modelledIndexersConsumptionChannel:
+                            consumer:
+                                checkpoint-mode: MANUAL
+                        modelledLoadedConsumptionChannel:
+                            consumer:
+                                checkpoint-mode: MANUAL
+                        modelledIndexedConsumptionChannel:
+                            consumer:
+                                checkpoint-mode: MANUAL
+                        validatedLoadedConsumptionChannel:
+                            consumer:
+                                checkpoint-mode: MANUAL
+            function:
+                definition: consume;supply;
+            poller:
+                fixed-delay: 1000
+                initial-delay: 0
+            default:
+                contentType: application/json
+    datasource:
+        driver-class-name: ${spring-datasource-driver-class-name}
+        url: ${spring-datasource-url}
+        username: ${spring-datasource-username}
+        password: ${spring-datasource-password}
+    jackson:
+        serialization:
+            write_dates_as_timestamps: false
+    jpa:
+        hibernate:
+            ddl-auto: update
+        show-sql: false
+security:
+    secrets:
+        service: aws-secrets-manager
+        aws-secrets-manager: 
+            access-key-id: ${aws-secrets-manager-access-key-id}
+            access-key-secret: ${aws-secrets-manager-access-key-secret}
+            region: eu-west-2
+        azure-key-vault:
+            url:
+            clientId:
+            clientSecret:
+            tenantId:
+        hashicorp-vault:
+            paths:
+                subpaths:
+                    ontologies: /ontologies/
+storage:
+    object:
+        service: aws-s3
+        local:
+            baseUri:
+        aws-s3:
+            access-key-id: ${aws-s3-access-key-id}
+            access-key-secret: ${aws-s3-access-key-secret}
+            region: eu-west-2
+            bucket-name: ontopop
+        azure-storage:
+            account-name:
+            account-key:
+            blob-endpoint:
+            container-name:
+        containers:
+            ingested: ingested
+            validated: validated
+            parsed: parsed
+            modelled: modelled
+            loaded:
+                triplestore: loaded/triplestore
+                graph: loaded/graph
+            indexed: indexed
+        patterns:
+            fileNameIdsSeparator: "_"
+    triplestore:
+        service: apache-jena
+        apache-jena:
+            fuseki:
+                url:
+        ontotext-graphdb:
+            url:
+    graph:
+        service: tinkergraph
+        engine:
+            supportsUserDefinedIds: false
+            supportsNonStringIds: true
+            supportsSchema: true
+            supportsTransactions: true
+            supportsGeoshape: true
+            supportsTraversals:
+                by: true
+        gremlin-graph:
+            configuration-filename: gremlin-graph.properties
+        gremlin-server:
+            host:
+            port:
+            username:
+            password:
+            enableSsl:
+            remoteTraversalSourceName:
+            serializer:
+                className:
+                ioRegistries:
+                serializeResultToString:
+            bulkExecutor:
+                rateLimiter:
+                    enabled: false
+                    actionsPerSecond:
+                    maximumAttempts:
+    search:
+        service: elasticsearch
+        indexNamePrefix: ontopop
+        elasticsearch:
+            url: ${elasticsearch-url}
+            shards: 1
+            replicas: 0
+        azure-search:
+            endpoint:
+            key:
+web:
+    client:
+        codecs:
+            maxInMemorySize: 10
+    azure:
+        webapps:
+            port: 80
