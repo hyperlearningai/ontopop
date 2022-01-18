@@ -75,6 +75,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <revision>2.0.0</revision>
         <spring-cloud-dependencies.version>2021.0.0</spring-cloud-dependencies.version>
+        <spring-cloud-starter-aws-secrets-manager-config.version>2.2.6.RELEASE</spring-cloud-starter-aws-secrets-manager-config.version>
         <springdoc-openapi-ui.version>1.5.12</springdoc-openapi-ui.version>
         <tinkergraph-gremlin.version>3.5.1</tinkergraph-gremlin.version>
     </properties>
@@ -420,6 +421,13 @@
                 <version>${spring-cloud-dependencies.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            
+            <!-- Spring Cloud Starter AWS Secrets Manager  -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-aws-secrets-manager-config</artifactId>
+                <version>${spring-cloud-starter-aws-secrets-manager-config.version}</version>
             </dependency>
 
         </dependencies>

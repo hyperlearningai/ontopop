@@ -34,7 +34,7 @@ public class AwsSecretsManagerClientConfig {
     @Value("${security.secrets.aws-secrets-manager.region}")
     private String region;
 
-    @Bean
+    @Bean("awsSecretsManager")
     public AWSSecretsManager getSecretsManagerClient() {
         AWSCredentials credentials =
                 new BasicAWSCredentials(accessKeyId, accessKeySecret);
