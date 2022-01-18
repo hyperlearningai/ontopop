@@ -16,7 +16,7 @@ import org.springframework.messaging.SubscribableChannel;
 public interface DataPipelineModelledIndexerSource {
 
     @Input
-    SubscribableChannel modelledConsumptionChannel();
+    SubscribableChannel modelledIndexersConsumptionChannel();
 
     @Output
     MessageChannel modelledIndexedPublicationChannel();

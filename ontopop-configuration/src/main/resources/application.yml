@@ -49,9 +49,13 @@ spring:
                 modelledPublicationChannel:
                     destination: ontopop.data.modelled
                     binder: rabbitmq
-                modelledConsumptionChannel:
+                modelledLoadersConsumptionChannel:
                     destination: ontopop.data.modelled
-                    group: ontopop.data.modelled.consumers
+                    group: ontopop.data.modelled.consumers.loaders
+                    binder: rabbitmq
+                modelledIndexersConsumptionChannel:
+                    destination: ontopop.data.modelled
+                    group: ontopop.data.modelled.consumers.indexers
                     binder: rabbitmq
                 modelledLoadedPublicationChannel:
                     destination: ontopop.data.modelled.loaded
@@ -86,7 +90,10 @@ spring:
                         parsedConsumptionChannel:
                             consumer:
                                 checkpoint-mode: MANUAL
-                        modelledConsumptionChannel:
+                        modelledLoadersConsumptionChannel:
+                            consumer:
+                                checkpoint-mode: MANUAL
+                        modelledIndexersConsumptionChannel:
                             consumer:
                                 checkpoint-mode: MANUAL
                         modelledLoadedConsumptionChannel:

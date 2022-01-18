@@ -31,7 +31,7 @@ public class OntologyGraphIndexerApp {
         SpringApplication.run(OntologyGraphIndexerApp.class, args);
     }
     
-    @StreamListener("modelledConsumptionChannel")
+    @StreamListener("modelledIndexersConsumptionChannel")
     public void processModelledOntology(String payload) {
         
         // Execute the Ontology Graph Indexer Function

@@ -31,7 +31,7 @@ public class OntologyGraphLoaderApp {
         SpringApplication.run(OntologyGraphLoaderApp.class, args);
     }
     
-    @StreamListener("modelledConsumptionChannel")
+    @StreamListener("modelledLoadersConsumptionChannel")
     public void processModelledOntology(String payload) {
         
         // Execute the Ontology Graph Loader Function
