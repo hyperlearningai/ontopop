@@ -11,7 +11,10 @@
  * 
  * NOTE: You must ensure that JanusGraph server is NOT running prior to
  * executing this script, otherwise the JanusGraph Management API cannot
- * be instantiated, and an error will be returned.  
+ * be instantiated, and an error will be returned.
+ *
+ * @author jillurquddus
+ * @since 2.0.0
  */
 
 // Open the JanusGraph management API - replace the .properties file with your own
