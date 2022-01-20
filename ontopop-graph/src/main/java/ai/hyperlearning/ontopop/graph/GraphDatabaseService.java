@@ -9,7 +9,6 @@ import java.util.concurrent.ExecutionException;
 
 import javax.script.ScriptException;
 
-import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.util.TransactionException;
 
 import ai.hyperlearning.ontopop.graph.model.SimpleGraphEdge;
@@ -132,7 +131,7 @@ public interface GraphDatabaseService {
     public void addEdges(List<SimpleGraphEdge> edges)
             throws InterruptedException, ExecutionException;
 
-    public Object addEdge(Vertex sourceVertex, Vertex targetVertex,
+    public Object addEdge(long sourceVertexId, long targetVertexId,
             String label, Map<String, Object> properties)
             throws InterruptedException, ExecutionException;
 
