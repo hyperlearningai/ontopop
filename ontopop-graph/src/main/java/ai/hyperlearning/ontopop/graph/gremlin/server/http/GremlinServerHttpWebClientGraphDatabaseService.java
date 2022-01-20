@@ -1,10 +1,10 @@
 package ai.hyperlearning.ontopop.graph.gremlin.server.http;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.tinkerpop.gremlin.structure.util.TransactionException;
 import org.slf4j.Logger;
@@ -18,6 +18,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 
 import ai.hyperlearning.ontopop.graph.GraphDatabaseService;
 import ai.hyperlearning.ontopop.graph.gremlin.GremlinRecipes;
@@ -43,6 +46,7 @@ public class GremlinServerHttpWebClientGraphDatabaseService
     
     protected static final boolean ITERATE = true;
     protected static final String VERTEX_ID_PROPERTY_KEY = "vertexId";
+    protected static final int RATE_LIMITER_WAIT_SECONDS = 1;
     
     @Autowired(required = false)
     @Qualifier("gremlinServerHttpWebClient")
@@ -65,6 +69,12 @@ public class GremlinServerHttpWebClientGraphDatabaseService
 
     @Value("${storage.graph.engine.supportsTraversals.by:false}")
     protected Boolean supportsTraversalsBy;
+    
+    @Value("${storage.graph.gremlin-server.bulkExecutor.rateLimiter.enabled:false}")
+    protected Boolean rateLimiterEnabled;
+    
+    @Value("${storage.graph.gremlin-server.bulkExecutor.rateLimiter.actionsPerSecond:100}")
+    protected Integer rateLimiterActionsPerSecond;
     
     protected WebClient client;
     
@@ -168,7 +178,7 @@ public class GremlinServerHttpWebClientGraphDatabaseService
 
     @Override
     public void serializeGraph(String filepath) throws IOException {
-        sendNonBlockingRequest(GremlinRecipes.writeGraph(filepath, "gryo"));
+        sendBlockingRequest(GremlinRecipes.writeGraph(filepath, "gryo"));
     }
 
     @Override
@@ -248,71 +258,117 @@ public class GremlinServerHttpWebClientGraphDatabaseService
     }
 
     @Override
-    public void addVertices(String label, Set<SimpleGraphVertex> vertices) {
+    public void addVertices(String label, Set<SimpleGraphVertex> vertices) 
+            throws InterruptedException {
         
-        // Non-blocking requests to add vertices
-        List<Mono<ResponseEntity<String>>> futures = new ArrayList<>();
-        for (SimpleGraphVertex vertex : vertices) {
-            String query = GremlinRecipes.addVertex(label,
-                    vertex.getVertexId(), vertex.getProperties(),
-                    supportsNonStringIds, supportsUserDefinedIds, ITERATE);
-            LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
-            futures.add(sendNonBlockingRequest(query));
+        if (!vertices.isEmpty()) {
+            
+            if ( rateLimiterEnabled ) {
+                
+                // Partition the set of vertices
+                Iterable<List<SimpleGraphVertex>> verticesSubLists =
+                    Iterables.partition(vertices, rateLimiterActionsPerSecond);
+                for (List<SimpleGraphVertex> verticesSubList : verticesSubLists) {
+                    
+                    // Blocking requests to add vertices
+                    for (SimpleGraphVertex vertex : verticesSubList) {
+                        String query = GremlinRecipes.addVertex(label,
+                                vertex.getVertexId(), vertex.getProperties(),
+                                supportsNonStringIds, supportsUserDefinedIds, ITERATE);
+                        LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
+                        sendBlockingRequest(query);
+                    }
+                    TimeUnit.SECONDS.sleep(RATE_LIMITER_WAIT_SECONDS);
+                    
+                }
+                
+            } else {
+                
+                // Blocking requests to add vertices
+                for (SimpleGraphVertex vertex : vertices) {
+                    String query = GremlinRecipes.addVertex(label,
+                            vertex.getVertexId(), vertex.getProperties(),
+                            supportsNonStringIds, supportsUserDefinedIds, ITERATE);
+                    LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
+                    sendBlockingRequest(query);
+                }
+                
+            }
+            
         }
-        
-        // Block until all given publishers have completed
-        Mono<Void> all = Mono.when(futures);
-        all.block();
         
     }
 
     @Override
     public void addVertices(String label,
-            List<Map<String, Object>> propertyMaps) {
+            List<Map<String, Object>> propertyMaps) throws InterruptedException {
         
-        // Non-blocking requests to add vertices
-        List<Mono<ResponseEntity<String>>> futures = new ArrayList<>();
-        for (Map<String, Object> properties : propertyMaps) {
-            long vertexId = (Long) properties.get(VERTEX_ID_PROPERTY_KEY);
-            String query = GremlinRecipes.addVertex(label, 
-                    vertexId, properties,
-                    supportsNonStringIds, supportsUserDefinedIds, ITERATE);
-            LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
-            futures.add(sendNonBlockingRequest(query));
+        if (!propertyMaps.isEmpty()) {
+            
+            if ( rateLimiterEnabled ) {
+                
+                // Partition the list of property maps
+                List<List<Map<String, Object>>> propertyMapsSubLists =
+                    Lists.partition(propertyMaps, rateLimiterActionsPerSecond);
+                for (List<Map<String, Object>> propertyMapsSubList : propertyMapsSubLists) {
+                    
+                    // Blocking requests to add vertices
+                    for (Map<String, Object> properties : propertyMapsSubList) {
+                        long vertexId = (Long) properties.get(VERTEX_ID_PROPERTY_KEY);
+                        String query = GremlinRecipes.addVertex(label, 
+                                vertexId, properties,
+                                supportsNonStringIds, supportsUserDefinedIds, ITERATE);
+                        LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
+                        sendBlockingRequest(query);
+                    }
+                    TimeUnit.SECONDS.sleep(RATE_LIMITER_WAIT_SECONDS);
+                    
+                }
+                
+            } else {
+                
+                // Blocking requests to add vertices
+                for (Map<String, Object> properties : propertyMaps) {
+                    long vertexId = (Long) properties.get(VERTEX_ID_PROPERTY_KEY);
+                    String query = GremlinRecipes.addVertex(label, 
+                            vertexId, properties,
+                            supportsNonStringIds, supportsUserDefinedIds, ITERATE);
+                    LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
+                    sendBlockingRequest(query);
+                }
+                
+            }
+            
         }
-        
-        // Block until all given publishers have completed
-        Mono<Void> all = Mono.when(futures);
-        all.block();
         
     }
 
     @Override
-    public Mono<ResponseEntity<String>> addVertex(
+    public ResponseEntity<String> addVertex(
             String label, Map<String, Object> properties) {
         long vertexId = (Long) properties.get(VERTEX_ID_PROPERTY_KEY);
         String query = GremlinRecipes.addVertex(label, vertexId, properties,
                 supportsNonStringIds, supportsUserDefinedIds, ITERATE);
         LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
-        return sendNonBlockingRequest(query);
+        return sendBlockingRequest(query);
     }
 
     @Override
-    public Mono<ResponseEntity<String>> updateVertex(
+    public ResponseEntity<String> updateVertex(
             long vertexId, String propertyKey, Object propertyValue)  {
         String query = GremlinRecipes.updateVertex(vertexId, propertyKey,
                 propertyValue, supportsNonStringIds, ITERATE);
         LOGGER.debug("Gremlin Query - Update Vertex: {}", query);
-        return sendNonBlockingRequest(query);
+        return sendBlockingRequest(query);
     }
 
     @Override
-    public Mono<ResponseEntity<String>> updateVertex(
+    public ResponseEntity<String> updateVertex(
             long vertexId, Map<String, Object> properties) {
         String query = GremlinRecipes.updateVertex(vertexId, properties,
                 supportsNonStringIds, ITERATE);
         LOGGER.debug("Gremlin Query - Update Vertex: {}", query);
-        return sendNonBlockingRequest(query);
+        return sendBlockingRequest(query);
     }
 
     @Override
@@ -320,14 +376,14 @@ public class GremlinServerHttpWebClientGraphDatabaseService
         String query = GremlinRecipes.deleteVertex(
                 vertexId, supportsNonStringIds, ITERATE);
         LOGGER.debug("Gremlin Query - Delete Vertex: {}", query);
-        sendNonBlockingRequest(query);
+        sendBlockingRequest(query);
     }
 
     @Override
     public void deleteVertices() {
         String query = GremlinRecipes.deleteVertices(ITERATE);
         LOGGER.debug("Gremlin Query - Delete Vertices: {}", query);
-        sendNonBlockingRequest(query);
+        sendBlockingRequest(query);
     }
 
     @Override
@@ -401,52 +457,76 @@ public class GremlinServerHttpWebClientGraphDatabaseService
     }
 
     @Override
-    public void addEdges(List<SimpleGraphEdge> edges) {
+    public void addEdges(List<SimpleGraphEdge> edges) 
+            throws InterruptedException {
         
-        // Non-blocking requests to add edges
-        List<Mono<ResponseEntity<String>>> futures = new ArrayList<>();
-        for (SimpleGraphEdge edge : edges) {
-            String query = GremlinRecipes.addEdge(edge.getSourceVertexId(),
-                    edge.getTargetVertexId(), edge.getLabel(),
-                    edge.getProperties(), supportsNonStringIds, 
-                    supportsUserDefinedIds, ITERATE);
-            LOGGER.debug("Gremlin Query - Add Edge: {}", query);
-            futures.add(sendNonBlockingRequest(query));
+        if (!edges.isEmpty()) {
+            
+            if ( rateLimiterEnabled ) {
+                
+                // Partition the list of edges
+                Iterable<List<SimpleGraphEdge>> edgesSubLists =
+                    Iterables.partition(edges, rateLimiterActionsPerSecond);
+                for (List<SimpleGraphEdge> edgesSubList : edgesSubLists) {
+                    
+                    // Blocking requests to add edges
+                    for (SimpleGraphEdge edge : edgesSubList) {
+                        String query = GremlinRecipes.addEdge(edge.getSourceVertexId(),
+                                edge.getTargetVertexId(), edge.getLabel(),
+                                edge.getProperties(), supportsNonStringIds, 
+                                supportsUserDefinedIds, ITERATE);
+                        LOGGER.debug("Gremlin Query - Add Edge: {}", query);
+                        sendBlockingRequest(query);
+                    }
+                    TimeUnit.SECONDS.sleep(RATE_LIMITER_WAIT_SECONDS);
+                    
+                }
+                
+            } else {
+                
+                // Blocking requests to add edges
+                for (SimpleGraphEdge edge : edges) {
+                    String query = GremlinRecipes.addEdge(edge.getSourceVertexId(),
+                            edge.getTargetVertexId(), edge.getLabel(),
+                            edge.getProperties(), supportsNonStringIds, 
+                            supportsUserDefinedIds, ITERATE);
+                    LOGGER.debug("Gremlin Query - Add Edge: {}", query);
+                    sendBlockingRequest(query);
+                }
+                
+            }
+            
         }
-        
-        // Block until all given publishers have completed
-        Mono<Void> all = Mono.when(futures);
-        all.block();
         
     }
 
     @Override
-    public Mono<ResponseEntity<String>> addEdge(
+    public ResponseEntity<String> addEdge(
             long sourceVertexId, long targetVertexId,
             String label, Map<String, Object> properties) {
         String query = GremlinRecipes.addEdge(sourceVertexId,
                 targetVertexId, label, properties,
                 supportsNonStringIds, supportsUserDefinedIds, ITERATE);
         LOGGER.debug("Gremlin Query - Add Edge: {}", query);
-        return sendNonBlockingRequest(query);
+        return sendBlockingRequest(query);
     }
 
     @Override
-    public Mono<ResponseEntity<String>> updateEdge(
+    public ResponseEntity<String> updateEdge(
             long edgeId, String propertyKey, Object propertyValue) {
         String query = GremlinRecipes.updateEdge(edgeId, propertyKey,
                 propertyValue, supportsNonStringIds, ITERATE);
         LOGGER.debug("Gremlin Query - Update Edge: {}", query);
-        return sendNonBlockingRequest(query);
+        return sendBlockingRequest(query);
     }
 
     @Override
-    public Mono<ResponseEntity<String>> updateEdge(
+    public ResponseEntity<String> updateEdge(
             long edgeId, Map<String, Object> properties) {
         String query = GremlinRecipes.updateEdge(edgeId, properties,
                 supportsNonStringIds, ITERATE);
         LOGGER.debug("Gremlin Query - Update Edge: {}", query);
-        return sendNonBlockingRequest(query);
+        return sendBlockingRequest(query);
     }
 
     @Override
@@ -454,14 +534,14 @@ public class GremlinServerHttpWebClientGraphDatabaseService
         String query = GremlinRecipes.deleteEdge(
                 edgeId, supportsNonStringIds, ITERATE);
         LOGGER.debug("Gremlin Query - Delete Edge: {}", query);
-        sendNonBlockingRequest(query);
+        sendBlockingRequest(query);
     }
 
     @Override
     public void deleteEdges() {
         String query = GremlinRecipes.deleteEdges(ITERATE);
         LOGGER.debug("Gremlin Query - Delete Edges: {}", query);
-        sendNonBlockingRequest(query);
+        sendBlockingRequest(query);
     }
 
     @Override
