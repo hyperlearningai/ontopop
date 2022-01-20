@@ -80,6 +80,16 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
     protected Boolean supportsTraversalsBy;
 
     /**************************************************************************
+     * HELPER METHODS
+     *************************************************************************/
+    
+    private Object cleanPropertyValue(Object propertyValue) {
+        return propertyValue instanceof String ? 
+                propertyValue.toString().replace("\n", " ").trim() :
+                    propertyValue;
+    }
+    
+    /**************************************************************************
      * GRAPH INSTANCE MANAGEMENT
      *************************************************************************/
 
@@ -208,7 +218,8 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
                                 .equalsIgnoreCase(PROPERTY_KEY_ONTOLOGY_LABEL)
                                         ? PROPERTY_KEY_ONTOLOGY_LABEL_REPLACEMENT
                                         : entry.getKey();
-                        graphTraversal.property(key, entry.getValue());
+                        graphTraversal.property(
+                                key, cleanPropertyValue(entry.getValue()));
                     }
                     counter++;
                 }
@@ -243,7 +254,8 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
                                 .equalsIgnoreCase(PROPERTY_KEY_ONTOLOGY_LABEL)
                                         ? PROPERTY_KEY_ONTOLOGY_LABEL_REPLACEMENT
                                         : entry.getKey();
-                        graphTraversal.property(key, entry.getValue());
+                        graphTraversal.property(
+                                key, cleanPropertyValue(entry.getValue()));
                         if (entry.getKey()
                                 .equalsIgnoreCase(VERTEX_ID_PROPERTY_KEY)
                                 && supportsUserDefinedIds)
@@ -268,7 +280,7 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
                     entry.getKey().equalsIgnoreCase(PROPERTY_KEY_ONTOLOGY_LABEL)
                             ? PROPERTY_KEY_ONTOLOGY_LABEL_REPLACEMENT
                             : entry.getKey();
-            graphTraversal.property(key, entry.getValue());
+            graphTraversal.property(key, cleanPropertyValue(entry.getValue()));
             if (entry.getKey().equalsIgnoreCase(VERTEX_ID_PROPERTY_KEY)
                     && supportsUserDefinedIds)
                 graphTraversal.property(T.id, entry.getValue());
@@ -286,7 +298,7 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
                 ? PROPERTY_KEY_ONTOLOGY_LABEL_REPLACEMENT
                 : propertyKey;
         GraphTraversal<Vertex, Vertex> vertex =
-                g.V(vertexId).property(key, propertyValue);
+                g.V(vertexId).property(key, cleanPropertyValue(propertyValue));
         return vertex.next();
 
     }
@@ -301,7 +313,7 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
                     entry.getKey().equalsIgnoreCase(PROPERTY_KEY_ONTOLOGY_LABEL)
                             ? PROPERTY_KEY_ONTOLOGY_LABEL_REPLACEMENT
                             : entry.getKey();
-            vertex.property(key, entry.getValue());
+            vertex.property(key, cleanPropertyValue(entry.getValue()));
         }
         return vertex.next();
 
@@ -368,18 +380,19 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
     public void addEdges(List<SimpleGraphEdge> edges) {
         if (!edges.isEmpty()) {
             for (SimpleGraphEdge edge : edges) {
-                addEdge(edge.getSourceVertex(), edge.getTargetVertex(),
+                addEdge(edge.getSourceVertexId(), edge.getTargetVertexId(),
                         edge.getLabel(), edge.getProperties());
             }
         }
     }
 
     @Override
-    public Edge addEdge(Vertex sourceVertex, Vertex targetVertex, String label,
-            Map<String, Object> properties) {
+    public Edge addEdge(long sourceVertexId, long targetVertexId, 
+            String label, Map<String, Object> properties) {
 
-        GraphTraversal<Vertex, Edge> edge = g.V(sourceVertex.id()).as("a")
-                .V(targetVertex.id()).addE(label).from("a");
+        GraphTraversal<Vertex, Edge> edge = 
+                g.V().has("vertexId", sourceVertexId).as("a")
+                .V().has("vertexId", targetVertexId).addE(label).from("a");
         if (properties.containsKey(EDGE_ID_PROPERTY_KEY)
                 && supportsUserDefinedIds) {
             long edgeId = (long) properties.get(EDGE_ID_PROPERTY_KEY);
@@ -390,7 +403,7 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
                     entry.getKey().equalsIgnoreCase(PROPERTY_KEY_ONTOLOGY_LABEL)
                             ? PROPERTY_KEY_ONTOLOGY_LABEL_REPLACEMENT
                             : entry.getKey();
-            edge.property(key, entry.getValue());
+            edge.property(key, cleanPropertyValue(entry.getValue()));
         }
         return edge.next();
 
@@ -405,7 +418,7 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
                 : propertyKey;
         GraphTraversal<Edge, Edge> edge =
                 g.E(edgeId).property(key, propertyValue);
-        edge.property(key, propertyValue);
+        edge.property(key, cleanPropertyValue(propertyValue));
         return edge.next();
 
     }
@@ -420,7 +433,7 @@ public class GremlinGraphDatabaseService implements GraphDatabaseService {
                     entry.getKey().equalsIgnoreCase(PROPERTY_KEY_ONTOLOGY_LABEL)
                             ? PROPERTY_KEY_ONTOLOGY_LABEL_REPLACEMENT
                             : entry.getKey();
-            edge.property(key, entry.getValue());
+            edge.property(key, cleanPropertyValue(entry.getValue()));
         }
         return edge.next();
 
