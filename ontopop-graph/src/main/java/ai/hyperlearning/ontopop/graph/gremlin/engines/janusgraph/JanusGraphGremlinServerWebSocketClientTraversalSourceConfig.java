@@ -27,8 +27,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnProperty(
         value = "storage.graph.service",
-        havingValue = "janusgraph")
-public class JanusGraphGremlinServerRemoteConnectionTraversalSourceConfig {
+        havingValue = "janusgraph-ws")
+public class JanusGraphGremlinServerWebSocketClientTraversalSourceConfig {
 
     private static final String REMOTE_TRAVERSAL_SOURCE_NAME = "g";
     private static final List<String> IO_REGISTRIES = Arrays
@@ -50,8 +50,8 @@ public class JanusGraphGremlinServerRemoteConnectionTraversalSourceConfig {
     @Value("${storage.graph.gremlin-server.enableSsl}")
     private boolean enableSsl;
 
-    @Bean("janusGraphGremlinServerTraversalSource")
-    public GraphTraversalSource getJanusGraphGremlinServerTraversalSource()
+    @Bean("janusGraphGremlinServerWebSocketClientTraversalSource")
+    public GraphTraversalSource getJanusGraphGremlinServerWebSocketClientTraversalSource()
             throws SecurityException, IllegalArgumentException {
 
         // Configure the serializer

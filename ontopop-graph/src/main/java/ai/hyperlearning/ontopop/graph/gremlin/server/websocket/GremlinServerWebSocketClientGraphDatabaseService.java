@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.graph.gremlin.server.remoteconnection;
+package ai.hyperlearning.ontopop.graph.gremlin.server.websocket;
 
 import java.io.IOException;
 
@@ -21,13 +21,13 @@ import ai.hyperlearning.ontopop.graph.gremlin.GremlinGraphDatabaseService;
 @Service
 @ConditionalOnProperty(
         value = "storage.graph.service",
-        havingValue = "gremlin-server-remote-connection")
-public class GremlinServerRemoteConnectionGraphDatabaseService
+        havingValue = "gremlin-server-ws")
+public class GremlinServerWebSocketClientGraphDatabaseService
         extends GremlinGraphDatabaseService {
 
     @Autowired(required = false)
-    @Qualifier("gremlinServerTraversalSource")
-    protected GraphTraversalSource gremlinServerTraversalSource;
+    @Qualifier("gremlinServerWebSocketClientTraversalSource")
+    protected GraphTraversalSource gremlinServerWebSocketClientTraversalSource;
 
     /**************************************************************************
      * GRAPH INSTANCE MANAGEMENT
@@ -35,7 +35,7 @@ public class GremlinServerRemoteConnectionGraphDatabaseService
 
     @Override
     public GraphTraversalSource openGraph() throws IOException {
-        super.g = gremlinServerTraversalSource;
+        super.g = gremlinServerWebSocketClientTraversalSource;
         bindings.putIfAbsent("g", g);
         bindings.putIfAbsent("graph", g.getGraph());
         gremlinExecutor = GremlinExecutor.build().evaluationTimeout(15000L)

@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
-import ai.hyperlearning.ontopop.graph.gremlin.server.client.GremlinServerClientGraphDatabaseService;
+import ai.hyperlearning.ontopop.graph.gremlin.server.http.GremlinServerHTTPClientGraphDatabaseService;
 
 /**
  * Microsoft Azure CosmosDB Database Service
@@ -21,14 +21,14 @@ import ai.hyperlearning.ontopop.graph.gremlin.server.client.GremlinServerClientG
 @ConditionalOnProperty(
         value = "storage.graph.service",
         havingValue = "azure-cosmosdb")
-public class AzureCosmosDbDatabaseService
-        extends GremlinServerClientGraphDatabaseService {
+public class AzureCosmosDbGremlinServerHTTPClientGraphDatabaseService
+        extends GremlinServerHTTPClientGraphDatabaseService {
 
     @Autowired
-    @Qualifier("azureCosmosDbgremlinServerClient")
-    private Client azureCosmosDbgremlinServerClient;
+    @Qualifier("azureCosmosDbGremlinServerHttpClient")
+    private Client azureCosmosDbGremlinServerHttpClient;
 
-    public AzureCosmosDbDatabaseService() {
+    public AzureCosmosDbGremlinServerHTTPClientGraphDatabaseService() {
         super.supportsUserDefinedIds = true;
         super.supportsNonStringIds = false;
         super.supportsSchema = false;
@@ -43,7 +43,7 @@ public class AzureCosmosDbDatabaseService
 
     @Override
     public Client openGraph() throws IOException {
-        super.client = azureCosmosDbgremlinServerClient;
+        super.client = azureCosmosDbGremlinServerHttpClient;
         return client;
     }
 

@@ -1,9 +1,10 @@
-package ai.hyperlearning.ontopop.graph.gremlin.server.client;
+package ai.hyperlearning.ontopop.graph.gremlin.server.http;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.apache.tinkerpop.gremlin.driver.Client;
 import org.apache.tinkerpop.gremlin.driver.Cluster;
 import org.apache.tinkerpop.gremlin.driver.ser.GraphSONMessageSerializerV2d0;
@@ -23,8 +24,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnProperty(
         value = "storage.graph.service",
-        havingValue = "gremlin-server-client")
-public class GremlinServerClientConfig {
+        havingValue = "gremlin-server-http")
+public class GremlinServerHTTPClientConfig {
 
     @Value("${storage.graph.gremlin-server.host}")
     private String host;
@@ -47,8 +48,8 @@ public class GremlinServerClientConfig {
     @Value("${storage.graph.gremlin-server.serializer.serializeResultToString}")
     private boolean serializeResultToString;
 
-    @Bean("gremlinServerClient")
-    public Client getGremlinServerClient()
+    @Bean("gremlinServerHttpClient")
+    public Client getGremlinServerHttpClient()
             throws ClassNotFoundException, NoSuchMethodException,
             SecurityException, InstantiationException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {

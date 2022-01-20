@@ -41,8 +41,8 @@ import ai.hyperlearning.ontopop.graph.model.SimpleGraphVertex;
 
 @Service
 @ConditionalOnExpression("'${storage.graph.service}'.equals('gremlin-graph') or "
-        + "'${storage.graph.service}'.equals('gremlin-server-remote-connection') or "
-        + "'${storage.graph.service}'.equals('janusgraph') or "
+        + "'${storage.graph.service}'.equals('gremlin-server-ws') or "
+        + "'${storage.graph.service}'.equals('janusgraph-ws') or "
         + "'${storage.graph.service}'.equals('tinkergraph')")
 public class GremlinGraphDatabaseService implements GraphDatabaseService {
 

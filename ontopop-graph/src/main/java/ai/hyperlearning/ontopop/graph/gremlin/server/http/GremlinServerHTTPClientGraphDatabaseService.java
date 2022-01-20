@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.graph.gremlin.server.client;
+package ai.hyperlearning.ontopop.graph.gremlin.server.http;
 
 import java.io.IOException;
 import java.util.List;
@@ -40,20 +40,20 @@ import ai.hyperlearning.ontopop.graph.model.SimpleGraphVertex;
  */
 
 @Service
-@ConditionalOnExpression("'${storage.graph.service}'.equals('gremlin-server-client') or "
+@ConditionalOnExpression("'${storage.graph.service}'.equals('gremlin-server-http') or "
         + "'${storage.graph.service}'.equals('azure-cosmosdb')")
-public class GremlinServerClientGraphDatabaseService
+public class GremlinServerHTTPClientGraphDatabaseService
         implements GraphDatabaseService {
 
     private static final Logger LOGGER = LoggerFactory
-            .getLogger(GremlinServerClientGraphDatabaseService.class);
+            .getLogger(GremlinServerHTTPClientGraphDatabaseService.class);
 
     protected static final String VERTEX_ID_PROPERTY_KEY = "vertexId";
     protected static final int RATE_LIMITER_WAIT_SECONDS = 1;
 
     @Autowired(required = false)
-    @Qualifier("gremlinServerClient")
-    private Client gremlinServerClient;
+    @Qualifier("gremlinServerHttpClient")
+    private Client gremlinServerHttpClient;
 
     @Value("${storage.graph.engine.supportsUserDefinedIds:true}")
     protected Boolean supportsUserDefinedIds;
@@ -90,7 +90,7 @@ public class GremlinServerClientGraphDatabaseService
 
     @Override
     public Client openGraph() throws IOException {
-        this.client = gremlinServerClient;
+        this.client = gremlinServerHttpClient;
         return client;
     }
 

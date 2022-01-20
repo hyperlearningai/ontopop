@@ -1,11 +1,13 @@
-package ai.hyperlearning.ontopop.graph.gremlin.server.remoteconnection;
+package ai.hyperlearning.ontopop.graph.gremlin.server.websocket;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.AnonymousTraversalSource.traversal;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tinkerpop.gremlin.driver.Cluster;
 import org.apache.tinkerpop.gremlin.driver.remote.DriverRemoteConnection;
@@ -27,8 +29,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnProperty(
         value = "storage.graph.service",
-        havingValue = "gremlin-server-remote-connection")
-public class GremlinServerRemoteConnectionTraversalSourceConfig {
+        havingValue = "gremlin-server-ws")
+public class GremlinServerWebSocketClientTraversalSourceConfig {
 
     @Value("${storage.graph.gremlin-server.host}")
     private String host;
@@ -57,8 +59,8 @@ public class GremlinServerRemoteConnectionTraversalSourceConfig {
     @Value("${storage.graph.gremlin-server.serializer.serializeResultToString}")
     private boolean serializeResultToString;
 
-    @Bean("gremlinServerTraversalSource")
-    public GraphTraversalSource getGremlinServerTraversalSource()
+    @Bean("gremlinServerWebSocketClientTraversalSource")
+    public GraphTraversalSource getGremlinServerWebSocketClientTraversalSource()
             throws ClassNotFoundException, NoSuchMethodException,
             SecurityException, InstantiationException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {

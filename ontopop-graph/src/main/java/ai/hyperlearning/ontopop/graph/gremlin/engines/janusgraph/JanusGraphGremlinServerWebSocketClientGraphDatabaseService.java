@@ -21,14 +21,14 @@ import ai.hyperlearning.ontopop.graph.gremlin.GremlinGraphDatabaseService;
 @Service
 @ConditionalOnProperty(
         value = "storage.graph.service",
-        havingValue = "janusgraph")
-public class JanusGraphDatabaseService extends GremlinGraphDatabaseService {
+        havingValue = "janusgraph-ws")
+public class JanusGraphGremlinServerWebSocketClientGraphDatabaseService extends GremlinGraphDatabaseService {
 
     @Autowired
-    @Qualifier("janusGraphGremlinServerTraversalSource")
-    private GraphTraversalSource janusGraphGremlinServerTraversalSource;
+    @Qualifier("janusGraphGremlinServerWebSocketClientTraversalSource")
+    private GraphTraversalSource janusGraphGremlinServerWebSocketClientTraversalSource;
 
-    public JanusGraphDatabaseService() {
+    public JanusGraphGremlinServerWebSocketClientGraphDatabaseService() {
         super.supportsUserDefinedIds = false;
         super.supportsNonStringIds = true;
         super.supportsSchema = true;
@@ -43,7 +43,7 @@ public class JanusGraphDatabaseService extends GremlinGraphDatabaseService {
 
     @Override
     public GraphTraversalSource openGraph() throws IOException {
-        super.g = janusGraphGremlinServerTraversalSource;
+        super.g = janusGraphGremlinServerWebSocketClientTraversalSource;
         bindings.putIfAbsent("g", g);
         bindings.putIfAbsent("graph", g.getGraph());
         gremlinExecutor = GremlinExecutor.build().evaluationTimeout(15000L)

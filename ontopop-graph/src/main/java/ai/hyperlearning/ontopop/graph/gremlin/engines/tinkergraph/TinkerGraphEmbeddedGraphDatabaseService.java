@@ -19,9 +19,9 @@ import ai.hyperlearning.ontopop.graph.gremlin.GremlinGraphDatabaseService;
 @ConditionalOnProperty(
         value = "storage.graph.service",
         havingValue = "tinkergraph")
-public class TinkerGraphDatabaseService extends GremlinGraphDatabaseService {
+public class TinkerGraphEmbeddedGraphDatabaseService extends GremlinGraphDatabaseService {
 
-    public TinkerGraphDatabaseService() {
+    public TinkerGraphEmbeddedGraphDatabaseService() {
         super.supportsUserDefinedIds = true;
         super.supportsNonStringIds = true;
         super.supportsSchema = true;
