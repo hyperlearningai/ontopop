@@ -45,7 +45,7 @@ public class GremlinServerWebSocketClientTraversalSourceConfig {
     private String password;
 
     @Value("${storage.graph.gremlin-server.enableSsl:true}")
-    private boolean enableSsl;
+    private Boolean enableSsl;
 
     @Value("${storage.graph.gremlin-server.remoteTraversalSourceName:g}")
     private String remoteTraversalSourceName;
@@ -56,8 +56,8 @@ public class GremlinServerWebSocketClientTraversalSourceConfig {
     @Value("${storage.graph.gremlin-server.serializer.ioRegistries}")
     private String ioRegistries;
 
-    @Value("${storage.graph.gremlin-server.serializer.serializeResultToString}")
-    private boolean serializeResultToString;
+    @Value("${storage.graph.gremlin-server.serializer.serializeResultToString:false}")
+    private Boolean serializeResultToString;
 
     @Bean("gremlinServerWebSocketClientTraversalSource")
     public GraphTraversalSource getGremlinServerWebSocketClientTraversalSource()

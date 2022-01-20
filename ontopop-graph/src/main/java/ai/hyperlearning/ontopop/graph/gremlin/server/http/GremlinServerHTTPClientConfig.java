@@ -8,7 +8,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tinkerpop.gremlin.driver.Client;
 import org.apache.tinkerpop.gremlin.driver.Cluster;
-import org.apache.tinkerpop.gremlin.driver.ser.GraphSONMessageSerializerV2d0;
+import org.apache.tinkerpop.gremlin.driver.ser.GraphSONMessageSerializerV3d0;
 import org.apache.tinkerpop.gremlin.driver.ser.MessageTextSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -41,13 +41,13 @@ public class GremlinServerHTTPClientConfig {
     private String password;
 
     @Value("${storage.graph.gremlin-server.enableSsl:true}")
-    private boolean enableSsl;
+    private Boolean enableSsl;
 
     @Value("${storage.graph.gremlin-server.serializer.className}")
     private String serializerClassName;
 
-    @Value("${storage.graph.gremlin-server.serializer.serializeResultToString}")
-    private boolean serializeResultToString;
+    @Value("${storage.graph.gremlin-server.serializer.serializeResultToString:true}")
+    private Boolean serializeResultToString;
 
     @Bean("gremlinServerHttpClient")
     public Client getGremlinServerHttpClient()
@@ -62,7 +62,9 @@ public class GremlinServerHTTPClientConfig {
         Class<?> clazz = Class.forName(serializerClassName);
         Constructor<?> constructor = clazz.getConstructor();
         MessageTextSerializer<?> messageTextSerializer = null;
-        GraphSONMessageSerializerV2d0 defaultSerializer = null;
+        GraphSONMessageSerializerV3d0 defaultSerializer = 
+                new GraphSONMessageSerializerV3d0();
+        defaultSerializer.configure(serializerSettings, null);
         boolean successfulCast = false;
         try {
 
@@ -73,10 +75,6 @@ public class GremlinServerHTTPClientConfig {
             successfulCast = true;
 
         } catch (ClassCastException e) {
-
-            // Revert to a default serializer
-            defaultSerializer = new GraphSONMessageSerializerV2d0();
-            defaultSerializer.configure(serializerSettings, null);
 
         }
 

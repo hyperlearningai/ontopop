@@ -38,7 +38,7 @@ public class JanusGraphGremlinServerHTTPClientConfig {
     private String password;
     
     @Value("${storage.graph.gremlin-server.enableSsl:true}")
-    private boolean enableSsl;
+    private Boolean enableSsl;
     
     private static final boolean SERIALIZE_RESULT_TO_STRING = true;
     

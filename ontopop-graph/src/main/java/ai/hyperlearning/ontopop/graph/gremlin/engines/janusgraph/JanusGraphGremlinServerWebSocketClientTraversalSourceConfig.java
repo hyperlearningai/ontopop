@@ -47,8 +47,8 @@ public class JanusGraphGremlinServerWebSocketClientTraversalSourceConfig {
     @Value("${storage.graph.gremlin-server.password}")
     private String password;
 
-    @Value("${storage.graph.gremlin-server.enableSsl}")
-    private boolean enableSsl;
+    @Value("${storage.graph.gremlin-server.enableSsl:true}")
+    private Boolean enableSsl;
 
     @Bean("janusGraphGremlinServerWebSocketClientTraversalSource")
     public GraphTraversalSource getJanusGraphGremlinServerWebSocketClientTraversalSource()
