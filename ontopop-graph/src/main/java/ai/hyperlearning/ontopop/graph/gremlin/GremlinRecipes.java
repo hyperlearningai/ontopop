@@ -62,6 +62,7 @@ public class GremlinRecipes {
 		return propertyValue instanceof String ? 
 				"'" + propertyValue.toString()
 						.replace("'", "")
+						.replace("\n", " ")
 						.trim() + "'" : 
 					propertyValue.toString(); 
 	}
@@ -605,14 +606,34 @@ public class GremlinRecipes {
 	public static String addEdge(long sourceVertexId, long targetVertexId, 
 			String label, Map<String, Object> properties, 
 			boolean supportsNonStringIds, 
+			boolean supportsUserDefinedIds, 
 			boolean iterate) {
-		StringBuilder query = new StringBuilder(supportsNonStringIds ? 
-				"g.V(" + sourceVertexId + ")"
-					+ ".addE('" + label + "')"
-					+ ".to(g.V(" + targetVertexId + "))" : 
-						"g.V('" + sourceVertexId + "')"
-						+ ".addE('" + label + "')"
-						+ ".to(g.V('" + targetVertexId + "'))");
+		
+	    // Generate the edge builder query
+	    StringBuilder query = null;
+	    if ( supportsUserDefinedIds ) {
+	        
+	        query = new StringBuilder(supportsNonStringIds ? 
+	                "g.V(" + sourceVertexId + ").as('a')"
+	                    + ".V(" + targetVertexId + ")"
+	                    + ".addE('" + label + "')"
+	                    + ".from('a')" : 
+	                        "g.V('" + sourceVertexId + "').as('a')"
+	                        + ".V('" + targetVertexId + "')"
+	                        + ".addE('" + label + "')"
+	                        + ".from('a')");
+	        
+	    } else {
+	        
+	        query = new StringBuilder(
+	                "g.V().has('vertexId', " + sourceVertexId + ").as('a')"
+                        + ".V().has('vertexId', " + targetVertexId + ")"
+                        + ".addE('" + label + "')"
+                        + ".from('a')");
+	        
+	    }
+		
+		// Add edge properties to the edge builder query
 		for (Map.Entry<String, Object> entry : properties.entrySet()) {
 			String key = entry.getKey()
 					.equalsIgnoreCase(PROPERTY_KEY_ONTOLOGY_LABEL) ? 
@@ -621,6 +642,7 @@ public class GremlinRecipes {
 					+ resolveHasPropertyValue(entry.getValue()) + ")");
 		}
 		return query.toString() + iterateTraversal(iterate);
+		
 	}
 	
 	/**
