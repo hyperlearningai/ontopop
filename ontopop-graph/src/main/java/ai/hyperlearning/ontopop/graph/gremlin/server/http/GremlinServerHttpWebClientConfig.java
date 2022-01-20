@@ -2,7 +2,7 @@ package ai.hyperlearning.ontopop.graph.gremlin.server.http;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
@@ -16,8 +16,9 @@ import org.springframework.web.reactive.function.client.WebClient;
  */
 
 @Configuration
-@ConditionalOnExpression("'${storage.graph.service}'.equals('gremlin-server-http') or "
-        + "'${storage.graph.service}'.equals('janusgraph-server-http')")
+@ConditionalOnProperty(
+        value = "storage.graph.service",
+        havingValue = "gremlin-server-http")
 public class GremlinServerHttpWebClientConfig {
     
     @Value("${storage.graph.gremlin-server.url}")
