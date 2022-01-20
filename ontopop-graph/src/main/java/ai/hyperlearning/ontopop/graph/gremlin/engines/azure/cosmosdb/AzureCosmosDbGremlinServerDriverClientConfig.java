@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Azure CosmosDB Graph Database Client Bean
+ * Azure CosmosDB Graph Database Driver Client Bean
  *
  * @author jillurquddus
  * @since 2.0.0
@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnProperty(
         value = "storage.graph.service",
         havingValue = "azure-cosmosdb")
-public class AzureCosmosDbGremlinServerHTTPClientConfig {
+public class AzureCosmosDbGremlinServerDriverClientConfig {
 
     @Value("${storage.graph.gremlin-server.host}")
     private String host;
@@ -39,8 +39,8 @@ public class AzureCosmosDbGremlinServerHTTPClientConfig {
     private static final boolean ENABLE_SSL = true;
     private static final boolean SERIALIZE_RESULT_TO_STRING = true;
 
-    @Bean("azureCosmosDbGremlinServerHttpClient")
-    public Client getAzureCosmosDbGremlinServerHttpClient() {
+    @Bean("azureCosmosDbGremlinServerDriverClient")
+    public Client getAzureCosmosDbGremlinServerDriverClient() {
 
         // Configure the serializer
         final Map<String, Object> serializerSettings = new HashMap<>();

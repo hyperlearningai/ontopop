@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.graph.gremlin.server.http;
+package ai.hyperlearning.ontopop.graph.gremlin.server.driver;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Gremlin Server Graph Database Client Bean
+ * Gremlin Server Graph Database Driver Client Bean
  *
  * @author jillurquddus
  * @since 2.0.0
@@ -25,8 +25,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnProperty(
         value = "storage.graph.service",
-        havingValue = "gremlin-server-http")
-public class GremlinServerHTTPClientConfig {
+        havingValue = "gremlin-server-driver")
+public class GremlinServerDriverClientConfig {
 
     @Value("${storage.graph.gremlin-server.host}")
     private String host;
@@ -49,8 +49,8 @@ public class GremlinServerHTTPClientConfig {
     @Value("${storage.graph.gremlin-server.serializer.serializeResultToString:true}")
     private Boolean serializeResultToString;
 
-    @Bean("gremlinServerHttpClient")
-    public Client getGremlinServerHttpClient()
+    @Bean("gremlinServerDriverClient")
+    public Client getGremlinServerDriverClient()
             throws ClassNotFoundException, NoSuchMethodException,
             SecurityException, InstantiationException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {

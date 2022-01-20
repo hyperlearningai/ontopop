@@ -22,8 +22,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnProperty(
         value = "storage.graph.service",
-        havingValue = "janusgraph-http")
-public class JanusGraphGremlinServerHTTPClientConfig {
+        havingValue = "janusgraph-driver")
+public class JanusGraphGremlinServerDriverClientConfig {
     
     @Value("${storage.graph.gremlin-server.host}")
     private String host;
@@ -42,8 +42,8 @@ public class JanusGraphGremlinServerHTTPClientConfig {
     
     private static final boolean SERIALIZE_RESULT_TO_STRING = true;
     
-    @Bean("janusGraphGremlinServerHttpClient")
-    public Client getJanusGraphGremlinServerHttpClient() {
+    @Bean("janusGraphGremlinServerDriverClient")
+    public Client getJanusGraphGremlinServerDriverClient() {
         
         // Configure the serializer
         final Map<String, Object> serializerSettings = new HashMap<>();

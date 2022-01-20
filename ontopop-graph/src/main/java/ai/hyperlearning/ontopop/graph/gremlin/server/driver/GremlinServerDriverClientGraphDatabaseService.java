@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.graph.gremlin.server.http;
+package ai.hyperlearning.ontopop.graph.gremlin.server.driver;
 
 import java.io.IOException;
 import java.util.List;
@@ -33,27 +33,27 @@ import ai.hyperlearning.ontopop.graph.model.SimpleGraphEdge;
 import ai.hyperlearning.ontopop.graph.model.SimpleGraphVertex;
 
 /**
- * Gremlin Server Client Graph Database Service
+ * Gremlin Server Driver Client Graph Database Service
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
 @Service
-@ConditionalOnExpression("'${storage.graph.service}'.equals('gremlin-server-http') or "
+@ConditionalOnExpression("'${storage.graph.service}'.equals('gremlin-server-driver') or "
         + "'${storage.graph.service}'.equals('azure-cosmosdb')")
-public class GremlinServerHTTPClientGraphDatabaseService
+public class GremlinServerDriverClientGraphDatabaseService
         implements GraphDatabaseService {
 
     private static final Logger LOGGER = LoggerFactory
-            .getLogger(GremlinServerHTTPClientGraphDatabaseService.class);
+            .getLogger(GremlinServerDriverClientGraphDatabaseService.class);
 
     protected static final String VERTEX_ID_PROPERTY_KEY = "vertexId";
     protected static final int RATE_LIMITER_WAIT_SECONDS = 1;
 
     @Autowired(required = false)
-    @Qualifier("gremlinServerHttpClient")
-    private Client gremlinServerHttpClient;
+    @Qualifier("gremlinServerDriverClient")
+    private Client gremlinServerDriverClient;
 
     @Value("${storage.graph.engine.supportsUserDefinedIds:true}")
     protected Boolean supportsUserDefinedIds;
@@ -90,7 +90,7 @@ public class GremlinServerHTTPClientGraphDatabaseService
 
     @Override
     public Client openGraph() throws IOException {
-        this.client = gremlinServerHttpClient;
+        this.client = gremlinServerDriverClient;
         return client;
     }
 

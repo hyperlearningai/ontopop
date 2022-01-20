@@ -4,11 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ai.hyperlearning.ontopop.graph.gremlin.GremlinGraphDatabaseService;
-import ai.hyperlearning.ontopop.graph.gremlin.engines.azure.cosmosdb.AzureCosmosDbGremlinServerHTTPClientGraphDatabaseService;
-import ai.hyperlearning.ontopop.graph.gremlin.engines.janusgraph.JanusGraphGremlinServerHTTPClientGraphDatabaseService;
+import ai.hyperlearning.ontopop.graph.gremlin.engines.azure.cosmosdb.AzureCosmosDbGremlinServerDriverClientGraphDatabaseService;
+import ai.hyperlearning.ontopop.graph.gremlin.engines.janusgraph.JanusGraphGremlinServerDriverClientGraphDatabaseService;
 import ai.hyperlearning.ontopop.graph.gremlin.engines.janusgraph.JanusGraphGremlinServerWebSocketClientGraphDatabaseService;
 import ai.hyperlearning.ontopop.graph.gremlin.engines.tinkergraph.TinkerGraphEmbeddedGraphDatabaseService;
-import ai.hyperlearning.ontopop.graph.gremlin.server.http.GremlinServerHTTPClientGraphDatabaseService;
+import ai.hyperlearning.ontopop.graph.gremlin.server.driver.GremlinServerDriverClientGraphDatabaseService;
 import ai.hyperlearning.ontopop.graph.gremlin.server.websocket.GremlinServerWebSocketClientGraphDatabaseService;
 
 /**
@@ -28,16 +28,16 @@ public class GraphDatabaseServiceFactory {
     private GremlinServerWebSocketClientGraphDatabaseService gremlinServerWebSocketClientGraphDatabaseService;
 
     @Autowired(required = false)
-    private GremlinServerHTTPClientGraphDatabaseService gremlinServerHTTPClientGraphDatabaseService;
+    private GremlinServerDriverClientGraphDatabaseService gremlinServerDriverClientGraphDatabaseService;
     
     @Autowired(required = false)
     private JanusGraphGremlinServerWebSocketClientGraphDatabaseService janusGraphGremlinServerWebSocketClientGraphDatabaseService;
     
     @Autowired(required = false)
-    private JanusGraphGremlinServerHTTPClientGraphDatabaseService janusGraphGremlinServerHTTPClientGraphDatabaseService;
+    private JanusGraphGremlinServerDriverClientGraphDatabaseService janusGraphGremlinServerDriverClientGraphDatabaseService;
     
     @Autowired(required = false)
-    private AzureCosmosDbGremlinServerHTTPClientGraphDatabaseService azureCosmosDbGremlinServerHTTPClientGraphDatabaseService;
+    private AzureCosmosDbGremlinServerDriverClientGraphDatabaseService azureCosmosDbGremlinServerDriverClientGraphDatabaseService;
 
     @Autowired(required = false)
     private TinkerGraphEmbeddedGraphDatabaseService tinkerGraphEmbeddedGraphDatabaseService;
@@ -58,18 +58,18 @@ public class GraphDatabaseServiceFactory {
                 return gremlinGraphDatabaseService;
             case GREMLIN_SERVER_WS:
                 return gremlinServerWebSocketClientGraphDatabaseService;
-            case GREMLIN_SERVER_HTTP:
-                return gremlinServerHTTPClientGraphDatabaseService;
+            case GREMLIN_SERVER_DRIVER:
+                return gremlinServerDriverClientGraphDatabaseService;
             case JANUSGRAPH_WS:
                 return janusGraphGremlinServerWebSocketClientGraphDatabaseService;
-            case JANUSGRAPH_HTTP:
-                return janusGraphGremlinServerHTTPClientGraphDatabaseService;
+            case JANUSGRAPH_DRIVER:
+                return janusGraphGremlinServerDriverClientGraphDatabaseService;
             case AZURE_COSMOSDB:
-                return azureCosmosDbGremlinServerHTTPClientGraphDatabaseService;
+                return azureCosmosDbGremlinServerDriverClientGraphDatabaseService;
             case TINKERGRAPH:
                 return tinkerGraphEmbeddedGraphDatabaseService;
             default:
-                return gremlinServerHTTPClientGraphDatabaseService;
+                return gremlinServerDriverClientGraphDatabaseService;
         }
 
     }
@@ -82,18 +82,18 @@ public class GraphDatabaseServiceFactory {
                 return gremlinGraphDatabaseService;
             case GREMLIN_SERVER_WS:
                 return gremlinServerWebSocketClientGraphDatabaseService;
-            case GREMLIN_SERVER_HTTP:
-                return gremlinServerHTTPClientGraphDatabaseService;
+            case GREMLIN_SERVER_DRIVER:
+                return gremlinServerDriverClientGraphDatabaseService;
             case JANUSGRAPH_WS:
                 return janusGraphGremlinServerWebSocketClientGraphDatabaseService;
-            case JANUSGRAPH_HTTP:
-                return janusGraphGremlinServerHTTPClientGraphDatabaseService;
+            case JANUSGRAPH_DRIVER:
+                return janusGraphGremlinServerDriverClientGraphDatabaseService;
             case AZURE_COSMOSDB:
-                return azureCosmosDbGremlinServerHTTPClientGraphDatabaseService;
+                return azureCosmosDbGremlinServerDriverClientGraphDatabaseService;
             case TINKERGRAPH:
                 return tinkerGraphEmbeddedGraphDatabaseService;
             default:
-                return gremlinServerHTTPClientGraphDatabaseService;
+                return gremlinServerDriverClientGraphDatabaseService;
         }
 
     }

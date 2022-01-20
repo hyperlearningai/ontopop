@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
-import ai.hyperlearning.ontopop.graph.gremlin.server.http.GremlinServerHTTPClientGraphDatabaseService;
+import ai.hyperlearning.ontopop.graph.gremlin.server.driver.GremlinServerDriverClientGraphDatabaseService;
 
 /**
  * JanusGraph Gremlin Server HTTP Client Graph Database Service
@@ -20,15 +20,15 @@ import ai.hyperlearning.ontopop.graph.gremlin.server.http.GremlinServerHTTPClien
 @Service
 @ConditionalOnProperty(
         value = "storage.graph.service",
-        havingValue = "janusgraph-http")
-public class JanusGraphGremlinServerHTTPClientGraphDatabaseService 
-        extends GremlinServerHTTPClientGraphDatabaseService {
+        havingValue = "janusgraph-driver")
+public class JanusGraphGremlinServerDriverClientGraphDatabaseService 
+        extends GremlinServerDriverClientGraphDatabaseService {
     
     @Autowired
-    @Qualifier("janusGraphGremlinServerHttpClient")
-    private Client janusGraphGremlinServerHttpClient;
+    @Qualifier("janusGraphGremlinServerDriverClient")
+    private Client janusGraphGremlinServerDriverClient;
     
-    public JanusGraphGremlinServerHTTPClientGraphDatabaseService() {
+    public JanusGraphGremlinServerDriverClientGraphDatabaseService() {
         super.supportsUserDefinedIds = false;
         super.supportsNonStringIds = true;
         super.supportsSchema = true;
@@ -43,7 +43,7 @@ public class JanusGraphGremlinServerHTTPClientGraphDatabaseService
 
     @Override
     public Client openGraph() throws IOException {
-        super.client = janusGraphGremlinServerHttpClient;
+        super.client = janusGraphGremlinServerDriverClient;
         return client;
     }
     
