@@ -92,17 +92,29 @@ public class GremlinServerWebSocketClientTraversalSourceConfig {
         }
 
         // Create the connection to the remote Gremlin server
-        Cluster cluster = StringUtils.isBlank(username)
-                ? Cluster.build().addContactPoint(host).port(port)
-                        .enableSsl(enableSsl)
-                        .serializer(successfulCast ? messageTextSerializer
-                                : defaultSerializer)
-                        .create()
-                : Cluster.build().addContactPoint(host).port(port)
-                        .credentials(username, password).enableSsl(enableSsl)
-                        .serializer(successfulCast ? messageTextSerializer
-                                : defaultSerializer)
-                        .create();
+        Cluster cluster = null;
+        if ( StringUtils.isBlank(username) ) {
+            
+            cluster = Cluster.build()
+                    .addContactPoint(host)
+                    .port(port)
+                    .enableSsl(enableSsl)
+                    .serializer(successfulCast ? messageTextSerializer 
+                            : defaultSerializer)
+                    .create();
+            
+        } else {
+            
+            cluster = Cluster.build()
+                    .addContactPoint(host)
+                    .port(port)
+                    .credentials(username, password)
+                    .enableSsl(enableSsl)
+                    .serializer(successfulCast ? messageTextSerializer 
+                            : defaultSerializer)
+                    .create();
+            
+        }
 
         // Generate a reusable Graph Traversal Source
         return traversal().withRemote(DriverRemoteConnection.using(cluster,

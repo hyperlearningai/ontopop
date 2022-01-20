@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tinkerpop.gremlin.driver.Client;
 import org.apache.tinkerpop.gremlin.driver.Cluster;
 import org.apache.tinkerpop.gremlin.driver.ser.GraphSONMessageSerializerV2d0;
@@ -80,11 +81,30 @@ public class GremlinServerHTTPClientConfig {
         }
 
         // Create the connection to the remote Gremlin server
-        Cluster cluster = Cluster.build().addContactPoint(host).port(port)
-                .credentials(username, password).enableSsl(enableSsl)
-                .serializer(successfulCast ? messageTextSerializer
-                        : defaultSerializer)
-                .create();
+        Cluster cluster = null;
+        if ( StringUtils.isBlank(username) ) {
+            
+            cluster = Cluster.build()
+                    .addContactPoint(host)
+                    .port(port)
+                    .enableSsl(enableSsl)
+                    .serializer(successfulCast ? messageTextSerializer 
+                            : defaultSerializer)
+                    .create();
+            
+        } else {
+            
+            cluster = Cluster.build()
+                    .addContactPoint(host)
+                    .port(port)
+                    .credentials(username, password)
+                    .enableSsl(enableSsl)
+                    .serializer(successfulCast ? messageTextSerializer 
+                            : defaultSerializer)
+                    .create();
+            
+        }
+        
         return cluster.connect();
 
     }
