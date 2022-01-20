@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
-import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +49,6 @@ public class OntologyGraphLoaderService {
             LoggerFactory.getLogger(OntologyGraphLoaderService.class);
 
     private static final String ONTOLOGY_ID_PROPERTY_KEY = "ontologyId";
-    private static final String KEY_PROPERTY_KEY = "vertexKey";
 
     @Autowired
     private ObjectStorageServiceFactory objectStorageServiceFactory;
@@ -261,30 +259,9 @@ public class OntologyGraphLoaderService {
         List<SimpleGraphEdge> edges = new ArrayList<>();
         for (SimpleOntologyEdge edge : simpleOntologyPropertyGraph.getEdges()) {
             edge.preparePropertiesForLoading();
-            Object sourceVertex =
-                    graphDatabaseService.getVertex(SimpleOntologyVertex.LABEL,
-                            KEY_PROPERTY_KEY, edge.getSourceVertexKey());
-            Object targetVertex =
-                    graphDatabaseService.getVertex(SimpleOntologyVertex.LABEL,
-                            KEY_PROPERTY_KEY, edge.getTargetVertexKey());
-            if (sourceVertex != null && targetVertex != null) {
-
-                // Gremlin graph databases supporting byte code queries
-                if (sourceVertex instanceof Vertex
-                        && targetVertex instanceof Vertex) {
-                    edges.add(new SimpleGraphEdge(SimpleOntologyEdge.LABEL,
-                            (Vertex) sourceVertex, (Vertex) targetVertex,
-                            edge.getProperties()));
-                }
-
-                // Gremlin remote graphs and client using string-based queries
-                else {
-                    edges.add(new SimpleGraphEdge(SimpleOntologyEdge.LABEL,
-                            edge.getSourceVertexId(), edge.getTargetVertexId(),
-                            edge.getProperties()));
-                }
-
-            }
+            edges.add(new SimpleGraphEdge(SimpleOntologyEdge.LABEL,
+                    edge.getSourceVertexId(), edge.getTargetVertexId(),
+                    edge.getProperties()));
         }
 
         // Bulk load the edges/subClassOf relationships
