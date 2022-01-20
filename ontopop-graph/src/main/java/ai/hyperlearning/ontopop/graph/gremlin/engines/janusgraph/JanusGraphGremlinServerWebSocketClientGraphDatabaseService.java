@@ -67,6 +67,7 @@ public class JanusGraphGremlinServerWebSocketClientGraphDatabaseService extends 
         // introduces breaking conflicts such as java.util base package
         // conflicts via the com.boundary:high-scale-lib transitive
         // dependency and other conflicts with the Spring Framework.
+        // Alternatively see ontopop-utils:src/main/groovy/janusgraph-create-schema.groovy
 
     }
 

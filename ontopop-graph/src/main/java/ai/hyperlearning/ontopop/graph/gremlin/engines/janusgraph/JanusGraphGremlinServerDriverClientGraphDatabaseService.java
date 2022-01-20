@@ -53,9 +53,7 @@ public class JanusGraphGremlinServerDriverClientGraphDatabaseService
 
     @Override
     public void createSchema() {
-
-        // Pending
-
+        // See ontopop-utils:src/main/groovy/janusgraph-create-schema.groovy
     }
 
 }
