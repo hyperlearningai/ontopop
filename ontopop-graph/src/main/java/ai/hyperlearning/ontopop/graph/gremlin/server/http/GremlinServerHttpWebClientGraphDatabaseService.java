@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.util.TransactionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +23,6 @@ import ai.hyperlearning.ontopop.graph.GraphDatabaseService;
 import ai.hyperlearning.ontopop.graph.gremlin.GremlinRecipes;
 import ai.hyperlearning.ontopop.graph.model.SimpleGraphEdge;
 import ai.hyperlearning.ontopop.graph.model.SimpleGraphVertex;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -251,6 +249,8 @@ public class GremlinServerHttpWebClientGraphDatabaseService
 
     @Override
     public void addVertices(String label, Set<SimpleGraphVertex> vertices) {
+        
+        // Non-blocking requests to add vertices
         List<Mono<ResponseEntity<String>>> futures = new ArrayList<>();
         for (SimpleGraphVertex vertex : vertices) {
             String query = GremlinRecipes.addVertex(label,
@@ -259,12 +259,18 @@ public class GremlinServerHttpWebClientGraphDatabaseService
             LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
             futures.add(sendNonBlockingRequest(query));
         }
-        Flux.merge(futures).subscribe();
+        
+        // Block until all given publishers have completed
+        Mono<Void> all = Mono.when(futures);
+        all.block();
+        
     }
 
     @Override
     public void addVertices(String label,
             List<Map<String, Object>> propertyMaps) {
+        
+        // Non-blocking requests to add vertices
         List<Mono<ResponseEntity<String>>> futures = new ArrayList<>();
         for (Map<String, Object> properties : propertyMaps) {
             long vertexId = (Long) properties.get(VERTEX_ID_PROPERTY_KEY);
@@ -274,7 +280,11 @@ public class GremlinServerHttpWebClientGraphDatabaseService
             LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
             futures.add(sendNonBlockingRequest(query));
         }
-        Flux.merge(futures).subscribe();
+        
+        // Block until all given publishers have completed
+        Mono<Void> all = Mono.when(futures);
+        all.block();
+        
     }
 
     @Override
@@ -325,7 +335,7 @@ public class GremlinServerHttpWebClientGraphDatabaseService
         String query = GremlinRecipes.deleteVertices(
                 propertyKey, propertyValue, ITERATE);
         LOGGER.debug("Gremlin Query - Delete Vertices: {}", query);
-        sendNonBlockingRequest(query);
+        sendBlockingRequest(query);
     }
     
     /**************************************************************************
@@ -392,25 +402,31 @@ public class GremlinServerHttpWebClientGraphDatabaseService
 
     @Override
     public void addEdges(List<SimpleGraphEdge> edges) {
+        
+        // Non-blocking requests to add edges
         List<Mono<ResponseEntity<String>>> futures = new ArrayList<>();
         for (SimpleGraphEdge edge : edges) {
             String query = GremlinRecipes.addEdge(edge.getSourceVertexId(),
                     edge.getTargetVertexId(), edge.getLabel(),
                     edge.getProperties(), supportsNonStringIds, 
-                    ITERATE);
+                    supportsUserDefinedIds, ITERATE);
             LOGGER.debug("Gremlin Query - Add Edge: {}", query);
             futures.add(sendNonBlockingRequest(query));
         }
-        Flux.merge(futures).subscribe();
+        
+        // Block until all given publishers have completed
+        Mono<Void> all = Mono.when(futures);
+        all.block();
+        
     }
 
     @Override
     public Mono<ResponseEntity<String>> addEdge(
-            Vertex sourceVertex, Vertex targetVertex,
+            long sourceVertexId, long targetVertexId,
             String label, Map<String, Object> properties) {
-        String query = GremlinRecipes.addEdge((Long) sourceVertex.id(),
-                (Long) targetVertex.id(), label, properties,
-                supportsNonStringIds, ITERATE);
+        String query = GremlinRecipes.addEdge(sourceVertexId,
+                targetVertexId, label, properties,
+                supportsNonStringIds, supportsUserDefinedIds, ITERATE);
         LOGGER.debug("Gremlin Query - Add Edge: {}", query);
         return sendNonBlockingRequest(query);
     }
@@ -453,7 +469,7 @@ public class GremlinServerHttpWebClientGraphDatabaseService
         String query = GremlinRecipes
                 .deleteEdges(propertyKey, propertyValue, ITERATE);
         LOGGER.debug("Gremlin Query - Delete Edges: {}", query);
-        sendNonBlockingRequest(query);
+        sendBlockingRequest(query);
     }
     
     /**************************************************************************
