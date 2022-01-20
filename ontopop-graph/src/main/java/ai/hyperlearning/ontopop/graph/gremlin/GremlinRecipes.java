@@ -109,6 +109,17 @@ public class GremlinRecipes {
 				".by(unfold())" : ".unfold()";
 	}
 	
+	/**
+	 * Execute a traversal
+	 * https://tinkerpop.apache.org/docs/current/tutorials/the-gremlin-console/#result-iteration
+	 * @param iterate
+	 * @return
+	 */
+	
+	private static String iterateTraversal(boolean iterate) {
+	    return iterate ? ".iterate()" : "";
+	}
+	
 	/**************************************************************************
 	 * VERTEX-CENTRIC GREMLIN RECIPES
 	 *************************************************************************/
@@ -298,7 +309,8 @@ public class GremlinRecipes {
 	
 	public static String addVertex(
 			String label, long vertexId, Map<String, Object> properties, 
-			boolean supportsNonStringIds, boolean supportsUserDefinedIds) {
+			boolean supportsNonStringIds, boolean supportsUserDefinedIds, 
+			boolean iterate) {
 		StringBuilder query = new StringBuilder("g.addV('" + label + "')");
 		if ( supportsUserDefinedIds )
 	        query.append(supportsNonStringIds ? 
@@ -312,7 +324,7 @@ public class GremlinRecipes {
 					".property('" + key + "', " 
 							+ resolveHasPropertyValue(entry.getValue()) + ")");
 		}
-		return query.toString();
+		return query.toString() + iterateTraversal(iterate);
 	}
 	
 	/**
@@ -325,12 +337,13 @@ public class GremlinRecipes {
 	
 	public static String updateVertex(
 			long vertexId, String propertyKey, Object propertyValue, 
-			boolean supportsNonStringIds) {
+			boolean supportsNonStringIds, boolean iterate) {
 		String key = propertyKey.equalsIgnoreCase(PROPERTY_KEY_ONTOLOGY_LABEL) ? 
 				PROPERTY_KEY_ONTOLOGY_LABEL_REPLACEMENT : propertyKey;
 		return resolveVertexId(vertexId, supportsNonStringIds)
 				+ ".property('" + key + "', " 
-					+ resolveHasPropertyValue(propertyValue) + ")";
+					+ resolveHasPropertyValue(propertyValue) + ")"
+				+ iterateTraversal(iterate);
 	}
 	
 	/**
@@ -342,7 +355,7 @@ public class GremlinRecipes {
 	
 	public static String updateVertex(
 			long vertexId, Map<String, Object> properties, 
-			boolean supportsNonStringIds) {
+			boolean supportsNonStringIds, boolean iterate) {
 		StringBuilder query = new StringBuilder(
 				resolveVertexId(vertexId, supportsNonStringIds));
 		for (Map.Entry<String, Object> entry : properties.entrySet()) {
@@ -353,7 +366,7 @@ public class GremlinRecipes {
 					".property('" + key + "', " 
 							+ resolveHasPropertyValue(entry.getValue()) + ")");
 		}
-		return query.toString();
+		return query.toString() + iterateTraversal(iterate);
 	}
 	
 	/**
@@ -361,9 +374,10 @@ public class GremlinRecipes {
 	 * @return
 	 */
 	
-	public static String deleteVertices() {
+	public static String deleteVertices(boolean iterate) {
 		return "g.V()"
-				+ ".drop()";
+				+ ".drop()"
+		        + iterateTraversal(iterate);
 	}
 	
 	/**
@@ -374,11 +388,12 @@ public class GremlinRecipes {
 	 */
 	
 	public static String deleteVertices(String propertyKey, 
-			Object propertyValue) {
+			Object propertyValue, boolean iterate) {
 		return "g.V()"
 				+ ".has('" + propertyKey + "', " 
 					+ resolveHasPropertyValue(propertyValue) + ")"
-				+ ".drop()";
+				+ ".drop()"
+				+ iterateTraversal(iterate);
 	}
 	
 	/**
@@ -388,9 +403,10 @@ public class GremlinRecipes {
 	 */
 	
 	public static String deleteVertex(
-			long vertexId, boolean supportsNonStringIds) {
+			long vertexId, boolean supportsNonStringIds, boolean iterate) {
 		return resolveVertexId(vertexId, supportsNonStringIds)
-				+ ".drop()";
+				+ ".drop()"
+				+ iterateTraversal(iterate);
 	}
 	
 	/**************************************************************************
@@ -588,7 +604,8 @@ public class GremlinRecipes {
 	
 	public static String addEdge(long sourceVertexId, long targetVertexId, 
 			String label, Map<String, Object> properties, 
-			boolean supportsNonStringIds) {
+			boolean supportsNonStringIds, 
+			boolean iterate) {
 		StringBuilder query = new StringBuilder(supportsNonStringIds ? 
 				"g.V(" + sourceVertexId + ")"
 					+ ".addE('" + label + "')"
@@ -603,7 +620,7 @@ public class GremlinRecipes {
 			query.append(".property('" + key + "', " 
 					+ resolveHasPropertyValue(entry.getValue()) + ")");
 		}
-		return query.toString();
+		return query.toString() + iterateTraversal(iterate);
 	}
 	
 	/**
@@ -616,12 +633,13 @@ public class GremlinRecipes {
 	
 	public static String updateEdge(long edgeId, 
 			String propertyKey, Object propertyValue, 
-			boolean supportsNonStringIds) {
+			boolean supportsNonStringIds, boolean iterate) {
 		String key = propertyKey.equalsIgnoreCase(PROPERTY_KEY_ONTOLOGY_LABEL) ? 
 				PROPERTY_KEY_ONTOLOGY_LABEL_REPLACEMENT : propertyKey;
 		return resolveEdgeId(edgeId, supportsNonStringIds)
 				+ ".property('" + key + "', " 
-					+ resolveHasPropertyValue(propertyValue) + ")";
+					+ resolveHasPropertyValue(propertyValue) + ")"
+				+ iterateTraversal(iterate);
 	}
 	
 	/**
@@ -633,7 +651,7 @@ public class GremlinRecipes {
 	
 	public static String updateEdge(
 			long edgeId, Map<String, Object> properties, 
-			boolean supportsNonStringIds) {
+			boolean supportsNonStringIds, boolean iterate) {
 		StringBuilder query = new StringBuilder(
 				resolveEdgeId(edgeId, supportsNonStringIds));
 		for (Map.Entry<String, Object> entry : properties.entrySet()) {
@@ -643,7 +661,7 @@ public class GremlinRecipes {
 			query.append(".property('" + key + "', " 
 					+ resolveHasPropertyValue(entry.getValue()) + ")");
 		}
-		return query.toString();
+		return query.toString() + iterateTraversal(iterate);
 	}
 	
 	/**
@@ -651,9 +669,10 @@ public class GremlinRecipes {
 	 * @return
 	 */
 	
-	public static String deleteEdges() {
+	public static String deleteEdges(boolean iterate) {
 		return "g.E()"
-				+ ".drop()";
+				+ ".drop()"
+		        + iterateTraversal(iterate);
 	}
 	
 	/**
@@ -664,12 +683,13 @@ public class GremlinRecipes {
 	 */
 	
 	public static String deleteEdges(String propertyKey, 
-			Object propertyValue) {
+			Object propertyValue, boolean iterate) {
 		String hasPropertyValue = propertyValue instanceof String ? 
 				"'" + propertyValue + "'" : propertyValue.toString(); 
 		return "g.E()"
 				+ ".has('" + propertyKey + "', " + hasPropertyValue + ")"
-				+ ".drop()";
+				+ ".drop()"
+				+ iterateTraversal(iterate);
 	}
 	
 	/**
@@ -679,9 +699,10 @@ public class GremlinRecipes {
 	 */
 	
 	public static String deleteEdge(
-			long edgeId, boolean supportsNonStringIds) {
+			long edgeId, boolean supportsNonStringIds, boolean iterate) {
 		return resolveEdgeId(edgeId, supportsNonStringIds)
-				+ ".drop()";
+				+ ".drop()"
+				+ iterateTraversal(iterate);
 	}
 	
 	/**************************************************************************
