@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import ai.hyperlearning.ontopop.graph.gremlin.GremlinGraphDatabaseService;
 import ai.hyperlearning.ontopop.graph.gremlin.engines.azure.cosmosdb.AzureCosmosDbGremlinServerHTTPClientGraphDatabaseService;
+import ai.hyperlearning.ontopop.graph.gremlin.engines.janusgraph.JanusGraphGremlinServerHTTPClientGraphDatabaseService;
 import ai.hyperlearning.ontopop.graph.gremlin.engines.janusgraph.JanusGraphGremlinServerWebSocketClientGraphDatabaseService;
 import ai.hyperlearning.ontopop.graph.gremlin.engines.tinkergraph.TinkerGraphEmbeddedGraphDatabaseService;
 import ai.hyperlearning.ontopop.graph.gremlin.server.http.GremlinServerHTTPClientGraphDatabaseService;
@@ -33,6 +34,9 @@ public class GraphDatabaseServiceFactory {
     private JanusGraphGremlinServerWebSocketClientGraphDatabaseService janusGraphGremlinServerWebSocketClientGraphDatabaseService;
     
     @Autowired(required = false)
+    private JanusGraphGremlinServerHTTPClientGraphDatabaseService janusGraphGremlinServerHTTPClientGraphDatabaseService;
+    
+    @Autowired(required = false)
     private AzureCosmosDbGremlinServerHTTPClientGraphDatabaseService azureCosmosDbGremlinServerHTTPClientGraphDatabaseService;
 
     @Autowired(required = false)
@@ -58,6 +62,8 @@ public class GraphDatabaseServiceFactory {
                 return gremlinServerHTTPClientGraphDatabaseService;
             case JANUSGRAPH_WS:
                 return janusGraphGremlinServerWebSocketClientGraphDatabaseService;
+            case JANUSGRAPH_HTTP:
+                return janusGraphGremlinServerHTTPClientGraphDatabaseService;
             case AZURE_COSMOSDB:
                 return azureCosmosDbGremlinServerHTTPClientGraphDatabaseService;
             case TINKERGRAPH:
@@ -80,6 +86,8 @@ public class GraphDatabaseServiceFactory {
                 return gremlinServerHTTPClientGraphDatabaseService;
             case JANUSGRAPH_WS:
                 return janusGraphGremlinServerWebSocketClientGraphDatabaseService;
+            case JANUSGRAPH_HTTP:
+                return janusGraphGremlinServerHTTPClientGraphDatabaseService;
             case AZURE_COSMOSDB:
                 return azureCosmosDbGremlinServerHTTPClientGraphDatabaseService;
             case TINKERGRAPH:
