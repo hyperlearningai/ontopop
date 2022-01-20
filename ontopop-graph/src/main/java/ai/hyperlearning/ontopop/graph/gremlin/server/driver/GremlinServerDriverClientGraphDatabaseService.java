@@ -14,7 +14,6 @@ import javax.script.ScriptException;
 import org.apache.tinkerpop.gremlin.driver.Client;
 import org.apache.tinkerpop.gremlin.driver.Result;
 import org.apache.tinkerpop.gremlin.driver.ResultSet;
-import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.util.TransactionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -553,7 +552,7 @@ public class GremlinServerDriverClientGraphDatabaseService
                         String query = GremlinRecipes.addEdge(edge.getSourceVertexId(),
                                 edge.getTargetVertexId(), edge.getLabel(),
                                 edge.getProperties(), supportsNonStringIds, 
-                                ITERATE);
+                                supportsUserDefinedIds, ITERATE);
                         LOGGER.debug("Gremlin Query - Add Edge: {}", query);
                         client.submit(query).all().get();
                     }
@@ -568,7 +567,7 @@ public class GremlinServerDriverClientGraphDatabaseService
                     String query = GremlinRecipes.addEdge(edge.getSourceVertexId(),
                             edge.getTargetVertexId(), edge.getLabel(),
                             edge.getProperties(), supportsNonStringIds, 
-                            ITERATE);
+                            supportsUserDefinedIds, ITERATE);
                     LOGGER.debug("Gremlin Query - Add Edge: {}", query);
                     client.submit(query).all().get();
                 }
@@ -580,12 +579,12 @@ public class GremlinServerDriverClientGraphDatabaseService
     }
 
     @Override
-    public Result addEdge(Vertex sourceVertex, Vertex targetVertex,
+    public Result addEdge(long sourceVertexId, long targetVertexId,
             String label, Map<String, Object> properties)
             throws InterruptedException, ExecutionException {
-        String query = GremlinRecipes.addEdge((Long) sourceVertex.id(),
-                (Long) targetVertex.id(), label, properties,
-                supportsNonStringIds, ITERATE);
+        String query = GremlinRecipes.addEdge(sourceVertexId,
+                targetVertexId, label, properties,
+                supportsNonStringIds, supportsUserDefinedIds, ITERATE);
         LOGGER.debug("Gremlin Query - Add Edge: {}", query);
         client.submit(query).all().get();
         return null;
