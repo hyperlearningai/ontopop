@@ -172,26 +172,29 @@ storage:
         service: apache-jena
         apache-jena:
             fuseki:
-                url:
+                url: ${jena-fuseki-url}
+                username: ${jena-fuseki-username}
+                password: ${jena-fuseki-password}
         ontotext-graphdb:
             url:
     graph:
-        service: tinkergraph
+        service: janusgraph-http
         engine:
-            supportsUserDefinedIds: false
-            supportsNonStringIds: true
-            supportsSchema: true
-            supportsTransactions: true
-            supportsGeoshape: true
+            supportsUserDefinedIds:
+            supportsNonStringIds:
+            supportsSchema:
+            supportsTransactions:
+            supportsGeoshape:
             supportsTraversals:
-                by: true
+                by:
         gremlin-graph:
-            configuration-filename: gremlin-graph.properties
+            configuration-filename:
         gremlin-server:
+            url: ${gremlin-server-url}
             host:
             port:
-            username:
-            password:
+            username: ${gremlin-server-username}
+            password: ${gremlin-server-password}
             enableSsl:
             remoteTraversalSourceName:
             serializer:
@@ -200,8 +203,8 @@ storage:
                 serializeResultToString:
             bulkExecutor:
                 rateLimiter:
-                    enabled: false
-                    actionsPerSecond:
+                    enabled: true
+                    actionsPerSecond: 50
                     maximumAttempts:
     search:
         service: elasticsearch

@@ -184,6 +184,8 @@ storage:
         apache-jena:
             fuseki:
                 url: ${jena-fuseki-url}
+                username: ${jena-fuseki-username}
+                password: ${jena-fuseki-password}
         ontotext-graphdb:
             url: ${ontotext-graphdb-url}
     graph:
