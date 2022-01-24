@@ -41,6 +41,8 @@
     <properties>
         <apache-jena-libs.version>4.3.1</apache-jena-libs.version>
         <aws-java-sdk.version>1.12.126</aws-java-sdk.version>
+        <aws-java-sdk-s3.version>1.12.145</aws-java-sdk-s3.version>
+        <aws-java-sdk-secretsmanager.version>1.12.145</aws-java-sdk-secretsmanager.version>
         <aws-lambda-java-core.version>1.2.1</aws-lambda-java-core.version>
         <aws-lambda-java-events.version>3.11.0</aws-lambda-java-events.version>
         <aws-sdk-bom.version>2.17.102</aws-sdk-bom.version>
@@ -167,6 +169,20 @@
                 <groupId>com.amazonaws</groupId>
                 <artifactId>aws-java-sdk</artifactId>
                 <version>${aws-java-sdk.version}</version>
+            </dependency>
+            
+            <!-- AWS Java SDK S3 -->
+            <dependency>
+                <groupId>com.amazonaws</groupId>
+                <artifactId>aws-java-sdk-s3</artifactId>
+                <version>${aws-java-sdk-s3.version}</version>
+            </dependency>
+            
+            <!-- AWS Java SDK Secrets Manager -->
+            <dependency>
+                <groupId>com.amazonaws</groupId>
+                <artifactId>aws-java-sdk-secretsmanager</artifactId>
+                <version>${aws-java-sdk-secretsmanager.version}</version>
             </dependency>
             
             <!-- AWS Lambda Core -->
@@ -448,7 +464,7 @@
 
         </dependencies>
     </dependencyManagement>
-
+    
     <!-- Child Modules -->
     <modules>
         <module>ontopop-configuration-server</module>
@@ -477,10 +493,58 @@
         <module>ontopop-data-ontology-loader-graph</module>
         <module>ontopop-data-ontology-indexer-graph</module>
         <module>ontopop-api-ontology-crud</module>
-        <module>ontopop-apps</module>
-        <module>ontopop-apps-azure</module>
-        <module>ontopop-apps-aws</module>
     </modules>
+    
+    <!-- Project Profiles -->
+    <profiles>
+    
+        <!-- Build Profile - Spring Boot Apps -->
+        <profile>
+            <id>build-spring</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>ontopop-apps</module>
+            </modules>
+        </profile>
+    
+        <!-- Build Profile - Microsoft Azure Apps -->
+        <profile>
+            <id>build-azure</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>ontopop-apps-azure</module>
+            </modules>
+        </profile>
+        
+        <!-- Build Profile - AWS Apps -->
+        <profile>
+            <id>build-aws</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>ontopop-apps-aws</module>
+            </modules>
+        </profile>
+        
+        <!-- Build Profile - All Apps -->
+        <profile>
+            <id>build-all</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>ontopop-apps</module>
+                <module>ontopop-apps-azure</module>
+                <module>ontopop-apps-aws</module>
+            </modules>
+        </profile>
+    
+    </profiles>
 
     <!-- Project Build Configuration -->
     <build>
