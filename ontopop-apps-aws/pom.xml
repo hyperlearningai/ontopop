@@ -51,7 +51,7 @@
 
     <!-- Child Modules -->
     <modules>
-    
+        <module>ontopop-aws-lambda-app-data-ontology-ingestor</module>
     </modules>
 
 </project>

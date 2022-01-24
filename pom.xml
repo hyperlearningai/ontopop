@@ -41,6 +41,8 @@
     <properties>
         <apache-jena-libs.version>4.3.1</apache-jena-libs.version>
         <aws-java-sdk.version>1.12.126</aws-java-sdk.version>
+        <aws-lambda-java-core.version>1.2.1</aws-lambda-java-core.version>
+        <aws-lambda-java-events.version>3.11.0</aws-lambda-java-events.version>
         <aws-sdk-bom.version>2.17.102</aws-sdk-bom.version>
         <aws-secretsmanager.version>2.17.102</aws-secretsmanager.version>
         <azure-functions-java-library.version>1.4.2</azure-functions-java-library.version>
@@ -165,6 +167,20 @@
                 <groupId>com.amazonaws</groupId>
                 <artifactId>aws-java-sdk</artifactId>
                 <version>${aws-java-sdk.version}</version>
+            </dependency>
+            
+            <!-- AWS Lambda Core -->
+            <dependency>
+                <groupId>com.amazonaws</groupId>
+                <artifactId>aws-lambda-java-core</artifactId>
+                <version>${aws-lambda-java-core.version}</version>
+            </dependency>
+            
+            <!-- AWS Lambda Events -->
+            <dependency>
+                <groupId>com.amazonaws</groupId>
+                <artifactId>aws-lambda-java-events</artifactId>
+                <version>${aws-lambda-java-events.version}</version>
             </dependency>
 
             <!-- AWS SDK BOM -->
