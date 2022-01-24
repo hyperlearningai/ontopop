@@ -78,6 +78,7 @@
         <owlapi-distribution.version>5.1.19</owlapi-distribution.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <revision>2.0.0</revision>
+        <spring-boot-thin-layout.version>1.0.28.RELEASE</spring-boot-thin-layout.version>
         <spring-cloud-dependencies.version>2021.0.0</spring-cloud-dependencies.version>
         <spring-cloud-starter-aws-secrets-manager-config.version>2.2.6.RELEASE</spring-cloud-starter-aws-secrets-manager-config.version>
         <springdoc-openapi-ui.version>1.5.12</springdoc-openapi-ui.version>
@@ -444,6 +445,13 @@
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-ui</artifactId>
                 <version>${springdoc-openapi-ui.version}</version>
+            </dependency>
+            
+            <!-- Spring Boot Thin Layout -->
+            <dependency>
+                <groupId>org.springframework.boot.experimental</groupId>
+                <artifactId>spring-boot-thin-layout</artifactId>
+                <version>${spring-boot-thin-layout.version}</version>
             </dependency>
 
             <!-- Spring Cloud Dependencies POM -->
