@@ -463,6 +463,7 @@
         <module>ontopop-api-ontology-crud</module>
         <module>ontopop-apps</module>
         <module>ontopop-apps-azure</module>
+        <module>ontopop-apps-aws</module>
     </modules>
 
     <!-- Project Build Configuration -->
