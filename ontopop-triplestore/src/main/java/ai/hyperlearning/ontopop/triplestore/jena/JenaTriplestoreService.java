@@ -134,6 +134,8 @@ public class JenaTriplestoreService implements TriplestoreService {
         }
 
         // Send a HTTP PUT request to the Fuskei server to upload data
+        // Note that HTTP PUT replaces the entire dataset
+        // Reference:https://www.w3.org/2012/01/http-rdf-update/#http-put
         ResponseEntity<String> response = webClient.put()
                 .uri(FUSEKI_DATASET_UPLOAD_DATA_ENDPOINT, String.valueOf(id))
                 .contentType(MediaType.MULTIPART_FORM_DATA)
@@ -141,7 +143,8 @@ public class JenaTriplestoreService implements TriplestoreService {
                 .retrieve()
                 .onStatus(status -> status.value() != HttpStatus.OK_200,
                         clientResponse -> Mono.empty())
-                .toEntity(String.class).block();
+                .toEntity(String.class)
+                .block();
 
         // Throw an exception if the HTTP response status is not 200 OK
         if (response == null)
