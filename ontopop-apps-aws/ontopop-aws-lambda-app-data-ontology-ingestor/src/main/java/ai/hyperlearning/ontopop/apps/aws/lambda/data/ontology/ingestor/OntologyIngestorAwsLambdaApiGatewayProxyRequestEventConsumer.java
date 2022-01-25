@@ -19,12 +19,12 @@ import ai.hyperlearning.ontopop.data.ontology.ingestor.OntologyIngestorService;
  */
 
 @Component
-public class OntologyIngestorAwsLambdaEventConsumer 
+public class OntologyIngestorAwsLambdaApiGatewayProxyRequestEventConsumer 
         implements Consumer<APIGatewayProxyRequestEvent> {
     
     private static final Logger LOGGER =
             LoggerFactory.getLogger(
-                    OntologyIngestorAwsLambdaEventConsumer.class);
+                    OntologyIngestorAwsLambdaApiGatewayProxyRequestEventConsumer.class);
     
     @Autowired
     private OntologyIngestorService ontologyIngestorService;
