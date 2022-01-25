@@ -5,6 +5,7 @@
 **/logs/*
 /logs/*
 !/logs/.gitkeep
+**/function.zip
 
 # Compiled Resources
 __pycache__/
