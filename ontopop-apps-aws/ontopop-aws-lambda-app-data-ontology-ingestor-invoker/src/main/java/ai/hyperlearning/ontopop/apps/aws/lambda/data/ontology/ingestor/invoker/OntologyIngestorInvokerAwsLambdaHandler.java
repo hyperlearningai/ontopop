@@ -8,6 +8,8 @@ import java.net.http.HttpResponse;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -24,6 +26,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
  * @since 2.0.0
  */
 
+@Deprecated(since = "2.0.0", forRemoval = true)
 public class OntologyIngestorInvokerAwsLambdaHandler 
         implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
@@ -32,8 +35,11 @@ public class OntologyIngestorInvokerAwsLambdaHandler
     private static final Set<String> HEADER_PATTERNS_TO_KEEP = Stream.of(
             "x-github", "x-hub")
             .collect(Collectors.toCollection(HashSet::new));
+    private final ExecutorService executorService = 
+            Executors.newFixedThreadPool(2);
     private final HttpClient httpClient = HttpClient.newBuilder()
             .version(HttpClient.Version.HTTP_2)
+            .executor(executorService)
             .build();
     
     @Override
@@ -56,8 +62,10 @@ public class OntologyIngestorInvokerAwsLambdaHandler
         logger.log("Ontology ingestion webhook payload: " + payload);
         
         // Send a HTTP POST request to the Ontology Ingestor Lambda Function
+        // Build the HTTP POST request
         String ontologyIngestorUrl = 
                 System.getenv(ENV_VARIABLE_NAME_ONTOLOGY_INGESTOR_URL);
+        logger.log("Identified Ontology Ingestor URL: " + ontologyIngestorUrl);
         Builder requestBuilder = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(payload))
                 .uri(URI.create(ontologyIngestorUrl))
@@ -69,8 +77,11 @@ public class OntologyIngestorInvokerAwsLambdaHandler
             }
         }
         HttpRequest request = requestBuilder.build();
+        logger.log("Sending Headers: " + request.headers().map());
+        
+        // Asynchronously send the HTTP POST request
         httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
-        logger.log("Send async HTTP POST request to : " + ontologyIngestorUrl);
+        logger.log("Sent async HTTP POST request to: " + request.uri());
         
         // Return a response
         APIGatewayProxyResponseEvent response = 
