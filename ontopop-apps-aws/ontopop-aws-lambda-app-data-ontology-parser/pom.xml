@@ -39,7 +39,7 @@
     <!-- Module Properties -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <start-class>ai.hyperlearning.ontopop.apps.aws.lambda.data.ontology.validator.OntologyValidatorAwsLambdaApp</start-class>
+        <start-class>ai.hyperlearning.ontopop.apps.aws.lambda.data.ontology.parser.OntologyParserAwsLambdaApp</start-class>
     </properties>
 
     <!-- Module Dependencies -->
