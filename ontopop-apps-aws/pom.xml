@@ -64,6 +64,7 @@
         <module>ontopop-aws-lambda-app-data-ontology-parser</module>
         <module>ontopop-aws-lambda-app-data-ontology-modeller-graph</module>
         <module>ontopop-aws-lambda-app-data-ontology-loader-graph</module>
+        <module>ontopop-aws-lambda-app-data-ontology-indexer-graph</module>
     </modules>
 
 </project>
