@@ -61,6 +61,7 @@
         <module>ontopop-aws-lambda-app-data-ontology-ingestor</module>
         <module>ontopop-aws-lambda-app-data-ontology-validator</module>
         <module>ontopop-aws-lambda-app-data-ontology-loader-triplestore</module>
+        <module>ontopop-aws-lambda-app-data-ontology-parser</module>
     </modules>
 
 </project>
