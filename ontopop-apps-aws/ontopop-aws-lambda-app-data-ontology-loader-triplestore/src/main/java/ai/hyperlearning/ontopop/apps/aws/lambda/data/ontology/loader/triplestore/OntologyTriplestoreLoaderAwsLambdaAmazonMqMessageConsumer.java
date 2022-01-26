@@ -22,9 +22,8 @@ import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 public class OntologyTriplestoreLoaderAwsLambdaAmazonMqMessageConsumer 
         implements Consumer<String> {
     
-    private static final Logger LOGGER =
-            LoggerFactory.getLogger(
-                    OntologyTriplestoreLoaderAwsLambdaAmazonMqMessageConsumer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(
+            OntologyTriplestoreLoaderAwsLambdaAmazonMqMessageConsumer.class);
     
     @Autowired
     private OntologyTriplestoreLoaderService ontologyTriplestoreLoaderService;
@@ -33,7 +32,7 @@ public class OntologyTriplestoreLoaderAwsLambdaAmazonMqMessageConsumer
     public void accept(String message) {
         
         // Log the consumed payload for debugging purposes
-        LOGGER.debug("New ontology validation event detected and consumed "
+        LOGGER.info("New ontology validation event detected and consumed "
                 + "via the shared messaging service and the "
                 + "validatedConsumptionChannel channel.");
         LOGGER.debug("Ontology validation message payload: {}", message);

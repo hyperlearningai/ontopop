@@ -22,9 +22,8 @@ import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 public class OntologyValidatorAwsLambdaAmazonMqMessageConsumer 
         implements Consumer<String> {
     
-    private static final Logger LOGGER =
-            LoggerFactory.getLogger(
-                    OntologyValidatorAwsLambdaAmazonMqMessageConsumer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(
+            OntologyValidatorAwsLambdaAmazonMqMessageConsumer.class);
 
     @Autowired
     private OntologyValidatorService ontologyValidatorService;
