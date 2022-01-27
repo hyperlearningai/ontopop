@@ -171,6 +171,8 @@ storage:
         apache-jena:
             fuseki:
                 url: 
+                username: 
+                password: 
         ontotext-graphdb:
             url: 
     graph:
@@ -186,6 +188,7 @@ storage:
         gremlin-graph:
             configuration-filename:
         gremlin-server:
+        	url: 
             host: ${gremlin-server-host}
             port: ${gremlin-server-port}
             username: ${gremlin-server-username}
