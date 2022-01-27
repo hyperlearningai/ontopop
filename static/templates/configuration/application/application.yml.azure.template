@@ -112,6 +112,17 @@ spring:
                 initial-delay: 0
             default:
                 contentType: application/json
+        vault:
+            enabled: false
+            host:
+            port:
+            scheme:
+            authentication:
+            token:
+            kv:
+                enabled:
+                backend:
+                default-context:
     datasource:
         driver-class-name: ${spring-datasource-driver-class-name}
         url: ${spring-datasource-url}
@@ -188,7 +199,7 @@ storage:
         gremlin-graph:
             configuration-filename:
         gremlin-server:
-        	url: 
+            url: 
             host: ${gremlin-server-host}
             port: ${gremlin-server-port}
             username: ${gremlin-server-username}

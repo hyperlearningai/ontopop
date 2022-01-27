@@ -15,7 +15,7 @@ spring:
                 default-context:
 azure:
     keyvault:
-    	enabled: true
+        enabled: true
         client-id: ${AZURE_KEYVAULT_CLIENT_ID}
         client-key: ${AZURE_KEYVAULT_CLIENT_SECRET}
         tenant-id: ${AZURE_KEYVAULT_TENANT_ID}
