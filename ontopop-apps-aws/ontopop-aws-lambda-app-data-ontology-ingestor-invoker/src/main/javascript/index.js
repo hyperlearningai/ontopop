@@ -1,3 +1,19 @@
+/**
+ * Ontology Ingestion Service Invoker
+ *
+ * An API Gateway HTTP-triggered (POST) AWS lambda application written in 
+ * Node.js that will be requested by the Git webhook (POST). This AWS
+ * lambda function simply sends the API Gateway Proxy Request Event object
+ * to the Ontology Ingestion Service (which is another AWS lambda application). 
+ * It invokes the Ontology Ingestion Service AWS lambda application, but it
+ * does NOT wait for a response - this is necessary as GitHub Webhook requests 
+ * timeout after 10 seconds, after which the HTTP connection is destroyed and 
+ * the webhook payload lost, so an immediate response is required.
+ *
+ * @author jillurquddus
+ * @since  2.0.0
+ */
+
 const AWS = require('aws-sdk');
 exports.handler = async (event) => {
     
