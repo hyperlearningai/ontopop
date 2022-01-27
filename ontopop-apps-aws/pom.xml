@@ -57,7 +57,6 @@
     <!-- Child Modules -->
     <modules>
         <module>ontopop-aws-utils</module>
-        <module>ontopop-aws-lambda-app-data-ontology-ingestor-invoker</module>
         <module>ontopop-aws-lambda-app-data-ontology-ingestor</module>
         <module>ontopop-aws-lambda-app-data-ontology-validator</module>
         <module>ontopop-aws-lambda-app-data-ontology-loader-triplestore</module>
