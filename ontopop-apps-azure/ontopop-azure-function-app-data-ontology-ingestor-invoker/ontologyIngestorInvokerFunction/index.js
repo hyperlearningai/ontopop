@@ -14,7 +14,6 @@
  * @since  2.0.0
  */
 
-const https = require('https');
 const axios = require('axios');
 module.exports = async function (context, req) {
 
