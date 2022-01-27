@@ -15,8 +15,16 @@ spring:
                 default-context: ontopop/development
 azure:
     keyvault:
+    	enabled: false
         client-id: 
-        client-key: 
-        enabled: false
-        tenant-id: 
+        client-key:
+        tenant-id:
         uri: 
+aws:
+    secretsmanager:
+        enabled: false
+        name:
+        prefix:
+        defaultContext:
+        failFast:
+        region:

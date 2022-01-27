@@ -15,9 +15,9 @@ spring:
                 default-context: ontopop/development
 azure:
     keyvault:
+        enabled: false
         client-id: ${AZURE_KEYVAULT_CLIENT_ID}
         client-key: ${AZURE_KEYVAULT_CLIENT_SECRET}
-        enabled: false
         tenant-id: ${AZURE_KEYVAULT_TENANT_ID}
         uri: ${AZURE_KEYVAULT_URI}
 aws:

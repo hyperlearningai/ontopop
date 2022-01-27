@@ -201,6 +201,7 @@ storage:
         gremlin-graph:
             configuration-filename: gremlin-graph.properties
         gremlin-server:
+            url: 
             host: ${gremlin-server-host}
             port: ${gremlin-server-port}
             username: ${gremlin-server-username}

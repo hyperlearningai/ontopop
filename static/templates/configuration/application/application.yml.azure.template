@@ -15,6 +15,8 @@ spring:
                                 username: 
                                 password: 
                                 virtual-host: /
+                                ssl:
+                                    enabled: true
                 azure_service_bus:
                     type: servicebus-topic
                     default-candidate: false

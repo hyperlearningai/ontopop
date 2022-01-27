@@ -18,8 +18,16 @@ spring:
                 default-context:
 azure:
     keyvault:
+        enabled: false
         client-id: 
         client-key: 
-        enabled: false
         tenant-id: 
         uri: 
+aws:
+    secretsmanager:
+        enabled: false
+        name:
+        prefix:
+        defaultContext:
+        failFast:
+        region:

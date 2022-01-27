@@ -114,6 +114,17 @@ spring:
                 initial-delay: 0
             default:
                 contentType: application/json
+        vault:
+            enabled: false
+            host:
+            port:
+            scheme:
+            authentication:
+            token:
+            kv:
+                enabled:
+                backend:
+                default-context:
     datasource:
         driver-class-name: ${spring-datasource-driver-class-name}
         url: ${spring-datasource-url}
