@@ -38,6 +38,9 @@ import ai.hyperlearning.ontopop.model.git.WebhookEvent;
 public class Ontology implements Serializable {
 
 	private static final long serialVersionUID = 897119992423827281L;
+	private static final String WINDOWS_FILE_SEPARATOR = "\\";
+	private static final String UNIX_FILE_SEPARATOR = "/";
+    private static final String FILE_EXTENSION = ".";
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -216,15 +219,24 @@ public class Ontology implements Serializable {
 		return Paths.get(repoResourcePath)
 				.getFileName()
 				.toString()
-				.replaceAll(" ", "-")
+				.replace(" ", "-")
 				.trim();
 	}
 	
-	public String generateFilenameForPersistence(
-			long webhookEventId, String separator) {
-		return id + separator 
-				+ webhookEventId + separator 
-				+ standardiseRepoResourcePath();
+	public String getRepoResourcePathFileExtension() {
+	    int indexOfLastExtension = repoResourcePath
+	            .lastIndexOf(FILE_EXTENSION);
+	    int indexOfLastSeparator = Math.max(
+	            repoResourcePath.lastIndexOf(WINDOWS_FILE_SEPARATOR), 
+	            repoResourcePath.lastIndexOf(UNIX_FILE_SEPARATOR));
+	    return (indexOfLastExtension > indexOfLastSeparator) ? 
+	            "." + repoResourcePath.substring(indexOfLastExtension  + 1)
+	                .toLowerCase()
+	                .trim() : "";
+	}
+	
+	public String generateFilenameForPersistence(long webhookEventId) {
+		return id + "_" + webhookEventId + getRepoResourcePathFileExtension();
 	}
 
 	@Override

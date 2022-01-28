@@ -71,9 +71,6 @@ public class OntologyGraphLoaderService {
     @Value("${storage.object.containers.loaded.graph}")
     private String loadedDirectoryName;
 
-    @Value("${storage.object.patterns.fileNameIdsSeparator}")
-    private String filenameIdsSeparator;
-
     @Value("${storage.graph.service}")
     private String storageGraphService;
 
@@ -197,8 +194,7 @@ public class OntologyGraphLoaderService {
         LOGGER.info("Ontology Graph Loading Service - "
                 + "Started downloading the modelled resource.");
         downloadedFileUri = objectStorageService.downloadObject(readObjectUri,
-                filenameIdsSeparator
-                        + ontologyMessage.getJsonProcessedFilename());
+                "_" + ontologyMessage.getJsonProcessedFilename());
         LOGGER.debug("Downloaded modelled resource to '{}'.",
                 downloadedFileUri);
         LOGGER.info("Ontology Graph Loading Service - "

@@ -64,9 +64,6 @@ public class OntologyParserService {
     @Value("${storage.object.containers.parsed}")
     private String parsedDirectoryName;
 
-    @Value("${storage.object.patterns.fileNameIdsSeparator}")
-    private String filenameIdsSeparator;
-
     private OntologyMessage ontologyMessage;
     private ObjectStorageService objectStorageService;
     private String readObjectUri;
@@ -172,7 +169,7 @@ public class OntologyParserService {
         LOGGER.info("Ontology Parsing Service - "
                 + "Started downloading the validated resource.");
         downloadedFileUri = objectStorageService.downloadObject(readObjectUri,
-                filenameIdsSeparator + ontologyMessage.getProcessedFilename());
+                "_" + ontologyMessage.getProcessedFilename());
         LOGGER.debug("Downloaded validated resource to '{}'.",
                 downloadedFileUri);
         LOGGER.info("Ontology Parsing Service - "

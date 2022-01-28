@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.stereotype.Service;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import ai.hyperlearning.ontopop.messaging.processors.DataPipelineModelledIndexerSource;
 import ai.hyperlearning.ontopop.model.graph.SimpleOntologyPropertyGraph;
 import ai.hyperlearning.ontopop.model.graph.SimpleOntologyVertex;
@@ -60,9 +63,6 @@ public class OntologyGraphIndexerService {
 
     @Value("${storage.object.containers.indexed}")
     private String indexedDirectoryName;
-
-    @Value("${storage.object.patterns.fileNameIdsSeparator}")
-    private String filenameIdsSeparator;
 
     @Value("${storage.search.service}")
     private String storageSearchService;
@@ -189,8 +189,7 @@ public class OntologyGraphIndexerService {
         LOGGER.info("Ontology Indexing Service - "
                 + "Started downloading the modelled resource.");
         downloadedFileUri = objectStorageService.downloadObject(readObjectUri,
-                filenameIdsSeparator
-                        + ontologyMessage.getJsonProcessedFilename());
+                "_" + ontologyMessage.getJsonProcessedFilename());
         LOGGER.debug("Downloaded modelled resource to '{}'.",
                 downloadedFileUri);
         LOGGER.info("Ontology Indexing Service - "

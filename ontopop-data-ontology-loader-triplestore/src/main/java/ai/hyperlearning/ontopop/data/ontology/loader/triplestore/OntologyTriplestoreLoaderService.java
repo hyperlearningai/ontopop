@@ -59,9 +59,6 @@ public class OntologyTriplestoreLoaderService {
     @Value("${storage.object.containers.loaded.triplestore}")
     private String loadedDirectoryName;
 
-    @Value("${storage.object.patterns.fileNameIdsSeparator}")
-    private String filenameIdsSeparator;
-
     @Value("${storage.triplestore.service}")
     private String storageTriplestoreService;
 
@@ -179,7 +176,7 @@ public class OntologyTriplestoreLoaderService {
         LOGGER.info("Ontology Triplestore Loading Service - "
                 + "Started downloading the validated resource.");
         downloadedFileUri = objectStorageService.downloadObject(readObjectUri,
-                filenameIdsSeparator + ontologyMessage.getProcessedFilename());
+                "_" + ontologyMessage.getProcessedFilename());
         LOGGER.debug("Downloaded validated resource to '{}'.",
                 downloadedFileUri);
         LOGGER.info("Ontology Triplestore Loading Service - "

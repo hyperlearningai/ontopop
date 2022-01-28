@@ -66,9 +66,6 @@ public class OntologyGraphModellerService {
     @Value("${storage.object.containers.modelled}")
     private String modelledDirectoryName;
 
-    @Value("${storage.object.patterns.fileNameIdsSeparator}")
-    private String filenameIdsSeparator;
-
     private OntologyMessage ontologyMessage;
     private ObjectStorageService objectStorageService;
     private String readObjectUri;
@@ -173,8 +170,7 @@ public class OntologyGraphModellerService {
         LOGGER.info("Ontology Property Graph Modelling Service - "
                 + "Started downloading the parsed resource.");
         downloadedFileUri = objectStorageService.downloadObject(readObjectUri,
-                filenameIdsSeparator
-                        + ontologyMessage.getJsonProcessedFilename());
+                "_" + ontologyMessage.getJsonProcessedFilename());
         LOGGER.debug("Downloaded parsed resource to '{}'.", downloadedFileUri);
         LOGGER.info("Ontology Property Graph Modelling Service - "
                 + "Finished downloading the parsed resource.");

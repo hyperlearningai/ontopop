@@ -60,9 +60,6 @@ public class OntologyValidatorService {
     @Value("${storage.object.containers.validated}")
     private String validatedDirectoryName;
 
-    @Value("${storage.object.patterns.fileNameIdsSeparator}")
-    private String filenameIdsSeparator;
-
     private OntologyMessage ontologyMessage;
     private ObjectStorageService objectStorageService;
     private String readObjectUri;
@@ -168,7 +165,7 @@ public class OntologyValidatorService {
         LOGGER.info("Ontology Validation Service - "
                 + "Started downloading the ingested resource.");
         downloadedFileUri = objectStorageService.downloadObject(readObjectUri,
-                filenameIdsSeparator + ontologyMessage.getProcessedFilename());
+                "_" + ontologyMessage.getProcessedFilename());
         LOGGER.debug("Downloaded ingested resource to '{}'.",
                 downloadedFileUri);
         LOGGER.info("Ontology Validation Service - "

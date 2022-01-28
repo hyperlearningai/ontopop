@@ -81,9 +81,6 @@ public class OntologyIngestorService {
     @Value("${storage.object.containers.ingested}")
     private String ingestedDirectoryName;
 
-    @Value("${storage.object.patterns.fileNameIdsSeparator}")
-    private String filenameIdsSeparator;
-
     private Map<String, String> headers;
     private String payload;
     private GitService gitService;
@@ -301,10 +298,9 @@ public class OntologyIngestorService {
                 // Write the string contents to a temporary file
                 // in the local file system
                 Path temporaryFile = Files.createTempFile("",
-                        filenameIdsSeparator + webhookEvent.getOntology()
+                        "_" + webhookEvent.getOntology()
                                 .generateFilenameForPersistence(
-                                        webhookEvent.getId(),
-                                        filenameIdsSeparator));
+                                        webhookEvent.getId()));
                 Files.write(temporaryFile,
                         response.getBody().getBytes(StandardCharsets.UTF_8));
                 LOGGER.debug(
@@ -366,7 +362,7 @@ public class OntologyIngestorService {
             ontologyMessage.setWebhookEventId(webhookEvent.getId());
             ontologyMessage.setProcessedFilename(
                     webhookEvent.getOntology().generateFilenameForPersistence(
-                            webhookEvent.getId(), filenameIdsSeparator));
+                            webhookEvent.getId()));
 
             // Publish the message to the shared messaging system
             ObjectMapper mapper = new ObjectMapper();
