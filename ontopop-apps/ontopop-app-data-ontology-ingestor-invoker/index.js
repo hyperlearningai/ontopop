@@ -1,7 +1,7 @@
 /**
  * Ontology Ingestion Service Invoker
  *
- * A HTTP-triggered (POST) application written in Node.js that will be 
+ * A simple HTTP server application written in Node.js that will be 
  * requested by the Git webhook (POST). This application simply sends the 
  * filtered headers along with the original request body payload to the 
  * Ontology Ingestion Service URL as a HTTP POST request using the Axios 
