@@ -5,10 +5,12 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import ai.hyperlearning.ontopop.data.jpa.repositories.WebhookEventRepository;
@@ -32,7 +34,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class OntologyWebhookEventManagementController {
 
     private static final Logger LOGGER =
-            LoggerFactory.getLogger(OntologyWebhookEventManagementController.class);
+            LoggerFactory.getLogger(
+                    OntologyWebhookEventManagementController.class);
 
     @Autowired
     private WebhookEventRepository webhookEventRepository;
@@ -43,16 +46,21 @@ public class OntologyWebhookEventManagementController {
 
     @Operation(
             summary = "Get all webhooks",
-            description = "Get all webhooks",
+            description = "Get all the webhooks consumed across all ontologies "
+                    + "managed by OntoPop.",
             tags = {"ontology", "webhook"})
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Webhooks successfully retrieved"),
+                            description = "Webhooks successfully retrieved."),
                     @ApiResponse(
                             responseCode = "401",
-                            description = "Webhooks retrieval request unauthorized")})
+                            description = "Retrieval of webhooks unauthorized."), 
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Internal server error.")})
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping(
             value = "/webhooks",
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -66,20 +74,25 @@ public class OntologyWebhookEventManagementController {
      *************************************************************************/
 
     @Operation(
-            summary = "Get webhook",
-            description = "Get a webhook by webhook ID",
+            summary = "Get a webhook",
+            description = "Get a webhook consumed by OntoPop given its "
+                    + "webhook ID.",
             tags = {"ontology", "webhook"})
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Webhook successfully retrieved"),
+                            description = "Webhook successfully retrieved."),
                     @ApiResponse(
                             responseCode = "401",
-                            description = "Webhook retrieval request unauthorized"),
+                            description = "Retrieval of webhook unauthorized."),
                     @ApiResponse(
                             responseCode = "404",
-                            description = "Webhook not found")})
+                            description = "Webhook not found."), 
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Internal server error.")})
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping(
             value = "/webhooks/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -95,16 +108,21 @@ public class OntologyWebhookEventManagementController {
 
     @Operation(
             summary = "Get all ontology webhooks",
-            description = "Get all ontology webhooks",
+            description = "Get all webhooks for a specific ontology consumed by "
+                    + "OntoPop given the ontology ID.",
             tags = {"ontology", "webhook"})
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Ontology webhooks successfully retrieved"),
+                            description = "Ontology webhooks successfully retrieved."),
                     @ApiResponse(
                             responseCode = "401",
-                            description = "Ontology webhooks retrieval request unauthorized")})
+                            description = "Retrieval of ontology webhooks unauthorized."), 
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Internal server error.")})
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping(
             value = "/{ontologyId}/webhooks",
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -120,19 +138,25 @@ public class OntologyWebhookEventManagementController {
 
     @Operation(
             summary = "Get ontology webhook",
-            description = "Get ontology webhook",
+            description = "Get a specific webhook for a specific ontology "
+                    + "consumed by OntoPop given the ontology ID and "
+                    + "webhook event ID.",
             tags = {"ontology", "webhook"})
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Ontology webhook successfully retrieved"),
+                            description = "Ontology webhook successfully retrieved."),
                     @ApiResponse(
                             responseCode = "401",
-                            description = "Ontology webhook retrieval request unauthorized"),
+                            description = "Retrieval of ontology webhook unauthorized."),
                     @ApiResponse(
                             responseCode = "404",
-                            description = "Ontology webhook not found")})
+                            description = "Ontology webhook not found."), 
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Internal server error.")})
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping(
             value = "/{ontologyId}/webhooks/{webhookEventId}",
             produces = MediaType.APPLICATION_JSON_VALUE)

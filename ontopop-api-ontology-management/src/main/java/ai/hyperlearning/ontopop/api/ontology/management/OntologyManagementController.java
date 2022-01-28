@@ -34,7 +34,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
- * Ontology Management API Service - Controller
+ * Ontology Management API Service - Ontology Controller
  *
  * @author jillurquddus
  * @since 2.0.0
