@@ -2,6 +2,8 @@ package ai.hyperlearning.ontopop.api.ontology.management;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,10 @@ import ai.hyperlearning.ontopop.model.ontology.Ontology;
 import ai.hyperlearning.ontopop.model.ontology.OntologyNonSecretData;
 import ai.hyperlearning.ontopop.security.secrets.model.OntologySecretData;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -69,7 +75,10 @@ public class OntologyManagementController {
             value = {
                     @ApiResponse(
                             responseCode = "201",
-                            description = "Ontology successfully created."),
+                            description = "Ontology successfully created.", 
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE, 
+                                    schema = @Schema(implementation = Ontology.class))),
                     @ApiResponse(
                             responseCode = "401",
                             description = "Creation of ontology unauthorized."), 
@@ -81,10 +90,15 @@ public class OntologyManagementController {
                             description = "Internal server error.")})
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Ontology newOntology(@RequestBody Ontology newOntology) {
+    public Ontology createOntology(
+            @Parameter(
+                    description = "New ontology that OntoPop should manage.", 
+                    required = true, 
+                    schema = @Schema(implementation = Ontology.class))
+            @Valid @RequestBody(required = true) Ontology ontology) {
         LOGGER.debug("New HTTP POST request: Create a new ontology.");
         try {
-            return ontologyCRUDService.create(newOntology);
+            return ontologyCRUDService.create(ontology);
         } catch (OntologyCreationAlreadyExistsException e) {
             throw e;
         } catch (Exception e) {
@@ -104,7 +118,10 @@ public class OntologyManagementController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Ontologies successfully retrieved."),
+                            description = "Ontologies successfully retrieved.", 
+                            content = @Content(
+                                    array = @ArraySchema(
+                                            schema = @Schema(implementation = Ontology.class)))),
                     @ApiResponse(
                             responseCode = "401",
                             description = "Retrieval of ontologies unauthorized."), 
@@ -131,7 +148,10 @@ public class OntologyManagementController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Ontology successfully retrieved."),
+                            description = "Ontology successfully retrieved.", 
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE, 
+                                    schema = @Schema(implementation = Ontology.class))),
                     @ApiResponse(
                             responseCode = "401",
                             description = "Retrieval of ontology unauthorized."),
@@ -145,7 +165,11 @@ public class OntologyManagementController {
     @GetMapping(
             value = "/{id}", 
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Ontology getOntology(@PathVariable(required = true) int id) {
+    public Ontology getOntology(
+            @Parameter(
+                    description = "ID of the ontology to retrieve.", 
+                    required = true)
+            @PathVariable(required = true) int id) {
         LOGGER.debug("New HTTP GET request: Get ontology by ID.");
         return ontologyRepository.findById(id)
                 .orElseThrow(() -> new OntologyNotFoundException(id));
@@ -164,7 +188,10 @@ public class OntologyManagementController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Ontology successfully updated."),
+                            description = "Ontology successfully updated.", 
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE, 
+                                    schema = @Schema(implementation = Ontology.class))),
                     @ApiResponse(
                             responseCode = "401",
                             description = "Update of ontology unauthorized."),
@@ -179,8 +206,15 @@ public class OntologyManagementController {
             value = "/{id}", 
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Ontology updateOntology(
+            @Parameter(
+                    description = "ID of the ontology to update.", 
+                    required = true)
             @PathVariable(required = true) int id,
-            @RequestBody OntologyNonSecretData ontologyNonSecretData) {
+            @Parameter(
+                    description = "Updated non-sensitive ontology attributes.", 
+                    required = true, 
+                    schema = @Schema(implementation = OntologyNonSecretData.class))
+            @RequestBody(required = true) OntologyNonSecretData ontologyNonSecretData) {
         LOGGER.debug("New HTTP PATCH request: Update ontology by ID.");
         return ontologyCRUDService.update(id, ontologyNonSecretData);
     }
@@ -213,7 +247,14 @@ public class OntologyManagementController {
             value = "/{id}/secrets",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> updateOntologySecrets(
+            @Parameter(
+                    description = "ID of the ontology to update.", 
+                    required = true)
             @PathVariable(required = true) int id,
+            @Parameter(
+                    description = "Updated sensitive ontology attributes.", 
+                    required = true, 
+                    schema = @Schema(implementation = OntologySecretData.class))
             @RequestBody OntologySecretData ontologySecretData) {
         LOGGER.debug("New HTTP PATCH request: Update ontology secrets by ID.");
         try {
@@ -253,6 +294,9 @@ public class OntologyManagementController {
             value = "/{id}", 
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> deleteOntology(
+            @Parameter(
+                    description = "ID of the ontology to delete.", 
+                    required = true)
             @PathVariable(required = true) int id) {
         LOGGER.debug("New HTTP DELETE request: Delete ontology by ID.");
         try {

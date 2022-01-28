@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 import ai.hyperlearning.ontopop.model.git.WebhookEvent;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Ontology Model
@@ -45,49 +46,83 @@ public class Ontology implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ontology_id")
+	@Schema(description = "Automatically generated unique identifier for the ontology.", 
+	    example = "1")
 	private int id;
 	
 	@NotNull
 	@Column(length = 100)
+	@Schema(description = "Short free-text name for the ontology.", 
+	    example = "National Highways Ontology.", 
+	    required = true)
 	private String name;
 	
 	@Column(length = 250)
+	@Schema(description = "Free-text description of the ontology.", 
+	    example = "National Highways ontology-based conceptual data model.", 
+	    required = false)
 	private String description;
 	
 	@NotNull
+	@Schema(description = "URL of the Git repository managing the OWL file for this ontology.", 
+        example = "https://github.com/myorg/myrepo", 
+        required = true)
 	private String repoUrl;
 	
 	@NotNull
+	@Schema(description = "Name of the Git repository managing the OWL file for this ontology.", 
+        example = "myrepo", 
+        required = true)
 	private String repoName;
 	
 	@NotNull
+	@Schema(description = "Owner of the Git repository managing the OWL file for this ontology.", 
+        example = "myorg", 
+        required = true)
 	private String repoOwner;
 	
 	@NotNull
+	@Schema(description = "Whether the Git repository managing the OWL file for this ontology is a private repository.", 
+        example = "true", 
+        required = true)
 	private boolean repoPrivate;
 	
 	@NotNull
+    @Schema(description = "The path to the OWL file for this ontology inside the Git repository.", 
+        example = "data/ontology.owl", 
+        required = true)
 	private String repoResourcePath;
 	
 	@NotNull
+	@Schema(description = "The name of the Git repository branch to monitor for changes to the OWL file.", 
+        example = "main", 
+        required = true)
 	private String repoBranch;
 	
 	@Transient
 	@JsonProperty(access = Access.WRITE_ONLY)
+	@Schema(description = "Access token required to access the OWL file managed in private Git repositories.", 
+        example = "ghp_123456789abcdefghi")
 	private String repoToken;
 	
 	@Transient
 	@JsonProperty(access = Access.WRITE_ONLY)
+	@Schema(description = "User-defined webhook secret used to validate Git webhooks from this Git repository.", 
+        example = "mysecret123")
 	private String repoWebhookSecret;
 	
 	@Basic
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@Schema(description = "System generated ontology creation date and time.", 
+        example = "2022-01-31 11:59:59")
 	private LocalDateTime dateCreated;
 	
 	@Basic
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@Schema(description = "System generated ontology last updated date and time.", 
+        example = "2022-02-28 09:08:07")
 	private LocalDateTime dateLastUpdated;
 	
 	@OneToMany(mappedBy="ontology", cascade = CascadeType.ALL, orphanRemoval = true)

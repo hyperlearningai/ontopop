@@ -17,6 +17,10 @@ import ai.hyperlearning.ontopop.data.jpa.repositories.WebhookEventRepository;
 import ai.hyperlearning.ontopop.exceptions.git.WebhookEventNotFoundException;
 import ai.hyperlearning.ontopop.model.git.WebhookEvent;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -53,7 +57,10 @@ public class OntologyWebhookEventManagementController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Webhooks successfully retrieved."),
+                            description = "Webhooks successfully retrieved.", 
+                            content = @Content(
+                                    array = @ArraySchema(
+                                            schema = @Schema(implementation = WebhookEvent.class)))),
                     @ApiResponse(
                             responseCode = "401",
                             description = "Retrieval of webhooks unauthorized."), 
@@ -82,7 +89,10 @@ public class OntologyWebhookEventManagementController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Webhook successfully retrieved."),
+                            description = "Webhook successfully retrieved.", 
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE, 
+                                    schema = @Schema(implementation = WebhookEvent.class))),
                     @ApiResponse(
                             responseCode = "401",
                             description = "Retrieval of webhook unauthorized."),
@@ -96,7 +106,11 @@ public class OntologyWebhookEventManagementController {
     @GetMapping(
             value = "/webhooks/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public WebhookEvent getWebhook(@PathVariable(required = true) long id) {
+    public WebhookEvent getWebhook(
+            @Parameter(
+                    description = "ID of the webhook to retrieve.", 
+                    required = true)
+            @PathVariable(required = true) long id) {
         LOGGER.debug("New HTTP GET request: Get webhook by ID.");
         return webhookEventRepository.findById(id)
                 .orElseThrow(() -> new WebhookEventNotFoundException(id));
@@ -115,7 +129,10 @@ public class OntologyWebhookEventManagementController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Ontology webhooks successfully retrieved."),
+                            description = "Ontology webhooks successfully retrieved.", 
+                            content = @Content(
+                                    array = @ArraySchema(
+                                            schema = @Schema(implementation = WebhookEvent.class)))),
                     @ApiResponse(
                             responseCode = "401",
                             description = "Retrieval of ontology webhooks unauthorized."), 
@@ -127,6 +144,9 @@ public class OntologyWebhookEventManagementController {
             value = "/{ontologyId}/webhooks",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<WebhookEvent> getOntologyWebhooks(
+            @Parameter(
+                    description = "ID of the ontology whose webhooks will be retrieved.", 
+                    required = true)
             @PathVariable(required = true) int ontologyId) {
         LOGGER.debug("New HTTP GET request: Get all ontology webhooks.");
         return webhookEventRepository.findByOntologyId(ontologyId);
@@ -146,7 +166,10 @@ public class OntologyWebhookEventManagementController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Ontology webhook successfully retrieved."),
+                            description = "Ontology webhook successfully retrieved.", 
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE, 
+                                    schema = @Schema(implementation = WebhookEvent.class))),
                     @ApiResponse(
                             responseCode = "401",
                             description = "Retrieval of ontology webhook unauthorized."),
@@ -161,7 +184,13 @@ public class OntologyWebhookEventManagementController {
             value = "/{ontologyId}/webhooks/{webhookEventId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public WebhookEvent getOntologyWebhook(
+            @Parameter(
+                    description = "ID of the ontology whose webhook will be retrieved.", 
+                    required = true)
             @PathVariable(required = true) int ontologyId,
+            @Parameter(
+                    description = "ID of the webhook to be retrieved associated with this ontology.", 
+                    required = true)
             @PathVariable(required = true) long webhookEventId) {
         LOGGER.debug("New HTTP GET request: Get ontology webhooks.");
         return webhookEventRepository

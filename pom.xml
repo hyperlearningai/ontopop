@@ -82,6 +82,7 @@
         <spring-cloud-dependencies.version>2021.0.0</spring-cloud-dependencies.version>
         <spring-cloud-starter-aws-secrets-manager-config.version>2.2.6.RELEASE</spring-cloud-starter-aws-secrets-manager-config.version>
         <springdoc-openapi-ui.version>1.5.12</springdoc-openapi-ui.version>
+        <swagger-annotations.version>2.1.11</swagger-annotations.version>
         <tinkergraph-gremlin.version>3.5.1</tinkergraph-gremlin.version>
     </properties>
 
@@ -468,6 +469,13 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-aws-secrets-manager-config</artifactId>
                 <version>${spring-cloud-starter-aws-secrets-manager-config.version}</version>
+            </dependency>
+            
+            <!-- Swagger Annotations -->
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>${swagger-annotations.version}</version>
             </dependency>
 
         </dependencies>
