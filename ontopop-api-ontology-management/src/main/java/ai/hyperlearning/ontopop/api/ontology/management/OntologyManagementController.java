@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ai.hyperlearning.ontopop.data.jpa.repositories.OntologyRepository;
 import ai.hyperlearning.ontopop.data.ontology.management.OntologyManagementService;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreationAlreadyExistsException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreationException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDeletionException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyNotFoundException;
@@ -58,26 +59,34 @@ public class OntologyManagementController {
      *************************************************************************/
 
     @Operation(
-            summary = "Create an ontology",
-            description = "Create an ontology",
+            summary = "Create a new ontology to manage",
+            description = "Create a new ontology instance that OntoPop should "
+                    + "manage by providing the details of the Git repository "
+                    + "containing the relevant W3C Web Ontology Language "
+                    + "(OWL) file.",
             tags = {"ontology"})
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "201",
-                            description = "Ontology created"),
+                            description = "Ontology successfully created."),
                     @ApiResponse(
                             responseCode = "401",
-                            description = "Ontology creation request unauthorized"),
+                            description = "Creation of ontology unauthorized."), 
+                    @ApiResponse(
+                            responseCode = "409",
+                            description = "Ontology already exists."),
                     @ApiResponse(
                             responseCode = "500",
-                            description = "Internal server error")})
+                            description = "Internal server error.")})
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Ontology newOntology(@RequestBody Ontology newOntology) {
-        LOGGER.debug("New HTTP POST request: Create ontology.");
+        LOGGER.debug("New HTTP POST request: Create a new ontology.");
         try {
             return ontologyCRUDService.create(newOntology);
+        } catch (OntologyCreationAlreadyExistsException e) {
+            throw e;
         } catch (Exception e) {
             throw new OntologyCreationException();
         }
@@ -89,16 +98,20 @@ public class OntologyManagementController {
 
     @Operation(
             summary = "Get all ontologies",
-            description = "Get all ontologies",
+            description = "Get all the ontologies managed by OntoPop.",
             tags = {"ontology"})
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Ontologies successfully retrieved"),
+                            description = "Ontologies successfully retrieved."),
                     @ApiResponse(
                             responseCode = "401",
-                            description = "Ontologies retrieval request unauthorized")})
+                            description = "Retrieval of ontologies unauthorized."), 
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Internal server error.")})
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Ontology> getOntologies() {
         LOGGER.debug("New HTTP GET request: Get all ontologies.");
@@ -110,21 +123,28 @@ public class OntologyManagementController {
      *************************************************************************/
 
     @Operation(
-            summary = "Get ontology",
-            description = "Get an ontology by ontology ID",
+            summary = "Get an ontology",
+            description = "Get an ontology managed by OntoPop given its "
+                    + "ontology ID.",
             tags = {"ontology"})
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Ontology successfully retrieved"),
+                            description = "Ontology successfully retrieved."),
                     @ApiResponse(
                             responseCode = "401",
-                            description = "Ontology retrieval request unauthorized"),
+                            description = "Retrieval of ontology unauthorized."),
                     @ApiResponse(
                             responseCode = "404",
-                            description = "Ontology not found")})
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+                            description = "Ontology not found."), 
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Internal server error.")})
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(
+            value = "/{id}", 
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public Ontology getOntology(@PathVariable(required = true) int id) {
         LOGGER.debug("New HTTP GET request: Get ontology by ID.");
         return ontologyRepository.findById(id)
@@ -136,22 +156,30 @@ public class OntologyManagementController {
      *************************************************************************/
 
     @Operation(
-            summary = "Update ontology",
-            description = "Update an ontology by ID (non-sensitive attributes)",
+            summary = "Update an ontology",
+            description = "Update the non-sensitive attributes of an ontology "
+                    + "managed by OntoPop given its ontology ID.", 
             tags = {"ontology"})
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Ontology successfully updated"),
+                            description = "Ontology successfully updated."),
                     @ApiResponse(
                             responseCode = "401",
-                            description = "Ontology update request unauthorized"),
+                            description = "Update of ontology unauthorized."),
                     @ApiResponse(
                             responseCode = "404",
-                            description = "Ontology not found")})
-    @PatchMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Ontology updateOntology(@PathVariable(required = true) int id,
+                            description = "Ontology not found."), 
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Internal server error.")})
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping(
+            value = "/{id}", 
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public Ontology updateOntology(
+            @PathVariable(required = true) int id,
             @RequestBody OntologyNonSecretData ontologyNonSecretData) {
         LOGGER.debug("New HTTP PATCH request: Update ontology by ID.");
         return ontologyCRUDService.update(id, ontologyNonSecretData);
@@ -163,30 +191,35 @@ public class OntologyManagementController {
 
     @Operation(
             summary = "Update ontology secrets",
-            description = "Update ontology secrets by ID",
+            description = "Update the secret attributes of an ontology "
+                    + "managed by OntoPop given its ontology ID.",
             tags = {"ontology"})
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Ontology successfully updated"),
+                            description = "Ontology successfully updated."),
                     @ApiResponse(
                             responseCode = "401",
-                            description = "Ontology update request unauthorized"),
+                            description = "Update of ontology unauthorized."),
                     @ApiResponse(
                             responseCode = "404",
-                            description = "Ontology not found")})
+                            description = "Ontology not found."), 
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Internal server error.")})
+    @ResponseStatus(HttpStatus.OK)
     @PatchMapping(
             value = "/{id}/secrets",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> updateOntologyRepositoryAccessToken(
+    public ResponseEntity<String> updateOntologySecrets(
             @PathVariable(required = true) int id,
             @RequestBody OntologySecretData ontologySecretData) {
         LOGGER.debug("New HTTP PATCH request: Update ontology secrets by ID.");
         try {
             ontologyCRUDService.update(id, ontologySecretData);
-            return new ResponseEntity<>("Ontology update request processed",
-                    HttpStatus.OK);
+            return new ResponseEntity<>("Ontology update request successfully "
+                    + "processed.", HttpStatus.OK);
         } catch (Exception e) {
             throw new OntologyUpdateSecretDataException(id);
         }
@@ -197,32 +230,38 @@ public class OntologyManagementController {
      *************************************************************************/
 
     @Operation(
-            summary = "Delete ontology",
-            description = "Delete an ontology by ontology ID",
+            summary = "Delete an ontology",
+            description = "Delete an ontology managed by OntoPop given its "
+                    + "ontology ID.",
             tags = {"ontology"})
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Ontology successfully deleted"),
+                            description = "Ontology successfully deleted."),
                     @ApiResponse(
                             responseCode = "401",
-                            description = "Ontology deletion request unauthorized"),
+                            description = "Deletion of ontology unauthorized."),
                     @ApiResponse(
                             responseCode = "404",
-                            description = "Ontology not found")})
-    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+                            description = "Ontology not found."), 
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Internal server error.")})
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping(
+            value = "/{id}", 
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> deleteOntology(
             @PathVariable(required = true) int id) {
         LOGGER.debug("New HTTP DELETE request: Delete ontology by ID.");
         try {
             ontologyCRUDService.delete(id);
-            return new ResponseEntity<>("Ontology deletion request processed",
-                    HttpStatus.OK);
+            return new ResponseEntity<>("Ontology deletion request "
+                    + "successfully processed.", HttpStatus.OK);
         } catch (Exception e) {
             throw new OntologyDeletionException(id);
         }
-
     }
 
 }

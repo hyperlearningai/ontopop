@@ -12,7 +12,7 @@ public class OntologyUpdateSecretDataException extends RuntimeException {
     private static final long serialVersionUID = 499327861970184179L;
 
     public OntologyUpdateSecretDataException(int id) {
-        super("An error was encountered when updating the secret data "
+        super("An error was encountered when updating the secret attributes "
                 + "of the ontology with ID " + id + ".");
     }
 

@@ -1,7 +1,7 @@
 package ai.hyperlearning.ontopop.exceptions.ontology;
 
 /**
- * Ontology Model - Create Custom Exception
+ * Ontology Management Exception - Create Custom Exception
  *
  * @author jillurquddus
  * @since 2.0.0
@@ -13,6 +13,10 @@ public class OntologyCreationException extends RuntimeException {
 
     public OntologyCreationException() {
         super("An error was encountered when creating a new ontology.");
+    }
+    
+    public OntologyCreationException(String message) {
+        super(message);
     }
 
 }
