@@ -58,7 +58,7 @@
         <module>ontopop-app-data-ontology-modeller-graph</module>
         <module>ontopop-app-data-ontology-loader-graph</module>
         <module>ontopop-app-data-ontology-indexer-graph</module>
-        <module>ontopop-app-api-ontology-crud</module>
+        <module>ontopop-app-api-ontology-management</module>
     </modules>
 
 </project>

@@ -58,7 +58,7 @@
         <module>ontopop-azure-function-app-data-ontology-modeller-graph</module>
         <module>ontopop-azure-function-app-data-ontology-loader-graph</module>
         <module>ontopop-azure-function-app-data-ontology-indexer-graph</module>
-        <module>ontopop-azure-app-api-ontology-crud</module>
+        <module>ontopop-azure-app-api-ontology-management</module>
     </modules>
 
 </project>

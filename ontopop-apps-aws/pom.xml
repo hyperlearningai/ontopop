@@ -64,7 +64,7 @@
         <module>ontopop-aws-lambda-app-data-ontology-modeller-graph</module>
         <module>ontopop-aws-lambda-app-data-ontology-loader-graph</module>
         <module>ontopop-aws-lambda-app-data-ontology-indexer-graph</module>
-        <module>ontopop-aws-beanstalk-app-api-ontology-crud</module>
+        <module>ontopop-aws-beanstalk-app-api-ontology-management</module>
     </modules>
 
 </project>

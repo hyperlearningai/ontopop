@@ -382,7 +382,7 @@
             </dependency>
             <dependency>
                 <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-data-ontology-crud</artifactId>
+                <artifactId>ontopop-data-ontology-management</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
@@ -422,7 +422,7 @@
             </dependency>
             <dependency>
                 <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-api-ontology-crud</artifactId>
+                <artifactId>ontopop-api-ontology-management</artifactId>
                 <version>${revision}</version>
             </dependency>
 
@@ -492,7 +492,7 @@
         <module>ontopop-jpa</module>
         <module>ontopop-search</module>
         <module>ontopop-utils</module>
-        <module>ontopop-data-ontology-crud</module>
+        <module>ontopop-data-ontology-management</module>
         <module>ontopop-data-ontology-ingestor</module>
         <module>ontopop-data-ontology-validator</module>
         <module>ontopop-data-ontology-loader-triplestore</module>
@@ -500,7 +500,7 @@
         <module>ontopop-data-ontology-modeller-graph</module>
         <module>ontopop-data-ontology-loader-graph</module>
         <module>ontopop-data-ontology-indexer-graph</module>
-        <module>ontopop-api-ontology-crud</module>
+        <module>ontopop-api-ontology-management</module>
     </modules>
     
     <!-- Project Profiles -->
