@@ -8,7 +8,6 @@ import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.context.annotation.ComponentScan;
 
 import ai.hyperlearning.ontopop.data.ontology.loader.triplestore.function.OntologyTriplestoreLoaderFunction;
-import ai.hyperlearning.ontopop.data.ontology.loader.triplestore.function.OntologyTriplestoreLoaderFunctionModel;
 import ai.hyperlearning.ontopop.messaging.processors.DataPipelineValidatedLoaderSource;
 
 /**
@@ -35,9 +34,7 @@ public class OntologyTriplestoreLoaderApp {
     public void processValidatedOntology(String payload) {
         
         // Execute the Ontology Triplestore Loading Function
-        OntologyTriplestoreLoaderFunctionModel ontologyTriplestoreLoaderFunctionModel = 
-                new OntologyTriplestoreLoaderFunctionModel(payload);
-        ontologyTriplestoreLoaderFunction.apply(ontologyTriplestoreLoaderFunctionModel);
+        ontologyTriplestoreLoaderFunction.accept(payload);
         
     }
 

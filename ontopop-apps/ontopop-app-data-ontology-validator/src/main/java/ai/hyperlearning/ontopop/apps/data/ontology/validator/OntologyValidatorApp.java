@@ -8,7 +8,6 @@ import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.context.annotation.ComponentScan;
 
 import ai.hyperlearning.ontopop.data.ontology.validator.function.OntologyValidatorFunction;
-import ai.hyperlearning.ontopop.data.ontology.validator.function.OntologyValidatorFunctionModel;
 import ai.hyperlearning.ontopop.messaging.processors.DataPipelineValidatorSource;
 
 /**
@@ -35,9 +34,7 @@ public class OntologyValidatorApp {
     public void processIngestedOntology(String payload) {
 
         // Execute the Ontology Validator Function
-        OntologyValidatorFunctionModel ontologyValidatorFunctionModel = 
-                new OntologyValidatorFunctionModel(payload);
-        ontologyValidatorFunction.apply(ontologyValidatorFunctionModel);
+        ontologyValidatorFunction.accept(payload);
 
     }
 

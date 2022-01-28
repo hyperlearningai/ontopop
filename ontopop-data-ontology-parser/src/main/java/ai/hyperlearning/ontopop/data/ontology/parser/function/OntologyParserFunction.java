@@ -1,6 +1,6 @@
 package ai.hyperlearning.ontopop.data.ontology.parser.function;
 
-import java.util.function.Function;
+import java.util.function.Consumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +21,7 @@ import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
  */
 
 @Component
-public class OntologyParserFunction 
-    implements Function<OntologyParserFunctionModel, Boolean> {
+public class OntologyParserFunction implements Consumer<String> {
     
     private static final Logger LOGGER =
             LoggerFactory.getLogger(OntologyParserFunction.class);
@@ -31,25 +30,21 @@ public class OntologyParserFunction
     private OntologyParserService ontologyParserService;
     
     @Override
-    public Boolean apply(
-            OntologyParserFunctionModel ontologyParserFunctionModel) {
+    public void accept(String message) {
         
         try {
 
             // Explicitly check that the string payload
             // models an OntologyMessage object
             ObjectMapper mapper = new ObjectMapper();
-            OntologyMessage ontologyMessage =
-                    mapper.readValue(
-                            ontologyParserFunctionModel.getPayload(), 
-                            OntologyMessage.class);
+            OntologyMessage ontologyMessage = mapper.readValue(
+                    message, OntologyMessage.class);
 
             // Log the consumed payload for debugging purposes
             LOGGER.debug("New ontology validation event detected and consumed "
                     + "via the shared messaging service and the "
                     + "validatedConsumptionChannel channel.");
-            LOGGER.debug("Ontology validation message payload: {}", 
-                    ontologyParserFunctionModel.getPayload());
+            LOGGER.debug("Ontology validation message payload: {}", message);
 
             // Run the Ontology Parsing Service pipeline
             ontologyParserService.run(ontologyMessage);
@@ -62,8 +57,6 @@ public class OntologyParserFunction
             LOGGER.info("The validated object is NOT an ontology. Skipping.");
 
         }
-        
-        return true;
         
     }
 

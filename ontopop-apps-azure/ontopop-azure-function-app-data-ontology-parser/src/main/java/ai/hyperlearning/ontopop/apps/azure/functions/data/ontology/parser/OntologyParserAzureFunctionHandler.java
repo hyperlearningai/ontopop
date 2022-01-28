@@ -8,8 +8,6 @@ import com.microsoft.azure.functions.annotation.Cardinality;
 import com.microsoft.azure.functions.annotation.FunctionName;
 import com.microsoft.azure.functions.annotation.ServiceBusTopicTrigger;
 
-import ai.hyperlearning.ontopop.data.ontology.parser.function.OntologyParserFunctionModel;
-
 /**
  * Ontology Parser Function - Azure Handler
  *
@@ -18,7 +16,7 @@ import ai.hyperlearning.ontopop.data.ontology.parser.function.OntologyParserFunc
  */
 
 public class OntologyParserAzureFunctionHandler 
-        extends FunctionInvoker<OntologyParserFunctionModel, Boolean> {
+        extends FunctionInvoker<String, Void> {
     
     @FunctionName("ontologyParserFunction")
     public void run(
@@ -40,9 +38,7 @@ public class OntologyParserAzureFunctionHandler
         context.getLogger().info("Service bus message payload: " + message);
         
         // Execute the Ontology Parser function
-        OntologyParserFunctionModel ontologyParserFunctionModel = 
-                new OntologyParserFunctionModel(message);
-        handleRequest(ontologyParserFunctionModel, context);
+        handleRequest(message, context);
         
     }
 

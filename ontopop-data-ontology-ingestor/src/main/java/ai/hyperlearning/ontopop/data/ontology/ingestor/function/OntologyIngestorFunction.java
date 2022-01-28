@@ -1,6 +1,6 @@
 package ai.hyperlearning.ontopop.data.ontology.ingestor.function;
 
-import java.util.function.Function;
+import java.util.function.Consumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,7 @@ import ai.hyperlearning.ontopop.data.ontology.ingestor.OntologyIngestorService;
 
 @Component
 public class OntologyIngestorFunction
-        implements Function<OntologyIngestorFunctionModel, Boolean> {
+        implements Consumer<OntologyIngestorFunctionModel> {
 
     private static final Logger LOGGER =
             LoggerFactory.getLogger(OntologyIngestorFunction.class);
@@ -27,7 +27,7 @@ public class OntologyIngestorFunction
     private OntologyIngestorService ontologyIngestorService;
 
     @Override
-    public Boolean apply(
+    public void accept(
             OntologyIngestorFunctionModel ontologyIngestorFunctionModel) {
 
         // Log the HTTP request headers for debugging purposes
@@ -43,8 +43,6 @@ public class OntologyIngestorFunction
         // Run the Ontology Ingestion Service pipeline
         ontologyIngestorService.run(ontologyIngestorFunctionModel.getHeaders(),
                 ontologyIngestorFunctionModel.getPayload());
-
-        return true;
 
     }
 

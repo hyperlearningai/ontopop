@@ -8,8 +8,6 @@ import com.microsoft.azure.functions.annotation.Cardinality;
 import com.microsoft.azure.functions.annotation.FunctionName;
 import com.microsoft.azure.functions.annotation.ServiceBusTopicTrigger;
 
-import ai.hyperlearning.ontopop.data.ontology.validator.function.OntologyValidatorFunctionModel;
-
 /**
  * Ontology Validator Function - Azure Handler
  *
@@ -18,7 +16,7 @@ import ai.hyperlearning.ontopop.data.ontology.validator.function.OntologyValidat
  */
 
 public class OntologyValidatorAzureFunctionHandler 
-        extends FunctionInvoker<OntologyValidatorFunctionModel, Boolean> {
+        extends FunctionInvoker<String, Void> {
     
     /**
      * Azure handler for the Ontology Validator cloud function.
@@ -59,9 +57,7 @@ public class OntologyValidatorAzureFunctionHandler
         context.getLogger().info("Service bus message payload: " + message);
         
         // Execute the Ontology Validation function
-        OntologyValidatorFunctionModel ontologyValidatorFunctionModel = 
-                new OntologyValidatorFunctionModel(message);
-        handleRequest(ontologyValidatorFunctionModel, context);
+        handleRequest(message, context);
         
     }
 

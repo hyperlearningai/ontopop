@@ -8,8 +8,6 @@ import com.microsoft.azure.functions.annotation.Cardinality;
 import com.microsoft.azure.functions.annotation.FunctionName;
 import com.microsoft.azure.functions.annotation.ServiceBusTopicTrigger;
 
-import ai.hyperlearning.ontopop.data.ontology.modeller.graph.function.OntologyGraphModellerFunctionModel;
-
 /**
  * Ontology Graph Modeller Function - Azure Handler
  *
@@ -18,7 +16,7 @@ import ai.hyperlearning.ontopop.data.ontology.modeller.graph.function.OntologyGr
  */
 
 public class OntologyGraphModellerAzureFunctionHandler 
-        extends FunctionInvoker<OntologyGraphModellerFunctionModel, Boolean> {
+        extends FunctionInvoker<String, Void> {
     
     @FunctionName("ontologyGraphModellerFunction")
     public void run(
@@ -40,9 +38,7 @@ public class OntologyGraphModellerAzureFunctionHandler
         context.getLogger().info("Service bus message payload: " + message);
         
         // Execute the Ontology Graph Modeller function
-        OntologyGraphModellerFunctionModel ontologyGraphModellerFunctionModel = 
-                new OntologyGraphModellerFunctionModel(message);
-        handleRequest(ontologyGraphModellerFunctionModel, context);
+        handleRequest(message, context);
         
     }
 

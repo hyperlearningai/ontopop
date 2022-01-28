@@ -1,6 +1,6 @@
 package ai.hyperlearning.ontopop.data.ontology.validator.function;
 
-import java.util.function.Function;
+import java.util.function.Consumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +21,7 @@ import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
  */
 
 @Component
-public class OntologyValidatorFunction 
-        implements Function<OntologyValidatorFunctionModel, Boolean> {
+public class OntologyValidatorFunction implements Consumer<String> {
     
     private static final Logger LOGGER =
             LoggerFactory.getLogger(OntologyValidatorFunction.class);
@@ -31,25 +30,21 @@ public class OntologyValidatorFunction
     private OntologyValidatorService ontologyValidatorService;
 
     @Override
-    public Boolean apply(
-            OntologyValidatorFunctionModel ontologyValidatorFunctionModel) {
+    public void accept(String message) {
         
         try {
 
             // Explicitly check that the string payload
             // models an OntologyMessage object
             ObjectMapper mapper = new ObjectMapper();
-            OntologyMessage ontologyMessage =
-                    mapper.readValue(
-                            ontologyValidatorFunctionModel.getPayload(), 
-                            OntologyMessage.class);
+            OntologyMessage ontologyMessage = mapper.readValue(
+                    message, OntologyMessage.class);
 
             // Log the consumed payload for debugging purposes
             LOGGER.debug("New ontology ingestion event detected and consumed "
                     + "via the shared messaging service and the "
                     + "ingestedConsumptionChannel channel.");
-            LOGGER.debug("Ontology ingestion message payload: {}", 
-                    ontologyValidatorFunctionModel.getPayload());
+            LOGGER.debug("Ontology ingestion message payload: {}", message);
 
             // Run the Ontology Validation Service pipeline
             ontologyValidatorService.run(ontologyMessage);
@@ -62,8 +57,6 @@ public class OntologyValidatorFunction
             LOGGER.info("The ingested object is NOT an ontology. Skipping.");
 
         }
-        
-        return true;
         
     }
 

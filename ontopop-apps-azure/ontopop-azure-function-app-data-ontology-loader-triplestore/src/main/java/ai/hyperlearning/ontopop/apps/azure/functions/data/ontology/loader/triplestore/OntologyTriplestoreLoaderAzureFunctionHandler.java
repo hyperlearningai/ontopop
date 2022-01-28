@@ -8,8 +8,6 @@ import com.microsoft.azure.functions.annotation.Cardinality;
 import com.microsoft.azure.functions.annotation.FunctionName;
 import com.microsoft.azure.functions.annotation.ServiceBusTopicTrigger;
 
-import ai.hyperlearning.ontopop.data.ontology.loader.triplestore.function.OntologyTriplestoreLoaderFunctionModel;
-
 /**
  * Ontology Triplestore Loader Function - Azure Handler
  *
@@ -18,7 +16,7 @@ import ai.hyperlearning.ontopop.data.ontology.loader.triplestore.function.Ontolo
  */
 
 public class OntologyTriplestoreLoaderAzureFunctionHandler 
-        extends FunctionInvoker<OntologyTriplestoreLoaderFunctionModel, Boolean> {
+        extends FunctionInvoker<String, Void> {
     
     @FunctionName("ontologyTriplestoreLoaderFunction")
     public void run(
@@ -40,9 +38,7 @@ public class OntologyTriplestoreLoaderAzureFunctionHandler
         context.getLogger().info("Service bus message payload: " + message);
         
         // Execute the Ontology Triplestore Loader function
-        OntologyTriplestoreLoaderFunctionModel ontologyTriplestoreLoaderFunctionModel = 
-                new OntologyTriplestoreLoaderFunctionModel(message);
-        handleRequest(ontologyTriplestoreLoaderFunctionModel, context);
+        handleRequest(message, context);
         
     }
 

@@ -8,7 +8,6 @@ import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.context.annotation.ComponentScan;
 
 import ai.hyperlearning.ontopop.data.ontology.modeller.graph.function.OntologyGraphModellerFunction;
-import ai.hyperlearning.ontopop.data.ontology.modeller.graph.function.OntologyGraphModellerFunctionModel;
 import ai.hyperlearning.ontopop.messaging.processors.DataPipelineModellerSource;
 
 /**
@@ -35,9 +34,7 @@ public class OntologyGraphModellerApp {
     public void processParsedOntology(String payload) {
         
         // Execute the Ontology Graph Modeller Function
-        OntologyGraphModellerFunctionModel ontologyGraphModellerFunctionModel = 
-                new OntologyGraphModellerFunctionModel(payload);
-        ontologyGraphModellerFunction.apply(ontologyGraphModellerFunctionModel);
+        ontologyGraphModellerFunction.accept(payload);
         
     }
 

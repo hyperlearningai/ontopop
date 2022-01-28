@@ -1,6 +1,6 @@
 package ai.hyperlearning.ontopop.data.ontology.loader.triplestore.function;
 
-import java.util.function.Function;
+import java.util.function.Consumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +21,7 @@ import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
  */
 
 @Component
-public class OntologyTriplestoreLoaderFunction 
-    implements Function<OntologyTriplestoreLoaderFunctionModel, Boolean> {
+public class OntologyTriplestoreLoaderFunction implements Consumer<String> {
     
     private static final Logger LOGGER =
             LoggerFactory.getLogger(OntologyTriplestoreLoaderFunction.class);
@@ -31,25 +30,21 @@ public class OntologyTriplestoreLoaderFunction
     private OntologyTriplestoreLoaderService ontologyTriplestoreLoaderService;
     
     @Override
-    public Boolean apply(
-            OntologyTriplestoreLoaderFunctionModel ontologyTriplestoreLoaderFunctionModel) {
+    public void accept(String message) {
         
         try {
 
             // Explicitly check that the string payload
             // models an OntologyMessage object
             ObjectMapper mapper = new ObjectMapper();
-            OntologyMessage ontologyMessage =
-                    mapper.readValue(
-                            ontologyTriplestoreLoaderFunctionModel.getPayload(), 
-                            OntologyMessage.class);
+            OntologyMessage ontologyMessage = mapper.readValue(
+                    message, OntologyMessage.class);
 
             // Log the consumed payload for debugging purposes
             LOGGER.debug("New ontology validation event detected and consumed "
                     + "via the shared messaging service and the "
                     + "validatedConsumptionChannel channel.");
-            LOGGER.debug("Ontology validation message payload: {}", 
-                    ontologyTriplestoreLoaderFunctionModel.getPayload());
+            LOGGER.debug("Ontology validation message payload: {}", message);
 
             // Run the Ontology Triplestore Loading Service pipeline
             ontologyTriplestoreLoaderService.run(ontologyMessage);
@@ -62,8 +57,6 @@ public class OntologyTriplestoreLoaderFunction
             LOGGER.info("The validated object is NOT an ontology. Skipping.");
 
         }
-        
-        return true;
         
     }
 

@@ -58,7 +58,7 @@ public class OntologyIngestorController {
         // Execute the Ontology Ingestor Function
         OntologyIngestorFunctionModel ontologyIngestorFunctionModel = 
                 new OntologyIngestorFunctionModel(headers, payload);
-        ontologyIngestorFunction.apply(ontologyIngestorFunctionModel);
+        ontologyIngestorFunction.accept(ontologyIngestorFunctionModel);
 
         // Return a response entity
         return new ResponseEntity<String>(

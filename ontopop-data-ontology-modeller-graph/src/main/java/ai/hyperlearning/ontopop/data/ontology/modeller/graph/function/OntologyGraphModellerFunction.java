@@ -1,6 +1,6 @@
 package ai.hyperlearning.ontopop.data.ontology.modeller.graph.function;
 
-import java.util.function.Function;
+import java.util.function.Consumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +21,7 @@ import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
  */
 
 @Component
-public class OntologyGraphModellerFunction 
-    implements Function<OntologyGraphModellerFunctionModel, Boolean> {
+public class OntologyGraphModellerFunction implements Consumer<String> {
     
     private static final Logger LOGGER =
             LoggerFactory.getLogger(OntologyGraphModellerFunction.class);
@@ -31,25 +30,21 @@ public class OntologyGraphModellerFunction
     private OntologyGraphModellerService ontologyGraphModellerService;
     
     @Override
-    public Boolean apply(
-            OntologyGraphModellerFunctionModel ontologyGraphModellerFunctionModel) {
+    public void accept(String message) {
         
         try {
 
             // Explicitly check that the string payload
             // models an OntologyMessage object
             ObjectMapper mapper = new ObjectMapper();
-            OntologyMessage ontologyMessage =
-                    mapper.readValue(
-                            ontologyGraphModellerFunctionModel.getPayload(), 
-                            OntologyMessage.class);
+            OntologyMessage ontologyMessage = mapper.readValue(
+                    message, OntologyMessage.class);
 
             // Log the consumed payload for debugging purposes
             LOGGER.debug("New ontology parsed event detected and consumed "
                     + "via the shared messaging service and the "
                     + "parsedConsumptionChannel channel.");
-            LOGGER.debug("Ontology parsed message payload: {}", 
-                    ontologyGraphModellerFunctionModel.getPayload());
+            LOGGER.debug("Ontology parsed message payload: {}", message);
 
             // Run the Ontology Property Graph modelling service pipeline
             ontologyGraphModellerService.run(ontologyMessage);
@@ -62,8 +57,6 @@ public class OntologyGraphModellerFunction
             LOGGER.info("The parsed object is NOT an ontology. Skipping.");
 
         }
-        
-        return true;
         
     }
 

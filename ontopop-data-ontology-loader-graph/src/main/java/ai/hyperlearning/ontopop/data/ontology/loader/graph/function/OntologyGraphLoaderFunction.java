@@ -1,6 +1,6 @@
 package ai.hyperlearning.ontopop.data.ontology.loader.graph.function;
 
-import java.util.function.Function;
+import java.util.function.Consumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +21,7 @@ import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
  */
 
 @Component
-public class OntologyGraphLoaderFunction 
-    implements Function<OntologyGraphLoaderFunctionModel, Boolean> {
+public class OntologyGraphLoaderFunction implements Consumer<String> {
     
     private static final Logger LOGGER =
             LoggerFactory.getLogger(OntologyGraphLoaderFunction.class);
@@ -31,25 +30,21 @@ public class OntologyGraphLoaderFunction
     private OntologyGraphLoaderService ontologyGraphLoaderService;
     
     @Override
-    public Boolean apply(
-            OntologyGraphLoaderFunctionModel ontologyGraphLoaderFunctionModel) {
+    public void accept(String message) {
         
         try {
 
             // Explicitly check that the string payload
             // models an OntologyMessage object
             ObjectMapper mapper = new ObjectMapper();
-            OntologyMessage ontologyMessage =
-                    mapper.readValue(
-                            ontologyGraphLoaderFunctionModel.getPayload(), 
-                            OntologyMessage.class);
+            OntologyMessage ontologyMessage = mapper.readValue(
+                    message, OntologyMessage.class);
 
             // Log the consumed payload for debugging purposes
             LOGGER.debug("New ontology modelled event detected and consumed "
                     + "via the shared messaging service and the "
                     + "modelledConsumptionChannel channel.");
-            LOGGER.debug("Ontology modelled message payload: {}", 
-                    ontologyGraphLoaderFunctionModel.getPayload());
+            LOGGER.debug("Ontology modelled message payload: {}", message);
 
             // Run the Ontology Graph Loading Service pipeline
             ontologyGraphLoaderService.run(ontologyMessage);
@@ -62,8 +57,6 @@ public class OntologyGraphLoaderFunction
             LOGGER.info("The validated object is NOT an ontology. Skipping.");
 
         }
-        
-        return true;
         
     }
 

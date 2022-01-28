@@ -8,7 +8,6 @@ import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.context.annotation.ComponentScan;
 
 import ai.hyperlearning.ontopop.data.ontology.parser.function.OntologyParserFunction;
-import ai.hyperlearning.ontopop.data.ontology.parser.function.OntologyParserFunctionModel;
 import ai.hyperlearning.ontopop.messaging.processors.DataPipelineParserSource;
 
 /**
@@ -35,9 +34,7 @@ public class OntologyParserApp {
     public void processValidatedOntology(String payload) {
         
         // Execute the Ontology Parser Function
-        OntologyParserFunctionModel ontologyParserFunctionModel = 
-                new OntologyParserFunctionModel(payload);
-        ontologyParserFunction.apply(ontologyParserFunctionModel);
+        ontologyParserFunction.accept(payload);
         
     }
 

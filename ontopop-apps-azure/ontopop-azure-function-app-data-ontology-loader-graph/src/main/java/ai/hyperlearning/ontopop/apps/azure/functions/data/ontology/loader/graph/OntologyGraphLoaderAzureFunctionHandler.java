@@ -8,8 +8,6 @@ import com.microsoft.azure.functions.annotation.Cardinality;
 import com.microsoft.azure.functions.annotation.FunctionName;
 import com.microsoft.azure.functions.annotation.ServiceBusTopicTrigger;
 
-import ai.hyperlearning.ontopop.data.ontology.loader.graph.function.OntologyGraphLoaderFunctionModel;
-
 /**
  * Ontology Graph Loader Function - Azure Handler
  *
@@ -18,7 +16,7 @@ import ai.hyperlearning.ontopop.data.ontology.loader.graph.function.OntologyGrap
  */
 
 public class OntologyGraphLoaderAzureFunctionHandler 
-        extends FunctionInvoker<OntologyGraphLoaderFunctionModel, Boolean> {
+        extends FunctionInvoker<String, Void> {
     
     @FunctionName("ontologyGraphLoaderFunction")
     public void run(
@@ -40,9 +38,7 @@ public class OntologyGraphLoaderAzureFunctionHandler
         context.getLogger().info("Service bus message payload: " + message);
         
         // Execute the Ontology Graph Loader function
-        OntologyGraphLoaderFunctionModel ontologyGraphLoaderFunctionModel = 
-                new OntologyGraphLoaderFunctionModel(message);
-        handleRequest(ontologyGraphLoaderFunctionModel, context);
+        handleRequest(message, context);
         
     }
 
