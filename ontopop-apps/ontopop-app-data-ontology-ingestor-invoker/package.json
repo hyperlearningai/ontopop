@@ -1,0 +1,14 @@
+{
+  "name": "ontopop-app-data-ontology-ingestor-invoker",
+  "version": "2.0.0",
+  "description": "Ontology Ingestion Service Invoker Application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jillurquddus",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.25.0"
+  }
+}
