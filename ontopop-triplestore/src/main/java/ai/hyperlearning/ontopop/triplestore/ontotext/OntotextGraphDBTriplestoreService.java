@@ -21,6 +21,7 @@ import org.eclipse.rdf4j.rio.Rio;
 import org.eclipse.rdf4j.rio.helpers.StatementCollector;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import ai.hyperlearning.ontopop.triplestore.TriplestoreService;
@@ -52,6 +53,10 @@ public class OntotextGraphDBTriplestoreService implements TriplestoreService {
         repositoryManager.init();
     }
 
+    /**************************************************************************
+     * TRIPLESTORE MANAGEMENT
+     *************************************************************************/
+    
     @Override
     public Repository getRepository(int id) throws IOException {
 
@@ -134,6 +139,21 @@ public class OntotextGraphDBTriplestoreService implements TriplestoreService {
         if (repositoryManager != null)
             repositoryManager.shutDown();
 
+    }
+    
+    /**************************************************************************
+     * TRIPLESTORE QUERIES
+     *************************************************************************/
+    
+    @Override
+    public ResponseEntity<String> query(int id, String sparqlQuery)
+            throws IOException {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<String> getData(int id) throws IOException {
+        return null;
     }
 
 }

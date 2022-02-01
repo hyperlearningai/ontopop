@@ -37,6 +37,11 @@ import reactor.core.publisher.Mono;
         havingValue = "apache-jena")
 public class JenaTriplestoreService implements TriplestoreService {
 
+    @Autowired
+    @Qualifier("fusekiWebClient")
+    private WebClient webClient;
+
+    // Triplestore Management Paths
     private static final String FUSEKI_DATASETS_ENDPOINT = "/$/datasets";
     private static final String FUSEKI_DATASET_ENDPOINT = "/$/datasets/{name}";
     private static final String FUSEKI_DATASET_UPLOAD_DATA_ENDPOINT =
@@ -44,11 +49,17 @@ public class JenaTriplestoreService implements TriplestoreService {
     private static final String FUSEKI_DATASET_NAME_KEY = "dbName";
     private static final String FUSEKI_DATASET_TYPE_KEY = "dbType";
     private static final String FUSEKI_DATASET_TYPE_VALUE = "tdb2";
-
-    @Autowired
-    @Qualifier("fusekiWebClient")
-    private WebClient webClient;
-
+    
+    // Triplestore Query Paths
+    private static final String FUSEKI_SPARQL_QUERY_ENDPOINT = "/{id}/sparql";
+    private static final String FUSEKI_SPARQL_QUERY_FORM_KEY = "query";
+    private static final String FUSEKI_DATA_GRAPH_STORE_PROTOCOL_ENDPOINT = 
+            "/{id}/get";
+    
+    /**************************************************************************
+     * TRIPLESTORE MANAGEMENT
+     *************************************************************************/
+    
     @Override
     public ResponseEntity<String> getRepository(int id) throws IOException {
 
@@ -158,6 +169,63 @@ public class JenaTriplestoreService implements TriplestoreService {
     @Override
     public void cleanup() throws IOException {
 
+    }
+    
+    /**************************************************************************
+     * TRIPLESTORE QUERIES
+     *************************************************************************/
+    
+    @Override
+    public ResponseEntity<String> query(int id, String sparqlQuery) 
+            throws IOException {
+        
+        // Prepare the form data
+        MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+        formData.add(FUSEKI_SPARQL_QUERY_FORM_KEY, sparqlQuery);
+        
+        // Exceute the SPARQL query via a HTTP POST request
+        // Response will be in SPARQL 1.1 Query Results JSON format
+        // Reference: https://www.w3.org/TR/2013/REC-sparql11-results-json-20130321/
+        ResponseEntity<String> response = webClient.post()
+                .uri(FUSEKI_SPARQL_QUERY_ENDPOINT, String.valueOf(id))
+                .header(HttpHeaders.CONTENT_TYPE,
+                        MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .body(BodyInserters.fromFormData(formData)).retrieve()
+                .onStatus(status -> status.value() != HttpStatus.OK_200,
+                        clientResponse -> Mono.empty())
+                .toEntity(String.class).block();
+        
+        // Throw an exception if the HTTP response status is not 200 OK
+        if (response == null)
+            throw new IOException("Null HTTP Response");
+        else if (response.getStatusCodeValue() != HttpStatus.OK_200)
+            throw new IOException(
+                    "Invalid HTTP Response " + response.getStatusCodeValue());
+        else return response;
+                
+    }
+    
+    @Override
+    public ResponseEntity<String> getData(int id) throws IOException {
+        
+        // Get all the data in Graph Store Protocol format
+        // Reference: https://www.w3.org/TR/2013/REC-sparql11-http-rdf-update-20130321/
+        ResponseEntity<String> response = webClient.get()
+                .uri(FUSEKI_DATA_GRAPH_STORE_PROTOCOL_ENDPOINT, 
+                        String.valueOf(id)).retrieve()
+                .onStatus(status -> status.value() != HttpStatus.OK_200,
+                        clientResponse -> Mono.empty())
+                .toEntity(String.class).block();
+        
+        // Throw an exception if the HTTP response status is not 200 OK
+        if (response == null)
+            throw new IOException("Null HTTP Response");
+        else if (response.getStatusCodeValue() != HttpStatus.OK_200)
+            throw new IOException(
+                    "Invalid HTTP Response " + response.getStatusCodeValue());
+        else return response;
+        
     }
 
 }

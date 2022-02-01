@@ -2,6 +2,8 @@ package ai.hyperlearning.ontopop.triplestore;
 
 import java.io.IOException;
 
+import org.springframework.http.ResponseEntity;
+
 /**
  * Triplestore Service Interface
  *
@@ -11,6 +13,10 @@ import java.io.IOException;
 
 public interface TriplestoreService {
 
+    /**************************************************************************
+     * TRIPLESTORE MANAGEMENT
+     *************************************************************************/
+    
     Object getRepository(int id) throws IOException;
 
     void createRepository(int id) throws IOException;
@@ -20,5 +26,13 @@ public interface TriplestoreService {
     void loadOntologyOwlRdfXml(int id, String owlSourceUri) throws IOException;
 
     void cleanup() throws IOException;
+    
+    /**************************************************************************
+     * TRIPLESTORE QUERIES
+     *************************************************************************/
 
+    ResponseEntity<String> query(int id, String sparqlQuery) throws IOException;
+    
+    ResponseEntity<String> getData(int id) throws IOException;
+    
 }

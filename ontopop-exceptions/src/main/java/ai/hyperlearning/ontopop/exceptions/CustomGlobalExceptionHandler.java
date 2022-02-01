@@ -15,6 +15,7 @@ import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreationException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDeletionException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyNotFoundException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyUpdateSecretDataException;
+import ai.hyperlearning.ontopop.exceptions.triplestore.TriplestoreSparqlQueryException;
 
 /**
  * Custom Global Exception Handler
@@ -36,7 +37,8 @@ public class CustomGlobalExceptionHandler
 
     @ExceptionHandler({OntologyCreationException.class,
             OntologyUpdateSecretDataException.class, 
-            OntologyDeletionException.class})
+            OntologyDeletionException.class, 
+            TriplestoreSparqlQueryException.class})
     public void springHandleCreationException(HttpServletResponse response)
             throws IOException {
         response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
