@@ -51,10 +51,15 @@ public class JenaTriplestoreService implements TriplestoreService {
     private static final String FUSEKI_DATASET_TYPE_VALUE = "tdb2";
     
     // Triplestore Query Paths
+    
     private static final String FUSEKI_SPARQL_QUERY_ENDPOINT = "/{id}/sparql";
     private static final String FUSEKI_SPARQL_QUERY_FORM_KEY = "query";
+    private static final String FUSEKI_SPARQL_QUERY_DEFAULT_ACCEPT_HEADER = 
+            "application/sparql-results+json";
     private static final String FUSEKI_DATA_GRAPH_STORE_PROTOCOL_ENDPOINT = 
             "/{id}/get";
+    private static final String FUSEKI_DATA_DEFAULT_ACCEPT_HEADER = 
+            "application/ld+json";
     
     /**************************************************************************
      * TRIPLESTORE MANAGEMENT
@@ -176,8 +181,9 @@ public class JenaTriplestoreService implements TriplestoreService {
      *************************************************************************/
     
     @Override
-    public ResponseEntity<String> query(int id, String sparqlQuery) 
-            throws IOException {
+    public ResponseEntity<String> query(
+            int id, String sparqlQuery, String acceptHeader) 
+                    throws IOException {
         
         // Prepare the form data
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
@@ -190,6 +196,8 @@ public class JenaTriplestoreService implements TriplestoreService {
                 .uri(FUSEKI_SPARQL_QUERY_ENDPOINT, String.valueOf(id))
                 .header(HttpHeaders.CONTENT_TYPE,
                         MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .header(HttpHeaders.ACCEPT, acceptHeader == null ? 
+                        FUSEKI_SPARQL_QUERY_DEFAULT_ACCEPT_HEADER : acceptHeader)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .body(BodyInserters.fromFormData(formData)).retrieve()
                 .onStatus(status -> status.value() != HttpStatus.OK_200,
@@ -207,13 +215,17 @@ public class JenaTriplestoreService implements TriplestoreService {
     }
     
     @Override
-    public ResponseEntity<String> getData(int id) throws IOException {
+    public ResponseEntity<String> getData(int id, String acceptHeader) 
+            throws IOException {
         
         // Get all the data in Graph Store Protocol format
         // Reference: https://www.w3.org/TR/2013/REC-sparql11-http-rdf-update-20130321/
         ResponseEntity<String> response = webClient.get()
                 .uri(FUSEKI_DATA_GRAPH_STORE_PROTOCOL_ENDPOINT, 
-                        String.valueOf(id)).retrieve()
+                        String.valueOf(id))
+                .header(HttpHeaders.ACCEPT, acceptHeader == null ? 
+                        FUSEKI_DATA_DEFAULT_ACCEPT_HEADER : acceptHeader)
+                .retrieve()
                 .onStatus(status -> status.value() != HttpStatus.OK_200,
                         clientResponse -> Mono.empty())
                 .toEntity(String.class).block();

@@ -1,7 +1,7 @@
 package ai.hyperlearning.ontopop.exceptions.ontology;
 
 /**
- * Ontology Model - Delete Custom Exception
+ * Ontology Management Exception - Delete Custom Exception
  *
  * @author jillurquddus
  * @since 2.0.0

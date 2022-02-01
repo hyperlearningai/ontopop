@@ -1,7 +1,7 @@
 package ai.hyperlearning.ontopop.exceptions.ontology;
 
 /**
- * Ontology Model - Update Secret Data Custom Exception
+ * Ontology Management Exception - Update Secret Data Custom Exception
  *
  * @author jillurquddus
  * @since 2.0.0

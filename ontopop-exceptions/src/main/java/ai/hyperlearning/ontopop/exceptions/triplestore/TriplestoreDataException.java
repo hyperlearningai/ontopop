@@ -13,7 +13,7 @@ public class TriplestoreDataException extends RuntimeException {
     
     public TriplestoreDataException() {
         super("An error was encountered when attempting to retrieve the "
-                + "graph store protocol data for an ontology.");
+                + "triplestore data for an ontology.");
     }
     
     public TriplestoreDataException(String message) {

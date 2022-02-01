@@ -146,13 +146,15 @@ public class OntotextGraphDBTriplestoreService implements TriplestoreService {
      *************************************************************************/
     
     @Override
-    public ResponseEntity<String> query(int id, String sparqlQuery)
-            throws IOException {
+    public ResponseEntity<String> query(
+            int id, String sparqlQuery, String acceptHeader) 
+                    throws IOException {
         return null;
     }
 
     @Override
-    public ResponseEntity<String> getData(int id) throws IOException {
+    public ResponseEntity<String> getData(
+            int id, String acceptHeader) throws IOException {
         return null;
     }
 

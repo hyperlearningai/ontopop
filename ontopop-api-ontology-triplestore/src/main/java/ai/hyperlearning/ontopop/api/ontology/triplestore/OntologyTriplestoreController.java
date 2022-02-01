@@ -1,10 +1,12 @@
 package ai.hyperlearning.ontopop.api.ontology.triplestore;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +18,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import ai.hyperlearning.ontopop.data.jpa.repositories.WebhookEventRepository;
+import ai.hyperlearning.ontopop.data.ontology.downloader.OntologyDownloaderService;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDownloadException;
 import ai.hyperlearning.ontopop.exceptions.triplestore.TriplestoreDataException;
 import ai.hyperlearning.ontopop.exceptions.triplestore.TriplestoreSparqlQueryException;
+import ai.hyperlearning.ontopop.model.git.WebhookEvent;
 import ai.hyperlearning.ontopop.model.triplestore.OntologyTriplestoreSparqlQuery;
 import ai.hyperlearning.ontopop.triplestore.TriplestoreService;
 import ai.hyperlearning.ontopop.triplestore.TriplestoreServiceFactory;
@@ -51,6 +59,12 @@ public class OntologyTriplestoreController {
     @Autowired
     private TriplestoreServiceFactory triplestoreServiceFactory;
     
+    @Autowired
+    private OntologyDownloaderService ontologyDownloaderService;
+    
+    @Autowired
+    private WebhookEventRepository webhookEventRepository;
+    
     @Value("${storage.triplestore.service}")
     private String storageTriplestoreService;
     
@@ -58,24 +72,30 @@ public class OntologyTriplestoreController {
     
     @PostConstruct
     private void postConstruct() {
+        
+        // Instantiate the triplestore service
         TriplestoreServiceType triplestoreServiceType = TriplestoreServiceType
                 .valueOfLabel(storageTriplestoreService.toUpperCase());
         triplestoreService = triplestoreServiceFactory
                 .getTriplestoreService(triplestoreServiceType);
         LOGGER.debug("Using the {} triplestore service.",
                 triplestoreServiceType);
+        
     }
     
     /**************************************************************************
      * 1. POST - Triplestore SPARQL Query
+     * 
+     * Supported content types:
+     *  application/sparql-results+json (default)
+     *  application/sparql-results+xml
      *************************************************************************/
     
     @Operation(
             summary = "Triplestore SPARQL Query",
             description = "Execute a general SPARQL query against the "
-                    + "OntoPop triplestore loaded with the ontology for the "
-                    + "given ontology ID.",
-            tags = {"ontology", "triplestore"})
+                    + "ontology with the given ontology ID.",
+            tags = {"ontology", "triplestore", "sparql"})
     @ApiResponses(
             value = {
                     @ApiResponse(
@@ -89,9 +109,15 @@ public class OntologyTriplestoreController {
                             description = "Internal server error.")})
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(
-            value = "/{id}/triplestore/query/sparql", 
-            produces = MediaType.APPLICATION_JSON_VALUE)
+            value = "/{id}/triplestore/data/query/sparql", 
+            produces = {
+                    MediaType.APPLICATION_JSON_VALUE, 
+                    MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<String> query(
+            @Parameter(
+                    description = "Content type that should be returned if possible.", 
+                    required = false)
+            @RequestHeader(value = "Accept", required = false) String acceptHeader, 
             @Parameter(
                     description = "ID of the ontology to query.", 
                     required = true)
@@ -105,7 +131,7 @@ public class OntologyTriplestoreController {
         LOGGER.debug("New HTTP POST request - SPARQL query request for ontology ID {}: {}", 
                 id, sparqlQuery);
         try {
-            return triplestoreService.query(id, sparqlQuery);
+            return triplestoreService.query(id, sparqlQuery, acceptHeader);
         } catch (IOException e) {
             LOGGER.error("An error was encountered when attempting to execute "
                     + "the SPARQL query '{}' against the triplestore for "
@@ -115,45 +141,120 @@ public class OntologyTriplestoreController {
     }
     
     /**************************************************************************
-     * 2. GET - Get all ontology data in graph store protocol format
+     * 2.1. GET - Get all RDF data
+     * 
+     * Supported content types:
+     *  application/n-quads
+     *  application/ld+json
+     *  application/trig (default)
      *************************************************************************/
     
     @Operation(
-            summary = "Get Triplestore Graph Store Protocol Data",
-            description = "Get all the graph store protocol data in the "
-                    + "OntoPop triplestore loaded with the ontology for the "
-                    + "given ontology ID.",
-            tags = {"ontology", "triplestore"})
+            summary = "Get Triplestore RDF Data",
+            description = "Get all the RDF data via the graph store protocol "
+                    + "for the ontology with the given ontology ID.",
+            tags = {"ontology", "triplestore", "rdf"})
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "201",
-                            description = "Graph store protocol data successfully retrieved."),
+                            description = "RDF data successfully retrieved."),
                     @ApiResponse(
                             responseCode = "401",
-                            description = "Retrieval of graph store protocol data unauthorized."), 
+                            description = "Retrieval of RDF data unauthorized."), 
                     @ApiResponse(
                             responseCode = "500",
                             description = "Internal server error.")})
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(
-            value = "/{id}/triplestore/data", 
-            produces = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity<String> getData(
+            value = "/{id}/triplestore/data/rdf", 
+            produces = {
+                    MediaType.APPLICATION_JSON_VALUE, 
+                    MediaType.APPLICATION_XML_VALUE, 
+                    MediaType.TEXT_PLAIN_VALUE})
+    public ResponseEntity<String> getRdfData(
+            @Parameter(
+                    description = "Content type that should be returned if possible.", 
+                    required = false)
+            @RequestHeader(value = "Accept", required = false) String acceptHeader, 
             @Parameter(
                     description = "ID of the ontology for which to retrieve data.", 
                     required = true)
             @PathVariable(required = true) int id) {
-        LOGGER.debug("New HTTP GET request - Get Graph Store Protocol data "
+        LOGGER.debug("New HTTP GET request - Get triplestore RDF data "
                 + "for ontology ID {}.", id);
         try {
-            return triplestoreService.getData(id);
+            return triplestoreService.getData(id, acceptHeader);
         } catch (IOException e) {
             LOGGER.error("An error was encountered when attempting to "
-                    + "retrieve the graph store protocol data for "
+                    + "retrieve the triplestore data for "
                     + "ontology ID {}.", id, e);
             throw new TriplestoreDataException();
         }
     }
-
+    
+    /**************************************************************************
+     * 2.2. GET - Get OWL RDF/XML data
+     *************************************************************************/
+    
+    @Operation(
+            summary = "Get OWL Data",
+            description = "Get the original OWL data for the ontology with "
+                    + "the given ontology ID and optional webhook event ID.",
+            tags = {"ontology", "triplestore", "owl"})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "OWL data successfully retrieved."),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Retrieval of OWL data unauthorized."), 
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Internal server error.")})
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(
+            value = "/{id}/triplestore/data/owl", 
+            produces = MediaType.APPLICATION_XML_VALUE)
+    public String getOwlData(
+            @Parameter(
+                    description = "ID of the ontology for which to retrieve data.", 
+                    required = true)
+            @PathVariable(required = true) int id, 
+            @RequestParam(name = "webhookEventId", required = false, defaultValue = "-1") long webhookEventId) {
+        
+        LOGGER.debug("New HTTP GET request - Get OWL data for "
+                + "ontology ID {}.", id);
+        
+        try {
+            
+            // Get the webhook event object
+            WebhookEvent webhookEvent = ( webhookEventId == -1 ) ? 
+                    ontologyDownloaderService.getLatestWebhookEvent(id) : 
+                        webhookEventRepository.findById(webhookEventId).get();
+            if ( webhookEvent != null ) {
+                
+                // Download the OWL file from persistent storage
+                String downloadedUri = ontologyDownloaderService
+                        .retrieveOwlFile(webhookEvent);
+                
+                // Return the contents of the OWL file as a string
+                return FileUtils.readFileToString(
+                        new File(downloadedUri), "UTF-8");
+                
+            } else {
+                throw new OntologyDownloadException();
+            }
+            
+        } catch (Exception e) {
+            
+            LOGGER.error("An error was encountered when attempting to "
+                    + "retrieve the OWL file for ontology ID {}.", id);
+            throw new OntologyDownloadException();
+            
+        }
+        
+    }
+    
 }

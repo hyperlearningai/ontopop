@@ -59,17 +59,11 @@
         </dependency>
         <dependency>
             <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-model</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-data-jpa</artifactId>
-                </exclusion>
-            </exclusions>
+            <artifactId>ontopop-triplestore</artifactId>
         </dependency>
         <dependency>
             <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-triplestore</artifactId>
+            <artifactId>ontopop-data-ontology-downloader</artifactId>
         </dependency>
 
         <!-- Springdoc OpenAPI UI -->

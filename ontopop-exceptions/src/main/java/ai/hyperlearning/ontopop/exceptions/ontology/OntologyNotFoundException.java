@@ -1,7 +1,7 @@
 package ai.hyperlearning.ontopop.exceptions.ontology;
 
 /**
- * Ontology Model - Not Found Custom Exception
+ * Ontology Management Exception - Not Found Custom Exception
  *
  * @author jillurquddus
  * @since 2.0.0
