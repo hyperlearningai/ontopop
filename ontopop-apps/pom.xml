@@ -59,6 +59,7 @@
         <module>ontopop-app-data-ontology-loader-graph</module>
         <module>ontopop-app-data-ontology-indexer-graph</module>
         <module>ontopop-app-api-ontology-management</module>
+        <module>ontopop-app-api-ontology-triplestore</module>
     </modules>
 
 </project>
