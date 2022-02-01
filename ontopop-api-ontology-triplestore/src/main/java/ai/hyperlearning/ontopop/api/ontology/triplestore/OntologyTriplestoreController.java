@@ -49,7 +49,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/api/ontologies")
-@Tag(name = "triplestore", description = "Triplestore API")
+@Tag(name = "Triplestore API", description = "API for querying the OntoPop RDF Triplestore")
 public class OntologyTriplestoreController {
     
     private static final Logger LOGGER =
@@ -202,7 +202,7 @@ public class OntologyTriplestoreController {
     @GetMapping(
             value = "/{id}/triplestore/data/owl", 
             produces = MediaType.APPLICATION_XML_VALUE)
-    public String getOwlData(
+    public ResponseEntity<String> getOwlData(
             @Parameter(
                     description = "ID of the ontology for which to retrieve data.", 
                     required = true)
@@ -226,8 +226,10 @@ public class OntologyTriplestoreController {
                         .retrieveOwlFile(webhookEvent);
                 
                 // Return the contents of the OWL file as a string
-                return FileUtils.readFileToString(
-                        new File(downloadedUri), StandardCharsets.UTF_8);
+                return new ResponseEntity<>(
+                        FileUtils.readFileToString(
+                                new File(downloadedUri), StandardCharsets.UTF_8), 
+                        HttpStatus.OK);
                 
             } else {
                 throw new OntologyDownloadException();

@@ -48,7 +48,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/api/ontologies")
-@Tag(name = "ontology", description = "Ontology Management API")
+@Tag(name = "Ontology Management API - Ontologies", description = "API for managing OntoPop ontologies")
 public class OntologyManagementController {
 
     private static final Logger LOGGER =
@@ -81,13 +81,16 @@ public class OntologyManagementController {
                                     schema = @Schema(implementation = Ontology.class))),
                     @ApiResponse(
                             responseCode = "401",
-                            description = "Creation of ontology unauthorized."), 
+                            description = "Creation of ontology unauthorized.", 
+                            content = @Content), 
                     @ApiResponse(
                             responseCode = "409",
-                            description = "Ontology already exists."),
+                            description = "Ontology already exists.", 
+                            content = @Content),
                     @ApiResponse(
                             responseCode = "500",
-                            description = "Internal server error.")})
+                            description = "Internal server error.", 
+                            content = @Content)})
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Ontology createOntology(
@@ -128,10 +131,12 @@ public class OntologyManagementController {
                                             schema = @Schema(implementation = Ontology.class)))),
                     @ApiResponse(
                             responseCode = "401",
-                            description = "Retrieval of ontologies unauthorized."), 
+                            description = "Retrieval of ontologies unauthorized.", 
+                            content = @Content), 
                     @ApiResponse(
                             responseCode = "500",
-                            description = "Internal server error.")})
+                            description = "Internal server error.", 
+                            content = @Content)})
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Ontology> getOntologies() {
@@ -158,13 +163,16 @@ public class OntologyManagementController {
                                     schema = @Schema(implementation = Ontology.class))),
                     @ApiResponse(
                             responseCode = "401",
-                            description = "Retrieval of ontology unauthorized."),
+                            description = "Retrieval of ontology unauthorized.", 
+                            content = @Content),
                     @ApiResponse(
                             responseCode = "404",
-                            description = "Ontology not found."), 
+                            description = "Ontology not found.", 
+                            content = @Content), 
                     @ApiResponse(
                             responseCode = "500",
-                            description = "Internal server error.")})
+                            description = "Internal server error.", 
+                            content = @Content)})
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(
             value = "/{id}", 
@@ -198,13 +206,16 @@ public class OntologyManagementController {
                                     schema = @Schema(implementation = Ontology.class))),
                     @ApiResponse(
                             responseCode = "401",
-                            description = "Update of ontology unauthorized."),
+                            description = "Update of ontology unauthorized.", 
+                            content = @Content),
                     @ApiResponse(
                             responseCode = "404",
-                            description = "Ontology not found."), 
+                            description = "Ontology not found.", 
+                            content = @Content), 
                     @ApiResponse(
                             responseCode = "500",
-                            description = "Internal server error.")})
+                            description = "Internal server error.", 
+                            content = @Content)})
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping(
             value = "/{id}", 
@@ -239,13 +250,16 @@ public class OntologyManagementController {
                             description = "Ontology successfully updated."),
                     @ApiResponse(
                             responseCode = "401",
-                            description = "Update of ontology unauthorized."),
+                            description = "Update of ontology unauthorized.", 
+                            content = @Content),
                     @ApiResponse(
                             responseCode = "404",
-                            description = "Ontology not found."), 
+                            description = "Ontology not found.", 
+                            content = @Content), 
                     @ApiResponse(
                             responseCode = "500",
-                            description = "Internal server error.")})
+                            description = "Internal server error.", 
+                            content = @Content)})
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping(
             value = "/{id}/secrets",
@@ -288,13 +302,16 @@ public class OntologyManagementController {
                             description = "Ontology successfully deleted."),
                     @ApiResponse(
                             responseCode = "401",
-                            description = "Deletion of ontology unauthorized."),
+                            description = "Deletion of ontology unauthorized.", 
+                            content = @Content),
                     @ApiResponse(
                             responseCode = "404",
-                            description = "Ontology not found."), 
+                            description = "Ontology not found.", 
+                            content = @Content), 
                     @ApiResponse(
                             responseCode = "500",
-                            description = "Internal server error.")})
+                            description = "Internal server error.", 
+                            content = @Content)})
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping(
             value = "/{id}", 

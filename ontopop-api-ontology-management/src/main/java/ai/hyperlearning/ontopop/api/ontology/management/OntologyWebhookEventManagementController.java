@@ -34,7 +34,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/api/ontologies")
-@Tag(name = "webhook", description = "Ontology Management API")
+@Tag(name = "Ontology Management API - Webhooks", description = "API for managing OntoPop ontology webhooks")
 public class OntologyWebhookEventManagementController {
 
     private static final Logger LOGGER =
@@ -63,10 +63,12 @@ public class OntologyWebhookEventManagementController {
                                             schema = @Schema(implementation = WebhookEvent.class)))),
                     @ApiResponse(
                             responseCode = "401",
-                            description = "Retrieval of webhooks unauthorized."), 
+                            description = "Retrieval of webhooks unauthorized.", 
+                            content = @Content), 
                     @ApiResponse(
                             responseCode = "500",
-                            description = "Internal server error.")})
+                            description = "Internal server error.", 
+                            content = @Content)})
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(
             value = "/webhooks",
@@ -95,13 +97,16 @@ public class OntologyWebhookEventManagementController {
                                     schema = @Schema(implementation = WebhookEvent.class))),
                     @ApiResponse(
                             responseCode = "401",
-                            description = "Retrieval of webhook unauthorized."),
+                            description = "Retrieval of webhook unauthorized.", 
+                            content = @Content),
                     @ApiResponse(
                             responseCode = "404",
-                            description = "Webhook not found."), 
+                            description = "Webhook not found.", 
+                            content = @Content), 
                     @ApiResponse(
                             responseCode = "500",
-                            description = "Internal server error.")})
+                            description = "Internal server error.", 
+                            content = @Content)})
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(
             value = "/webhooks/{id}",
@@ -135,10 +140,12 @@ public class OntologyWebhookEventManagementController {
                                             schema = @Schema(implementation = WebhookEvent.class)))),
                     @ApiResponse(
                             responseCode = "401",
-                            description = "Retrieval of ontology webhooks unauthorized."), 
+                            description = "Retrieval of ontology webhooks unauthorized.", 
+                            content = @Content), 
                     @ApiResponse(
                             responseCode = "500",
-                            description = "Internal server error.")})
+                            description = "Internal server error.", 
+                            content = @Content)})
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(
             value = "/{ontologyId}/webhooks",
@@ -172,13 +179,16 @@ public class OntologyWebhookEventManagementController {
                                     schema = @Schema(implementation = WebhookEvent.class))),
                     @ApiResponse(
                             responseCode = "401",
-                            description = "Retrieval of ontology webhook unauthorized."),
+                            description = "Retrieval of ontology webhook unauthorized.", 
+                            content = @Content),
                     @ApiResponse(
                             responseCode = "404",
-                            description = "Ontology webhook not found."), 
+                            description = "Ontology webhook not found.", 
+                            content = @Content), 
                     @ApiResponse(
                             responseCode = "500",
-                            description = "Internal server error.")})
+                            description = "Internal server error.", 
+                            content = @Content)})
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(
             value = "/{ontologyId}/webhooks/{webhookEventId}",
