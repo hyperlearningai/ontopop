@@ -3,6 +3,8 @@ package ai.hyperlearning.ontopop.model.ontology;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 /**
  * Ontology Model - Non Secret Data
  *
@@ -13,15 +15,55 @@ import java.time.LocalDateTime;
 public class OntologyNonSecretData implements Serializable {
 
 	private static final long serialVersionUID = -2410562383720708200L;
+	
+	@Schema(description = "ID of the ontology to update.", 
+	        example = "1", 
+	        required = false)
 	private int id;
+	
+	@Schema(description = "Updated short free-text name for the ontology.", 
+	        example = "National Highways Ontology.", 
+	        required = false)
 	private String name;
+	
+	@Schema(description = "Updated free-text description of the ontology.", 
+	        example = "National Highways ontology-based conceptual data model.", 
+	        required = false)
 	private String description;
+	
+	@Schema(description = "Updated uRL of the Git repository managing the OWL file for this ontology.", 
+	        example = "https://github.com/myorg/myrepo", 
+	        required = false)
 	private String repoUrl;
+	
+	@Schema(description = "Updated name of the Git repository managing the OWL file for this ontology.", 
+	        example = "myrepo", 
+	        required = false)
 	private String repoName;
+	
+	@Schema(description = "Updated owner of the Git repository managing the OWL file for this ontology.", 
+	        example = "myorg", 
+	        required = false)
 	private String repoOwner;
+	
+	@Schema(description = "Whether the Git repository managing the OWL file for this ontology is a private repository.", 
+	        example = "true", 
+	        required = false)
 	private boolean repoPrivate;
+	
+	@Schema(description = "Updated path to the OWL file for this ontology inside the Git repository.", 
+	        example = "data/ontology.owl", 
+	        required = false)
 	private String repoResourcePath;
+	
+	@Schema(description = "Updated name of the Git repository branch to monitor for changes to the OWL file.", 
+	        example = "main", 
+	        required = false)
 	private String repoBranch;
+	
+	@Schema(description = "System generated ontology last updated date and time.", 
+	        example = "2022-02-28 09:08:07", 
+	        required = false)
 	private LocalDateTime dateLastUpdated;
 	
 	public OntologyNonSecretData() {

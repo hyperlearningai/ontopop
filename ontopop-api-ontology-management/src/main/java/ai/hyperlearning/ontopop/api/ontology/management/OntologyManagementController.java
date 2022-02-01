@@ -58,7 +58,7 @@ public class OntologyManagementController {
     private OntologyRepository ontologyRepository;
 
     @Autowired
-    private OntologyManagementService ontologyCRUDService;
+    private OntologyManagementService ontologyManagementService;
 
     /**************************************************************************
      * 1. POST - Create Ontology
@@ -101,7 +101,7 @@ public class OntologyManagementController {
             @Valid @RequestBody(required = true) Ontology ontology) {
         LOGGER.debug("New HTTP POST request: Create a new ontology.");
         try {
-            return ontologyCRUDService.create(ontology);
+            return ontologyManagementService.create(ontology);
         } catch (OntologyCreationAlreadyExistsException e) {
             LOGGER.error("An error was encountered when attempting to "
                     + "create a new ontology.", e);
@@ -231,7 +231,7 @@ public class OntologyManagementController {
                     schema = @Schema(implementation = OntologyNonSecretData.class))
             @RequestBody(required = true) OntologyNonSecretData ontologyNonSecretData) {
         LOGGER.debug("New HTTP PATCH request: Update ontology by ID.");
-        return ontologyCRUDService.update(id, ontologyNonSecretData);
+        return ontologyManagementService.update(id, ontologyNonSecretData);
     }
 
     /**************************************************************************
@@ -276,7 +276,7 @@ public class OntologyManagementController {
             @RequestBody OntologySecretData ontologySecretData) {
         LOGGER.debug("New HTTP PATCH request: Update ontology secrets by ID.");
         try {
-            ontologyCRUDService.update(id, ontologySecretData);
+            ontologyManagementService.update(id, ontologySecretData);
             return new ResponseEntity<>("Ontology update request successfully "
                     + "processed.", HttpStatus.OK);
         } catch (Exception e) {
@@ -323,7 +323,7 @@ public class OntologyManagementController {
             @PathVariable(required = true) int id) {
         LOGGER.debug("New HTTP DELETE request: Delete ontology by ID.");
         try {
-            ontologyCRUDService.delete(id);
+            ontologyManagementService.delete(id);
             return new ResponseEntity<>("Ontology deletion request "
                     + "successfully processed.", HttpStatus.OK);
         } catch (Exception e) {

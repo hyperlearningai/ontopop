@@ -2,6 +2,8 @@ package ai.hyperlearning.ontopop.security.secrets.model;
 
 import java.io.Serializable;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 /**
  * Ontology Model - Secret Data
  *
@@ -12,8 +14,20 @@ import java.io.Serializable;
 public class OntologySecretData implements Serializable {
 
     private static final long serialVersionUID = -3107174777469504852L;
+    
+    @Schema(description = "ID of the ontology to update.", 
+            example = "1", 
+            required = false)
     private int id;
+    
+    @Schema(description = "Updated access token required to access the OWL file managed in private Git repositories.", 
+            example = "ghp_123456789abcdefghi", 
+            required = false)
     private String repoToken;
+    
+    @Schema(description = "Updated user-defined webhook secret used to validate Git webhooks from this Git repository.", 
+            example = "mysecret123", 
+            required = false)
     private String repoWebhookSecret;
 
     public OntologySecretData() {
