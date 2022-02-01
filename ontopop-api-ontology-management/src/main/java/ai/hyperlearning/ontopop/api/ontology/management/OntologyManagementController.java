@@ -100,8 +100,12 @@ public class OntologyManagementController {
         try {
             return ontologyCRUDService.create(ontology);
         } catch (OntologyCreationAlreadyExistsException e) {
+            LOGGER.error("An error was encountered when attempting to "
+                    + "create a new ontology.", e);
             throw e;
         } catch (Exception e) {
+            LOGGER.error("An error was encountered when attempting to "
+                    + "create a new ontology.", e);
             throw new OntologyCreationException();
         }
     }
@@ -262,6 +266,8 @@ public class OntologyManagementController {
             return new ResponseEntity<>("Ontology update request successfully "
                     + "processed.", HttpStatus.OK);
         } catch (Exception e) {
+            LOGGER.error("An error was encountered when attempting to update "
+                    + "the secrets for this ontology.", e);
             throw new OntologyUpdateSecretDataException(id);
         }
     }
@@ -304,6 +310,8 @@ public class OntologyManagementController {
             return new ResponseEntity<>("Ontology deletion request "
                     + "successfully processed.", HttpStatus.OK);
         } catch (Exception e) {
+            LOGGER.error("An error was encountered when attempting to "
+                    + "delete this ontology.", e);
             throw new OntologyDeletionException(id);
         }
     }
