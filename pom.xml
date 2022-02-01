@@ -423,6 +423,11 @@
             </dependency>
             <dependency>
                 <groupId>ai.hyperlearning.ontopop</groupId>
+                <artifactId>ontopop-data-ontology-downloader</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>ai.hyperlearning.ontopop</groupId>
                 <artifactId>ontopop-api-ontology-management</artifactId>
                 <version>${revision}</version>
             </dependency>
@@ -513,6 +518,7 @@
         <module>ontopop-data-ontology-modeller-graph</module>
         <module>ontopop-data-ontology-loader-graph</module>
         <module>ontopop-data-ontology-indexer-graph</module>
+        <module>ontopop-data-ontology-downloader</module>
         <module>ontopop-api-ontology-management</module>
         <module>ontopop-api-ontology-triplestore</module>
     </modules>
