@@ -32,11 +32,9 @@ public interface TriplestoreService {
      *************************************************************************/
 
     ResponseEntity<String> query(
-            int id, String sparqlQuery, String acceptHeader) 
-                    throws IOException;
+            int id, String sparqlQuery, String acceptHeader);
     
     ResponseEntity<String> getData(
-            int id, String acceptHeader) 
-                    throws IOException;
+            int id, String acceptHeader);
     
 }

@@ -1,7 +1,7 @@
 package ai.hyperlearning.ontopop.api.ontology.triplestore;
 
 import java.io.File;
-import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
@@ -26,9 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ai.hyperlearning.ontopop.data.jpa.repositories.WebhookEventRepository;
 import ai.hyperlearning.ontopop.data.ontology.downloader.OntologyDownloaderService;
+import ai.hyperlearning.ontopop.exceptions.git.WebhookEventNotFoundException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDownloadException;
-import ai.hyperlearning.ontopop.exceptions.triplestore.TriplestoreDataException;
-import ai.hyperlearning.ontopop.exceptions.triplestore.TriplestoreSparqlQueryException;
 import ai.hyperlearning.ontopop.model.git.WebhookEvent;
 import ai.hyperlearning.ontopop.model.triplestore.OntologyTriplestoreSparqlQuery;
 import ai.hyperlearning.ontopop.triplestore.TriplestoreService;
@@ -130,14 +129,7 @@ public class OntologyTriplestoreController {
         String sparqlQuery = ontologyTriplestoreSparqlQuery.getQuery();
         LOGGER.debug("New HTTP POST request - SPARQL query request for ontology ID {}: {}", 
                 id, sparqlQuery);
-        try {
-            return triplestoreService.query(id, sparqlQuery, acceptHeader);
-        } catch (IOException e) {
-            LOGGER.error("An error was encountered when attempting to execute "
-                    + "the SPARQL query '{}' against the triplestore for "
-                    + "ontology ID {}.", sparqlQuery, id, e);
-            throw new TriplestoreSparqlQueryException();
-        }   
+        return triplestoreService.query(id, sparqlQuery, acceptHeader);
     }
     
     /**************************************************************************
@@ -183,14 +175,7 @@ public class OntologyTriplestoreController {
             @PathVariable(required = true) int id) {
         LOGGER.debug("New HTTP GET request - Get triplestore RDF data "
                 + "for ontology ID {}.", id);
-        try {
-            return triplestoreService.getData(id, acceptHeader);
-        } catch (IOException e) {
-            LOGGER.error("An error was encountered when attempting to "
-                    + "retrieve the triplestore data for "
-                    + "ontology ID {}.", id, e);
-            throw new TriplestoreDataException();
-        }
+        return triplestoreService.getData(id, acceptHeader);
     }
     
     /**************************************************************************
@@ -232,7 +217,8 @@ public class OntologyTriplestoreController {
             // Get the webhook event object
             WebhookEvent webhookEvent = ( webhookEventId == -1 ) ? 
                     ontologyDownloaderService.getLatestWebhookEvent(id) : 
-                        webhookEventRepository.findById(webhookEventId).get();
+                        webhookEventRepository.findById(webhookEventId)
+                            .orElseThrow(() -> new WebhookEventNotFoundException(id));
             if ( webhookEvent != null ) {
                 
                 // Download the OWL file from persistent storage
@@ -241,7 +227,7 @@ public class OntologyTriplestoreController {
                 
                 // Return the contents of the OWL file as a string
                 return FileUtils.readFileToString(
-                        new File(downloadedUri), "UTF-8");
+                        new File(downloadedUri), StandardCharsets.UTF_8);
                 
             } else {
                 throw new OntologyDownloadException();

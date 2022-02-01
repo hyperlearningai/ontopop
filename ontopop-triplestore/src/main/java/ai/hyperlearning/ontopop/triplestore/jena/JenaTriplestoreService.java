@@ -182,8 +182,7 @@ public class JenaTriplestoreService implements TriplestoreService {
     
     @Override
     public ResponseEntity<String> query(
-            int id, String sparqlQuery, String acceptHeader) 
-                    throws IOException {
+            int id, String sparqlQuery, String acceptHeader) {
         
         // Prepare the form data
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
@@ -192,7 +191,7 @@ public class JenaTriplestoreService implements TriplestoreService {
         // Exceute the SPARQL query via a HTTP POST request
         // Response will be in SPARQL 1.1 Query Results JSON format
         // Reference: https://www.w3.org/TR/2013/REC-sparql11-results-json-20130321/
-        ResponseEntity<String> response = webClient.post()
+        return webClient.post()
                 .uri(FUSEKI_SPARQL_QUERY_ENDPOINT, String.valueOf(id))
                 .header(HttpHeaders.CONTENT_TYPE,
                         MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -203,24 +202,15 @@ public class JenaTriplestoreService implements TriplestoreService {
                 .onStatus(status -> status.value() != HttpStatus.OK_200,
                         clientResponse -> Mono.empty())
                 .toEntity(String.class).block();
-        
-        // Throw an exception if the HTTP response status is not 200 OK
-        if (response == null)
-            throw new IOException("Null HTTP Response");
-        else if (response.getStatusCodeValue() != HttpStatus.OK_200)
-            throw new IOException(
-                    "Invalid HTTP Response " + response.getStatusCodeValue());
-        else return response;
                 
     }
     
     @Override
-    public ResponseEntity<String> getData(int id, String acceptHeader) 
-            throws IOException {
+    public ResponseEntity<String> getData(int id, String acceptHeader) {
         
         // Get all the data in Graph Store Protocol format
         // Reference: https://www.w3.org/TR/2013/REC-sparql11-http-rdf-update-20130321/
-        ResponseEntity<String> response = webClient.get()
+        return webClient.get()
                 .uri(FUSEKI_DATA_GRAPH_STORE_PROTOCOL_ENDPOINT, 
                         String.valueOf(id))
                 .header(HttpHeaders.ACCEPT, acceptHeader == null ? 
@@ -229,14 +219,6 @@ public class JenaTriplestoreService implements TriplestoreService {
                 .onStatus(status -> status.value() != HttpStatus.OK_200,
                         clientResponse -> Mono.empty())
                 .toEntity(String.class).block();
-        
-        // Throw an exception if the HTTP response status is not 200 OK
-        if (response == null)
-            throw new IOException("Null HTTP Response");
-        else if (response.getStatusCodeValue() != HttpStatus.OK_200)
-            throw new IOException(
-                    "Invalid HTTP Response " + response.getStatusCodeValue());
-        else return response;
         
     }
 

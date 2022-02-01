@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -81,11 +82,12 @@ public class OntologyDownloaderService {
         List<WebhookEvent> webhookEvents = webhookEventRepository
                 .findByOntologyId(ontologyId);
         if ( !webhookEvents.isEmpty() ) {
-            return webhookEvents.stream()
+            Optional<WebhookEvent> webhookEvent = webhookEvents.stream()
                     .collect(Collectors.maxBy(
                             Comparator.comparingLong(
-                                    WebhookEvent::getId)))
-                    .get();
+                                    WebhookEvent::getId)));
+            if (webhookEvent.isPresent())
+                return webhookEvent.get();
         }
         return null;
     }
