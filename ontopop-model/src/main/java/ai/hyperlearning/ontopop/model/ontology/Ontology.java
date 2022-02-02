@@ -258,6 +258,7 @@ public class Ontology implements Serializable {
 				.trim();
 	}
 	
+	@JsonIgnore
 	public String getRepoResourcePathFileExtension() {
 	    int indexOfLastExtension = repoResourcePath
 	            .lastIndexOf(FILE_EXTENSION);
