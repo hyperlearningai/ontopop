@@ -16,7 +16,7 @@ import org.springframework.messaging.SubscribableChannel;
 public interface DataPipelineParserSource {
 
     @Input
-    SubscribableChannel validatedConsumptionChannel();
+    SubscribableChannel validatedParserConsumptionChannel();
 
     @Output
     MessageChannel parsedPublicationChannel();

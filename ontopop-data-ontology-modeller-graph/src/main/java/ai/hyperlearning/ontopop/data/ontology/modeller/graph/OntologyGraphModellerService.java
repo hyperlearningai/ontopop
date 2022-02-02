@@ -21,7 +21,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-import ai.hyperlearning.ontopop.messaging.processors.DataPipelineModellerSource;
+import ai.hyperlearning.ontopop.messaging.processors.DataPipelineModellerGraphSource;
 import ai.hyperlearning.ontopop.model.graph.SimpleOntologyPropertyGraph;
 import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 import ai.hyperlearning.ontopop.model.owl.SimpleAnnotationProperty;
@@ -42,7 +42,7 @@ import ai.hyperlearning.ontopop.storage.ObjectStorageServiceType;
 
 @SuppressWarnings("deprecation")
 @Service
-@EnableBinding(DataPipelineModellerSource.class)
+@EnableBinding(DataPipelineModellerGraphSource.class)
 public class OntologyGraphModellerService {
 
     private static final Logger LOGGER = LoggerFactory
@@ -52,7 +52,7 @@ public class OntologyGraphModellerService {
     private ObjectStorageServiceFactory objectStorageServiceFactory;
 
     @Autowired
-    private DataPipelineModellerSource dataPipelineModellerSource;
+    private DataPipelineModellerGraphSource dataPipelineModellerGraphSource;
 
     @Value("${storage.object.service}")
     private String storageObjectService;
@@ -277,7 +277,7 @@ public class OntologyGraphModellerService {
         LOGGER.info("Ontology Property Graph Modelling Service - "
                 + "Started publishing message.");
         ObjectMapper mapper = new ObjectMapper();
-        dataPipelineModellerSource.modelledPublicationChannel()
+        dataPipelineModellerGraphSource.modelledPublicationChannel()
                 .send(MessageBuilder
                         .withPayload(mapper.writeValueAsString(ontologyMessage))
                         .build());

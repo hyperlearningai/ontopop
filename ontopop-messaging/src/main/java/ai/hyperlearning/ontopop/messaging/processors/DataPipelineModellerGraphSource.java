@@ -6,19 +6,19 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.SubscribableChannel;
 
 /**
- * Data Pipeline Spring Cloud Stream Source - Post-modelling Loader
+ * Data Pipeline Spring Cloud Stream Source - Modelling
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
 @SuppressWarnings("deprecation")
-public interface DataPipelineModelledLoaderSource {
+public interface DataPipelineModellerGraphSource {
 
     @Input
-    SubscribableChannel modelledLoadersConsumptionChannel();
+    SubscribableChannel parsedConsumptionChannel();
 
     @Output
-    MessageChannel modelledLoadedPublicationChannel();
+    MessageChannel modelledPublicationChannel();
 
 }

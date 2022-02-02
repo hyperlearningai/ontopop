@@ -30,7 +30,7 @@ public class OntologyParserApp {
         SpringApplication.run(OntologyParserApp.class, args);
     }
     
-    @StreamListener("validatedConsumptionChannel")
+    @StreamListener("validatedParserConsumptionChannel")
     public void processValidatedOntology(String payload) {
         
         // Execute the Ontology Parser Function

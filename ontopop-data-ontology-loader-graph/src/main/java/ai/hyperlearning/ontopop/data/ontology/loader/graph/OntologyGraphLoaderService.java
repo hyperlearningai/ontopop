@@ -24,7 +24,7 @@ import ai.hyperlearning.ontopop.graph.GraphDatabaseServiceFactory;
 import ai.hyperlearning.ontopop.graph.GraphDatabaseServiceType;
 import ai.hyperlearning.ontopop.graph.model.SimpleGraphEdge;
 import ai.hyperlearning.ontopop.graph.model.SimpleGraphVertex;
-import ai.hyperlearning.ontopop.messaging.processors.DataPipelineModelledLoaderSource;
+import ai.hyperlearning.ontopop.messaging.processors.DataPipelineLoaderGraphSource;
 import ai.hyperlearning.ontopop.model.graph.SimpleOntologyEdge;
 import ai.hyperlearning.ontopop.model.graph.SimpleOntologyPropertyGraph;
 import ai.hyperlearning.ontopop.model.graph.SimpleOntologyVertex;
@@ -42,7 +42,7 @@ import ai.hyperlearning.ontopop.storage.ObjectStorageServiceType;
 
 @SuppressWarnings("deprecation")
 @Service
-@EnableBinding(DataPipelineModelledLoaderSource.class)
+@EnableBinding(DataPipelineLoaderGraphSource.class)
 public class OntologyGraphLoaderService {
 
     private static final Logger LOGGER =
@@ -57,7 +57,7 @@ public class OntologyGraphLoaderService {
     private GraphDatabaseServiceFactory graphDatabaseServiceFactory;
 
     @Autowired
-    private DataPipelineModelledLoaderSource dataPipelineModelledLoaderSource;
+    private DataPipelineLoaderGraphSource dataPipelineLoaderGraphSource;
 
     @Value("${storage.object.service}")
     private String storageObjectService;
@@ -303,7 +303,7 @@ public class OntologyGraphLoaderService {
         LOGGER.info("Ontology Graph Loading Service - "
                 + "Started publishing message.");
         ObjectMapper mapper = new ObjectMapper();
-        dataPipelineModelledLoaderSource.modelledLoadedPublicationChannel()
+        dataPipelineLoaderGraphSource.graphLoadedPublicationChannel()
                 .send(MessageBuilder
                         .withPayload(mapper.writeValueAsString(ontologyMessage))
                         .build());

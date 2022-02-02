@@ -6,19 +6,19 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.SubscribableChannel;
 
 /**
- * Data Pipeline Spring Cloud Stream Source - Post-validation Loader
+ * Data Pipeline Spring Cloud Stream Source - Post-modelling Loader
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
 @SuppressWarnings("deprecation")
-public interface DataPipelineValidatedLoaderSource {
+public interface DataPipelineLoaderGraphSource {
 
     @Input
-    SubscribableChannel validatedConsumptionChannel();
+    SubscribableChannel modelledGraphLoaderConsumptionChannel();
 
     @Output
-    MessageChannel validatedLoadedPublicationChannel();
+    MessageChannel graphLoadedPublicationChannel();
 
 }

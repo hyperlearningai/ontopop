@@ -8,7 +8,7 @@ import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.context.annotation.ComponentScan;
 
 import ai.hyperlearning.ontopop.data.ontology.loader.triplestore.function.OntologyTriplestoreLoaderFunction;
-import ai.hyperlearning.ontopop.messaging.processors.DataPipelineValidatedLoaderSource;
+import ai.hyperlearning.ontopop.messaging.processors.DataPipelineLoaderTriplestoreSource;
 
 /**
  * Ontology Triplestore Loading Service - Spring Boot Application
@@ -20,7 +20,7 @@ import ai.hyperlearning.ontopop.messaging.processors.DataPipelineValidatedLoader
 @SuppressWarnings("deprecation")
 @ComponentScan(basePackages = {"ai.hyperlearning.ontopop"})
 @SpringBootApplication
-@EnableBinding(DataPipelineValidatedLoaderSource.class)
+@EnableBinding(DataPipelineLoaderTriplestoreSource.class)
 public class OntologyTriplestoreLoaderApp {
     
     @Autowired
@@ -30,7 +30,7 @@ public class OntologyTriplestoreLoaderApp {
         SpringApplication.run(OntologyTriplestoreLoaderApp.class, args);
     }
     
-    @StreamListener("validatedConsumptionChannel")
+    @StreamListener("validatedTriplestoreLoaderConsumptionChannel")
     public void processValidatedOntology(String payload) {
         
         // Execute the Ontology Triplestore Loading Function

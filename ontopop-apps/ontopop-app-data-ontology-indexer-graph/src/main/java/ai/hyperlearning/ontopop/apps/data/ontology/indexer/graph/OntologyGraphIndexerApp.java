@@ -8,7 +8,7 @@ import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.context.annotation.ComponentScan;
 
 import ai.hyperlearning.ontopop.data.ontology.indexer.graph.function.OntologyGraphIndexerFunction;
-import ai.hyperlearning.ontopop.messaging.processors.DataPipelineModelledIndexerSource;
+import ai.hyperlearning.ontopop.messaging.processors.DataPipelineIndexerGraphSource;
 
 /**
  * Ontology Graph Indexer Service - Spring Boot Application
@@ -20,7 +20,7 @@ import ai.hyperlearning.ontopop.messaging.processors.DataPipelineModelledIndexer
 @SuppressWarnings("deprecation")
 @ComponentScan(basePackages = {"ai.hyperlearning.ontopop"})
 @SpringBootApplication
-@EnableBinding(DataPipelineModelledIndexerSource.class)
+@EnableBinding(DataPipelineIndexerGraphSource.class)
 public class OntologyGraphIndexerApp {
     
     @Autowired
@@ -30,7 +30,7 @@ public class OntologyGraphIndexerApp {
         SpringApplication.run(OntologyGraphIndexerApp.class, args);
     }
     
-    @StreamListener("modelledIndexersConsumptionChannel")
+    @StreamListener("modelledGraphIndexerConsumptionChannel")
     public void processModelledOntology(String payload) {
         
         // Execute the Ontology Graph Indexer Function

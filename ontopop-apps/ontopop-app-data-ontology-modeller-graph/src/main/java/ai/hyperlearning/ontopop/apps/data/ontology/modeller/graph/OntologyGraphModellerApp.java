@@ -8,7 +8,7 @@ import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.context.annotation.ComponentScan;
 
 import ai.hyperlearning.ontopop.data.ontology.modeller.graph.function.OntologyGraphModellerFunction;
-import ai.hyperlearning.ontopop.messaging.processors.DataPipelineModellerSource;
+import ai.hyperlearning.ontopop.messaging.processors.DataPipelineModellerGraphSource;
 
 /**
  * Ontology Property Graph Modelling Service - Spring Boot Application
@@ -20,7 +20,7 @@ import ai.hyperlearning.ontopop.messaging.processors.DataPipelineModellerSource;
 @SuppressWarnings("deprecation")
 @ComponentScan(basePackages = {"ai.hyperlearning.ontopop"})
 @SpringBootApplication
-@EnableBinding(DataPipelineModellerSource.class)
+@EnableBinding(DataPipelineModellerGraphSource.class)
 public class OntologyGraphModellerApp {
     
     @Autowired

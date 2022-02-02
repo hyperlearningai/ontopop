@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ai.hyperlearning.ontopop.messaging.processors.DataPipelineValidatedLoaderSource;
+import ai.hyperlearning.ontopop.messaging.processors.DataPipelineLoaderTriplestoreSource;
 import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 import ai.hyperlearning.ontopop.storage.ObjectStorageService;
 import ai.hyperlearning.ontopop.storage.ObjectStorageServiceFactory;
@@ -32,7 +32,7 @@ import ai.hyperlearning.ontopop.triplestore.TriplestoreServiceType;
 
 @SuppressWarnings("deprecation")
 @Service
-@EnableBinding(DataPipelineValidatedLoaderSource.class)
+@EnableBinding(DataPipelineLoaderTriplestoreSource.class)
 public class OntologyTriplestoreLoaderService {
 
     private static final Logger LOGGER =
@@ -45,7 +45,7 @@ public class OntologyTriplestoreLoaderService {
     private TriplestoreServiceFactory triplestoreServiceFactory;
 
     @Autowired
-    private DataPipelineValidatedLoaderSource dataPipelineValidatedLoaderSource;
+    private DataPipelineLoaderTriplestoreSource dataPipelineLoaderTriplestoreSource;
 
     @Value("${storage.object.service}")
     private String storageObjectService;
@@ -235,7 +235,7 @@ public class OntologyTriplestoreLoaderService {
         LOGGER.info("Ontology Triplestore Loading Service - "
                 + "Started publishing message.");
         ObjectMapper mapper = new ObjectMapper();
-        dataPipelineValidatedLoaderSource.validatedLoadedPublicationChannel()
+        dataPipelineLoaderTriplestoreSource.triplestoreLoadedPublicationChannel()
                 .send(MessageBuilder
                         .withPayload(mapper.writeValueAsString(ontologyMessage))
                         .build());

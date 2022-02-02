@@ -8,7 +8,7 @@ import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.context.annotation.ComponentScan;
 
 import ai.hyperlearning.ontopop.data.ontology.loader.graph.function.OntologyGraphLoaderFunction;
-import ai.hyperlearning.ontopop.messaging.processors.DataPipelineModelledLoaderSource;
+import ai.hyperlearning.ontopop.messaging.processors.DataPipelineLoaderGraphSource;
 
 /**
  * Ontology Graph Loading Service - Spring Boot Application
@@ -20,7 +20,7 @@ import ai.hyperlearning.ontopop.messaging.processors.DataPipelineModelledLoaderS
 @SuppressWarnings("deprecation")
 @ComponentScan(basePackages = {"ai.hyperlearning.ontopop"})
 @SpringBootApplication
-@EnableBinding(DataPipelineModelledLoaderSource.class)
+@EnableBinding(DataPipelineLoaderGraphSource.class)
 public class OntologyGraphLoaderApp {
     
     @Autowired
@@ -30,7 +30,7 @@ public class OntologyGraphLoaderApp {
         SpringApplication.run(OntologyGraphLoaderApp.class, args);
     }
     
-    @StreamListener("modelledLoadersConsumptionChannel")
+    @StreamListener("modelledGraphLoaderConsumptionChannel")
     public void processModelledOntology(String payload) {
         
         // Execute the Ontology Graph Loader Function

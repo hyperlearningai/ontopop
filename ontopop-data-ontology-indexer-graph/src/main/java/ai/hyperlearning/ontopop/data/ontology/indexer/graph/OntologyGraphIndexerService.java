@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ai.hyperlearning.ontopop.messaging.processors.DataPipelineModelledIndexerSource;
+import ai.hyperlearning.ontopop.messaging.processors.DataPipelineIndexerGraphSource;
 import ai.hyperlearning.ontopop.model.graph.SimpleOntologyPropertyGraph;
 import ai.hyperlearning.ontopop.model.graph.SimpleOntologyVertex;
 import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
@@ -37,7 +37,7 @@ import ai.hyperlearning.ontopop.storage.ObjectStorageServiceType;
 
 @SuppressWarnings("deprecation")
 @Service
-@EnableBinding(DataPipelineModelledIndexerSource.class)
+@EnableBinding(DataPipelineIndexerGraphSource.class)
 public class OntologyGraphIndexerService {
 
     private static final Logger LOGGER =
@@ -50,7 +50,7 @@ public class OntologyGraphIndexerService {
     private SearchServiceFactory searchServiceFactory;
 
     @Autowired
-    private DataPipelineModelledIndexerSource dataPipelineModelledIndexerSource;
+    private DataPipelineIndexerGraphSource dataPipelineIndexerGraphSource;
 
     @Value("${storage.object.service}")
     private String storageObjectService;
@@ -270,7 +270,7 @@ public class OntologyGraphIndexerService {
         LOGGER.info(
                 "Ontology Indexing Service - " + "Started publishing message.");
         ObjectMapper mapper = new ObjectMapper();
-        dataPipelineModelledIndexerSource.modelledIndexedPublicationChannel()
+        dataPipelineIndexerGraphSource.graphIndexedPublicationChannel()
                 .send(MessageBuilder
                         .withPayload(mapper.writeValueAsString(ontologyMessage))
                         .build());
