@@ -37,9 +37,20 @@ spring:
                 validatedPublicationChannel:
                     destination: ontopop.data.validated
                     binder: azure_service_bus
-                validatedConsumptionChannel:
+                validatedTriplestoreLoaderConsumptionChannel:
                     destination: ontopop.data.validated
-                    group: ontopop.data.validated.consumers
+                    group: ontopop.data.validated.consumers.loaders.rdf
+                    binder: azure_service_bus
+                validatedParserConsumptionChannel:
+                    destination: ontopop.data.validated
+                    group: ontopop.data.validated.consumers.parsers
+                    binder: azure_service_bus
+                triplestoreLoadedPublicationChannel:
+                    destination: ontopop.data.loaded.triplestore
+                    binder: azure_service_bus
+                triplestoreLoadedConsumptionChannel:
+                    destination: ontopop.data.loaded.triplestore
+                    group: ontopop.data.loaded.triplestore.consumers
                     binder: azure_service_bus
                 parsedPublicationChannel:
                     destination: ontopop.data.parsed
@@ -51,34 +62,27 @@ spring:
                 modelledPublicationChannel:
                     destination: ontopop.data.modelled
                     binder: azure_service_bus
-                modelledLoadersConsumptionChannel:
+                modelledGraphLoaderConsumptionChannel:
                     destination: ontopop.data.modelled
-                    group: ontopop.data.modelled.consumers.loaders
+                    group: ontopop.data.modelled.consumers.loaders.graph
                     binder: azure_service_bus
-                modelledIndexersConsumptionChannel:
+                modelledGraphIndexerConsumptionChannel:
                     destination: ontopop.data.modelled
-                    group: ontopop.data.modelled.consumers.indexers
+                    group: ontopop.data.modelled.consumers.indexers.graph
                     binder: azure_service_bus
-                modelledLoadedPublicationChannel:
-                    destination: ontopop.data.modelled.loaded
+                graphLoadedPublicationChannel:
+                    destination: ontopop.data.loaded.graph
                     binder: azure_service_bus
-                modelledLoadedConsumptionChannel:
-                    destination: ontopop.data.modelled.loaded
-                    group: ontopop.data.modelled.loaded.consumers
+                graphLoadedConsumptionChannel:
+                    destination: ontopop.data.loaded.graph
+                    group: ontopop.data.loaded.graph.consumers
                     binder: azure_service_bus
-                modelledIndexedPublicationChannel:
-                    destination: ontopop.data.modelled.indexed
+                graphIndexedPublicationChannel:
+                    destination: ontopop.data.indexed.graph
                     binder: azure_service_bus
-                modelledIndexedConsumptionChannel:
-                    destination: ontopop.data.modelled.indexed
-                    group: ontopop.data.modelled.indexed.consumers
-                    binder: azure_service_bus
-                validatedLoadedPublicationChannel:
-                    destination: ontopop.data.validated.loaded
-                    binder: azure_service_bus
-                validatedLoadedConsumptionChannel:
-                    destination: ontopop.data.validated.loaded
-                    group: ontopop.data.validated.loaded.consumers
+                graphIndexedConsumptionChannel:
+                    destination: ontopop.data.indexed.graph
+                    group: ontopop.data.indexed.graph.consumers
                     binder: azure_service_bus
             servicebus:
                 topic:
