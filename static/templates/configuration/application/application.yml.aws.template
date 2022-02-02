@@ -232,3 +232,6 @@ web:
     azure:
         webapps:
             port: 80
+springdoc:
+    api-docs:
+        path: /api/docs

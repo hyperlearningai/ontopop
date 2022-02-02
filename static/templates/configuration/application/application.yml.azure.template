@@ -181,9 +181,9 @@ storage:
         service: apache-jena
         apache-jena:
             fuseki:
-                url: 
-                username: 
-                password: 
+                url: ${jena-fuseki-url}
+                username: ${jena-fuseki-username}
+                password: ${jena-fuseki-password}
         ontotext-graphdb:
             url: 
     graph:
@@ -232,3 +232,6 @@ web:
     azure:
         webapps:
             port: 80
+springdoc:
+    api-docs:
+        path: /api/docs
