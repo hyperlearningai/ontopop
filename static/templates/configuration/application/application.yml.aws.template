@@ -37,9 +37,20 @@ spring:
                 validatedPublicationChannel:
                     destination: ontopop.data.validated
                     binder: rabbitmq
-                validatedConsumptionChannel:
+                validatedTriplestoreLoaderConsumptionChannel:
                     destination: ontopop.data.validated
-                    group: ontopop.data.validated.consumers
+                    group: ontopop.data.validated.consumers.loaders.rdf
+                    binder: rabbitmq
+                validatedParserConsumptionChannel:
+                    destination: ontopop.data.validated
+                    group: ontopop.data.validated.consumers.parsers
+                    binder: rabbitmq
+                triplestoreLoadedPublicationChannel:
+                    destination: ontopop.data.loaded.triplestore
+                    binder: rabbitmq
+                triplestoreLoadedConsumptionChannel:
+                    destination: ontopop.data.loaded.triplestore
+                    group: ontopop.data.loaded.triplestore.consumers
                     binder: rabbitmq
                 parsedPublicationChannel:
                     destination: ontopop.data.parsed
@@ -51,34 +62,27 @@ spring:
                 modelledPublicationChannel:
                     destination: ontopop.data.modelled
                     binder: rabbitmq
-                modelledLoadersConsumptionChannel:
+                modelledGraphLoaderConsumptionChannel:
                     destination: ontopop.data.modelled
-                    group: ontopop.data.modelled.consumers.loaders
+                    group: ontopop.data.modelled.consumers.loaders.graph
                     binder: rabbitmq
-                modelledIndexersConsumptionChannel:
+                modelledGraphIndexerConsumptionChannel:
                     destination: ontopop.data.modelled
-                    group: ontopop.data.modelled.consumers.indexers
+                    group: ontopop.data.modelled.consumers.indexers.graph
                     binder: rabbitmq
-                modelledLoadedPublicationChannel:
-                    destination: ontopop.data.modelled.loaded
+                graphLoadedPublicationChannel:
+                    destination: ontopop.data.loaded.graph
                     binder: rabbitmq
-                modelledLoadedConsumptionChannel:
-                    destination: ontopop.data.modelled.loaded
-                    group: ontopop.data.modelled.loaded.consumers
+                graphLoadedConsumptionChannel:
+                    destination: ontopop.data.loaded.graph
+                    group: ontopop.data.loaded.graph.consumers
                     binder: rabbitmq
-                modelledIndexedPublicationChannel:
-                    destination: ontopop.data.modelled.indexed
+                graphIndexedPublicationChannel:
+                    destination: ontopop.data.indexed.graph
                     binder: rabbitmq
-                modelledIndexedConsumptionChannel:
-                    destination: ontopop.data.modelled.indexed
-                    group: ontopop.data.modelled.indexed.consumers
-                    binder: rabbitmq
-                validatedLoadedPublicationChannel:
-                    destination: ontopop.data.validated.loaded
-                    binder: rabbitmq
-                validatedLoadedConsumptionChannel:
-                    destination: ontopop.data.validated.loaded
-                    group: ontopop.data.validated.loaded.consumers
+                graphIndexedConsumptionChannel:
+                    destination: ontopop.data.indexed.graph
+                    group: ontopop.data.indexed.graph.consumers
                     binder: rabbitmq
             servicebus:
                 topic:
