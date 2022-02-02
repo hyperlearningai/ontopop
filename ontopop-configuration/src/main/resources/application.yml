@@ -39,7 +39,7 @@ spring:
                     binder: rabbitmq
                 validatedTriplestoreLoaderConsumptionChannel:
                     destination: ontopop.data.validated
-                    group: ontopop.data.validated.consumers.loaders.triplestore
+                    group: ontopop.data.validated.consumers.loaders.rdf
                     binder: rabbitmq
                 validatedParserConsumptionChannel:
                     destination: ontopop.data.validated
