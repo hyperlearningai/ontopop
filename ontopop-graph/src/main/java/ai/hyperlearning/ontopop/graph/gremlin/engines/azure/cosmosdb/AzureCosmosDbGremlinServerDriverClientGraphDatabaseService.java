@@ -35,6 +35,7 @@ public class AzureCosmosDbGremlinServerDriverClientGraphDatabaseService
         super.supportsTransactions = false;
         super.supportsGeoshape = false;
         super.supportsTraversalsBy = false;
+        super.iterate = false;
     }
 
     /**************************************************************************

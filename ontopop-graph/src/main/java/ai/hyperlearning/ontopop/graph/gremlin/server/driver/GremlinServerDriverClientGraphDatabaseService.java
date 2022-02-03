@@ -47,7 +47,6 @@ public class GremlinServerDriverClientGraphDatabaseService
     private static final Logger LOGGER = LoggerFactory
             .getLogger(GremlinServerDriverClientGraphDatabaseService.class);
 
-    protected static final boolean ITERATE = true;
     protected static final String VERTEX_ID_PROPERTY_KEY = "vertexId";
     protected static final int RATE_LIMITER_WAIT_SECONDS = 1;
 
@@ -82,6 +81,7 @@ public class GremlinServerDriverClientGraphDatabaseService
     @Value("${storage.graph.gremlin-server.bulkExecutor.rateLimiter.maximumAttempts:10}")
     protected Integer rateLimiterMaximumAttempts;
 
+    protected boolean iterate = true;
     protected Client client;
 
     /**************************************************************************
@@ -101,15 +101,15 @@ public class GremlinServerDriverClientGraphDatabaseService
 
     @Override
     public void deleteGraph() {
-        client.submit(GremlinRecipes.deleteVertices(ITERATE));
-        client.submit(GremlinRecipes.deleteEdges(ITERATE));
+        client.submit(GremlinRecipes.deleteVertices(iterate));
+        client.submit(GremlinRecipes.deleteEdges(iterate));
     }
 
     @Override
     public void deleteSubGraph(String propertyKey, Object propertyValue) {
         client.submit(
-                GremlinRecipes.deleteVertices(propertyKey, propertyValue, ITERATE));
-        client.submit(GremlinRecipes.deleteEdges(propertyKey, propertyValue, ITERATE));
+                GremlinRecipes.deleteVertices(propertyKey, propertyValue, iterate));
+        client.submit(GremlinRecipes.deleteEdges(propertyKey, propertyValue, iterate));
     }
 
     @Override
@@ -271,7 +271,7 @@ public class GremlinServerDriverClientGraphDatabaseService
                         String query = GremlinRecipes.addVertex(label,
                                 vertex.getVertexId(), vertex.getProperties(),
                                 supportsNonStringIds, supportsUserDefinedIds, 
-                                ITERATE);
+                                iterate);
                         LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
                         client.submit(query).all().get();
                         
@@ -287,7 +287,7 @@ public class GremlinServerDriverClientGraphDatabaseService
                     String query = GremlinRecipes.addVertex(label,
                             vertex.getVertexId(), vertex.getProperties(),
                             supportsNonStringIds, supportsUserDefinedIds, 
-                            ITERATE);
+                            iterate);
                     LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
                     client.submit(query).all().get();
                 }
@@ -318,7 +318,7 @@ public class GremlinServerDriverClientGraphDatabaseService
                         String query =
                                 GremlinRecipes.addVertex(label, vertexId, properties,
                                         supportsNonStringIds, supportsUserDefinedIds, 
-                                        ITERATE);
+                                        iterate);
                         LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
                         client.submit(query).all().get();
                     }
@@ -334,7 +334,7 @@ public class GremlinServerDriverClientGraphDatabaseService
                     String query =
                             GremlinRecipes.addVertex(label, vertexId, properties,
                                     supportsNonStringIds, supportsUserDefinedIds, 
-                                    ITERATE);
+                                    iterate);
                     LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
                     client.submit(query).all().get();
                 }
@@ -351,7 +351,7 @@ public class GremlinServerDriverClientGraphDatabaseService
             ExecutionException {
         long vertexId = (Long) properties.get(VERTEX_ID_PROPERTY_KEY);
         String query = GremlinRecipes.addVertex(label, vertexId, properties,
-                supportsNonStringIds, supportsUserDefinedIds, ITERATE);
+                supportsNonStringIds, supportsUserDefinedIds, iterate);
         LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
         client.submit(query).all().get();
         return getVertex(vertexId);
@@ -362,7 +362,7 @@ public class GremlinServerDriverClientGraphDatabaseService
             Object propertyValue) throws NoSuchElementException,
             InterruptedException, ExecutionException {
         String query = GremlinRecipes.updateVertex(vertexId, propertyKey,
-                propertyValue, supportsNonStringIds, ITERATE);
+                propertyValue, supportsNonStringIds, iterate);
         LOGGER.debug("Gremlin Query - Update Vertex: {}", query);
         client.submit(query).all().get();
         return getVertex(vertexId);
@@ -373,7 +373,7 @@ public class GremlinServerDriverClientGraphDatabaseService
             throws NoSuchElementException, InterruptedException,
             ExecutionException {
         String query = GremlinRecipes.updateVertex(vertexId, properties,
-                supportsNonStringIds, ITERATE);
+                supportsNonStringIds, iterate);
         LOGGER.debug("Gremlin Query - Update Vertex: {}", query);
         client.submit(query).all().get();
         return getVertex(vertexId);
@@ -383,7 +383,7 @@ public class GremlinServerDriverClientGraphDatabaseService
     public void deleteVertex(long vertexId) throws NoSuchElementException,
             InterruptedException, ExecutionException {
         String query =
-                GremlinRecipes.deleteVertex(vertexId, supportsNonStringIds, ITERATE);
+                GremlinRecipes.deleteVertex(vertexId, supportsNonStringIds, iterate);
         LOGGER.debug("Gremlin Query - Delete Vertex: {}", query);
         client.submit(query).all().get();
     }
@@ -399,7 +399,7 @@ public class GremlinServerDriverClientGraphDatabaseService
                 
                 try {
                     
-                    String query = GremlinRecipes.deleteVertices(ITERATE);
+                    String query = GremlinRecipes.deleteVertices(iterate);
                     LOGGER.debug("Gremlin Query - Delete Vertices: {}", query);
                     client.submit(query).all().get();
                     TimeUnit.SECONDS.sleep(RATE_LIMITER_WAIT_SECONDS);
@@ -415,7 +415,7 @@ public class GremlinServerDriverClientGraphDatabaseService
             
         } else {
             
-            String query = GremlinRecipes.deleteVertices(ITERATE);
+            String query = GremlinRecipes.deleteVertices(iterate);
             LOGGER.debug("Gremlin Query - Delete Vertices: {}", query);
             client.submit(query).all().get();
             
@@ -435,7 +435,7 @@ public class GremlinServerDriverClientGraphDatabaseService
                 try {
                     
                     String query = GremlinRecipes.deleteVertices(
-                            propertyKey, propertyValue, ITERATE);
+                            propertyKey, propertyValue, iterate);
                     LOGGER.debug("Gremlin Query - Delete Vertices: {}", query);
                     client.submit(query).all().get();
                     TimeUnit.SECONDS.sleep(RATE_LIMITER_WAIT_SECONDS);
@@ -452,7 +452,7 @@ public class GremlinServerDriverClientGraphDatabaseService
         } else {
             
             String query = GremlinRecipes.deleteVertices(
-                    propertyKey, propertyValue, ITERATE);
+                    propertyKey, propertyValue, iterate);
             LOGGER.debug("Gremlin Query - Delete Vertices: {}", query);
             client.submit(query).all().get();
             
@@ -552,7 +552,7 @@ public class GremlinServerDriverClientGraphDatabaseService
                         String query = GremlinRecipes.addEdge(edge.getSourceVertexId(),
                                 edge.getTargetVertexId(), edge.getLabel(),
                                 edge.getProperties(), supportsNonStringIds, 
-                                supportsUserDefinedIds, ITERATE);
+                                supportsUserDefinedIds, iterate);
                         LOGGER.debug("Gremlin Query - Add Edge: {}", query);
                         client.submit(query).all().get();
                     }
@@ -567,7 +567,7 @@ public class GremlinServerDriverClientGraphDatabaseService
                     String query = GremlinRecipes.addEdge(edge.getSourceVertexId(),
                             edge.getTargetVertexId(), edge.getLabel(),
                             edge.getProperties(), supportsNonStringIds, 
-                            supportsUserDefinedIds, ITERATE);
+                            supportsUserDefinedIds, iterate);
                     LOGGER.debug("Gremlin Query - Add Edge: {}", query);
                     client.submit(query).all().get();
                 }
@@ -584,7 +584,7 @@ public class GremlinServerDriverClientGraphDatabaseService
             throws InterruptedException, ExecutionException {
         String query = GremlinRecipes.addEdge(sourceVertexId,
                 targetVertexId, label, properties,
-                supportsNonStringIds, supportsUserDefinedIds, ITERATE);
+                supportsNonStringIds, supportsUserDefinedIds, iterate);
         LOGGER.debug("Gremlin Query - Add Edge: {}", query);
         client.submit(query).all().get();
         return null;
@@ -595,7 +595,7 @@ public class GremlinServerDriverClientGraphDatabaseService
             Object propertyValue) throws NoSuchElementException,
             InterruptedException, ExecutionException {
         String query = GremlinRecipes.updateEdge(edgeId, propertyKey,
-                propertyValue, supportsNonStringIds, ITERATE);
+                propertyValue, supportsNonStringIds, iterate);
         LOGGER.debug("Gremlin Query - Update Edge: {}", query);
         client.submit(query).all().get();
         return getEdge(edgeId);
@@ -606,7 +606,7 @@ public class GremlinServerDriverClientGraphDatabaseService
             throws NoSuchElementException, InterruptedException,
             ExecutionException {
         String query = GremlinRecipes.updateEdge(edgeId, properties,
-                supportsNonStringIds, ITERATE);
+                supportsNonStringIds, iterate);
         LOGGER.debug("Gremlin Query - Update Edge: {}", query);
         client.submit(query).all().get();
         return getEdge(edgeId);
@@ -616,7 +616,7 @@ public class GremlinServerDriverClientGraphDatabaseService
     public void deleteEdge(long edgeId) throws NoSuchElementException,
             InterruptedException, ExecutionException {
         String query = GremlinRecipes.deleteEdge(
-                edgeId, supportsNonStringIds, ITERATE);
+                edgeId, supportsNonStringIds, iterate);
         LOGGER.debug("Gremlin Query - Delete Edge: {}", query);
         client.submit(query).all().get();
     }
@@ -631,7 +631,7 @@ public class GremlinServerDriverClientGraphDatabaseService
                 
                 try {
                     
-                    String query = GremlinRecipes.deleteEdges(ITERATE);
+                    String query = GremlinRecipes.deleteEdges(iterate);
                     LOGGER.debug("Gremlin Query - Delete Edges: {}", query);
                     client.submit(query).all().get();
                     TimeUnit.SECONDS.sleep(RATE_LIMITER_WAIT_SECONDS);
@@ -647,7 +647,7 @@ public class GremlinServerDriverClientGraphDatabaseService
             
         } else {
             
-            String query = GremlinRecipes.deleteEdges(ITERATE);
+            String query = GremlinRecipes.deleteEdges(iterate);
             LOGGER.debug("Gremlin Query - Delete Edges: {}", query);
             client.submit(query).all().get();
             
@@ -667,7 +667,7 @@ public class GremlinServerDriverClientGraphDatabaseService
                 try {
                     
                     String query = GremlinRecipes
-                            .deleteEdges(propertyKey, propertyValue, ITERATE);
+                            .deleteEdges(propertyKey, propertyValue, iterate);
                     LOGGER.debug("Gremlin Query - Delete Edges: {}", query);
                     client.submit(query).all().get();
                     TimeUnit.SECONDS.sleep(RATE_LIMITER_WAIT_SECONDS);
@@ -684,7 +684,7 @@ public class GremlinServerDriverClientGraphDatabaseService
         } else {
             
             String query = GremlinRecipes
-                    .deleteEdges(propertyKey, propertyValue, ITERATE);
+                    .deleteEdges(propertyKey, propertyValue, iterate);
             LOGGER.debug("Gremlin Query - Delete Edges: {}", query);
             client.submit(query).all().get();
             

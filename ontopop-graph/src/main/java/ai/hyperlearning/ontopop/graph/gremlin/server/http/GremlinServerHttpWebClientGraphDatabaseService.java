@@ -44,7 +44,6 @@ public class GremlinServerHttpWebClientGraphDatabaseService
     private static final Logger LOGGER = LoggerFactory
             .getLogger(GremlinServerHttpWebClientGraphDatabaseService.class);
     
-    protected static final boolean ITERATE = true;
     protected static final String VERTEX_ID_PROPERTY_KEY = "vertexId";
     protected static final int RATE_LIMITER_WAIT_SECONDS = 1;
     
@@ -76,6 +75,7 @@ public class GremlinServerHttpWebClientGraphDatabaseService
     @Value("${storage.graph.gremlin-server.bulkExecutor.rateLimiter.actionsPerSecond:100}")
     protected Integer rateLimiterActionsPerSecond;
     
+    protected boolean iterate = true;
     protected WebClient client;
     
     /**************************************************************************
@@ -154,16 +154,16 @@ public class GremlinServerHttpWebClientGraphDatabaseService
 
     @Override
     public void deleteGraph() {
-        sendBlockingRequest(GremlinRecipes.deleteVertices(ITERATE));
-        sendBlockingRequest(GremlinRecipes.deleteEdges(ITERATE));
+        sendBlockingRequest(GremlinRecipes.deleteVertices(iterate));
+        sendBlockingRequest(GremlinRecipes.deleteEdges(iterate));
     }
 
     @Override
     public void deleteSubGraph(String propertyKey, Object propertyValue) {
         sendBlockingRequest(GremlinRecipes.deleteVertices(
-                propertyKey, propertyValue, ITERATE));
+                propertyKey, propertyValue, iterate));
         sendBlockingRequest(GremlinRecipes.deleteEdges(
-                propertyKey, propertyValue, ITERATE));
+                propertyKey, propertyValue, iterate));
     }
 
     @Override
@@ -274,7 +274,7 @@ public class GremlinServerHttpWebClientGraphDatabaseService
                     for (SimpleGraphVertex vertex : verticesSubList) {
                         String query = GremlinRecipes.addVertex(label,
                                 vertex.getVertexId(), vertex.getProperties(),
-                                supportsNonStringIds, supportsUserDefinedIds, ITERATE);
+                                supportsNonStringIds, supportsUserDefinedIds, iterate);
                         LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
                         sendBlockingRequest(query);
                     }
@@ -288,7 +288,7 @@ public class GremlinServerHttpWebClientGraphDatabaseService
                 for (SimpleGraphVertex vertex : vertices) {
                     String query = GremlinRecipes.addVertex(label,
                             vertex.getVertexId(), vertex.getProperties(),
-                            supportsNonStringIds, supportsUserDefinedIds, ITERATE);
+                            supportsNonStringIds, supportsUserDefinedIds, iterate);
                     LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
                     sendBlockingRequest(query);
                 }
@@ -317,7 +317,7 @@ public class GremlinServerHttpWebClientGraphDatabaseService
                         long vertexId = (Long) properties.get(VERTEX_ID_PROPERTY_KEY);
                         String query = GremlinRecipes.addVertex(label, 
                                 vertexId, properties,
-                                supportsNonStringIds, supportsUserDefinedIds, ITERATE);
+                                supportsNonStringIds, supportsUserDefinedIds, iterate);
                         LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
                         sendBlockingRequest(query);
                     }
@@ -332,7 +332,7 @@ public class GremlinServerHttpWebClientGraphDatabaseService
                     long vertexId = (Long) properties.get(VERTEX_ID_PROPERTY_KEY);
                     String query = GremlinRecipes.addVertex(label, 
                             vertexId, properties,
-                            supportsNonStringIds, supportsUserDefinedIds, ITERATE);
+                            supportsNonStringIds, supportsUserDefinedIds, iterate);
                     LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
                     sendBlockingRequest(query);
                 }
@@ -348,7 +348,7 @@ public class GremlinServerHttpWebClientGraphDatabaseService
             String label, Map<String, Object> properties) {
         long vertexId = (Long) properties.get(VERTEX_ID_PROPERTY_KEY);
         String query = GremlinRecipes.addVertex(label, vertexId, properties,
-                supportsNonStringIds, supportsUserDefinedIds, ITERATE);
+                supportsNonStringIds, supportsUserDefinedIds, iterate);
         LOGGER.debug("Gremlin Query - Add Vertex: {}", query);
         return sendBlockingRequest(query);
     }
@@ -357,7 +357,7 @@ public class GremlinServerHttpWebClientGraphDatabaseService
     public ResponseEntity<String> updateVertex(
             long vertexId, String propertyKey, Object propertyValue)  {
         String query = GremlinRecipes.updateVertex(vertexId, propertyKey,
-                propertyValue, supportsNonStringIds, ITERATE);
+                propertyValue, supportsNonStringIds, iterate);
         LOGGER.debug("Gremlin Query - Update Vertex: {}", query);
         return sendBlockingRequest(query);
     }
@@ -366,7 +366,7 @@ public class GremlinServerHttpWebClientGraphDatabaseService
     public ResponseEntity<String> updateVertex(
             long vertexId, Map<String, Object> properties) {
         String query = GremlinRecipes.updateVertex(vertexId, properties,
-                supportsNonStringIds, ITERATE);
+                supportsNonStringIds, iterate);
         LOGGER.debug("Gremlin Query - Update Vertex: {}", query);
         return sendBlockingRequest(query);
     }
@@ -374,14 +374,14 @@ public class GremlinServerHttpWebClientGraphDatabaseService
     @Override
     public void deleteVertex(long vertexId) {
         String query = GremlinRecipes.deleteVertex(
-                vertexId, supportsNonStringIds, ITERATE);
+                vertexId, supportsNonStringIds, iterate);
         LOGGER.debug("Gremlin Query - Delete Vertex: {}", query);
         sendBlockingRequest(query);
     }
 
     @Override
     public void deleteVertices() {
-        String query = GremlinRecipes.deleteVertices(ITERATE);
+        String query = GremlinRecipes.deleteVertices(iterate);
         LOGGER.debug("Gremlin Query - Delete Vertices: {}", query);
         sendBlockingRequest(query);
     }
@@ -389,7 +389,7 @@ public class GremlinServerHttpWebClientGraphDatabaseService
     @Override
     public void deleteVertices(String propertyKey, Object propertyValue) {
         String query = GremlinRecipes.deleteVertices(
-                propertyKey, propertyValue, ITERATE);
+                propertyKey, propertyValue, iterate);
         LOGGER.debug("Gremlin Query - Delete Vertices: {}", query);
         sendBlockingRequest(query);
     }
@@ -474,7 +474,7 @@ public class GremlinServerHttpWebClientGraphDatabaseService
                         String query = GremlinRecipes.addEdge(edge.getSourceVertexId(),
                                 edge.getTargetVertexId(), edge.getLabel(),
                                 edge.getProperties(), supportsNonStringIds, 
-                                supportsUserDefinedIds, ITERATE);
+                                supportsUserDefinedIds, iterate);
                         LOGGER.debug("Gremlin Query - Add Edge: {}", query);
                         sendBlockingRequest(query);
                     }
@@ -489,7 +489,7 @@ public class GremlinServerHttpWebClientGraphDatabaseService
                     String query = GremlinRecipes.addEdge(edge.getSourceVertexId(),
                             edge.getTargetVertexId(), edge.getLabel(),
                             edge.getProperties(), supportsNonStringIds, 
-                            supportsUserDefinedIds, ITERATE);
+                            supportsUserDefinedIds, iterate);
                     LOGGER.debug("Gremlin Query - Add Edge: {}", query);
                     sendBlockingRequest(query);
                 }
@@ -506,7 +506,7 @@ public class GremlinServerHttpWebClientGraphDatabaseService
             String label, Map<String, Object> properties) {
         String query = GremlinRecipes.addEdge(sourceVertexId,
                 targetVertexId, label, properties,
-                supportsNonStringIds, supportsUserDefinedIds, ITERATE);
+                supportsNonStringIds, supportsUserDefinedIds, iterate);
         LOGGER.debug("Gremlin Query - Add Edge: {}", query);
         return sendBlockingRequest(query);
     }
@@ -515,7 +515,7 @@ public class GremlinServerHttpWebClientGraphDatabaseService
     public ResponseEntity<String> updateEdge(
             long edgeId, String propertyKey, Object propertyValue) {
         String query = GremlinRecipes.updateEdge(edgeId, propertyKey,
-                propertyValue, supportsNonStringIds, ITERATE);
+                propertyValue, supportsNonStringIds, iterate);
         LOGGER.debug("Gremlin Query - Update Edge: {}", query);
         return sendBlockingRequest(query);
     }
@@ -524,7 +524,7 @@ public class GremlinServerHttpWebClientGraphDatabaseService
     public ResponseEntity<String> updateEdge(
             long edgeId, Map<String, Object> properties) {
         String query = GremlinRecipes.updateEdge(edgeId, properties,
-                supportsNonStringIds, ITERATE);
+                supportsNonStringIds, iterate);
         LOGGER.debug("Gremlin Query - Update Edge: {}", query);
         return sendBlockingRequest(query);
     }
@@ -532,14 +532,14 @@ public class GremlinServerHttpWebClientGraphDatabaseService
     @Override
     public void deleteEdge(long edgeId) {
         String query = GremlinRecipes.deleteEdge(
-                edgeId, supportsNonStringIds, ITERATE);
+                edgeId, supportsNonStringIds, iterate);
         LOGGER.debug("Gremlin Query - Delete Edge: {}", query);
         sendBlockingRequest(query);
     }
 
     @Override
     public void deleteEdges() {
-        String query = GremlinRecipes.deleteEdges(ITERATE);
+        String query = GremlinRecipes.deleteEdges(iterate);
         LOGGER.debug("Gremlin Query - Delete Edges: {}", query);
         sendBlockingRequest(query);
     }
@@ -547,7 +547,7 @@ public class GremlinServerHttpWebClientGraphDatabaseService
     @Override
     public void deleteEdges(String propertyKey, Object propertyValue) {
         String query = GremlinRecipes
-                .deleteEdges(propertyKey, propertyValue, ITERATE);
+                .deleteEdges(propertyKey, propertyValue, iterate);
         LOGGER.debug("Gremlin Query - Delete Edges: {}", query);
         sendBlockingRequest(query);
     }
