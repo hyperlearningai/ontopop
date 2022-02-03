@@ -47,10 +47,6 @@
         <!-- OntoPop -->
         <dependency>
             <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-data-ontology-ingestor</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ai.hyperlearning.ontopop</groupId>
             <artifactId>ontopop-data-ontology-validator</artifactId>
         </dependency>
         <dependency>
