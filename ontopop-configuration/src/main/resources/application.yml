@@ -90,25 +90,28 @@ spring:
                         ingestedConsumptionChannel:
                             consumer:
                                 checkpoint-mode: MANUAL
-                        validatedConsumptionChannel:
+                        validatedTriplestoreLoaderConsumptionChannel:
+                            consumer:
+                                checkpoint-mode: MANUAL
+                        validatedParserConsumptionChannel:
+                            consumer:
+                                checkpoint-mode: MANUAL
+                        triplestoreLoadedConsumptionChannel:
                             consumer:
                                 checkpoint-mode: MANUAL
                         parsedConsumptionChannel:
                             consumer:
                                 checkpoint-mode: MANUAL
-                        modelledLoadersConsumptionChannel:
+                        modelledGraphLoaderConsumptionChannel:
                             consumer:
                                 checkpoint-mode: MANUAL
-                        modelledIndexersConsumptionChannel:
+                        modelledGraphIndexerConsumptionChannel:
                             consumer:
                                 checkpoint-mode: MANUAL
-                        modelledLoadedConsumptionChannel:
+                        graphLoadedConsumptionChannel:
                             consumer:
                                 checkpoint-mode: MANUAL
-                        modelledIndexedConsumptionChannel:
-                            consumer:
-                                checkpoint-mode: MANUAL
-                        validatedLoadedConsumptionChannel:
+                        graphIndexedConsumptionChannel:
                             consumer:
                                 checkpoint-mode: MANUAL
             function:
