@@ -111,7 +111,9 @@ public class OntologyTriplestoreController {
             value = "/{id}/triplestore/data/query/sparql", 
             produces = {
                     MediaType.APPLICATION_JSON_VALUE, 
-                    MediaType.APPLICATION_XML_VALUE})
+                    MediaType.APPLICATION_XML_VALUE, 
+                    "application/sparql-results+json", 
+                    "application/sparql-results+xml"})
     public ResponseEntity<String> query(
             @Parameter(
                     description = "Content type that should be returned if possible.", 
@@ -163,7 +165,10 @@ public class OntologyTriplestoreController {
             produces = {
                     MediaType.APPLICATION_JSON_VALUE, 
                     MediaType.APPLICATION_XML_VALUE, 
-                    MediaType.TEXT_PLAIN_VALUE})
+                    MediaType.TEXT_PLAIN_VALUE, 
+                    "application/n-quads", 
+                    "application/ld+json", 
+                    "application/trig"})
     public ResponseEntity<String> getRdfData(
             @Parameter(
                     description = "Content type that should be returned if possible.", 
