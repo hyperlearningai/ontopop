@@ -78,6 +78,9 @@
         <owlapi-distribution.version>5.1.19</owlapi-distribution.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <revision>2.0.0</revision>
+        <schema.rdf-dublin-core-elements.filename>dublin_core_elements.rdf</schema.rdf-dublin-core-elements.filename>
+        <schema.rdf-schema.filename>rdf-schema.ttl</schema.rdf-schema.filename>
+        <schema.rdf-skos.filename>skos.rdf</schema.rdf-skos.filename>
         <spring-boot-thin-layout.version>1.0.28.RELEASE</spring-boot-thin-layout.version>
         <spring-cloud-dependencies.version>2021.0.0</spring-cloud-dependencies.version>
         <spring-cloud-starter-aws-secrets-manager-config.version>2.2.6.RELEASE</spring-cloud-starter-aws-secrets-manager-config.version>

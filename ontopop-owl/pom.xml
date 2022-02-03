@@ -69,5 +69,42 @@
         </dependency>
 
     </dependencies>
+    
+    <!-- Module Build -->
+    <build>
+
+        <!-- Resources -->
+        <resources>
+
+            <!-- RDF Schema -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>${schema.rdf-dublin-core-elements.filename}</include>
+                    <include>${schema.rdf-schema.filename}</include>
+                    <include>${schema.rdf-skos.filename}</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+
+        </resources>
+
+        <!-- Plugins -->
+        <plugins>
+
+            <!-- Unit Test Management -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <additionalClasspathElements>
+                        <additionalClasspathElement>src/main/resources</additionalClasspathElement>
+                    </additionalClasspathElements>
+                </configuration>
+            </plugin>
+
+        </plugins>
+
+    </build>
 
 </project>
