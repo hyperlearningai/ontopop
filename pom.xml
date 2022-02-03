@@ -529,11 +529,24 @@
     <!-- Project Profiles -->
     <profiles>
     
-        <!-- Build Profile - Spring Boot Apps -->
+        <!-- Build Profile - All Apps -->
         <profile>
-            <id>build-spring</id>
+            <id>multicloud</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>ontopop-apps</module>
+                <module>ontopop-apps-azure</module>
+                <module>ontopop-apps-aws</module>
+            </modules>
+        </profile>
+        
+        <!-- Build Profile - Spring Boot Apps -->
+        <profile>
+            <id>spring</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
             </activation>
             <modules>
                 <module>ontopop-apps</module>
@@ -542,7 +555,7 @@
     
         <!-- Build Profile - Microsoft Azure Apps -->
         <profile>
-            <id>build-azure</id>
+            <id>azure</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
             </activation>
@@ -553,24 +566,11 @@
         
         <!-- Build Profile - AWS Apps -->
         <profile>
-            <id>build-aws</id>
+            <id>aws</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
             </activation>
             <modules>
-                <module>ontopop-apps-aws</module>
-            </modules>
-        </profile>
-        
-        <!-- Build Profile - All Apps -->
-        <profile>
-            <id>build-all</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <modules>
-                <module>ontopop-apps</module>
-                <module>ontopop-apps-azure</module>
                 <module>ontopop-apps-aws</module>
             </modules>
         </profile>
