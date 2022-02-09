@@ -2,6 +2,8 @@ package ai.hyperlearning.ontopop.model.webprotege;
 
 import java.io.Serializable;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 /**
  * Webprotege Webhook Payload Model
  *
@@ -12,9 +14,25 @@ import java.io.Serializable;
 public class WebProtegeWebhookPayload implements Serializable {
 
     private static final long serialVersionUID = 337501327996667335L;
+    
+    @Schema(description = "WebProtege project ID of the project that has been updated.", 
+            example = "c9589912-e17b-4156-a1ab-fa5b10862f54", 
+            required = true)
     private String projectId;
+    
+    @Schema(description = "User ID of the user that has updated the WebProtege project.", 
+            example = "me@tld.com", 
+            required = true)
     private String userId;
+    
+    @Schema(description = "WebProtege project revision number as a result of the latest updates.", 
+            example = "2960", 
+            required = true)
     private int revisionNumber;
+    
+    @Schema(description = "Timestamp of the latest WebProtege project update.", 
+            example = "1644414105240", 
+            required = true)
     private long timestamp;
     
     public WebProtegeWebhookPayload() {
