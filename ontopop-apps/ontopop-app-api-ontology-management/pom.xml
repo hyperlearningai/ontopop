@@ -39,6 +39,7 @@
     <!-- Module Properties -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <start-class>ai.hyperlearning.ontopop.apps.api.ontology.management.OntologyManagementApiApp</start-class>
     </properties>
 
     <!-- Module Dependencies -->
@@ -51,5 +52,34 @@
         </dependency>
 
     </dependencies>
+    
+    <!-- Module Build -->
+    <build>
+    
+        <!-- Resources -->
+        <resources>
+        
+            <!-- Source Resources -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>logback-spring.xml</include>
+                </includes>
+            </resource>
+        
+        </resources>
+    
+        <!-- Plugins -->
+        <plugins>
+        
+            <!-- Spring Boot Maven Plugin -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        
+        </plugins>
+    
+    </build>
 
 </project>
