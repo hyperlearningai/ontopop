@@ -446,6 +446,11 @@
                 <artifactId>ontopop-api-ontology-triplestore</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <dependency>
+                <groupId>ai.hyperlearning.ontopop</groupId>
+                <artifactId>ontopop-connector-webprotege-git</artifactId>
+                <version>${revision}</version>
+            </dependency>
 
             <!-- Ontotext GraphDB -->
             <dependency>
