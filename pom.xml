@@ -81,6 +81,8 @@
         <schema.rdf-dublin-core-elements.filename>dublin_core_elements.rdf</schema.rdf-dublin-core-elements.filename>
         <schema.rdf-schema.filename>rdf-schema.ttl</schema.rdf-schema.filename>
         <schema.rdf-skos.filename>skos.rdf</schema.rdf-skos.filename>
+        <selenium-java.version>4.1.2</selenium-java.version>
+        <selenium-htmlunit-driver.version>3.58.0</selenium-htmlunit-driver.version>
         <spring-boot-thin-layout.version>1.0.28.RELEASE</spring-boot-thin-layout.version>
         <spring-cloud-dependencies.version>2021.0.0</spring-cloud-dependencies.version>
         <spring-cloud-starter-aws-secrets-manager-config.version>2.2.6.RELEASE</spring-cloud-starter-aws-secrets-manager-config.version>
@@ -458,6 +460,20 @@
                 <artifactId>owlapi-distribution</artifactId>
                 <version>${owlapi-distribution.version}</version>
             </dependency>
+            
+            <!-- Selenium -->
+            <dependency>
+                <groupId>org.seleniumhq.selenium</groupId>
+                <artifactId>selenium-java</artifactId>
+                <version>${selenium-java.version}</version>
+            </dependency>
+            
+            <!-- Selenium HtmlUnit Driver -->
+            <dependency>
+                <groupId>org.seleniumhq.selenium</groupId>
+                <artifactId>htmlunit-driver</artifactId>
+                <version>${selenium-htmlunit-driver.version}</version>
+            </dependency>
 
             <!-- Springdoc OpenAPI UI -->
             <dependency>
@@ -530,6 +546,7 @@
         <module>ontopop-data-ontology-downloader</module>
         <module>ontopop-api-ontology-management</module>
         <module>ontopop-api-ontology-triplestore</module>
+        <module>ontopop-connectors</module>
     </modules>
     
     <!-- Project Profiles -->
