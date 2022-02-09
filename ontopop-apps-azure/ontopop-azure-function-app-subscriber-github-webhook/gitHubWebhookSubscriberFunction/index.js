@@ -1,5 +1,5 @@
 /**
- * Ontology Ingestion Service Invoker
+ * GitHub Webhook Subscriber
  *
  * A HTTP-triggered (POST) Azure Function written in Node.js that will be 
  * requested by the Git webhook (POST). This Azure Function simply sends the 
