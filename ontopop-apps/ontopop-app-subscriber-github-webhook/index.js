@@ -1,5 +1,5 @@
 /**
- * Ontology Ingestion Service Invoker
+ * GitHub Webhook Subscriber
  *
  * A simple HTTP server application written in Node.js that will be 
  * requested by the Git webhook (POST). This application simply sends the 
