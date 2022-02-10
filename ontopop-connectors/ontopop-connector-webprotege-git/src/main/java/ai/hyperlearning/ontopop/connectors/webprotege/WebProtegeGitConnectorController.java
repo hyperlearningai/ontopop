@@ -49,7 +49,7 @@ public class WebProtegeGitConnectorController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "WebProtege webhok payload successfully processed.", 
+                            description = "WebProtege webhook payload successfully processed.", 
                             content = @Content),
                     @ApiResponse(
                             responseCode = "401",

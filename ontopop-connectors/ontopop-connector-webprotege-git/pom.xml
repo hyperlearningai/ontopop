@@ -43,6 +43,14 @@
 
     <!-- Module Dependencies -->
     <dependencies>
+    
+        <!-- Commons Logging -->
+        <!-- 
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+        </dependency>
+        -->
 
         <!-- OntoPop -->
         <dependency>
@@ -71,6 +79,10 @@
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-api</artifactId>
+        </dependency>
         
         <!-- Selenium HtmlUnit Driver -->
         <dependency>
@@ -82,6 +94,18 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
+        </dependency>
+        
+        <!-- Spring Webflux -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+        
+        <!-- Zip4j -->
+        <dependency>
+            <groupId>net.lingala.zip4j</groupId>
+            <artifactId>zip4j</artifactId>
         </dependency>
 
     </dependencies>

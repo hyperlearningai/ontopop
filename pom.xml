@@ -81,6 +81,7 @@
         <schema.rdf-dublin-core-elements.filename>dublin_core_elements.rdf</schema.rdf-dublin-core-elements.filename>
         <schema.rdf-schema.filename>rdf-schema.ttl</schema.rdf-schema.filename>
         <schema.rdf-skos.filename>skos.rdf</schema.rdf-skos.filename>
+        <selenium-api.version>4.1.2</selenium-api.version>
         <selenium-java.version>4.1.2</selenium-java.version>
         <selenium-htmlunit-driver.version>3.58.0</selenium-htmlunit-driver.version>
         <spring-boot-thin-layout.version>1.0.28.RELEASE</spring-boot-thin-layout.version>
@@ -89,6 +90,7 @@
         <springdoc-openapi-ui.version>1.5.12</springdoc-openapi-ui.version>
         <swagger-annotations.version>2.1.11</swagger-annotations.version>
         <tinkergraph-gremlin.version>3.5.1</tinkergraph-gremlin.version>
+        <zip4j.version>2.9.1</zip4j.version>
     </properties>
 
     <!-- Project Dependencies -->
@@ -472,6 +474,11 @@
                 <artifactId>selenium-java</artifactId>
                 <version>${selenium-java.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.seleniumhq.selenium</groupId>
+                <artifactId>selenium-api</artifactId>
+                <version>${selenium-api.version}</version>
+            </dependency>
             
             <!-- Selenium HtmlUnit Driver -->
             <dependency>
@@ -515,6 +522,13 @@
                 <groupId>io.swagger.core.v3</groupId>
                 <artifactId>swagger-annotations</artifactId>
                 <version>${swagger-annotations.version}</version>
+            </dependency>
+            
+            <!-- Zip4j -->
+            <dependency>
+                <groupId>net.lingala.zip4j</groupId>
+                <artifactId>zip4j</artifactId>
+                <version>${zip4j.version}</version>
             </dependency>
 
         </dependencies>
