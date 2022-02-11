@@ -65,12 +65,16 @@ module.exports = async function (context, req) {
         
         try {
             
-            // Send the message to the topic
+            // Construct and send the message to the topic
+            let message = {
+                "body": req.body, 
+                "contentType": "application/json"
+            };
             context.log("Sending message to the Azure Service Bus topic: " + azureServiceBusTopic);
-            await azureServiceBusSender.sendMessages(JSON.stringify(req.body));
+            await azureServiceBusSender.sendMessages(message);
             
             // Close the sender
-            await sender.close();
+            await azureServiceBusSender.close();
             
         } catch (err) {
             
@@ -85,7 +89,6 @@ module.exports = async function (context, req) {
                 status: 200,
                 body: "Successfully processed the WebProtege webhook."
             };
-            context.done();
             
         }
         
