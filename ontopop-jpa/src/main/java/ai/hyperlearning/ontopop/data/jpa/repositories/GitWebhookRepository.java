@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import ai.hyperlearning.ontopop.model.git.GitWebhook;
 
 /**
- * Webhook Event Repository
+ * Git Webhook Repository
  *
  * @author jillurquddus
  * @since 2.0.0

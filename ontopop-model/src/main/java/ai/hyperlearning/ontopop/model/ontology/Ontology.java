@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 import ai.hyperlearning.ontopop.model.git.GitWebhook;
+import ai.hyperlearning.ontopop.model.webprotege.WebProtegeWebhook;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
@@ -125,9 +126,19 @@ public class Ontology implements Serializable {
         example = "2022-02-28 09:08:07")
 	private LocalDateTime dateLastUpdated;
 	
+	@Column(name = "wp_project_id", length = 100, nullable = true)
+	@Schema(description = "WebProtege project ID.", 
+        example = "0b3be685-73bd-4d5a-b866-e70d0ac7169b", 
+        required = false)
+	private String webProtegeProjectId;
+	
 	@OneToMany(mappedBy="ontology", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
     private Set<GitWebhook> gitWebhooks;
+	
+	@OneToMany(mappedBy="ontology", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
+	private Set<WebProtegeWebhook> webProtegeWebhooks;
 	
 	public Ontology() {
 		
@@ -245,7 +256,24 @@ public class Ontology implements Serializable {
 		this.gitWebhooks = gitWebhooks;
 	}
 	
-	public void clearSecretData() {
+	public String getWebProtegeProjectId() {
+        return webProtegeProjectId;
+    }
+
+    public void setWebProtegeProjectId(String webProtegeProjectId) {
+        this.webProtegeProjectId = webProtegeProjectId;
+    }
+
+    public Set<WebProtegeWebhook> getWebProtegeWebhooks() {
+        return webProtegeWebhooks;
+    }
+
+    public void setWebProtegeWebhooks(
+            Set<WebProtegeWebhook> webProtegeWebhooks) {
+        this.webProtegeWebhooks = webProtegeWebhooks;
+    }
+
+    public void clearSecretData() {
 		this.repoToken = null;
 		this.repoWebhookSecret = null;
 	}

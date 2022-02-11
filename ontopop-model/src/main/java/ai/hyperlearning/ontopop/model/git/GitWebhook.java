@@ -38,7 +38,7 @@ public class GitWebhook implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "webhook_id")
+	@Column(name = "gitwebhook_id")
 	private long id;
 	
 	@NotNull
@@ -104,7 +104,7 @@ public class GitWebhook implements Serializable {
 	private String requestHeaderSignature;
 	
 	@ManyToOne
-    @JoinColumn(name="ontology_id", nullable=false)
+    @JoinColumn(name = "ontology_id", nullable = false)
     private Ontology ontology;
 	
 	public GitWebhook() {

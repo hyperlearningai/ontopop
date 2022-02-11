@@ -2,50 +2,84 @@ package ai.hyperlearning.ontopop.model.webprotege;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import ai.hyperlearning.ontopop.model.ontology.Ontology;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
- * Webprotege Webhook Payload Model
+ * Webprotege Webhook Model
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
-public class WebProtegeWebhookPayload implements Serializable {
+@Entity
+@Table(name = "wpwebhooks")
+public class WebProtegeWebhook implements Serializable {
 
     private static final long serialVersionUID = 337501327996667335L;
     
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "wpwebhook_id")
+    private long id;
+    
+    @NotNull
     @Schema(description = "WebProtege project ID of the project that has been updated.", 
             example = "c9589912-e17b-4156-a1ab-fa5b10862f54", 
             required = true)
     private String projectId;
     
+    @NotNull
     @Schema(description = "User ID of the user that has updated the WebProtege project.", 
             example = "me@tld.com", 
             required = true)
     private String userId;
     
+    @NotNull
     @Schema(description = "WebProtege project revision number as a result of the latest updates.", 
             example = "2960", 
             required = true)
     private int revisionNumber;
     
+    @NotNull
     @Schema(description = "Timestamp of the latest WebProtege project update.", 
             example = "1644414105240", 
             required = true)
     private long timestamp;
     
-    public WebProtegeWebhookPayload() {
+    @ManyToOne
+    @JoinColumn(name = "ontology_id", nullable = false)
+    private Ontology ontology;
+    
+    public WebProtegeWebhook() {
         
     }
 
-    public WebProtegeWebhookPayload(String projectId, String userId,
+    public WebProtegeWebhook(String projectId, String userId,
             int revisionNumber, long timestamp) {
         super();
         this.projectId = projectId;
         this.userId = userId;
         this.revisionNumber = revisionNumber;
         this.timestamp = timestamp;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getProjectId() {
@@ -79,6 +113,14 @@ public class WebProtegeWebhookPayload implements Serializable {
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
+    
+    public Ontology getOntology() {
+        return ontology;
+    }
+
+    public void setOntology(Ontology ontology) {
+        this.ontology = ontology;
+    }
 
     @Override
     public int hashCode() {
@@ -98,8 +140,7 @@ public class WebProtegeWebhookPayload implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        WebProtegeWebhookPayload other =
-                (WebProtegeWebhookPayload) obj;
+        WebProtegeWebhook other = (WebProtegeWebhook) obj;
         if (projectId == null) {
             if (other.projectId != null)
                 return false;
@@ -112,11 +153,14 @@ public class WebProtegeWebhookPayload implements Serializable {
 
     @Override
     public String toString() {
-        return "WebProtegeProjectNotification ["
+        return "WebProtegeWebhook ["
+                + "id=" + id + ", "
                 + "projectId=" + projectId + ", "
                 + "userId=" + userId + ", "
                 + "revisionNumber=" + revisionNumber + ", "
-                + "timestamp=" + timestamp + "]";
+                + "timestamp=" + timestamp + ", "
+                + "ontologyId=" + (ontology == null ? "" : ontology.getId())
+                + "]";
     }
 
 }
