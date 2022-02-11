@@ -47,11 +47,11 @@ const requestListener = async function (req, res) {
         let webProtegeGitExporterUrl = process.env.WEBPROTEGE_GIT_EXPORTER_URL;
 
         // Send the HTTP POST request using Axios (which returns a promise).
-        console.log("Invoking the WebProtege Git Connector service at: " + webProtegeGitConnectorUrl);
+        console.log("Requesting the WebProtege to Git exporter service at: " + webProtegeGitExporterUrl);
         try {
-            axios.post(webProtegeGitConnectorUrl, req.body);
+            axios.post(webProtegeGitExporterUrl, req.body);
         } catch (err) {
-            console.log("Error encountered when invoking the WebProtege Git Connector service: " + err);
+            console.log("Error encountered when requesting the WebProtege to Git exporter service: " + err);
         }
         
     }
@@ -96,6 +96,8 @@ const requestListener = async function (req, res) {
             
             setTimeout(function() {
                 connection.close();
+                res.writeHead(200);
+                res.end("Successfully processed the WebProtege webhook.");
             }, 500);
             
         });
