@@ -25,5 +25,8 @@ public interface OntologyRepository extends CrudRepository<Ontology, Integer> {
     @Query("SELECT o FROM Ontology o WHERE o.repoUrl = ?1 AND o.repoResourcePath = ?2 AND o.repoBranch = ?3 ")
     List<Ontology> findByRepoUrlPathBranch(String repoUrl, 
             String repoResourcePath, String repoBranch);
+    
+    @Query("SELECT o FROM Ontology o WHERE o.webProtegeProjectId = ?1")
+    List<Ontology> findByWebProtegeProjectId(String webProtegeProjectId);
 
 }

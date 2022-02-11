@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.connectors.webprotege;
+package ai.hyperlearning.ontopop.data.ontology.webprotege.exporter;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +14,7 @@ import org.springframework.web.reactive.function.client.WebClient;
  */
 
 @Configuration
-public class WebProtegeWebClientConfig {
+public class WebProtegeExporterDownloadWebClientConfig {
     
     private static final String BASE_URL = "https://webprotege.stanford.edu";
     

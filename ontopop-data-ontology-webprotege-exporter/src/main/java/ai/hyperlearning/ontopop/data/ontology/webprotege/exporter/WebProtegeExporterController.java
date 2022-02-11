@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.connectors.webprotege;
+package ai.hyperlearning.ontopop.data.ontology.webprotege.exporter;
 
 import javax.validation.Valid;
 
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import ai.hyperlearning.ontopop.model.webprotege.WebProtegeWebhookPayload;
+import ai.hyperlearning.ontopop.model.webprotege.WebProtegeWebhook;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -23,7 +23,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
- * WebProtege to Git Connector - Controller
+ * WebProtege Exporter - Controller
  *
  * @author jillurquddus
  * @since 2.0.0
@@ -32,10 +32,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/api/connectors/webprotege")
 @Tag(name = "webprotege", description = "Webprotege Connector API")
-public class WebProtegeGitConnectorController {
+public class WebProtegeExporterController {
     
     private static final Logger LOGGER =
-            LoggerFactory.getLogger(WebProtegeGitConnectorController.class);
+            LoggerFactory.getLogger(WebProtegeExporterController.class);
     
     /**************************************************************************
      * 1. POST - Push WebProtege project updates to Git
@@ -68,8 +68,8 @@ public class WebProtegeGitConnectorController {
             @Parameter(
                     description = "WebProtege webhook payload.", 
                     required = true, 
-                    schema = @Schema(implementation = WebProtegeWebhookPayload.class))
-            @Valid @RequestBody(required = true) WebProtegeWebhookPayload webProtegeWebhookPayload) {
+                    schema = @Schema(implementation = WebProtegeWebhook.class))
+            @Valid @RequestBody(required = true) WebProtegeWebhook webProtegeWebhookPayload) {
         
         // Log the payload for debugging purposes
         LOGGER.debug("WebProtege webhook payload received: {}", 

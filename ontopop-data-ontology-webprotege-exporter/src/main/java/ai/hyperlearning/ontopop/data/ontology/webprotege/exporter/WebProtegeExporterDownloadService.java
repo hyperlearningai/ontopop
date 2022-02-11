@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.connectors.webprotege;
+package ai.hyperlearning.ontopop.data.ontology.webprotege.exporter;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -30,17 +30,17 @@ import net.lingala.zip4j.model.FileHeader;
 import reactor.core.publisher.Mono;
 
 /**
- * WebProtege Download Service
+ * WebProtege Exporter Download Service
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
 @Service
-public class WebProtegeDownloadService {
+public class WebProtegeExporterDownloadService {
     
     private static final Logger LOGGER =
-            LoggerFactory.getLogger(WebProtegeDownloadService.class);
+            LoggerFactory.getLogger(WebProtegeExporterDownloadService.class);
     
     @Autowired
     @Qualifier("webProtegeWebClient")
@@ -81,7 +81,7 @@ public class WebProtegeDownloadService {
     
     public String run(String projectId, int revision) throws Exception {
         
-        LOGGER.info("WebProtege download service started.");
+        LOGGER.info("WebProtege exporter download service started.");
         this.projectId = projectId;
         this.revision = revision;
         
@@ -101,12 +101,12 @@ public class WebProtegeDownloadService {
             
         } finally {
             
-            // 4. Close all web clients
+            // 5. Close all web clients
             cleanup();
             
         }
         
-        LOGGER.info("WebProtege download service finished.");
+        LOGGER.info("WebProtege exporter download service finished.");
         return extractedOwlAbsolutePath;
         
     }

@@ -440,6 +440,11 @@
             </dependency>
             <dependency>
                 <groupId>ai.hyperlearning.ontopop</groupId>
+                <artifactId>ontopop-data-ontology-webprotege-exporter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>ai.hyperlearning.ontopop</groupId>
                 <artifactId>ontopop-api-ontology-management</artifactId>
                 <version>${revision}</version>
             </dependency>
@@ -563,9 +568,9 @@
         <module>ontopop-data-ontology-indexer-graph</module>
         <module>ontopop-data-ontology-pipeline</module>
         <module>ontopop-data-ontology-downloader</module>
+        <module>ontopop-data-ontology-webprotege-exporter</module>
         <module>ontopop-api-ontology-management</module>
         <module>ontopop-api-ontology-triplestore</module>
-        <module>ontopop-connectors</module>
     </modules>
     
     <!-- Project Profiles -->
