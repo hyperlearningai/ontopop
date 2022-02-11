@@ -8,16 +8,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ai.hyperlearning.ontopop.model.git.WebhookEvent;
+import ai.hyperlearning.ontopop.model.git.GitWebhook;
 
 /**
- * GitHub Webhook Event Model
+ * GitHub Webhook Model
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
-public class GitHubWebhookEvent implements Serializable {
+public class GitHubWebhook implements Serializable {
 	
 	private static final long serialVersionUID = 7283618078343604424L;
 	private String ref;
@@ -35,7 +35,7 @@ public class GitHubWebhookEvent implements Serializable {
 	private List<Map<String, Object>> commits;
 	private Map<String, Object> headCommit;
 	
-	public GitHubWebhookEvent() {
+	public GitHubWebhook() {
 		
 	}
 
@@ -152,30 +152,30 @@ public class GitHubWebhookEvent implements Serializable {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public WebhookEvent toWebhookEvent(
+	public GitWebhook toGitWebhook(
 			String resourcePath, String requestSignaure) {
 		
-		WebhookEvent webhookEvent = new WebhookEvent();
+		GitWebhook gitWebhook = new GitWebhook();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(
 				"yyyy-MM-dd'T'HH:mm:ss'Z'");
 		
 		// Set reference
-		webhookEvent.setRef( this.ref );
+		gitWebhook.setRef( this.ref );
 		
 		// Set repository attributes
-		webhookEvent.setRepoUrl( this.repository.get("html_url").toString() );
-		webhookEvent.setRepoId( Long.valueOf(repository.get("id").toString()) );
-		webhookEvent.setRepoName( this.repository.get("name").toString() );
+		gitWebhook.setRepoUrl( this.repository.get("html_url").toString() );
+		gitWebhook.setRepoId( Long.valueOf(repository.get("id").toString()) );
+		gitWebhook.setRepoName( this.repository.get("name").toString() );
 		Map<String, Object> repositoryOwner = (Map<String, Object>) 
 				this.repository.get("owner");
-		webhookEvent.setRepoOwner( repositoryOwner.get("name").toString() );
-		webhookEvent.setRepoResourcePath( resourcePath );
-		webhookEvent.setRepoBranch( this.ref.substring(
+		gitWebhook.setRepoOwner( repositoryOwner.get("name").toString() );
+		gitWebhook.setRepoResourcePath( resourcePath );
+		gitWebhook.setRepoBranch( this.ref.substring(
 				this.ref.lastIndexOf("/") + 1) );
 		
 		// Set pusher attributes
-		webhookEvent.setPusherName( this.pusher.get("name").toString() );
-		webhookEvent.setPusherEmail( this.pusher.get("email").toString() );
+		gitWebhook.setPusherName( this.pusher.get("name").toString() );
+		gitWebhook.setPusherEmail( this.pusher.get("email").toString() );
 		
 		// Set commits modified resource paths
 		Set<String> commitsModifiedResourcePaths = new HashSet<>();
@@ -183,7 +183,7 @@ public class GitHubWebhookEvent implements Serializable {
 			List<String> modified = (List<String>) commit.get("modified");
 			commitsModifiedResourcePaths.addAll(modified);
 		}
-		webhookEvent.setCommitsModifiedResourcePaths(
+		gitWebhook.setCommitsModifiedResourcePaths(
 				commitsModifiedResourcePaths);
 		
 		// Set latest relevant commit attributes
@@ -196,32 +196,32 @@ public class GitHubWebhookEvent implements Serializable {
 					if ( modifiedResource.equals(resourcePath) ) {
 						
 						// Set the commit ID and timestamp attributes
-						webhookEvent.setLatestRelevantCommitId( 
+					    gitWebhook.setLatestRelevantCommitId( 
 								commit.get("id").toString() );
-						webhookEvent.setLatestRelevantCommitMessage(
+					    gitWebhook.setLatestRelevantCommitMessage(
 								commit.get("message").toString() );
 						String timestamp = commit.get("timestamp").toString();
-						webhookEvent.setLatestRelevantCommitTimestamp( 
+						gitWebhook.setLatestRelevantCommitTimestamp( 
 								LocalDateTime.parse(timestamp, formatter) );
 						
 						// Set the commit author attributes
 						Map<String, Object> author = 
 								(Map<String, Object>) commit.get("author");
-						webhookEvent.setLatestRelevantCommitAuthorName( 
+						gitWebhook.setLatestRelevantCommitAuthorName( 
 								author.get("name").toString() );
-						webhookEvent.setLatestRelevantCommitAuthorEmail( 
+						gitWebhook.setLatestRelevantCommitAuthorEmail( 
 								author.get("email").toString() );
-						webhookEvent.setLatestRelevantCommitAuthorUsername( 
+						gitWebhook.setLatestRelevantCommitAuthorUsername( 
 								author.get("username").toString() );
 						
 						// Set the commit committer attributes
 						Map<String, Object> committer = 
 								(Map<String, Object>) commit.get("committer");
-						webhookEvent.setLatestRelevantCommitCommitterName( 
+						gitWebhook.setLatestRelevantCommitCommitterName( 
 								committer.get("name").toString() );
-						webhookEvent.setLatestRelevantCommitCommitterEmail( 
+						gitWebhook.setLatestRelevantCommitCommitterEmail( 
 								committer.get("email").toString() );
-						webhookEvent.setLatestRelevantCommitCommitterUsername( 
+						gitWebhook.setLatestRelevantCommitCommitterUsername( 
 								committer.get("username").toString() );
 						
 						// Stop iterating over the commits
@@ -235,15 +235,15 @@ public class GitHubWebhookEvent implements Serializable {
 		}
 		
 		// Set the request signature attribute
-		webhookEvent.setRequestHeaderSignature( requestSignaure );
+		gitWebhook.setRequestHeaderSignature( requestSignaure );
 		
-		return webhookEvent;
+		return gitWebhook;
 		
 	}
 
 	@Override
 	public String toString() {
-		return "GitHubWebhookEvent ["
+		return "GitHubWebhook ["
 				+ "ref=" + ref + ", "
 				+ "before=" + before + ", "
 				+ "after=" + after + ", "

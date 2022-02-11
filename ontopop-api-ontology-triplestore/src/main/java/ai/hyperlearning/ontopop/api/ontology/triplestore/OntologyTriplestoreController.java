@@ -24,11 +24,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import ai.hyperlearning.ontopop.data.jpa.repositories.WebhookEventRepository;
+import ai.hyperlearning.ontopop.data.jpa.repositories.GitWebhookRepository;
 import ai.hyperlearning.ontopop.data.ontology.downloader.OntologyDownloaderService;
-import ai.hyperlearning.ontopop.exceptions.git.WebhookEventNotFoundException;
+import ai.hyperlearning.ontopop.exceptions.git.GitWebhookNotFoundException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDownloadException;
-import ai.hyperlearning.ontopop.model.git.WebhookEvent;
+import ai.hyperlearning.ontopop.model.git.GitWebhook;
 import ai.hyperlearning.ontopop.model.triplestore.OntologyTriplestoreSparqlQuery;
 import ai.hyperlearning.ontopop.triplestore.TriplestoreService;
 import ai.hyperlearning.ontopop.triplestore.TriplestoreServiceFactory;
@@ -62,7 +62,7 @@ public class OntologyTriplestoreController {
     private OntologyDownloaderService ontologyDownloaderService;
     
     @Autowired
-    private WebhookEventRepository webhookEventRepository;
+    private GitWebhookRepository gitWebhookRepository;
     
     @Value("${storage.triplestore.service}")
     private String storageTriplestoreService;
@@ -190,7 +190,7 @@ public class OntologyTriplestoreController {
     @Operation(
             summary = "Get OWL Data",
             description = "Get the original OWL data for the ontology with "
-                    + "the given ontology ID and optional webhook event ID.",
+                    + "the given ontology ID and optional Git webhook ID.",
             tags = {"ontology", "triplestore", "owl"})
     @ApiResponses(
             value = {
@@ -212,23 +212,23 @@ public class OntologyTriplestoreController {
                     description = "ID of the ontology for which to retrieve data.", 
                     required = true)
             @PathVariable(required = true) int id, 
-            @RequestParam(name = "webhookEventId", required = false, defaultValue = "-1") long webhookEventId) {
+            @RequestParam(name = "gitWebhookId", required = false, defaultValue = "-1") long gitWebhookId) {
         
         LOGGER.debug("New HTTP GET request - Get OWL data for "
                 + "ontology ID {}.", id);
         
         try {
             
-            // Get the webhook event object
-            WebhookEvent webhookEvent = ( webhookEventId == -1 ) ? 
-                    ontologyDownloaderService.getLatestWebhookEvent(id) : 
-                        webhookEventRepository.findById(webhookEventId)
-                            .orElseThrow(() -> new WebhookEventNotFoundException(id));
-            if ( webhookEvent != null ) {
+            // Get the Git webhook event object
+            GitWebhook gitWebhook = ( gitWebhookId == -1 ) ? 
+                    ontologyDownloaderService.getLatestGitWebhook(id) : 
+                        gitWebhookRepository.findById(gitWebhookId)
+                            .orElseThrow(() -> new GitWebhookNotFoundException(id));
+            if ( gitWebhook != null ) {
                 
                 // Download the OWL file from persistent storage
                 String downloadedUri = ontologyDownloaderService
-                        .retrieveOwlFile(webhookEvent);
+                        .retrieveOwlFile(gitWebhook);
                 
                 // Return the contents of the OWL file as a string
                 return new ResponseEntity<>(

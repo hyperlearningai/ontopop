@@ -25,7 +25,7 @@ public class AzureSimpleIndexVertex implements Serializable {
     private String iri;
     private int ontologyId;
     private String vertexKey;
-    private long latestWebhookEventId;
+    private long latestGitWebhookId;
 
     // Example domain-specific Vertex Properties
     private String definition;
@@ -99,12 +99,12 @@ public class AzureSimpleIndexVertex implements Serializable {
     }
 
     @SimpleField(isFilterable = true, isSortable = true)
-    public long getLatestWebhookEventId() {
-        return latestWebhookEventId;
+    public long getLatestGitWebhookId() {
+        return latestGitWebhookId;
     }
 
-    public void setLatestWebhookEventId(long latestWebhookEventId) {
-        this.latestWebhookEventId = latestWebhookEventId;
+    public void setLatestGitWebhookId(long latestGitWebhookId) {
+        this.latestGitWebhookId = latestGitWebhookId;
     }
 
     @SearchableField(isFilterable = false, isSortable = false)
@@ -196,7 +196,7 @@ public class AzureSimpleIndexVertex implements Serializable {
                 + "iri=" + iri + ", " 
                 + "ontologyId=" + ontologyId + ", "
                 + "vertexKey=" + vertexKey + ", " 
-                + "latestWebhookEventId=" + latestWebhookEventId 
+                + "latestGitWebhookId=" + latestGitWebhookId 
                 + "]";
     }
 

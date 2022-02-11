@@ -28,9 +28,9 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 	// One-to-one mapping between Ontology ID and Property Graph ID
 	private int id;
 	
-	// The latest webhook event ID so that it can be attached as a property
+	// The latest Git webhook ID so that it can be attached as a property
 	// to vertices and edges when they are updated
-	private long latestWebhookEventId;
+	private long latestGitWebhookId;
 	
 	// Map of resolved Simple Ontology Vertex Key (IRI + Ontology ID) <> 
 	// Simple Ontology Vertex objects which are a one-to-one mapping of OWL classes
@@ -46,11 +46,11 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 
 	public SimpleOntologyPropertyGraph(
 			int id, 
-			long latestWebhookEventId, 
+			long latestGitWebhookId, 
 			Map<String, SimpleOntologyVertex> vertices, 
 			List<SimpleOntologyEdge> edges) {
 		this.id = id;
-		this.latestWebhookEventId = latestWebhookEventId;
+		this.latestGitWebhookId = latestGitWebhookId;
 		this.vertices = vertices;
 		this.edges = edges;
 	}
@@ -59,20 +59,20 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 	 * Transform a SimpleOntology object into a 
 	 * SimpleOntologyPropertyGraph object
 	 * @param id
-	 * @param latestWebhookEventId
+	 * @param latestGitWebhookId
 	 * @param simpleOntology
 	 * @param standardSchemaAnnotationProperties
 	 */
 	
 	public SimpleOntologyPropertyGraph(
 			int id,
-			long latestWebhookEventId, 
+			long latestGitWebhookId, 
 			SimpleOntology simpleOntology, 
 			Map<String, SimpleAnnotationProperty> standardSchemaAnnotationProperties) {
 		
 		// Set the IDs
 		this.id = id;
-		this.latestWebhookEventId = latestWebhookEventId;
+		this.latestGitWebhookId = latestGitWebhookId;
 		
 		// Resolve and set the simple ontology vertex objects
 		resolveAndSetVertices(simpleOntology, 
@@ -111,7 +111,7 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 			SimpleOntologyVertex vertex = new SimpleOntologyVertex();
 			vertex.setIri(owlClassIRI);
 			vertex.setOntologyId(this.id);
-			vertex.setLatestWebhookEventId(this.latestWebhookEventId);
+			vertex.setLatestGitWebhookId(this.latestGitWebhookId);
 			Map<String, Object> vertexProperties = new LinkedHashMap<>();
 			
 			// Resolve annotations for this vertex
@@ -185,7 +185,7 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 						edge.setTargetVertexKey(targetVertex.getVertexKey());
 						edge.setTargetVertexId(targetVertex.getVertexId());
 						edge.setOntologyId(id);
-						edge.setLatestWebhookEventId(latestWebhookEventId);
+						edge.setLatestGitWebhookId(latestGitWebhookId);
 						Map<String, Object> edgeProperties = new LinkedHashMap<>();
 						if ( objectPropertyIRI != null ) {
 							
@@ -225,12 +225,12 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 		this.id = id;
 	}
 
-	public long getLatestWebhookEventId() {
-		return latestWebhookEventId;
+	public long getLatestGitWebhookId() {
+		return latestGitWebhookId;
 	}
 
-	public void setLatestWebhookEventId(long latestWebhookEventId) {
-		this.latestWebhookEventId = latestWebhookEventId;
+	public void setLatestGitWebhookId(long latestGitWebhookId) {
+		this.latestGitWebhookId = latestGitWebhookId;
 	}
 
 	public Map<String, SimpleOntologyVertex> getVertices() {
@@ -283,7 +283,7 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 	public String toString() {
 		return "SimpleOntologyPropertyGraph ["
 				+ "id=" + id + ", "
-				+ "latestWebhookEventId=" + latestWebhookEventId + ", "
+				+ "latestGitWebhookId=" + latestGitWebhookId + ", "
 				+ "vertices=" + vertices + ", "
 				+ "edges=" + edges + 
 				"]";

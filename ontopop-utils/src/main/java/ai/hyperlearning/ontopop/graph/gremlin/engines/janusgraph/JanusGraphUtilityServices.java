@@ -135,7 +135,7 @@ public class JanusGraphUtilityServices {
         LOGGER.info("Creating JanusGraph common vertex properties");
         management.makePropertyKey("iri").dataType(String.class).make();
         management.makePropertyKey("ontologyId").dataType(Integer.class).make();
-        management.makePropertyKey("latestWebhookEventId").dataType(Long.class)
+        management.makePropertyKey("latestGitWebhookId").dataType(Long.class)
                 .make();
         management.makePropertyKey("vertexKey").dataType(String.class).make();
         management.makePropertyKey("vertexId").dataType(Long.class).make();

@@ -24,12 +24,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 
+import ai.hyperlearning.ontopop.data.jpa.repositories.GitWebhookRepository;
 import ai.hyperlearning.ontopop.data.jpa.repositories.OntologyRepository;
-import ai.hyperlearning.ontopop.data.jpa.repositories.WebhookEventRepository;
 import ai.hyperlearning.ontopop.git.GitService;
 import ai.hyperlearning.ontopop.git.GitServiceFactory;
 import ai.hyperlearning.ontopop.messaging.processors.DataPipelineIngestorSource;
-import ai.hyperlearning.ontopop.model.git.WebhookEvent;
+import ai.hyperlearning.ontopop.model.git.GitWebhook;
 import ai.hyperlearning.ontopop.model.ontology.Ontology;
 import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 import ai.hyperlearning.ontopop.security.secrets.managers.OntologySecretDataManager;
@@ -61,7 +61,7 @@ public class OntologyIngestorService {
     private OntologyRepository ontologyRepository;
 
     @Autowired
-    private WebhookEventRepository webhookEventRepository;
+    private GitWebhookRepository gitWebhookRepository;
 
     @Autowired
     private ObjectStorageServiceFactory objectStorageServiceFactory;
@@ -84,7 +84,7 @@ public class OntologyIngestorService {
     private Map<String, String> headers;
     private String payload;
     private GitService gitService;
-    private Set<WebhookEvent> webhookEvents = new HashSet<>();
+    private Set<GitWebhook> gitWebhooks = new HashSet<>();
     private ObjectStorageService objectStorageService;
     private String writeDirectoryUri;
 
@@ -103,14 +103,14 @@ public class OntologyIngestorService {
             // 1. Environment setup
             setup();
 
-            // 2. Parse the webhook event payload into individual
-            // WebhookEvent objects
+            // 2. Parse the Git webhook payload into individual
+            // GitWebhook objects
             parse();
 
             // 3. Save the relevant modified resources to persistent storage
             save();
 
-            // 4. Publish messages for each valid webhook event
+            // 4. Publish messages for each valid Git webhook
             publish();
 
             // 5. Cleanup resources
@@ -133,7 +133,7 @@ public class OntologyIngestorService {
     private void setup() throws IOException {
 
         // 1. Select the relevant Git service based on the HTTP headers
-        // of the webhook event request
+        // of the Git webhook request
         gitService = gitServiceFactory.getGitService(headers);
 
         // 2. Select the relevant persistent storage service and
@@ -172,9 +172,9 @@ public class OntologyIngestorService {
     }
 
     /**
-     * A single webhook event may describe multiple resources belonging to the
+     * A single Git webhook may describe multiple resources belonging to the
      * same repository that have been modified. In this method, we create
-     * separate WebhookEvent objects representing each separate but relevant
+     * separate GitWebhook objects representing each separate but relevant
      * resource path. We know if a resource path is relevant if there exists an
      * Ontology object that defines that resource path to watch.
      * 
@@ -184,32 +184,32 @@ public class OntologyIngestorService {
     private void parse() throws Exception {
 
         LOGGER.info("Ontology Ingestion Service - "
-                + "Started parsing of webhook events.");
+                + "Started parsing of Git webhooks.");
 
         // 1. Parse the webhook payload
-        WebhookEvent webhookEvent =
+        GitWebhook gitWebhook =
                 gitService.parseWebhookPayload(headers, payload, null);
         LOGGER.debug("Parsed webhook event object without resource path: {} ",
-                webhookEvent);
+                gitWebhook);
 
         // 2. Get all ontology objects that match the webhook event request
         // i.e. the payload may describe more than one resource path
         // in the same repository that have been modified
         Set<Ontology> ontoglogies = new HashSet<>();
-        for (String modifiedResourcePath : webhookEvent
+        for (String modifiedResourcePath : gitWebhook
                 .getCommitsModifiedResourcePaths()) {
 
             ontoglogies.addAll(ontologyRepository.findByRepoUrlOwnerPathBranch(
-                    webhookEvent.getRepoUrl(), webhookEvent.getRepoOwner(),
-                    modifiedResourcePath, webhookEvent.getRepoBranch()));
+                    gitWebhook.getRepoUrl(), gitWebhook.getRepoOwner(),
+                    modifiedResourcePath, gitWebhook.getRepoBranch()));
 
         }
 
-        // 3. For each ontology, validate the webhook payload
+        // 3. For each ontology, validate the Git webhook payload
         LOGGER.debug(
-                "Found {} ontologies matching the " + "webhook event request.",
+                "Found {} ontologies matching the " + "Git webhook request.",
                 ontoglogies.size());
-        webhookEvents.clear();
+        gitWebhooks.clear();
         int ontologyCounter = 0;
         for (Ontology ontology : ontoglogies) {
             ontologyCounter++;
@@ -223,13 +223,13 @@ public class OntologyIngestorService {
 
             // 3.2. Recreate the webhook payload object
             // with the resource path
-            WebhookEvent currentWebhookEvent = gitService.parseWebhookPayload(
+            GitWebhook currentGitWebhook = gitService.parseWebhookPayload(
                     headers, payload, ontology.getRepoResourcePath());
-            currentWebhookEvent.setOntology(ontology);
+            currentGitWebhook.setOntology(ontology);
             LOGGER.debug(
                     "Parsed webhook event object with resource path "
                             + "({} of {}): {}",
-                    ontologyCounter, ontoglogies.size(), currentWebhookEvent);
+                    ontologyCounter, ontoglogies.size(), currentGitWebhook);
 
             // 3.3. Validate the webhook payload
             boolean validWebhookPayload = gitService.isValidWebhookPayload(
@@ -243,12 +243,12 @@ public class OntologyIngestorService {
                             + "with resource path " + "({} of {}): {}",
                     ontologyCounter, ontoglogies.size(), validWebhookPayload);
             if (validWebhookPayload) {
-                webhookEvents
-                        .add(webhookEventRepository.save(currentWebhookEvent));
+                gitWebhooks
+                        .add(gitWebhookRepository.save(currentGitWebhook));
                 LOGGER.debug(
                         "Successfully parsed and persisted "
                                 + "webhook event object: {}",
-                        currentWebhookEvent);
+                                currentGitWebhook);
             }
 
         }
@@ -272,24 +272,22 @@ public class OntologyIngestorService {
                 + "Started downloading modified resources.");
 
         // 1. Download and write the modified resources to persistent storage
-        for (WebhookEvent webhookEvent : webhookEvents) {
+        for (GitWebhook gitWebhook : gitWebhooks) {
 
             // 1.1. Get the resource as a string encapsulated within a
             // HTTP response entity
             ResponseEntity<String> response =
-                    webhookEvent.getOntology().isRepoPrivate()
+                    gitWebhook.getOntology().isRepoPrivate()
                             ? gitService.getFile(
-                                    webhookEvent.getOntology().getRepoToken(),
-                                    webhookEvent.getRepoOwner(),
-                                    webhookEvent.getRepoName(),
-                                    webhookEvent.getOntology()
-                                            .getRepoResourcePath(),
-                                    webhookEvent.getRepoBranch())
-                            : gitService.getFile(webhookEvent.getRepoOwner(),
-                                    webhookEvent.getRepoName(),
-                                    webhookEvent.getOntology()
-                                            .getRepoResourcePath(),
-                                    webhookEvent.getRepoBranch());
+                                    gitWebhook.getOntology().getRepoToken(),
+                                    gitWebhook.getRepoOwner(),
+                                    gitWebhook.getRepoName(),
+                                    gitWebhook.getOntology().getRepoResourcePath(),
+                                    gitWebhook.getRepoBranch())
+                            : gitService.getFile(gitWebhook.getRepoOwner(),
+                                    gitWebhook.getRepoName(),
+                                    gitWebhook.getOntology().getRepoResourcePath(),
+                                    gitWebhook.getRepoBranch());
 
             // 1.2. Check the response is OK
             if (response.getStatusCode().equals(HttpStatus.OK)
@@ -298,16 +296,16 @@ public class OntologyIngestorService {
                 // Write the string contents to a temporary file
                 // in the local file system
                 Path temporaryFile = Files.createTempFile("",
-                        "_" + webhookEvent.getOntology()
+                        "_" + gitWebhook.getOntology()
                                 .generateFilenameForPersistence(
-                                        webhookEvent.getId()));
+                                        gitWebhook.getId()));
                 Files.write(temporaryFile,
                         response.getBody().getBytes(StandardCharsets.UTF_8));
                 LOGGER.debug(
                         "Successfully downloaded ontology resource '{}' "
                                 + "to a local temporary file at '{}'.",
-                        webhookEvent.getOntology().getRepoUrl() + "/"
-                                + webhookEvent.getOntology()
+                                gitWebhook.getOntology().getRepoUrl() + "/"
+                                + gitWebhook.getOntology()
                                         .getRepoResourcePath(),
                         temporaryFile.toAbsolutePath().toString());
 
@@ -325,8 +323,8 @@ public class OntologyIngestorService {
                 LOGGER.debug(
                         "Successfully persisted ontology "
                                 + "resource '{}' to '{}'.",
-                        webhookEvent.getOntology().getRepoUrl() + "/"
-                                + webhookEvent.getOntology()
+                                gitWebhook.getOntology().getRepoUrl() + "/"
+                                + gitWebhook.getOntology()
                                         .getRepoResourcePath(),
                         targetFilepath);
 
@@ -354,15 +352,15 @@ public class OntologyIngestorService {
 
         // Iterate over each valid webhook event, create an OntologyMessage
         // object and publish it to the shared messaging system
-        for (WebhookEvent webhookEvent : webhookEvents) {
+        for (GitWebhook gitWebhook : gitWebhooks) {
 
             // Create an ontology message
             OntologyMessage ontologyMessage = new OntologyMessage();
-            ontologyMessage.setOntologyId(webhookEvent.getOntology().getId());
-            ontologyMessage.setWebhookEventId(webhookEvent.getId());
+            ontologyMessage.setOntologyId(gitWebhook.getOntology().getId());
+            ontologyMessage.setGitWebhookId(gitWebhook.getId());
             ontologyMessage.setProcessedFilename(
-                    webhookEvent.getOntology().generateFilenameForPersistence(
-                            webhookEvent.getId()));
+                    gitWebhook.getOntology().generateFilenameForPersistence(
+                            gitWebhook.getId()));
 
             // Publish the message to the shared messaging system
             ObjectMapper mapper = new ObjectMapper();

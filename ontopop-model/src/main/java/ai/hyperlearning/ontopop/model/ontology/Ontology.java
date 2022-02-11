@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
-import ai.hyperlearning.ontopop.model.git.WebhookEvent;
+import ai.hyperlearning.ontopop.model.git.GitWebhook;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
@@ -127,7 +127,7 @@ public class Ontology implements Serializable {
 	
 	@OneToMany(mappedBy="ontology", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
-    private Set<WebhookEvent> webhooksEvents;
+    private Set<GitWebhook> gitWebhooks;
 	
 	public Ontology() {
 		
@@ -237,12 +237,12 @@ public class Ontology implements Serializable {
 		this.dateLastUpdated = dateLastUpdated;
 	}
 
-	public Set<WebhookEvent> getWebhooksEvents() {
-		return webhooksEvents;
+	public Set<GitWebhook> getGitWebhooks() {
+		return gitWebhooks;
 	}
 
-	public void setWebhooksEvents(Set<WebhookEvent> webhooksEvents) {
-		this.webhooksEvents = webhooksEvents;
+	public void setGitWebhooks(Set<GitWebhook> gitWebhooks) {
+		this.gitWebhooks = gitWebhooks;
 	}
 	
 	public void clearSecretData() {
@@ -271,8 +271,8 @@ public class Ontology implements Serializable {
 	                .trim() : "";
 	}
 	
-	public String generateFilenameForPersistence(long webhookEventId) {
-		return id + "_" + webhookEventId + getRepoResourcePathFileExtension();
+	public String generateFilenameForPersistence(long gitWebhookId) {
+		return id + "_" + gitWebhookId + getRepoResourcePathFileExtension();
 	}
 
 	@Override

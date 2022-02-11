@@ -44,7 +44,7 @@ public class TinkerGraphEmbeddedGraphDatabaseService extends GremlinGraphDatabas
             graph.createIndex("id", Vertex.class);
             graph.createIndex("iri", Vertex.class);
             graph.createIndex("ontologyId", Vertex.class);
-            graph.createIndex("latestWebhookEventId", Vertex.class);
+            graph.createIndex("latestGitWebhookId", Vertex.class);
             graph.createIndex("vertexKey", Vertex.class);
             graph.createIndex("vertexId", Vertex.class);
         }
@@ -57,7 +57,7 @@ public class TinkerGraphEmbeddedGraphDatabaseService extends GremlinGraphDatabas
             graph.createIndex("targetVertexKey", Edge.class);
             graph.createIndex("targetVertexId", Edge.class);
             graph.createIndex("ontologyId", Edge.class);
-            graph.createIndex("latestWebhookEventId", Edge.class);
+            graph.createIndex("latestGitWebhookId", Edge.class);
         }
 
     }

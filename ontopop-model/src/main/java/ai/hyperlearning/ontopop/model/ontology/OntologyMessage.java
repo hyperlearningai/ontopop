@@ -15,7 +15,7 @@ public class OntologyMessage implements Serializable {
 
 	private static final long serialVersionUID = 2424638485939464791L;
 	private int ontologyId;
-	private long webhookEventId;
+	private long gitWebhookId;
 	private String processedFilename;
 	private boolean semanticallyValid = false;
 	
@@ -25,11 +25,11 @@ public class OntologyMessage implements Serializable {
 
 	public OntologyMessage(
 			int ontologyId, 
-			long webhookEventId, 
+			long gitWebhookId, 
 			String processedFilename) {
 		super();
 		this.ontologyId = ontologyId;
-		this.webhookEventId = webhookEventId;
+		this.gitWebhookId = gitWebhookId;
 		this.processedFilename = processedFilename;
 	}
 
@@ -41,12 +41,12 @@ public class OntologyMessage implements Serializable {
 		this.ontologyId = ontologyId;
 	}
 
-	public long getWebhookEventId() {
-		return webhookEventId;
+	public long getGitWebhookId() {
+		return gitWebhookId;
 	}
 
-	public void setWebhookEventId(long webhookEventId) {
-		this.webhookEventId = webhookEventId;
+	public void setGitWebhookId(long gitWebhookId) {
+		this.gitWebhookId = gitWebhookId;
 	}
 
 	public String getProcessedFilename() {
@@ -76,7 +76,7 @@ public class OntologyMessage implements Serializable {
 		int result = 1;
 		result = prime * result + ontologyId;
 		result = prime * result 
-				+ (int) (webhookEventId ^ (webhookEventId >>> 32));
+				+ (int) (gitWebhookId ^ (gitWebhookId >>> 32));
 		return result;
 	}
 
@@ -91,7 +91,7 @@ public class OntologyMessage implements Serializable {
 		OntologyMessage other = (OntologyMessage) obj;
 		if (ontologyId != other.ontologyId)
 			return false;
-		if (webhookEventId != other.webhookEventId)
+		if (gitWebhookId != other.gitWebhookId)
 			return false;
 		return true;
 	}
@@ -100,7 +100,7 @@ public class OntologyMessage implements Serializable {
 	public String toString() {
 		return "OntologyMessage ["
 				+ "ontologyId=" + ontologyId + ", "
-				+ "webhookEventId=" + webhookEventId + ", "
+				+ "gitWebhookId=" + gitWebhookId + ", "
 				+ "processedFilename=" + processedFilename  + ", "
 				+ "semanticallyValid=" + semanticallyValid
 				+ "]";

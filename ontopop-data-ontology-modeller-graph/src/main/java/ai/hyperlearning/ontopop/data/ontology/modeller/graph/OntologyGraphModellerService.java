@@ -220,7 +220,7 @@ public class OntologyGraphModellerService {
         // Simple Ontology Property Graph object
         simpleOntologyPropertyGraph =
                 new SimpleOntologyPropertyGraph(ontologyMessage.getOntologyId(),
-                        ontologyMessage.getWebhookEventId(), simpleOntology,
+                        ontologyMessage.getGitWebhookId(), simpleOntology,
                         standardSchemaAnnotationProperties);
 
         LOGGER.debug("Modelled ontology: '{}'.", simpleOntologyPropertyGraph);

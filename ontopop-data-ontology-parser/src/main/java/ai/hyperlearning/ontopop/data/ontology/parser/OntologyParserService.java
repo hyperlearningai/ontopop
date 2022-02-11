@@ -206,7 +206,7 @@ public class OntologyParserService {
         // Create a Simple Ontology object as a container for the
         // parsed ontological components
         simpleOntology = new SimpleOntology(ontologyMessage.getOntologyId(),
-                ontologyMessage.getWebhookEventId(),
+                ontologyMessage.getGitWebhookId(),
                 simpleAnnotationPropertyMap, simpleObjectPropertyMap,
                 simpleClassMap);
 

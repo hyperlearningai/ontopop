@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 
-import ai.hyperlearning.ontopop.model.git.WebhookEvent;
+import ai.hyperlearning.ontopop.model.git.GitWebhook;
 
 /**
  * Git Service Interface
@@ -17,7 +17,7 @@ import ai.hyperlearning.ontopop.model.git.WebhookEvent;
 public interface GitService {
 
     /**
-     * Parse a webhook JSON request payload into a WebhookEvent object
+     * Parse a webhook JSON request payload into a GitWebhook object
      * 
      * @param headers
      * @param payload
@@ -26,7 +26,7 @@ public interface GitService {
      * @throws IOException
      */
 
-    WebhookEvent parseWebhookPayload(Map<String, String> headers,
+    GitWebhook parseWebhookPayload(Map<String, String> headers,
             String payload, String path) throws IOException;
 
     /**

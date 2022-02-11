@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import ai.hyperlearning.ontopop.data.jpa.repositories.WebhookEventRepository;
-import ai.hyperlearning.ontopop.exceptions.git.WebhookEventNotFoundException;
-import ai.hyperlearning.ontopop.model.git.WebhookEvent;
+import ai.hyperlearning.ontopop.data.jpa.repositories.GitWebhookRepository;
+import ai.hyperlearning.ontopop.exceptions.git.GitWebhookNotFoundException;
+import ai.hyperlearning.ontopop.model.git.GitWebhook;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -26,7 +26,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
- * Ontology Management API Service - Webhook Event Controller
+ * Ontology Management API Service - Git Webhook Controller
  *
  * @author jillurquddus
  * @since 2.0.0
@@ -34,36 +34,36 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/api/ontologies")
-@Tag(name = "Ontology Management API - Webhooks", description = "API for managing OntoPop ontology webhooks")
-public class OntologyWebhookEventManagementController {
+@Tag(name = "Ontology Management API - Git Webhooks", description = "API for managing OntoPop ontology Git webhooks")
+public class OntologyGitWebhookManagementController {
 
     private static final Logger LOGGER =
             LoggerFactory.getLogger(
-                    OntologyWebhookEventManagementController.class);
+                    OntologyGitWebhookManagementController.class);
 
     @Autowired
-    private WebhookEventRepository webhookEventRepository;
+    private GitWebhookRepository gitWebhookRepository;
 
     /**************************************************************************
-     * 1.1. GET - Get Webhooks
+     * 1.1. GET - Get Git Webhooks
      *************************************************************************/
 
     @Operation(
-            summary = "Get all webhooks",
-            description = "Get all the webhooks consumed across all ontologies "
+            summary = "Get all Git webhooks",
+            description = "Get all the Git webhooks consumed across all ontologies "
                     + "managed by OntoPop.",
             tags = {"ontology", "webhook"})
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Webhooks successfully retrieved.", 
+                            description = "Git Webhooks successfully retrieved.", 
                             content = @Content(
                                     array = @ArraySchema(
-                                            schema = @Schema(implementation = WebhookEvent.class)))),
+                                            schema = @Schema(implementation = GitWebhook.class)))),
                     @ApiResponse(
                             responseCode = "401",
-                            description = "Retrieval of webhooks unauthorized.", 
+                            description = "Retrieval of Git webhooks unauthorized.", 
                             content = @Content), 
                     @ApiResponse(
                             responseCode = "500",
@@ -71,37 +71,37 @@ public class OntologyWebhookEventManagementController {
                             content = @Content)})
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(
-            value = "/webhooks",
+            value = "/webhooks/git",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<WebhookEvent> getWebhooks() {
-        LOGGER.debug("New HTTP GET request: Get all webhooks.");
-        return (List<WebhookEvent>) webhookEventRepository.findAll();
+    public List<GitWebhook> getGitWebhooks() {
+        LOGGER.debug("New HTTP GET request: Get all Git webhooks.");
+        return (List<GitWebhook>) gitWebhookRepository.findAll();
     }
 
     /**************************************************************************
-     * 1.2. GET - Get Webhook
+     * 1.2. GET - Get Git Webhook
      *************************************************************************/
 
     @Operation(
-            summary = "Get a webhook",
-            description = "Get a webhook consumed by OntoPop given its "
-                    + "webhook ID.",
+            summary = "Get a Git webhook",
+            description = "Get a Git webhook consumed by OntoPop given its "
+                    + "Git webhook ID.",
             tags = {"ontology", "webhook"})
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Webhook successfully retrieved.", 
+                            description = "Git Webhook successfully retrieved.", 
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE, 
-                                    schema = @Schema(implementation = WebhookEvent.class))),
+                                    schema = @Schema(implementation = GitWebhook.class))),
                     @ApiResponse(
                             responseCode = "401",
-                            description = "Retrieval of webhook unauthorized.", 
+                            description = "Retrieval of Git webhook unauthorized.", 
                             content = @Content),
                     @ApiResponse(
                             responseCode = "404",
-                            description = "Webhook not found.", 
+                            description = "Git Webhook not found.", 
                             content = @Content), 
                     @ApiResponse(
                             responseCode = "500",
@@ -109,38 +109,38 @@ public class OntologyWebhookEventManagementController {
                             content = @Content)})
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(
-            value = "/webhooks/{id}",
+            value = "/webhooks/git/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public WebhookEvent getWebhook(
+    public GitWebhook getGitWebhook(
             @Parameter(
-                    description = "ID of the webhook to retrieve.", 
+                    description = "ID of the Git webhook to retrieve.", 
                     required = true)
             @PathVariable(required = true) long id) {
-        LOGGER.debug("New HTTP GET request: Get webhook by ID.");
-        return webhookEventRepository.findById(id)
-                .orElseThrow(() -> new WebhookEventNotFoundException(id));
+        LOGGER.debug("New HTTP GET request: Get Git webhook by ID.");
+        return gitWebhookRepository.findById(id)
+                .orElseThrow(() -> new GitWebhookNotFoundException(id));
     }
 
     /**************************************************************************
-     * 1.3. GET - Get Ontology Webhooks
+     * 1.3. GET - Get Ontology Git Webhooks
      *************************************************************************/
 
     @Operation(
-            summary = "Get all ontology webhooks",
-            description = "Get all webhooks for a specific ontology consumed by "
+            summary = "Get all ontology Git webhooks",
+            description = "Get all Git webhooks for a specific ontology consumed by "
                     + "OntoPop given the ontology ID.",
             tags = {"ontology", "webhook"})
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Ontology webhooks successfully retrieved.", 
+                            description = "Ontology Git webhooks successfully retrieved.", 
                             content = @Content(
                                     array = @ArraySchema(
-                                            schema = @Schema(implementation = WebhookEvent.class)))),
+                                            schema = @Schema(implementation = GitWebhook.class)))),
                     @ApiResponse(
                             responseCode = "401",
-                            description = "Retrieval of ontology webhooks unauthorized.", 
+                            description = "Retrieval of ontology Git webhooks unauthorized.", 
                             content = @Content), 
                     @ApiResponse(
                             responseCode = "500",
@@ -148,42 +148,42 @@ public class OntologyWebhookEventManagementController {
                             content = @Content)})
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(
-            value = "/{ontologyId}/webhooks",
+            value = "/{ontologyId}/webhooks/git",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<WebhookEvent> getOntologyWebhooks(
+    public List<GitWebhook> getOntologyGitWebhooks(
             @Parameter(
-                    description = "ID of the ontology whose webhooks will be retrieved.", 
+                    description = "ID of the ontology whose Git webhooks will be retrieved.", 
                     required = true)
             @PathVariable(required = true) int ontologyId) {
-        LOGGER.debug("New HTTP GET request: Get all ontology webhooks.");
-        return webhookEventRepository.findByOntologyId(ontologyId);
+        LOGGER.debug("New HTTP GET request: Get all ontology Git webhooks.");
+        return gitWebhookRepository.findByOntologyId(ontologyId);
     }
 
     /**************************************************************************
-     * 1.4. GET - Get Ontology Webhook
+     * 1.4. GET - Get Ontology Git Webhook
      *************************************************************************/
 
     @Operation(
-            summary = "Get ontology webhook",
-            description = "Get a specific webhook for a specific ontology "
+            summary = "Get ontology Git webhook",
+            description = "Get a specific Git webhook for a specific ontology "
                     + "consumed by OntoPop given the ontology ID and "
-                    + "webhook event ID.",
+                    + "Git webhook ID.",
             tags = {"ontology", "webhook"})
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Ontology webhook successfully retrieved.", 
+                            description = "Ontology Git webhook successfully retrieved.", 
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE, 
-                                    schema = @Schema(implementation = WebhookEvent.class))),
+                                    schema = @Schema(implementation = GitWebhook.class))),
                     @ApiResponse(
                             responseCode = "401",
-                            description = "Retrieval of ontology webhook unauthorized.", 
+                            description = "Retrieval of ontology Git webhook unauthorized.", 
                             content = @Content),
                     @ApiResponse(
                             responseCode = "404",
-                            description = "Ontology webhook not found.", 
+                            description = "Ontology Git webhook not found.", 
                             content = @Content), 
                     @ApiResponse(
                             responseCode = "500",
@@ -191,22 +191,22 @@ public class OntologyWebhookEventManagementController {
                             content = @Content)})
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(
-            value = "/{ontologyId}/webhooks/{webhookEventId}",
+            value = "/{ontologyId}/webhooks/git/{gitWebhookId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public WebhookEvent getOntologyWebhook(
+    public GitWebhook getOntologyGitWebhook(
             @Parameter(
-                    description = "ID of the ontology whose webhook will be retrieved.", 
+                    description = "ID of the ontology whose Git webhook will be retrieved.", 
                     required = true)
             @PathVariable(required = true) int ontologyId,
             @Parameter(
-                    description = "ID of the webhook to be retrieved associated with this ontology.", 
+                    description = "ID of the Git webhook to be retrieved associated with this ontology.", 
                     required = true)
-            @PathVariable(required = true) long webhookEventId) {
-        LOGGER.debug("New HTTP GET request: Get ontology webhooks.");
-        return webhookEventRepository
-                .findByOntologyIdAdnWebhookEventId(ontologyId, webhookEventId)
-                .orElseThrow(() -> new WebhookEventNotFoundException(
-                        webhookEventId));
+            @PathVariable(required = true) long gitWebhookId) {
+        LOGGER.debug("New HTTP GET request: Get ontology Git webhooks.");
+        return gitWebhookRepository
+                .findByOntologyIdAndGitWebhookId(ontologyId, gitWebhookId)
+                .orElseThrow(() -> new GitWebhookNotFoundException(
+                        gitWebhookId));
     }
 
 }

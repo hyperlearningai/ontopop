@@ -20,8 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import ai.hyperlearning.ontopop.data.jpa.repositories.WebhookEventRepository;
-import ai.hyperlearning.ontopop.model.git.WebhookEvent;
+import ai.hyperlearning.ontopop.data.jpa.repositories.GitWebhookRepository;
+import ai.hyperlearning.ontopop.model.git.GitWebhook;
 import ai.hyperlearning.ontopop.storage.ObjectStorageService;
 import ai.hyperlearning.ontopop.storage.ObjectStorageServiceFactory;
 import ai.hyperlearning.ontopop.storage.ObjectStorageServiceType;
@@ -40,7 +40,7 @@ public class OntologyDownloaderService {
             LoggerFactory.getLogger(OntologyDownloaderService.class);
     
     @Autowired
-    private WebhookEventRepository webhookEventRepository;
+    private GitWebhookRepository gitWebhookRepository;
     
     @Autowired
     private ObjectStorageServiceFactory objectStorageServiceFactory;
@@ -72,42 +72,42 @@ public class OntologyDownloaderService {
     }
     
     /**
-     * Identify and return the latest webhook event object
+     * Identify and return the latest Git webhook object
      * for a given ontology ID.
      * @param ontologyId
      * @return
      */
     
-    public WebhookEvent getLatestWebhookEvent(int ontologyId) {
-        List<WebhookEvent> webhookEvents = webhookEventRepository
+    public GitWebhook getLatestGitWebhook(int ontologyId) {
+        List<GitWebhook> gitWebhooks = gitWebhookRepository
                 .findByOntologyId(ontologyId);
-        if ( !webhookEvents.isEmpty() ) {
-            Optional<WebhookEvent> webhookEvent = webhookEvents.stream()
+        if ( !gitWebhooks.isEmpty() ) {
+            Optional<GitWebhook> gitWebhook = gitWebhooks.stream()
                     .collect(Collectors.maxBy(
                             Comparator.comparingLong(
-                                    WebhookEvent::getId)));
-            if (webhookEvent.isPresent())
-                return webhookEvent.get();
+                                    GitWebhook::getId)));
+            if (gitWebhook.isPresent())
+                return gitWebhook.get();
         }
         return null;
     }
 
     /**
      * Retrieve an OWL file from the object storage ingested container
-     * given a webhook event object, and return the locally downloaded
+     * given a Git webhook object, and return the locally downloaded
      * absolute file path.
-     * @param webhookEvent
+     * @param gitWebhook
      * @return
      * @throws IOException
      */
     
-    public String retrieveOwlFile(WebhookEvent webhookEvent) 
+    public String retrieveOwlFile(GitWebhook gitWebhook) 
             throws IOException {
         
-        String key = webhookEvent.getOntology().getId() 
-                + "_" + webhookEvent.getId();
-        String processedFilename = webhookEvent.getOntology()
-                .generateFilenameForPersistence(webhookEvent.getId());
+        String key = gitWebhook.getOntology().getId() 
+                + "_" + gitWebhook.getId();
+        String processedFilename = gitWebhook.getOntology()
+                .generateFilenameForPersistence(gitWebhook.getId());
         String readObjectUri = (objectStorageServiceType.equals(
                 ObjectStorageServiceType.LOCAL)) ? 
                         storageLocalBaseUri + File.separator 

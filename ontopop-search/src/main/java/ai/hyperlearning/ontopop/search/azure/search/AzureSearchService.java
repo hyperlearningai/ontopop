@@ -198,9 +198,9 @@ public class AzureSearchService implements SearchService {
             azureVertex.setVertexKey(properties.containsKey("vertexKey")
                     ? (String) properties.get("vertexKey")
                     : null);
-            azureVertex.setLatestWebhookEventId(
-                    properties.containsKey("latestWebhookEventId")
-                            ? (Long) properties.get("latestWebhookEventId")
+            azureVertex.setLatestGitWebhookId(
+                    properties.containsKey("latestGitWebhookId")
+                            ? (Long) properties.get("latestGitWebhookId")
                             : null);
 
             // Example domain-specific vertex properties

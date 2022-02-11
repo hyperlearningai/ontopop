@@ -15,7 +15,7 @@ public class SimpleOntology implements Serializable {
 
 	private static final long serialVersionUID = -2164606179650762875L;
 	private int id;
-	private long latestWebhookEventId;
+	private long latestGitWebhookId;
 	
 	// Map between annotation property IRI and Simple Annotation Property objects
 	private Map<String, SimpleAnnotationProperty> simpleAnnotationPropertyMap = new LinkedHashMap<>();
@@ -32,12 +32,12 @@ public class SimpleOntology implements Serializable {
 	
 	public SimpleOntology(
 			int id, 
-			long latestWebhookEventId, 
+			long latestGitWebhookId, 
 			Map<String, SimpleAnnotationProperty> simpleAnnotationPropertyMap,
 			Map<String, SimpleObjectProperty> simpleObjectPropertyMap, 
 			Map<String, SimpleClass> simpleClassMap) {
 		this.id = id;
-		this.latestWebhookEventId = latestWebhookEventId;
+		this.latestGitWebhookId = latestGitWebhookId;
 		this.simpleAnnotationPropertyMap = simpleAnnotationPropertyMap;
 		this.simpleObjectPropertyMap = simpleObjectPropertyMap;
 		this.simpleClassMap = simpleClassMap;
@@ -51,12 +51,12 @@ public class SimpleOntology implements Serializable {
 		this.id = id;
 	}
 
-	public long getLatestWebhookEventId() {
-		return latestWebhookEventId;
+	public long getLatestGitWebhookId() {
+		return latestGitWebhookId;
 	}
 
-	public void setLatestWebhookEventId(long latestWebhookEventId) {
-		this.latestWebhookEventId = latestWebhookEventId;
+	public void setLatestGitWebhookId(long latestGitWebhookId) {
+		this.latestGitWebhookId = latestGitWebhookId;
 	}
 
 	public Map<String, SimpleAnnotationProperty> getSimpleAnnotationPropertyMap() {
@@ -111,7 +111,7 @@ public class SimpleOntology implements Serializable {
 	public String toString() {
 		return "SimpleOntology ["
 				+ "id=" + id + ", "
-				+ "latestWebhookEventId=" + latestWebhookEventId + ", "
+				+ "latestGitWebhookId=" + latestGitWebhookId + ", "
 				+ "simpleAnnotationPropertyMap=" + simpleAnnotationPropertyMap + ", "
 				+ "simpleObjectPropertyMap=" + simpleObjectPropertyMap + ", "
 				+ "simpleClassMap=" + simpleClassMap 

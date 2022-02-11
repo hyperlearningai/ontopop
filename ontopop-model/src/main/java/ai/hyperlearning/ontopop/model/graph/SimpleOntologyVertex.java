@@ -8,8 +8,8 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 /**
  * Simple Property Graph model representation of an OWL Class
@@ -29,7 +29,7 @@ public class SimpleOntologyVertex implements Serializable {
 	private Integer ontologyId;
 	private String vertexKey;
 	private long vertexId;
-	private long latestWebhookEventId;
+	private long latestGitWebhookId;
 	private Map<String, Object> properties = new LinkedHashMap<>();
 	
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -44,12 +44,12 @@ public class SimpleOntologyVertex implements Serializable {
 	public SimpleOntologyVertex(
 			String iri, 
 			int ontologyId, 
-			long latestWebhookEventId, 
+			long latestGitWebhookId, 
 			Map<String, Object> properties) {
 		this.iri = iri;
 		this.ontologyId = ontologyId;
 		this.vertexKey = iri + VERTEX_KEY_DELIMITER + ontologyId;
-		this.latestWebhookEventId = latestWebhookEventId;
+		this.latestGitWebhookId = latestGitWebhookId;
 		this.properties = properties;
 	}
 
@@ -94,12 +94,12 @@ public class SimpleOntologyVertex implements Serializable {
 		return vertexId;
 	}
 
-	public long getLatestWebhookEventId() {
-		return latestWebhookEventId;
+	public long getLatestGitWebhookId() {
+		return latestGitWebhookId;
 	}
 
-	public void setLatestWebhookEventId(long latestWebhookEventId) {
-		this.latestWebhookEventId = latestWebhookEventId;
+	public void setLatestGitWebhookId(long latestGitWebhookId) {
+		this.latestGitWebhookId = latestGitWebhookId;
 	}
 
 	public Map<String, Object> getProperties() {
@@ -115,7 +115,7 @@ public class SimpleOntologyVertex implements Serializable {
 		this.properties.put("ontologyId", this.ontologyId);
 		this.properties.put("vertexKey", this.vertexKey);
 		this.properties.put("vertexId", this.vertexId);
-		this.properties.put("latestWebhookEventId", this.latestWebhookEventId);
+		this.properties.put("latestGitWebhookId", this.latestGitWebhookId);
 	}
 
 	public LocalDateTime getDateLastUpdated() {
@@ -162,7 +162,7 @@ public class SimpleOntologyVertex implements Serializable {
 				+ "ontologyId=" + ontologyId + ", "
 				+ "vertexKey=" + vertexKey + ", "
 				+ "vertexId=" + vertexId + ", "
-				+ "latestWebhookEventId=" + latestWebhookEventId + ", "
+				+ "latestGitWebhookId=" + latestGitWebhookId + ", "
 				+ "properties=" + properties + ", "
 				+ "dateLastUpdated=" + dateLastUpdated 
 				+ "]";

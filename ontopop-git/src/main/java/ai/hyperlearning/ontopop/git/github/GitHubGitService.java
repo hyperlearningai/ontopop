@@ -17,8 +17,8 @@ import com.google.common.base.Strings;
 import com.google.common.hash.Hashing;
 
 import ai.hyperlearning.ontopop.git.GitService;
-import ai.hyperlearning.ontopop.model.git.WebhookEvent;
-import ai.hyperlearning.ontopop.model.git.github.GitHubWebhookEvent;
+import ai.hyperlearning.ontopop.model.git.GitWebhook;
+import ai.hyperlearning.ontopop.model.git.github.GitHubWebhook;
 import reactor.core.publisher.Mono;
 
 /**
@@ -46,24 +46,23 @@ public class GitHubGitService implements GitService {
     private WebClient webClient;
 
     /**
-     * Parse a GitHub webhook JSON request payload into a WebhookEvent object
+     * Parse a GitHub webhook JSON request payload into a GitWebhook object
      */
 
     @Override
-    public WebhookEvent parseWebhookPayload(Map<String, String> headers,
+    public GitWebhook parseWebhookPayload(Map<String, String> headers,
             String payload, String path) throws IOException {
 
-        // Map the payload to a GitHubWebhookEvent object
+        // Map the payload to a GitHubWebhook object
         ObjectMapper mapper = new ObjectMapper();
         mapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
-        GitHubWebhookEvent gitHubWebhookEvent =
-                mapper.readValue(payload, GitHubWebhookEvent.class);
+        GitHubWebhook gitHubWebhook =
+                mapper.readValue(payload, GitHubWebhook.class);
 
-        // Convert the GitHubWebhookEvent object to a
-        // general WebhookEvent object
+        // Convert the GitHubWebhook object to a general GitWebhook object
         String requestHeaderSignature =
                 headers.get(WEBHOOK_REQUEST_HEADER_SIGNATURE_KEY);
-        return gitHubWebhookEvent.toWebhookEvent(path, requestHeaderSignature);
+        return gitHubWebhook.toGitWebhook(path, requestHeaderSignature);
 
     }
 
@@ -78,26 +77,26 @@ public class GitHubGitService implements GitService {
             String owner, String branch) throws IOException {
 
         // Parse the payload
-        WebhookEvent webhookEvent = parseWebhookPayload(headers, payload, path);
+        GitWebhook gitWebhook = parseWebhookPayload(headers, payload, path);
 
         // Validate the payload hash
         boolean validPayloadHash =
-                isValidPayloadHash(webhookEvent, payload, secret);
+                isValidPayloadHash(gitWebhook, payload, secret);
 
         // Validate the repository name
-        boolean validRepositoryName = repo.equals(webhookEvent.getRepoName());
+        boolean validRepositoryName = repo.equals(gitWebhook.getRepoName());
 
         // Validate the repository owner
         boolean validRepositoryOwner =
-                owner.equals(webhookEvent.getRepoOwner());
+                owner.equals(gitWebhook.getRepoOwner());
 
         // Validate the repository branch
-        boolean validBranch = branch.equals(webhookEvent.getRepoBranch());
+        boolean validBranch = branch.equals(gitWebhook.getRepoBranch());
 
         // Validate that at least one of the payload commits modifies
         // the relevant resource path
         boolean relevantCommitExists = !Strings
-                .isNullOrEmpty(webhookEvent.getLatestRelevantCommitId());
+                .isNullOrEmpty(gitWebhook.getLatestRelevantCommitId());
 
         return validPayloadHash && validRepositoryName && validRepositoryOwner
                 && validBranch && relevantCommitExists;
@@ -108,19 +107,19 @@ public class GitHubGitService implements GitService {
      * Validate the payload hash in the GitHub webhook request header using the
      * secret token defined when setting up the webhook
      * 
-     * @param webhookEvent
+     * @param gitWebhook
      * @param payload
      * @param secret
      * @return
      */
 
-    private boolean isValidPayloadHash(WebhookEvent webhookEvent,
+    private boolean isValidPayloadHash(GitWebhook gitWebhook,
             String payload, String secret) {
 
         String payloadHmacSha256 = Hashing.hmacSha256(secret.getBytes())
                 .newHasher().putString(payload, StandardCharsets.UTF_8).hash()
                 .toString();
-        String signature = webhookEvent.getRequestHeaderSignature();
+        String signature = gitWebhook.getRequestHeaderSignature();
         return signature.equals(WEBHOOK_REQUEST_HEADER_SIGNATURE_VALUE_PREFIX
                 .concat(payloadHmacSha256));
 

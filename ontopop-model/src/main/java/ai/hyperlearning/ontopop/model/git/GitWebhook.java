@@ -24,21 +24,21 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import ai.hyperlearning.ontopop.model.ontology.Ontology;
 
 /**
- * Git Webhook Event Model
+ * Git Webhook Model
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
 @Entity
-@Table(name = "webhookevents")
-public class WebhookEvent implements Serializable {
+@Table(name = "gitwebhooks")
+public class GitWebhook implements Serializable {
 
 	private static final long serialVersionUID = 4064948544862677934L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "webhookevent_id")
+	@Column(name = "webhook_id")
 	private long id;
 	
 	@NotNull
@@ -107,7 +107,7 @@ public class WebhookEvent implements Serializable {
     @JoinColumn(name="ontology_id", nullable=false)
     private Ontology ontology;
 	
-	public WebhookEvent() {
+	public GitWebhook() {
 		
 	}
 
@@ -317,7 +317,7 @@ public class WebhookEvent implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		WebhookEvent other = (WebhookEvent) obj;
+		GitWebhook other = (GitWebhook) obj;
 		if (id != other.id)
 			return false;
 		return true;
@@ -325,7 +325,7 @@ public class WebhookEvent implements Serializable {
 
 	@Override
 	public String toString() {
-		return "WebhookEvent ["
+		return "GitWebhook ["
 				+ "id=" + id + ", "
 				+ "ontologyId=" + (ontology == null ? "" : ontology.getId())
 				+ "ref=" + ref + ", "
