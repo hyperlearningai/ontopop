@@ -46,7 +46,7 @@ public class WebProtegeExporterFunction implements Consumer<String> {
                     + "webProtegeProjectUpdatedConsumptionChannel channel.");
             LOGGER.debug("WebProtegeWebhook message payload: {}", message);
 
-            // Run the WebProtege Export service pipeline
+            // Run the WebProtege Exporter service pipeline
             webProtegeExporterService.run(webProtegeWebhook);
 
         } catch (JsonProcessingException e) {
@@ -58,6 +58,13 @@ public class WebProtegeExporterFunction implements Consumer<String> {
                     + "updated webhook. Skipping.");
 
         }
+        
+    }
+    
+    public void acceptPojo(WebProtegeWebhook webProtegeWebhook) {
+        
+        // Run the WebProtege Exporter service pipeline
+        webProtegeExporterService.run(webProtegeWebhook);
         
     }
 

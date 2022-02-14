@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import ai.hyperlearning.ontopop.data.ontology.webprotege.exporter.function.WebProtegeExporterFunction;
 import ai.hyperlearning.ontopop.model.webprotege.WebProtegeWebhook;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -36,6 +38,9 @@ public class WebProtegeExporterController {
     
     private static final Logger LOGGER =
             LoggerFactory.getLogger(WebProtegeExporterController.class);
+    
+    @Autowired
+    private WebProtegeExporterFunction webProtegeExporterFunction;
     
     /**************************************************************************
      * 1. POST - Push WebProtege project updates to Git
@@ -74,6 +79,9 @@ public class WebProtegeExporterController {
         // Log the payload for debugging purposes
         LOGGER.debug("WebProtege webhook payload received: {}", 
                 webProtegeWebhookPayload);
+        
+        // Run the WebProtege Exporter service
+        webProtegeExporterFunction.acceptPojo(webProtegeWebhookPayload);
         
         // Return a response entity
         return new ResponseEntity<String>(
