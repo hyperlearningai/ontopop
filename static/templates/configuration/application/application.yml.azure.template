@@ -34,6 +34,13 @@ spring:
                     destination: webprotege.project.updated
                     group: webprotege.project.updated.consumers
                     binder: azure_service_bus
+                gitHubRepositoryUpdatedPublicationChannel:
+                    destination: github.repository.updated
+                    binder: azure_service_bus
+                gitHubRepositoryUpdatedConsumptionChannel
+                    destination: github.repository.updated
+                    group: github.repository.updated.consumers
+                    binder: azure_service_bus
                 ingestedPublicationChannel:
                     destination: ontopop.data.ingested
                     binder: azure_service_bus
@@ -95,6 +102,9 @@ spring:
                 topic:
                     bindings:
                         webProtegeProjectUpdatedConsumptionChannel:
+                            consumer:
+                                checkpoint-mode: MANUAL
+                        gitHubRepositoryUpdatedConsumptionChannel:
                             consumer:
                                 checkpoint-mode: MANUAL
                         ingestedConsumptionChannel:

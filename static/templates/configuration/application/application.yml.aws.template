@@ -34,6 +34,13 @@ spring:
                     destination: webprotege.project.updated
                     group: webprotege.project.updated.consumers
                     binder: rabbitmq
+                gitHubRepositoryUpdatedPublicationChannel:
+                    destination: github.repository.updated
+                    binder: rabbitmq
+                gitHubRepositoryUpdatedConsumptionChannel
+                    destination: github.repository.updated
+                    group: github.repository.updated.consumers
+                    binder: rabbitmq
                 ingestedPublicationChannel:
                     destination: ontopop.data.ingested
                     binder: rabbitmq
@@ -95,6 +102,9 @@ spring:
                 topic:
                     bindings:
                         webProtegeProjectUpdatedConsumptionChannel:
+                            consumer:
+                                checkpoint-mode: MANUAL
+                        gitHubRepositoryUpdatedConsumptionChannel:
                             consumer:
                                 checkpoint-mode: MANUAL
                         ingestedConsumptionChannel:
