@@ -1,5 +1,6 @@
 package ai.hyperlearning.ontopop.data.ontology.webprotege.exporter;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -39,6 +40,9 @@ public class WebProtegeExporterService {
     
     @Autowired
     private WebProtegeExporterUploadService webProtegeExporterUploadService;
+    
+    @Autowired
+    private WebProtegeExporterGitPushService webProtegeExporterGitPushService;
     
     private WebProtegeWebhook webProtegeWebhook;
     private List<Ontology> ontologies;
@@ -87,18 +91,26 @@ public class WebProtegeExporterService {
     private void validate() {
         
         // Check that there exists an ontology with this WebProtege project ID
+        LOGGER.info("Validating that there exists at least one ontology with "
+                + "the following WebProtege project ID: {}", 
+                webProtegeWebhook.getProjectId());
         ontologies = ontologyRepository.findByWebProtegeProjectId(
                 webProtegeWebhook.getProjectId());
+        LOGGER.info("Found {} ontologies with this WebProtege project ID.", 
+                ontologies.size());
+        
+        List<WebProtegeWebhook> webProtegeWebhooks = new ArrayList<>();
+        int maxCurrentRevisionNumber = 0;
         if ( !ontologies.isEmpty() ) {
         
             // Get the latest revision number already processed for this 
             // WebProtege project ID
-            List<WebProtegeWebhook> webProtegeWebhooks = webProtegeWebhookRepository
+            webProtegeWebhooks = webProtegeWebhookRepository
                     .findByWebProtegeProjectId(webProtegeWebhook.getProjectId());
             if ( webProtegeWebhooks.isEmpty() )
                 isLaterWebProtegeRevision = true;
             else {
-                int maxCurrentRevisionNumber = webProtegeWebhooks.stream()
+                maxCurrentRevisionNumber = webProtegeWebhooks.stream()
                     .max(Comparator.comparing(
                             WebProtegeWebhook::getRevisionNumber))
                     .get().getRevisionNumber();
@@ -109,6 +121,19 @@ public class WebProtegeExporterService {
             
         }
         
+        // Explicit logging
+        LOGGER.info("Current highest revision number already processed for "
+                + "this WebProtege project ID: {}", 
+                webProtegeWebhooks.isEmpty() ? "None" : 
+                    maxCurrentRevisionNumber);
+        LOGGER.info("Revision number received from WebProtege: {}", 
+                webProtegeWebhook.getRevisionNumber());
+        if ( isLaterWebProtegeRevision )
+            LOGGER.info("Proceeding with the export from WebProtege.");
+        else
+            LOGGER.info("A higher revision number has already been processed "
+                    + "for this WebProtege project ID.");
+        
     }
     
     /**
@@ -117,10 +142,15 @@ public class WebProtegeExporterService {
      */
     
     private void download() throws Exception {
-        if ( isLaterWebProtegeRevision )
+        if ( isLaterWebProtegeRevision ) {
+            LOGGER.info("Exporting revision number {} for WebProtege project "
+                    + "ID {} from WebProtege in RDF/XML OWL format.", 
+                    webProtegeWebhook.getRevisionNumber(), 
+                    webProtegeWebhook.getProjectId());
             extractedOwlAbsolutePath = webProtegeExporterDownloadService.run(
                     webProtegeWebhook.getProjectId(), 
                     webProtegeWebhook.getRevisionNumber());
+        }
     }
     
     /**
@@ -129,26 +159,36 @@ public class WebProtegeExporterService {
      */
     
     private void upload() throws Exception {
-        if ( isLaterWebProtegeRevision && !extractedOwlAbsolutePath.isBlank() )
+        if ( isLaterWebProtegeRevision && 
+                !extractedOwlAbsolutePath.isBlank() ) {
+            LOGGER.info("Uploading revision number {} for WebProtege project "
+                    + "ID {} to object storage.", 
+                    webProtegeWebhook.getRevisionNumber(), 
+                    webProtegeWebhook.getProjectId());
             webProtegeExporterUploadService.run(extractedOwlAbsolutePath);
+        }
     }
     
     /**
      * Push the exported ontology to the relevant Git repositories
+     * @throws Exception 
      */
     
-    private void gitPush() {
+    private void gitPush() throws Exception {
         
         if ( isLaterWebProtegeRevision ) {
             
             // Iterate over all the ontologies with this WebProtege project ID
             for ( Ontology ontology :  ontologies  ) {
                 
-                // Get the relevant Git repository details
-                String repoUrl = ontology.getRepoUrl();
-                String repoBranch = ontology.getRepoBranch();
-                String repoResourcePath = ontology.getRepoResourcePath();
-                
+                // Update the file in the relevant Git repository
+                LOGGER.info("Pushing revision number {} for WebProtege project "
+                        + "ID {} to the following Git repository: {}", 
+                        webProtegeWebhook.getRevisionNumber(), 
+                        webProtegeWebhook.getProjectId(), 
+                        ontology.getRepoUrl());
+                webProtegeExporterGitPushService.run(
+                        webProtegeWebhook, ontology, extractedOwlAbsolutePath);
                 
             }
             

@@ -129,8 +129,8 @@ public class WebProtegeExporterUploadService {
         String targetFilepath = writeDirectoryUri + "/" + exportedFilename;
         objectStorageService.uploadObject(
                 extractedOwlAbsolutePath, targetFilepath);
-        LOGGER.debug(
-                "Successfully persisted exported ontology resource to '{}'.",
+        LOGGER.debug("Successfully uploaded exported ontology resource "
+                + "from '{}' to '{}'.", extractedOwlAbsolutePath, 
                 targetFilepath);
         LOGGER.info("WebProtege exporter upload service - "
                 + "Finished the persistence of the exported resource.");

@@ -255,6 +255,8 @@ public class WebProtegeExporterDownloadService {
             .share().block();
         downloadedZipAbsolutePath = downloadFilePath
                 .toAbsolutePath().toString();
+        LOGGER.info("Downloaded revision number {} for WebProtege project ID "
+                + "{} to: {}", revision, projectId, downloadedZipAbsolutePath);
         
     }
     
@@ -285,6 +287,8 @@ public class WebProtegeExporterDownloadService {
         
         // Close the zip file
         zipFile.close();
+        LOGGER.info("Extracted revision number {} for WebProtege project ID "
+                + "{} to: {}", revision, projectId, extractedOwlAbsolutePath);
         
     }
     
