@@ -94,7 +94,7 @@ public class OntologyIngestorAzureFunctionHandler
      * @param context
      */
     
-    @FunctionName("ontologyIngestorFunction")
+    @FunctionName("ontologyIngestorFunctionForMessagingTriggers")
     public void run(
             @ServiceBusTopicTrigger(
                     name = "message",
