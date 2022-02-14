@@ -75,9 +75,6 @@ public class WebProtegeExporterService {
             // 4. Push the exported ontology to the relevant Git repositories
             gitPush();
             
-            // 5. Insert a new database record
-            insert();
-            
         } catch (Exception e) {
             LOGGER.error("WebProtege export service encountered an error.", e);
         }
@@ -193,19 +190,16 @@ public class WebProtegeExporterService {
                 webProtegeExporterGitPushService.run(
                         webProtegeWebhook, ontology, extractedOwlAbsolutePath);
                 
+                // Insert a new database record for this WebProtege
+                // webhook object
+                WebProtegeWebhook currentWebProtegeWebhook = webProtegeWebhook;
+                currentWebProtegeWebhook.setOntology(ontology);
+                webProtegeWebhookRepository.save(currentWebProtegeWebhook);
+                
             }
             
         }
         
-    }
-    
-    /**
-     * Insert a new database record
-     */
-    
-    private void insert() {
-        if ( isLaterWebProtegeRevision )
-            webProtegeWebhookRepository.save(webProtegeWebhook);
     }
 
 }
