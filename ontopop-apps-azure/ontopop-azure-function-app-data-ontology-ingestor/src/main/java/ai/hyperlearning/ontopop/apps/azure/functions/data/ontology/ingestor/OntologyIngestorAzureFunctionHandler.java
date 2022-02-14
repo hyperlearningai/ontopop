@@ -32,6 +32,10 @@ public class OntologyIngestorAzureFunctionHandler
         extends FunctionInvoker<OntologyIngestorFunctionModel, Void> {
     
     private static final String PAYLOAD_HEADERS_KEY = "headers";
+    private static final String HEADERS_GITHUB_WEBHOOK_SOURCE_KEY = 
+            "x-ontopop-github-webhook-source";
+    private static final String HEADERS_GITHUB_WEBHOOK_SOURCE_GITHUB_API_VALUE = 
+            "github-api";
 
     /**
      * HTTP TRIGGER
@@ -116,6 +120,16 @@ public class OntologyIngestorAzureFunctionHandler
         @SuppressWarnings("unchecked")
         Map<String, String> headers = gson.fromJson(
                 payloadJson.get(PAYLOAD_HEADERS_KEY), Map.class);
+        
+        // Add an explicit header to indicate that the webhook was 
+        // instigated by using the GitHub API e.g. HTTP PUT file as 
+        // used by the WebProtege exporter service. 
+        // This is required as otherwise our subsequent validation of the
+        // GitHub webhook payload hash (sha256) using the given webhook
+        // secret will fail. If the following header is set, then we
+        // forgo the validation of the payload hash during validation checks.
+        headers.put(HEADERS_GITHUB_WEBHOOK_SOURCE_KEY, 
+                HEADERS_GITHUB_WEBHOOK_SOURCE_GITHUB_API_VALUE);
         
         // Construct an OntologyIngestorFunctionModel object
         OntologyIngestorFunctionModel ontologyIngestorFunctionModel = 

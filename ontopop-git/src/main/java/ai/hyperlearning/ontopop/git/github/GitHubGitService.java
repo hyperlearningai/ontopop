@@ -7,6 +7,8 @@ import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -40,6 +42,9 @@ import reactor.core.publisher.Mono;
 
 @Service
 public class GitHubGitService implements GitService {
+    
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(GitHubGitService.class);
 
     private static final String GET_FILE_RESOURCE_URI =
             "/repos/{owner}/{repo}/contents/{path}?ref={branch}";
@@ -55,6 +60,10 @@ public class GitHubGitService implements GitService {
             "x-hub-signature-256";
     private static final String WEBHOOK_REQUEST_HEADER_SIGNATURE_VALUE_PREFIX =
             "sha256=";
+    private static final String HEADERS_GITHUB_WEBHOOK_SOURCE_KEY = 
+            "x-ontopop-github-webhook-source";
+    private static final String HEADERS_GITHUB_WEBHOOK_SOURCE_GITHUB_API_VALUE = 
+            "github-api";
 
     @Autowired
     @Qualifier("gitHubWebClient")
@@ -89,29 +98,43 @@ public class GitHubGitService implements GitService {
     @Override
     public boolean isValidWebhookPayload(Map<String, String> headers,
             String payload, String path, String secret, String repo,
-            String owner, String branch) throws IOException {
+            String owner, String branch) 
+                    throws IOException {
 
         // Parse the payload
         GitWebhook gitWebhook = parseWebhookPayload(headers, payload, path);
 
         // Validate the payload hash
-        boolean validPayloadHash =
-                isValidPayloadHash(gitWebhook, payload, secret);
+        boolean validPayloadHash = false;
+        if ( headers.containsKey(HEADERS_GITHUB_WEBHOOK_SOURCE_KEY) ) {
+            if ( headers.get(HEADERS_GITHUB_WEBHOOK_SOURCE_KEY).equals(
+                    HEADERS_GITHUB_WEBHOOK_SOURCE_GITHUB_API_VALUE) ) {
+                validPayloadHash = true;
+                LOGGER.debug("Skipping validation of the payload hash.");
+            }
+        } else {
+            validPayloadHash = isValidPayloadHash(gitWebhook, payload, secret);   
+            LOGGER.debug("Valid Payload Hash: {}", validPayloadHash);
+        }
 
         // Validate the repository name
         boolean validRepositoryName = repo.equals(gitWebhook.getRepoName());
+        LOGGER.debug("Valid Repository Name: {}", validRepositoryName);
 
         // Validate the repository owner
         boolean validRepositoryOwner =
                 owner.equals(gitWebhook.getRepoOwner());
+        LOGGER.debug("Valid Repository Owner: {}", validRepositoryOwner);
 
         // Validate the repository branch
         boolean validBranch = branch.equals(gitWebhook.getRepoBranch());
+        LOGGER.debug("Valid Repository Branch: {}", validBranch);
 
         // Validate that at least one of the payload commits modifies
         // the relevant resource path
         boolean relevantCommitExists = !Strings
                 .isNullOrEmpty(gitWebhook.getLatestRelevantCommitId());
+        LOGGER.debug("Relevant Commit Exists: {}", relevantCommitExists);
 
         return validPayloadHash && validRepositoryName && validRepositoryOwner
                 && validBranch && relevantCommitExists;
