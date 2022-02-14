@@ -16,6 +16,7 @@ import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDeletionException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDownloadException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyNotFoundException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyUpdateSecretDataException;
+import ai.hyperlearning.ontopop.exceptions.triplestore.InvalidSparqlQueryException;
 import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeWebhookNotFoundException;
 
 /**
@@ -50,6 +51,12 @@ public class CustomGlobalExceptionHandler
     public void springHandleAlreadyExistsException(HttpServletResponse response)
             throws IOException {
         response.sendError(HttpStatus.CONFLICT.value());
+    }
+    
+    @ExceptionHandler({InvalidSparqlQueryException.class})
+    public void springHandleBadRequest(HttpServletResponse response) 
+            throws IOException {
+        response.sendError(HttpStatus.BAD_REQUEST.value());
     }
 
 }

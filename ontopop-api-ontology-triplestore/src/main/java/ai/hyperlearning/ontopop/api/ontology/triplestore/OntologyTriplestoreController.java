@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +29,7 @@ import ai.hyperlearning.ontopop.data.jpa.repositories.GitWebhookRepository;
 import ai.hyperlearning.ontopop.data.ontology.downloader.OntologyDownloaderService;
 import ai.hyperlearning.ontopop.exceptions.git.GitWebhookNotFoundException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDownloadException;
+import ai.hyperlearning.ontopop.exceptions.triplestore.InvalidSparqlQueryException;
 import ai.hyperlearning.ontopop.model.git.GitWebhook;
 import ai.hyperlearning.ontopop.model.triplestore.OntologyTriplestoreSparqlQuery;
 import ai.hyperlearning.ontopop.triplestore.TriplestoreService;
@@ -90,6 +92,14 @@ public class OntologyTriplestoreController {
      *  application/sparql-results+xml
      *************************************************************************/
     
+    /**
+     * 1.1. JSON Request Body
+     * @param acceptHeader
+     * @param id
+     * @param ontologyTriplestoreSparqlQuery
+     * @return
+     */
+    
     @Operation(
             summary = "Triplestore SPARQL Query",
             description = "Execute a general SPARQL query against the "
@@ -109,6 +119,7 @@ public class OntologyTriplestoreController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(
             value = "/{id}/triplestore/data/query/sparql", 
+            consumes = MediaType.APPLICATION_JSON_VALUE, 
             produces = {
                     MediaType.APPLICATION_JSON_VALUE, 
                     MediaType.APPLICATION_XML_VALUE, 
@@ -116,7 +127,7 @@ public class OntologyTriplestoreController {
                     "application/sparql-results+xml"})
     public ResponseEntity<String> query(
             @Parameter(
-                    description = "Content type that should be returned if possible.", 
+                    description = "Content type that should be returned.", 
                     required = false)
             @RequestHeader(value = "Accept", required = false) String acceptHeader, 
             @Parameter(
@@ -128,10 +139,87 @@ public class OntologyTriplestoreController {
                     required = true, 
                     schema = @Schema(implementation = OntologyTriplestoreSparqlQuery.class))
             @Valid @RequestBody(required = true) OntologyTriplestoreSparqlQuery ontologyTriplestoreSparqlQuery) {
-        String sparqlQuery = ontologyTriplestoreSparqlQuery.getQuery();
-        LOGGER.debug("New HTTP POST request - SPARQL query request for ontology ID {}: {}", 
-                id, sparqlQuery);
+        String sparqlQuery = null;
+        
+        // JSON Request Body
+        if ( ontologyTriplestoreSparqlQuery != null ) {
+            if ( !ontologyTriplestoreSparqlQuery.getQuery().isBlank() ) 
+                sparqlQuery = ontologyTriplestoreSparqlQuery.getQuery();
+        }
+        
+        // Otherwise throw an invalid SPARQL exception
+        if ( sparqlQuery == null )
+            throw new InvalidSparqlQueryException("Invalid SPARQL query.");
+        
+        LOGGER.debug("New HTTP POST request - SPARQL query request for "
+                + "ontology ID {}: {}", id, sparqlQuery);
         return triplestoreService.query(id, sparqlQuery, acceptHeader);
+        
+    }
+    
+    /**
+     * X-WWW-FORM-URLENCODED request body
+     * @param acceptHeader
+     * @param id
+     * @param formData
+     * @return
+     */
+    
+    @Operation(
+            summary = "Triplestore SPARQL Query",
+            description = "Execute a general SPARQL query against the "
+                    + "ontology with the given ontology ID.",
+            tags = {"ontology", "triplestore", "sparql"})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "SPARQL query successfully executed."),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "SPARQL query request unauthorized."), 
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Internal server error.")})
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping(
+            value = "/{id}/triplestore/data/query/sparql", 
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, 
+            produces = {
+                    MediaType.APPLICATION_JSON_VALUE, 
+                    MediaType.APPLICATION_XML_VALUE, 
+                    "application/sparql-results+json", 
+                    "application/sparql-results+xml"})
+    public ResponseEntity<String> query(
+            @Parameter(
+                    description = "Content type that should be returned.", 
+                    required = false)
+            @RequestHeader(value = "Accept", required = false) String acceptHeader, 
+            @Parameter(
+                    description = "ID of the ontology to query.", 
+                    required = true)
+            @PathVariable(required = true) int id, 
+            @Parameter(
+                    description = "SPARQL query.", 
+                    required = true)
+            @RequestBody(required = true) MultiValueMap<String, String> formData) {
+        String sparqlQuery = null;
+        
+        // Form Data
+        if ( formData != null ) {
+            if ( formData.containsKey("query") && 
+                    !formData.getFirst("query").isBlank() )
+                sparqlQuery = formData.getFirst("query");
+        }
+        
+        // Otherwise throw an invalid SPARQL exception
+        if ( sparqlQuery == null )
+            throw new InvalidSparqlQueryException("Invalid SPARQL query.");
+        
+        LOGGER.debug("New HTTP POST request - SPARQL query request for "
+                + "ontology ID {}: {}", id, sparqlQuery);
+        return triplestoreService.query(id, sparqlQuery, acceptHeader);
+        
     }
     
     /**************************************************************************
@@ -171,7 +259,7 @@ public class OntologyTriplestoreController {
                     "application/trig"})
     public ResponseEntity<String> getRdfData(
             @Parameter(
-                    description = "Content type that should be returned if possible.", 
+                    description = "Content type that should be returned.", 
                     required = false)
             @RequestHeader(value = "Accept", required = false) String acceptHeader, 
             @Parameter(
