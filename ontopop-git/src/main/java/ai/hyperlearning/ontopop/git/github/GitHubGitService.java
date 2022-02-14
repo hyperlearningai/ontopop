@@ -2,11 +2,15 @@ package ai.hyperlearning.ontopop.git.github;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -15,9 +19,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.google.common.base.Strings;
 import com.google.common.hash.Hashing;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import ai.hyperlearning.ontopop.git.GitService;
+import ai.hyperlearning.ontopop.model.git.GitAuthor;
+import ai.hyperlearning.ontopop.model.git.GitCommitter;
 import ai.hyperlearning.ontopop.model.git.GitWebhook;
+import ai.hyperlearning.ontopop.model.git.github.GitHubPutFileBody;
 import ai.hyperlearning.ontopop.model.git.github.GitHubWebhook;
 import reactor.core.publisher.Mono;
 
@@ -31,10 +41,15 @@ import reactor.core.publisher.Mono;
 @Service
 public class GitHubGitService implements GitService {
 
-    private static final String REQUEST_URI =
+    private static final String GET_FILE_RESOURCE_URI =
             "/repos/{owner}/{repo}/contents/{path}?ref={branch}";
-    private static final String HEADER_ACCEPT =
+    private static final String GET_FILE_RESPONSE_SHA_KEY = "sha";
+    private static final String PUT_FILE_RESOURCE_URI = 
+            "/repos/{owner}/{repo}/contents/{path}";
+    private static final String HEADER_ACCEPT_RAW =
             "application/vnd.github.v3.raw+json";
+    private static final String HEADER_ACCEPT_METADATA = 
+            "application/vnd.github.v3+json";
     private static final String HEADER_AUTHORIZATION_PREFIX = "token";
     private static final String WEBHOOK_REQUEST_HEADER_SIGNATURE_KEY =
             "x-hub-signature-256";
@@ -44,7 +59,7 @@ public class GitHubGitService implements GitService {
     @Autowired
     @Qualifier("gitHubWebClient")
     private WebClient webClient;
-
+    
     /**
      * Parse a GitHub webhook JSON request payload into a GitWebhook object
      */
@@ -131,13 +146,13 @@ public class GitHubGitService implements GitService {
      */
 
     @Override
-    public ResponseEntity<String> getFile(String owner, String repo,
+    public ResponseEntity<String> getFileContents(String owner, String repo,
             String path, String branch) throws IOException {
 
         // Request the raw public resource
         ResponseEntity<String> response = webClient.get()
-                .uri(REQUEST_URI, owner, repo, path, branch)
-                .header("Accept", HEADER_ACCEPT).retrieve()
+                .uri(GET_FILE_RESOURCE_URI, owner, repo, path, branch)
+                .header("Accept", HEADER_ACCEPT_RAW).retrieve()
                 .onStatus(status -> status.value() != HttpStatus.OK.value(),
                         clientResponse -> Mono.empty())
                 .toEntity(String.class).block();
@@ -160,13 +175,13 @@ public class GitHubGitService implements GitService {
      */
 
     @Override
-    public ResponseEntity<String> getFile(String token, String owner,
+    public ResponseEntity<String> getFileContents(String token, String owner,
             String repo, String path, String branch) throws IOException {
 
         // Request the raw resource requiring authorisation
         ResponseEntity<String> response = webClient.get()
-                .uri(REQUEST_URI, owner, repo, path, branch)
-                .header("Accept", HEADER_ACCEPT)
+                .uri(GET_FILE_RESOURCE_URI, owner, repo, path, branch)
+                .header("Accept", HEADER_ACCEPT_RAW)
                 .header("Authorization",
                         HEADER_AUTHORIZATION_PREFIX + " " + token)
                 .retrieve()
@@ -184,6 +199,124 @@ public class GitHubGitService implements GitService {
         // Return the HTTP response object
         return response;
 
+    }
+    
+    /**
+     * Get the file metadata of a resource managed by a public GitHub repo
+     */
+    
+    @Override
+    public ResponseEntity<String> getFile(String owner, String repo,
+            String path, String branch) throws IOException {
+        
+        // Request the raw resource
+        ResponseEntity<String> response = webClient.get()
+                .uri(GET_FILE_RESOURCE_URI, owner, repo, path, branch)
+                .header("Accept", HEADER_ACCEPT_METADATA).retrieve()
+                .onStatus(status -> status.value() != HttpStatus.OK.value(),
+                        clientResponse -> Mono.empty())
+                .toEntity(String.class).block();
+
+        // Throw an exception if the HTTP response status is not 200 OK
+        if (response == null)
+            throw new IOException("Null HTTP Response");
+        if (response.getStatusCodeValue() != HttpStatus.OK.value())
+            throw new IOException(
+                    "Invalid HTTP Response " + response.getStatusCodeValue());
+
+        // Return the HTTP response object
+        return response;
+        
+    }
+
+    /**
+     * Get the file metadata of a resource managed by a private GitHub repo
+     */
+    
+    @Override
+    public ResponseEntity<String> getFile(String token, String owner,
+            String repo, String path, String branch) throws IOException {
+       
+        // Request the resource requiring authorisation
+        ResponseEntity<String> response = webClient.get()
+                .uri(GET_FILE_RESOURCE_URI, owner, repo, path, branch)
+                .header("Accept", HEADER_ACCEPT_METADATA)
+                .header("Authorization",
+                        HEADER_AUTHORIZATION_PREFIX + " " + token)
+                .retrieve()
+                .onStatus(status -> status.value() != HttpStatus.OK.value(),
+                        clientResponse -> Mono.empty())
+                .toEntity(String.class).block();
+
+        // Throw an exception if the HTTP response status is not 200 OK
+        if (response == null)
+            throw new IOException("Null HTTP Response");
+        if (response.getStatusCodeValue() != HttpStatus.OK.value())
+            throw new IOException(
+                    "Invalid HTTP Response " + response.getStatusCodeValue());
+
+        // Return the HTTP response object
+        return response;
+        
+    }
+
+    /**
+     * Update the contents of a local file to a Git repository
+     */
+    
+    @Override
+    public ResponseEntity<String> putFile(String owner, String repo, 
+            String path, String branch, String token, String localFilePath, 
+            GitCommitter gitCommitter, GitAuthor gitAuthor, 
+            String commitMessage) throws IOException {
+        
+        // Get the local file content using Base64 encoding
+        String localFileContents = Files.readString(
+                Paths.get(localFilePath), StandardCharsets.UTF_8);
+        String localFileContentsBase64 = Base64.getEncoder()
+                .encodeToString(localFileContents.getBytes());
+        
+        // Get the SHA of the existing file
+        String fileRequestResponse = getFile(
+                token, owner, repo, path, branch).getBody();
+        Gson gson = new Gson();
+        JsonObject fileRequestResponseJson = gson.fromJson(
+                fileRequestResponse, JsonElement.class).getAsJsonObject();
+        String currentSha = fileRequestResponseJson
+                .get(GET_FILE_RESPONSE_SHA_KEY).getAsString();
+        
+        // Create a new PUT request JSON body object
+        GitHubPutFileBody gitHubPutFileBody = new GitHubPutFileBody();
+        gitHubPutFileBody.setMessage(commitMessage);
+        gitHubPutFileBody.setContent(localFileContentsBase64);
+        gitHubPutFileBody.setSha(currentSha);
+        gitHubPutFileBody.setBranch(branch);
+        gitHubPutFileBody.setCommitter(gitCommitter);
+        gitHubPutFileBody.setAuthor(gitAuthor);
+        
+        // Update the resource requiring authorisation
+        ResponseEntity<String> response = webClient.put()
+                .uri(PUT_FILE_RESOURCE_URI, owner, repo, path)
+                .header("Accept", HEADER_ACCEPT_METADATA)
+                .header("Authorization",
+                        HEADER_AUTHORIZATION_PREFIX + " " + token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(gitHubPutFileBody), GitHubPutFileBody.class)
+                .retrieve()
+                .onStatus(status -> status.value() != HttpStatus.OK.value(),
+                        clientResponse -> Mono.empty())
+                .toEntity(String.class).block();
+                
+        // Throw an exception if the HTTP response status is not 200 OK
+        if (response == null)
+            throw new IOException("Null HTTP Response");
+        if (response.getStatusCodeValue() != HttpStatus.OK.value())
+            throw new IOException(
+                    "Invalid HTTP Response " + response.getStatusCodeValue());
+
+        // Return the HTTP response object
+        return response;    
+                
     }
 
 }

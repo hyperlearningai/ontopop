@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 
+import ai.hyperlearning.ontopop.model.git.GitAuthor;
+import ai.hyperlearning.ontopop.model.git.GitCommitter;
 import ai.hyperlearning.ontopop.model.git.GitWebhook;
 
 /**
@@ -60,8 +62,8 @@ public interface GitService {
      * @throws IOException
      */
 
-    ResponseEntity<String> getFile(String owner, String repo, String path,
-            String branch) throws IOException;
+    ResponseEntity<String> getFileContents(String owner, String repo, 
+            String path, String branch) throws IOException;
 
     /**
      * Get the string contents of a file resource managed by a private GitHub
@@ -76,7 +78,50 @@ public interface GitService {
      * @throws IOException
      */
 
-    ResponseEntity<String> getFile(String token, String owner, String repo,
+    ResponseEntity<String> getFileContents(String token, String owner, 
+            String repo, String path, String branch) throws IOException;
+    
+    /**
+     * Get the file metadata of a resource managed by a public GitHub repo
+     * @param owner
+     * @param repo
+     * @param path
+     * @param branch
+     * @return
+     * @throws IOException
+     */
+    
+    ResponseEntity<String> getFile(String owner, String repo, 
             String path, String branch) throws IOException;
+    
+    /**
+     * Get the file metadata of a resource managed by a private GitHub repo
+     * @param token
+     * @param owner
+     * @param repo
+     * @param path
+     * @param branch
+     * @return
+     * @throws IOException
+     */
+    
+    ResponseEntity<String> getFile(String token, String owner, 
+            String repo, String path, String branch) throws IOException;
+    
+    /**
+     * Push the contents of a local file to a Git repository
+     * @param repo
+     * @param branch
+     * @param path
+     * @param token
+     * @param localFilePath
+     * @return
+     * @throws IOException
+     */
+    
+    ResponseEntity<String> putFile(String owner, String repo, String path, 
+            String branch, String token, String localFilePath, 
+            GitCommitter gitCommitter, GitAuthor gitAuthor, 
+            String commitMessage) throws IOException;
 
 }
