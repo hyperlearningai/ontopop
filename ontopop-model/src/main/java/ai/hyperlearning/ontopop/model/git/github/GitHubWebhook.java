@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import ai.hyperlearning.ontopop.model.git.GitWebhook;
 
 /**
@@ -17,6 +19,7 @@ import ai.hyperlearning.ontopop.model.git.GitWebhook;
  * @since 2.0.0
  */
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class GitHubWebhook implements Serializable {
 	
 	private static final long serialVersionUID = 7283618078343604424L;
@@ -208,21 +211,27 @@ public class GitHubWebhook implements Serializable {
 						Map<String, Object> author = 
 								(Map<String, Object>) commit.get("author");
 						gitWebhook.setLatestRelevantCommitAuthorName( 
-								author.get("name").toString() );
+						        author.containsKey("name") ? 
+						                author.get("name").toString() : "" );
 						gitWebhook.setLatestRelevantCommitAuthorEmail( 
-								author.get("email").toString() );
+						        author.containsKey("email") ? 
+						                author.get("email").toString() : "" );
 						gitWebhook.setLatestRelevantCommitAuthorUsername( 
-								author.get("username").toString() );
+						        author.containsKey("username") ? 
+						                author.get("username").toString() : "" );
 						
 						// Set the commit committer attributes
 						Map<String, Object> committer = 
 								(Map<String, Object>) commit.get("committer");
 						gitWebhook.setLatestRelevantCommitCommitterName( 
-								committer.get("name").toString() );
+						        committer.containsKey("name") ? 
+						                committer.get("name").toString() : "" );
 						gitWebhook.setLatestRelevantCommitCommitterEmail( 
-								committer.get("email").toString() );
+						        committer.containsKey("email") ? 
+						                committer.get("email").toString() : "" );
 						gitWebhook.setLatestRelevantCommitCommitterUsername( 
-								committer.get("username").toString() );
+						        committer.containsKey("username") ? 
+						                committer.get("username").toString() : "" );
 						
 						// Stop iterating over the commits
 						break commits;
