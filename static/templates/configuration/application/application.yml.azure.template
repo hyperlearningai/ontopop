@@ -27,6 +27,13 @@ spring:
                                     servicebus:
                                         connection-string: ${azure-service-bus-connection-string}
             bindings:
+                webProtegeProjectUpdatedPublicationChannel:
+                    destination: webprotege.project.updated
+                    binder: azure_service_bus
+                webProtegeProjectUpdatedConsumptionChannel:
+                    destination: webprotege.project.updated
+                    group: webprotege.project.updated.consumers
+                    binder: azure_service_bus
                 ingestedPublicationChannel:
                     destination: ontopop.data.ingested
                     binder: azure_service_bus
@@ -232,6 +239,12 @@ storage:
         azure-search:
             endpoint: ${azure-search-endpoint}
             key: ${azure-search-key}
+vcs:
+    git:
+        service: github
+        committer:
+            name: ontopop
+            email: service@ontopop.com
 web:
     client:
         codecs:

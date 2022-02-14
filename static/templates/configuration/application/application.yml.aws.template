@@ -27,6 +27,13 @@ spring:
                                     servicebus:
                                         connection-string:
             bindings:
+                webProtegeProjectUpdatedPublicationChannel:
+                    destination: webprotege.project.updated
+                    binder: rabbitmq
+                webProtegeProjectUpdatedConsumptionChannel:
+                    destination: webprotege.project.updated
+                    group: webprotege.project.updated.consumers
+                    binder: rabbitmq
                 ingestedPublicationChannel:
                     destination: ontopop.data.ingested
                     binder: rabbitmq
@@ -232,6 +239,12 @@ storage:
         azure-search:
             endpoint:
             key:
+vcs:
+    git:
+        service: github
+        committer:
+            name: ontopop
+            email: service@ontopop.com
 web:
     client:
         codecs:
