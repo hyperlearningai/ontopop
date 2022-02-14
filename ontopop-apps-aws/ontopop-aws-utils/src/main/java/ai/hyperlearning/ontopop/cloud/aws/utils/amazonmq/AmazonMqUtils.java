@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 
 import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
+import ai.hyperlearning.ontopop.model.webprotege.WebProtegeWebhook;
 import net.minidev.json.JSONArray;
 
 /**
@@ -36,7 +37,7 @@ public class AmazonMqUtils {
                 .replace("<messageIndex>", String.valueOf(messageIndex));
         JSONArray data = JsonPath.parse(message).read(jsonPath);
         String base64EncodedData = data.get(0).toString();
-        return decodeData(base64EncodedData);
+        return decodeOntologyMessageData(base64EncodedData);
     }
     
     /**
@@ -53,7 +54,7 @@ public class AmazonMqUtils {
                 .replace("<messageIndex>", String.valueOf(messageIndex));
         JSONArray data = JsonPath.parse(message).read(jsonPath);
         String base64EncodedData = data.get(0).toString();
-        return decodeData(base64EncodedData);
+        return decodeOntologyMessageData(base64EncodedData);
     }
     
     /**
@@ -62,12 +63,66 @@ public class AmazonMqUtils {
      * @return
      */
     
-    private static OntologyMessage decodeData(String base64EncodedData) {
+    private static OntologyMessage decodeOntologyMessageData(
+            String base64EncodedData) {
         byte[] decodedBytes = Base64.getDecoder().decode(base64EncodedData);
         String decodedData = new String(decodedBytes);
         ObjectMapper mapper = new ObjectMapper();
         try {
             return mapper.readValue(decodedData, OntologyMessage.class);
+        } catch (JsonProcessingException e) {
+            return null;
+        }
+    }
+    
+    /**
+     * Get the WebProtegeWebhook object from the Nth message in a given 
+     * Amazon MQ (RabbitMQ) queue
+     * @param message
+     * @param queue
+     * @return
+     */
+    
+    public static WebProtegeWebhook getWebProtegeWebhookMessage(
+            String message, String queue, int messageIndex) {
+        String jsonPath = JSON_PATH_FIRST_MESSAGE_DATA
+                .replace("<queue>", "'" + queue + "'")
+                .replace("<messageIndex>", String.valueOf(messageIndex));
+        JSONArray data = JsonPath.parse(message).read(jsonPath);
+        String base64EncodedData = data.get(0).toString();
+        return decodeWebProtegeWebhookMessageData(base64EncodedData);
+    }
+    
+    /**
+     * Get the WebProtegeWebhook object from the Nth message in the first
+     * queue from an Amazon MQ (RabbitMQ) message
+     * @param message
+     * @return
+     */
+    
+    public static WebProtegeWebhook getWebProtegeWebhookMessage(
+            String message, int messageIndex) {
+        String jsonPath = JSON_PATH_FIRST_MESSAGE_DATA
+                .replace("<queue>", "*")
+                .replace("<messageIndex>", String.valueOf(messageIndex));
+        JSONArray data = JsonPath.parse(message).read(jsonPath);
+        String base64EncodedData = data.get(0).toString();
+        return decodeWebProtegeWebhookMessageData(base64EncodedData);
+    }
+    
+    /**
+     * Convert a base 64 encoded string into an WebProtegeWebhook object
+     * @param base64EncodedData
+     * @return
+     */
+    
+    private static WebProtegeWebhook decodeWebProtegeWebhookMessageData(
+            String base64EncodedData) {
+        byte[] decodedBytes = Base64.getDecoder().decode(base64EncodedData);
+        String decodedData = new String(decodedBytes);
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.readValue(decodedData, WebProtegeWebhook.class);
         } catch (JsonProcessingException e) {
             return null;
         }
