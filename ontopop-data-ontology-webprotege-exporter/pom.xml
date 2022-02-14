@@ -67,6 +67,10 @@
         </dependency>
         <dependency>
             <groupId>ai.hyperlearning.ontopop</groupId>
+            <artifactId>ontopop-messaging</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ai.hyperlearning.ontopop</groupId>
             <artifactId>ontopop-jpa</artifactId>
         </dependency>
         <dependency>
