@@ -278,13 +278,14 @@ public class OntologyIngestorService {
             // HTTP response entity
             ResponseEntity<String> response =
                     gitWebhook.getOntology().isRepoPrivate()
-                            ? gitService.getFile(
+                            ? gitService.getFileContents(
                                     gitWebhook.getOntology().getRepoToken(),
                                     gitWebhook.getRepoOwner(),
                                     gitWebhook.getRepoName(),
                                     gitWebhook.getOntology().getRepoResourcePath(),
                                     gitWebhook.getRepoBranch())
-                            : gitService.getFile(gitWebhook.getRepoOwner(),
+                            : gitService.getFileContents(
+                                    gitWebhook.getRepoOwner(),
                                     gitWebhook.getRepoName(),
                                     gitWebhook.getOntology().getRepoResourcePath(),
                                     gitWebhook.getRepoBranch());
