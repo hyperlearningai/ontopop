@@ -94,6 +94,9 @@ spring:
             servicebus:
                 topic:
                     bindings:
+                        webProtegeProjectUpdatedConsumptionChannel:
+                            consumer:
+                                checkpoint-mode: MANUAL
                         ingestedConsumptionChannel:
                             consumer:
                                 checkpoint-mode: MANUAL
