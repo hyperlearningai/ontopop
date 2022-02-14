@@ -31,13 +31,13 @@ public class OntologyIngestorFunction
             OntologyIngestorFunctionModel ontologyIngestorFunctionModel) {
 
         // Log the HTTP request headers for debugging purposes
-        LOGGER.debug("New HTTP POST request: Ontology ingestion webhook.");
+        LOGGER.debug("New HTTP POST request: Git webhook.");
         ontologyIngestorFunctionModel.getHeaders().forEach((key, value) -> {
             LOGGER.debug(String.format("Header '%s' = %s", key, value));
         });
 
         // Log the HTTP request body payload for debugging purposes
-        LOGGER.debug("Ontology ingestion webhook payload: {}",
+        LOGGER.debug("Git webhook payload: {}",
                 ontologyIngestorFunctionModel.getPayload());
 
         // Run the Ontology Ingestion Service pipeline
