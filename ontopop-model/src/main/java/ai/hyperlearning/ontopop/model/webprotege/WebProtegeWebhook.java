@@ -40,7 +40,7 @@ public class WebProtegeWebhook implements Serializable {
     private String projectId;
     
     @NotNull
-    @Schema(description = "User ID of the user that has updated the WebProtege project.", 
+    @Schema(description = "WebProtege user ID of the user that has updated the WebProtege project.", 
             example = "me@tld.com", 
             required = true)
     private String userId;

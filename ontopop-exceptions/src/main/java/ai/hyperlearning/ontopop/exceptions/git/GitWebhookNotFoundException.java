@@ -1,7 +1,7 @@
 package ai.hyperlearning.ontopop.exceptions.git;
 
 /**
- * Webhook Event Model - Not Found Custom Exception
+ * Git Webhook Event Model - Not Found Custom Exception
  *
  * @author jillurquddus
  * @since 2.0.0

@@ -16,6 +16,7 @@ import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDeletionException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDownloadException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyNotFoundException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyUpdateSecretDataException;
+import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeWebhookNotFoundException;
 
 /**
  * Custom Global Exception Handler
@@ -29,7 +30,8 @@ public class CustomGlobalExceptionHandler
         extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({OntologyNotFoundException.class,
-            GitWebhookNotFoundException.class})
+            GitWebhookNotFoundException.class, 
+            WebProtegeWebhookNotFoundException.class})
     public void springHandleNotFound(HttpServletResponse response)
             throws IOException {
         response.sendError(HttpStatus.NOT_FOUND.value());
