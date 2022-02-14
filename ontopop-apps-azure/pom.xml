@@ -59,6 +59,7 @@
         <module>ontopop-azure-function-app-data-ontology-loader-graph</module>
         <module>ontopop-azure-function-app-data-ontology-indexer-graph</module>
         <module>ontopop-azure-function-app-data-ontology-pipeline</module>
+        <module>ontopop-azure-function-app-data-ontology-webprotege-exporter</module>
         <module>ontopop-azure-app-api-ontology-management</module>
         <module>ontopop-azure-app-api-ontology-triplestore</module>
     </modules>
