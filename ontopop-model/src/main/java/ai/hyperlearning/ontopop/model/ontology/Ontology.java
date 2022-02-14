@@ -338,7 +338,8 @@ public class Ontology implements Serializable {
 				+ "repoResourcePath=" + repoResourcePath + ", "
 				+ "repoBranch=" + repoBranch + ", "
 				+ "dateCreated=" + dateCreated + ", "
-				+ "dateLastUpdated=" + dateLastUpdated 
+				+ "dateLastUpdated=" + dateLastUpdated + ", "
+				+ "webProtegeProjectId=" + webProtegeProjectId
 				+ "]";
 	}	
 	
