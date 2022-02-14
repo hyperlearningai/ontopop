@@ -37,7 +37,7 @@ spring:
                 gitHubRepositoryUpdatedPublicationChannel:
                     destination: github.repository.updated
                     binder: azure_service_bus
-                gitHubRepositoryUpdatedConsumptionChannel
+                gitHubRepositoryUpdatedConsumptionChannel:
                     destination: github.repository.updated
                     group: github.repository.updated.consumers
                     binder: azure_service_bus

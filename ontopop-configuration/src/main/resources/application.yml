@@ -37,7 +37,7 @@ spring:
                 gitHubRepositoryUpdatedPublicationChannel:
                     destination: github.repository.updated
                     binder: rabbitmq
-                gitHubRepositoryUpdatedConsumptionChannel
+                gitHubRepositoryUpdatedConsumptionChannel:
                     destination: github.repository.updated
                     group: github.repository.updated.consumers
                     binder: rabbitmq
