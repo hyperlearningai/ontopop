@@ -9,6 +9,7 @@
   "author": "jillurquddus",
   "license": "ISC",
   "dependencies": {
+    "amqplib": "^0.8.0",
     "axios": "^0.25.0"
   }
 }
