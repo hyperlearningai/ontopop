@@ -194,6 +194,8 @@ storage:
                 triplestore: loaded/triplestore
                 graph: loaded/graph
             indexed: indexed
+            webprotege:
+                exported: webprotege/exported
     triplestore:
         service: apache-jena
         apache-jena:
