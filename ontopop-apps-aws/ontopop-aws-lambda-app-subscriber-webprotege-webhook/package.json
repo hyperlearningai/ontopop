@@ -1,0 +1,14 @@
+{
+  "name": "ontopop-aws-lambda-app-subscriber-webprotege-webhook",
+  "version": "2.0.0",
+  "description": "WebProtege Webhook Subscriber",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jillurquddus",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1064.0"
+  }
+}
