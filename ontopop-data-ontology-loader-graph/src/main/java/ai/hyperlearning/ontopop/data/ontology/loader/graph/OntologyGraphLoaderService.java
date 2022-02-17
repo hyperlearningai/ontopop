@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPipelineProcessingException;
 import ai.hyperlearning.ontopop.graph.GraphDatabaseService;
 import ai.hyperlearning.ontopop.graph.GraphDatabaseServiceFactory;
 import ai.hyperlearning.ontopop.graph.GraphDatabaseServiceType;
@@ -85,7 +86,8 @@ public class OntologyGraphLoaderService {
      * Run the Ontology Graph Loading service end-to-end pipeline
      */
 
-    public void run(OntologyMessage ontologyMessage) {
+    public void run(OntologyMessage ontologyMessage) 
+            throws OntologyDataPipelineProcessingException {
 
         LOGGER.info("Ontology Graph Loading Service started.");
         this.ontologyMessage = ontologyMessage;
@@ -113,8 +115,10 @@ public class OntologyGraphLoaderService {
 
         } catch (Exception e) {
             LOGGER.error(
-                    "Ontology Graph Loading Service " + "encountered an error.",
-                    e);
+                    "Ontology Graph Loading Service encountered an error.", e);
+            throw new OntologyDataPipelineProcessingException(
+                    "Ontology Graph Loading Service encountered "
+                    + "an error: " + e);
         }
 
         LOGGER.info("Ontology Graph Loading Service finished.");

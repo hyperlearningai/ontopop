@@ -21,6 +21,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPipelineProcessingException;
 import ai.hyperlearning.ontopop.messaging.processors.DataPipelineModellerGraphSource;
 import ai.hyperlearning.ontopop.model.graph.SimpleOntologyPropertyGraph;
 import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
@@ -78,7 +79,8 @@ public class OntologyGraphModellerService {
      * Run the Ontology Parsing service end-to-end pipeline
      */
 
-    public void run(OntologyMessage ontologyMessage) {
+    public void run(OntologyMessage ontologyMessage) 
+            throws OntologyDataPipelineProcessingException {
 
         LOGGER.info("Ontology Property Graph Modelling Service started.");
         this.ontologyMessage = ontologyMessage;
@@ -106,6 +108,9 @@ public class OntologyGraphModellerService {
         } catch (Exception e) {
             LOGGER.error("Ontology Property Graph Modelling Service "
                     + "encountered an error.", e);
+            throw new OntologyDataPipelineProcessingException(
+                    "Ontology Property Graph Modelling Service "
+                    + "encountered an error: " + e);
         }
 
     }

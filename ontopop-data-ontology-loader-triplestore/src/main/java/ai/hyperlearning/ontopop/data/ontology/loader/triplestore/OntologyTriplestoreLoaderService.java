@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPipelineProcessingException;
 import ai.hyperlearning.ontopop.messaging.processors.DataPipelineLoaderTriplestoreSource;
 import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 import ai.hyperlearning.ontopop.storage.ObjectStorageService;
@@ -73,7 +74,8 @@ public class OntologyTriplestoreLoaderService {
      * Run the Ontology Triplestore Loading service end-to-end pipeline
      */
 
-    public void run(OntologyMessage ontologyMessage) {
+    public void run(OntologyMessage ontologyMessage) throws 
+            OntologyDataPipelineProcessingException {
 
         LOGGER.info("Ontology Triplestore Loading Service started.");
         this.ontologyMessage = ontologyMessage;
@@ -102,6 +104,9 @@ public class OntologyTriplestoreLoaderService {
         } catch (Exception e) {
             LOGGER.error("Ontology Triplestore Loading Service "
                     + "encountered an error.", e);
+            throw new OntologyDataPipelineProcessingException(
+                    "Ontology Triplestore Loading Service encountered "
+                    + "an error: " + e);
         }
 
         LOGGER.info("Ontology Triplestore Loading Service finished.");

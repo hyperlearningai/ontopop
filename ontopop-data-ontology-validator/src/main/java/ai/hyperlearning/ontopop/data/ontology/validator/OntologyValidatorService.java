@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPipelineProcessingException;
 import ai.hyperlearning.ontopop.messaging.processors.DataPipelineValidatorSource;
 import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 import ai.hyperlearning.ontopop.storage.ObjectStorageService;
@@ -70,7 +71,8 @@ public class OntologyValidatorService {
      * Run the Ontology Validation service end-to-end pipeline
      */
 
-    public void run(OntologyMessage ontologyMessage) {
+    public void run(OntologyMessage ontologyMessage) 
+            throws OntologyDataPipelineProcessingException {
 
         LOGGER.info("Ontology Validation Service started.");
         this.ontologyMessage = ontologyMessage;
@@ -97,8 +99,10 @@ public class OntologyValidatorService {
             cleanup();
 
         } catch (Exception e) {
-            LOGGER.error("Ontology Validation Service encountered an error.",
-                    e);
+            LOGGER.error("Ontology Validation Service encountered "
+                    + "an error.", e);
+            throw new OntologyDataPipelineProcessingException(
+                    "Ontology Validation Service encountered an error: " + e);
         }
 
         LOGGER.info("Ontology Validation Service finished.");

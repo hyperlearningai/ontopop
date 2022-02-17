@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPipelineProcessingException;
 import ai.hyperlearning.ontopop.messaging.processors.DataPipelineIndexerGraphSource;
 import ai.hyperlearning.ontopop.model.graph.SimpleOntologyPropertyGraph;
 import ai.hyperlearning.ontopop.model.graph.SimpleOntologyVertex;
@@ -88,7 +89,8 @@ public class OntologyGraphIndexerService {
      * Run the Ontology Indexing service end-to-end pipeline
      */
 
-    public void run(OntologyMessage ontologyMessage) {
+    public void run(OntologyMessage ontologyMessage) 
+            throws OntologyDataPipelineProcessingException {
 
         LOGGER.info("Ontology Indexing Service started.");
         this.ontologyMessage = ontologyMessage;
@@ -115,8 +117,11 @@ public class OntologyGraphIndexerService {
             cleanup();
 
         } catch (Exception e) {
-            LOGGER.error("Ontology Indexing Service " + "encountered an error.",
-                    e);
+            LOGGER.error("Ontology Graph Indexing Service encountered "
+                    + "an error.", e);
+            throw new OntologyDataPipelineProcessingException(
+                    "Ontology Graph Indexing Service encountered "
+                    + "an error: " + e);
         }
 
         LOGGER.info("Ontology Indexing Service finished.");

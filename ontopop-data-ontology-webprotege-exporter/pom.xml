@@ -44,18 +44,14 @@
     <!-- Module Dependencies -->
     <dependencies>
 
-        <!-- Commons Logging -->
-        <!-- 
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-        </dependency>
-        -->
-
         <!-- OntoPop -->
         <dependency>
             <groupId>ai.hyperlearning.ontopop</groupId>
             <artifactId>ontopop-configuration</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ai.hyperlearning.ontopop</groupId>
+            <artifactId>ontopop-exceptions</artifactId>
         </dependency>
         <dependency>
             <groupId>ai.hyperlearning.ontopop</groupId>

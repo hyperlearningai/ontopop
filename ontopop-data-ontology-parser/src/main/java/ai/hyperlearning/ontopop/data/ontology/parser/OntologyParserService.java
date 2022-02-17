@@ -20,6 +20,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPipelineProcessingException;
 import ai.hyperlearning.ontopop.messaging.processors.DataPipelineParserSource;
 import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 import ai.hyperlearning.ontopop.model.owl.SimpleAnnotationProperty;
@@ -75,7 +76,8 @@ public class OntologyParserService {
      * Run the Ontology Parsing service end-to-end pipeline
      */
 
-    public void run(OntologyMessage ontologyMessage) {
+    public void run(OntologyMessage ontologyMessage) 
+            throws OntologyDataPipelineProcessingException {
 
         LOGGER.info("Ontology Parsing Service started.");
         this.ontologyMessage = ontologyMessage;
@@ -101,8 +103,9 @@ public class OntologyParserService {
             cleanup();
 
         } catch (Exception e) {
-            LOGGER.error("Ontology Parsing Service " + "encountered an error.",
-                    e);
+            LOGGER.error("Ontology Parsing Service encountered an error.", e);
+            throw new OntologyDataPipelineProcessingException(
+                    "Ontology Parsing Service encountered an error: " + e);
         }
 
         LOGGER.info("Ontology Parsing Service finished.");

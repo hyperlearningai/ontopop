@@ -17,6 +17,7 @@ import ai.hyperlearning.ontopop.data.ontology.loader.triplestore.OntologyTriples
 import ai.hyperlearning.ontopop.data.ontology.modeller.graph.OntologyGraphModellerService;
 import ai.hyperlearning.ontopop.data.ontology.parser.OntologyParserService;
 import ai.hyperlearning.ontopop.data.ontology.validator.OntologyValidatorService;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPipelineProcessingException;
 import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 
 /**
@@ -73,25 +74,29 @@ public class OntologyPipelineFunction implements Consumer<String> {
             ontologyValidatorService.run(ontologyMessage);
             TimeUnit.SECONDS.sleep(STAGE_INTERVAL_WAIT_SECONDS);
             
-             // Run the Ontology Triplestore Loader Service
+            // Run the Ontology Triplestore Loader Service
             ontologyTriplestoreLoaderService.run(ontologyMessage);
             TimeUnit.SECONDS.sleep(STAGE_INTERVAL_WAIT_SECONDS);
                 
-             // Run the Ontology Parser Service
+            // Run the Ontology Parser Service
             ontologyParserService.run(ontologyMessage);
             TimeUnit.SECONDS.sleep(STAGE_INTERVAL_WAIT_SECONDS);
                 
-             // Run the Ontology Graph Modeller Service
+            // Run the Ontology Graph Modeller Service
             ontologyGraphModellerService.run(ontologyMessage);
             TimeUnit.SECONDS.sleep(STAGE_INTERVAL_WAIT_SECONDS);
                 
-             // Run the Ontology Graph Loader Service
+            // Run the Ontology Graph Loader Service
             ontologyGraphLoaderService.run(ontologyMessage);
             TimeUnit.SECONDS.sleep(STAGE_INTERVAL_WAIT_SECONDS);
                 
              // Run the Ontology Graph Indexer Service
             ontologyGraphIndexerService.run(ontologyMessage);
 
+        } catch (OntologyDataPipelineProcessingException e) {
+            
+            LOGGER.error("The Ontology Data Pipeline encountered an error.", e);
+        
         } catch (JsonProcessingException e) {
 
             LOGGER.info("New ingestion event detected and consumed via "
