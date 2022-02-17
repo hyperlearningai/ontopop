@@ -150,8 +150,11 @@ public class ElasticsearchService implements SearchService {
     public void deleteAllDocuments(String indexName) {
         final Query deleteQuery = new NativeSearchQueryBuilder()
                 .withQuery(matchAllQuery()).build();
-        elasticsearchTemplate.delete(deleteQuery,
+        long documentCount = elasticsearchTemplate.count(deleteQuery, 
                 IndexCoordinates.of(indexName));
+        if ( documentCount > 0 )
+            elasticsearchTemplate.delete(deleteQuery,
+                    IndexCoordinates.of(indexName));
     }
 
 }
