@@ -46,10 +46,10 @@ import ai.hyperlearning.ontopop.model.owl.SimpleObjectProperty;
 
 public class OWLAPI {
 
-    private static final OWLOntologyManager OWL_ONTOLOGY_MANAGER =
+    private static final OWLOntologyManager SHARED_OWL_ONTOLOGY_MANAGER =
             OWLManager.createOWLOntologyManager();
-    private static final OWLDataFactory OWL_DATA_FACTORY =
-            OWL_ONTOLOGY_MANAGER.getOWLDataFactory();
+    private static final OWLDataFactory SHARED_OWL_DATA_FACTORY =
+            SHARED_OWL_ONTOLOGY_MANAGER.getOWLDataFactory();
 
     /**************************************************************************
      * Loaders
@@ -65,7 +65,9 @@ public class OWLAPI {
 
     public static OWLOntology loadOntology(File owlFile)
             throws OWLOntologyCreationException {
-        return OWL_ONTOLOGY_MANAGER.loadOntologyFromOntologyDocument(owlFile);
+        OWLOntologyManager owlOntologyManager = 
+                OWLManager.createOWLOntologyManager();
+        return owlOntologyManager.loadOntologyFromOntologyDocument(owlFile);
     }
 
     /**
@@ -78,7 +80,9 @@ public class OWLAPI {
 
     public static OWLOntology loadOntology(InputStream owlFile)
             throws OWLOntologyCreationException {
-        return OWL_ONTOLOGY_MANAGER.loadOntologyFromOntologyDocument(owlFile);
+        OWLOntologyManager owlOntologyManager = 
+                OWLManager.createOWLOntologyManager();
+        return owlOntologyManager.loadOntologyFromOntologyDocument(owlFile);
     }
 
     /**************************************************************************
@@ -129,7 +133,7 @@ public class OWLAPI {
     public static String getRDFSLabel(List<OWLAnnotation> annotations) {
         for (OWLAnnotation annotation : annotations) {
             if (annotation.getProperty()
-                    .equals(OWL_DATA_FACTORY.getRDFSLabel())) {
+                    .equals(SHARED_OWL_DATA_FACTORY.getRDFSLabel())) {
                 return getAnnotationValueLiteral(annotation);
             }
         }
