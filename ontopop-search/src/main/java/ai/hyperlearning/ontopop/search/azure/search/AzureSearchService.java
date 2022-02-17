@@ -258,4 +258,11 @@ public class AzureSearchService implements SearchService {
         // createIndex(indexName);
     }
 
+    @Override
+    public Object search(String indexName, List<String> propertyKeys,
+            String query, boolean and) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

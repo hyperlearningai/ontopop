@@ -453,6 +453,11 @@
                 <artifactId>ontopop-api-ontology-triplestore</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <dependency>
+                <groupId>ai.hyperlearning.ontopop</groupId>
+                <artifactId>ontopop-api-ontology-search</artifactId>
+                <version>${revision}</version>
+            </dependency>
 
             <!-- Ontotext GraphDB -->
             <dependency>
@@ -566,6 +571,7 @@
         <module>ontopop-data-ontology-webprotege-exporter</module>
         <module>ontopop-api-ontology-management</module>
         <module>ontopop-api-ontology-triplestore</module>
+        <module>ontopop-api-ontology-search</module>
     </modules>
     
     <!-- Project Profiles -->

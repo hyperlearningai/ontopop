@@ -3,11 +3,16 @@ package ai.hyperlearning.ontopop.search.elasticsearch;
 import static org.elasticsearch.index.query.QueryBuilders.fuzzyQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
+import static org.elasticsearch.index.query.QueryBuilders.multiMatchQuery;
+import static org.elasticsearch.index.query.QueryBuilders.simpleQueryStringQuery;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.Operator;
+import org.elasticsearch.index.query.SimpleQueryStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +20,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
@@ -100,6 +106,43 @@ public class ElasticsearchService implements SearchService {
     public SimpleIndexVertex getDocument(String indexName, long vertexId) {
         return elasticsearchTemplate.get(String.valueOf(vertexId),
                 SimpleIndexVertex.class, IndexCoordinates.of(indexName));
+    }
+    
+    @Override
+    public Object search(String indexName, String query) {
+        
+        // Simple fault-tolerant search across all documents
+        SimpleQueryStringBuilder simpleQueryStringBuilder = 
+                simpleQueryStringQuery(query);
+        final Query searchQuery = new NativeSearchQueryBuilder().withQuery(
+                simpleQueryStringBuilder)
+                .build();
+        return elasticsearchTemplate.search(searchQuery,
+                SimpleIndexVertex.class, IndexCoordinates.of(indexName));
+        
+    }
+    
+    @Override
+    public SearchHits<SimpleIndexVertex> search(String indexName,
+            List<String> propertyKeys, String query, boolean and) {
+        
+        // Build the query across multiple fields
+        Operator operator = and ? Operator.AND : Operator.OR;
+        MultiMatchQueryBuilder multiMatchQueryBuilder = multiMatchQuery(query)
+                .operator(operator)
+                .type(MultiMatchQueryBuilder.Type.BEST_FIELDS);
+        for ( String propertyKey : propertyKeys ) {
+            multiMatchQueryBuilder = multiMatchQueryBuilder.field(propertyKey);
+        }
+            
+        // Build and execute the search query
+        NativeSearchQuery nativeSearchQuery = new NativeSearchQueryBuilder()
+                .withQuery(multiMatchQueryBuilder)
+                .build();
+        final Query searchQuery = nativeSearchQuery;
+        return elasticsearchTemplate.search(searchQuery,
+                SimpleIndexVertex.class, IndexCoordinates.of(indexName));
+        
     }
 
     @Override

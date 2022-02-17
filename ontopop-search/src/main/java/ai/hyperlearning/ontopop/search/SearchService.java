@@ -1,5 +1,6 @@
 package ai.hyperlearning.ontopop.search;
 
+import java.util.List;
 import java.util.Set;
 
 import ai.hyperlearning.ontopop.search.model.SimpleIndexVertex;
@@ -35,6 +36,11 @@ public interface SearchService {
 
     public Object getDocument(String indexName, long vertexId);
 
+    public Object search(String indexName, String query);
+    
+    public Object search(String indexName, List<String> propertyKeys, 
+            String query, boolean and);
+    
     public Object search(String indexName, String propertyKey, String query,
             boolean exact, boolean and);
 
