@@ -249,6 +249,8 @@ storage:
         indexNamePrefix: ontopop
         elasticsearch:
             url: ${elasticsearch-url}
+            username: ${elasticsearch-username}
+            password: ${elasticsearch-password}
             shards: 1
             replicas: 0
         azure-search:

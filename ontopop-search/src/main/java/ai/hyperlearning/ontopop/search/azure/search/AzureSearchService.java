@@ -115,6 +115,11 @@ public class AzureSearchService implements SearchService {
         searchIndexClient.createIndex(newIndex);
 
     }
+    
+    @Override
+    public void createIndex(String indexName, int shards, int replicas) {
+        createIndex(indexName);
+    }
 
     @Override
     public void deleteIndex(String indexName) {

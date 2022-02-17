@@ -1,6 +1,7 @@
 package ai.hyperlearning.ontopop.search.elasticsearch;
 
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.Strings;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -25,13 +26,33 @@ public class ElasticsearchClientConfig {
 
     @Value("${storage.search.elasticsearch.url}")
     private String elasticsearchUrl;
+    
+    @Value("${storage.search.elasticsearch.username}")
+    private String elasticsearchUsername;
+    
+    @Value("${storage.search.elasticsearch.password}")
+    private String elasticsearchPassword;
 
     @Bean
     public RestHighLevelClient client() {
-        ClientConfiguration clientConfiguration = ClientConfiguration.builder()
+        
+        ClientConfiguration clientConfiguration = null;
+        if ( Strings.isNullOrEmpty(elasticsearchUsername) )
+            
+            // No authentication
+            clientConfiguration = ClientConfiguration.builder()
+                    .connectedTo(removeHttpProtocolFromUrl(elasticsearchUrl))
+                    .build();
+        else
+            
+            // Basic authentication
+            clientConfiguration = ClientConfiguration.builder()
                 .connectedTo(removeHttpProtocolFromUrl(elasticsearchUrl))
+                .withBasicAuth(elasticsearchUsername, elasticsearchPassword)
                 .build();
+        
         return RestClients.create(clientConfiguration).rest();
+        
     }
 
     @Bean
@@ -40,7 +61,8 @@ public class ElasticsearchClientConfig {
     }
 
     private static String removeHttpProtocolFromUrl(String url) {
-        return url.replaceFirst("^(http[s]?://www\\.|http[s]?://|www\\.)", "");
+        return url.replaceFirst(
+                "^(http[s]?://www\\.|http[s]?://|www\\.)", "");
     }
 
 }

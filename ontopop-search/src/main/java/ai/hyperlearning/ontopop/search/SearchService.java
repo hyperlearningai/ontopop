@@ -24,6 +24,8 @@ public interface SearchService {
      *************************************************************************/
 
     public void createIndex(String indexName);
+    
+    public void createIndex(String indexName, int shards, int replicas);
 
     public void deleteIndex(String indexName);
 

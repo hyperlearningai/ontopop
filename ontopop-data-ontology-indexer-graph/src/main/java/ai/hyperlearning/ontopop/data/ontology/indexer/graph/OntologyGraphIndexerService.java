@@ -69,6 +69,12 @@ public class OntologyGraphIndexerService {
 
     @Value("${storage.search.indexNamePrefix}")
     private String searchIndexNamePrefix;
+    
+    @Value("${storage.search.elasticsearch.shards}")
+    private Integer searchNumberOfShards;
+    
+    @Value("${storage.search.elasticsearch.replicas}")
+    private Integer searchNumberOfReplicas;
 
     private OntologyMessage ontologyMessage;
     private ObjectStorageService objectStorageService;
@@ -173,7 +179,11 @@ public class OntologyGraphIndexerService {
         // 4. Create the search index if required
         indexName = searchIndexNamePrefix + ontologyMessage.getOntologyId();
         LOGGER.debug("Creating index: {}", indexName);
-        searchService.createIndex(indexName);
+        if ( searchServiceType.equals(SearchServiceType.ELASTICSEARCH) )
+            searchService.createIndex(indexName, 
+                    searchNumberOfShards, searchNumberOfReplicas);
+        else
+            searchService.createIndex(indexName);
 
     }
 

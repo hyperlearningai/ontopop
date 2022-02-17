@@ -1,9 +1,10 @@
 package ai.hyperlearning.ontopop.search.elasticsearch;
 
 import static org.elasticsearch.index.query.QueryBuilders.fuzzyQuery;
-import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
+import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 
+import java.util.Map;
 import java.util.Set;
 
 import org.elasticsearch.index.query.Operator;
@@ -59,6 +60,20 @@ public class ElasticsearchService implements SearchService {
                 .exists()) {
             elasticsearchTemplate.indexOps(IndexCoordinates.of(indexName))
                     .create();
+        } else {
+            LOGGER.warn("Index '{}' already exists. Skipping index creation.",
+                    indexName);
+        }
+    }
+    
+    public void createIndex(String indexName, int shards, int replicas) {
+        Map<String, Object> settings = Map.of( 
+                "number_of_shards" , shards, 
+                "number_of_replicas", replicas);
+        if (!elasticsearchTemplate.indexOps(IndexCoordinates.of(indexName))
+                .exists()) {
+            elasticsearchTemplate.indexOps(IndexCoordinates.of(indexName))
+                    .create(settings);
         } else {
             LOGGER.warn("Index '{}' already exists. Skipping index creation.",
                     indexName);
