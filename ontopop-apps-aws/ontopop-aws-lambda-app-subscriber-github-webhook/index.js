@@ -1,5 +1,5 @@
 /**
- * Ontology Ingestion Service Invoker
+ * GitHub Webhook Subscriber
  *
  * An API Gateway HTTP-triggered (POST) AWS lambda application written in 
  * Node.js that will be requested by the Git webhook (POST). This AWS
