@@ -2,9 +2,12 @@ package ai.hyperlearning.ontopop.search.model;
 
 import java.io.Serializable;
 import java.util.Map;
+
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Simple Vertex model for indexing
@@ -26,6 +29,9 @@ public class SimpleIndexVertex implements Serializable {
 
     @Field(type = FieldType.Text)
     private String label;
+    
+    @Field(type = FieldType.Text)
+    private String iri;
 
     private Map<String, Object> properties;
 
@@ -38,6 +44,7 @@ public class SimpleIndexVertex implements Serializable {
         this.vertexId = vertexId;
         this.label = label;
         this.properties = properties;
+        this.setIri();
     }
 
     public long getVertexId() {
@@ -56,12 +63,27 @@ public class SimpleIndexVertex implements Serializable {
         this.label = label;
     }
 
+    public String getIri() {
+        return iri;
+    }
+
+    public void setIri(String iri) {
+        this.iri = iri;
+    }
+    
+    @JsonIgnore
+    public void setIri() {
+        if ( this.properties.containsKey("iri") )
+            this.iri = this.properties.get("iri").toString();
+    }
+
     public Map<String, Object> getProperties() {
         return properties;
     }
 
     public void setProperties(Map<String, Object> properties) {
         this.properties = properties;
+        this.setIri();
     }
 
     @Override

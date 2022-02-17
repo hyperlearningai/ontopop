@@ -239,8 +239,10 @@ public class OntologyGraphIndexerService {
         for (var entry : simpleOntologyPropertyGraph.getVertices().entrySet()) {
             SimpleOntologyVertex vertex = entry.getValue();
             vertex.preparePropertiesForLoading();
-            vertices.add(new SimpleIndexVertex(vertex.getVertexId(),
-                    SimpleOntologyVertex.LABEL, vertex.getProperties()));
+            SimpleIndexVertex simpleIndexVertex = new SimpleIndexVertex(
+                    vertex.getVertexId(), SimpleOntologyVertex.LABEL, 
+                    vertex.getProperties());
+            vertices.add(simpleIndexVertex);
         }
 
         // Bulk index the vertices/classes
