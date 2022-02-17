@@ -32,24 +32,44 @@ public class ElasticsearchClientConfig {
     
     @Value("${storage.search.elasticsearch.password}")
     private String elasticsearchPassword;
+    
+    @Value("${storage.search.elasticsearch.ssl}")
+    private Boolean elasticsearchSsl;
 
     @Bean
     public RestHighLevelClient client() {
         
         ClientConfiguration clientConfiguration = null;
+        String elasticsearchHostPort = 
+                removeHttpProtocolFromUrl(elasticsearchUrl);
+        
         if ( Strings.isNullOrEmpty(elasticsearchUsername) )
             
             // No authentication
-            clientConfiguration = ClientConfiguration.builder()
-                    .connectedTo(removeHttpProtocolFromUrl(elasticsearchUrl))
-                    .build();
+            clientConfiguration = Boolean.TRUE.equals(elasticsearchSsl) ? 
+                    ClientConfiguration.builder()
+                        .connectedTo(elasticsearchHostPort)
+                        .usingSsl()
+                        .build() : 
+                            ClientConfiguration.builder()
+                                .connectedTo(elasticsearchHostPort)
+                                .build();
+                            
         else
             
             // Basic authentication
-            clientConfiguration = ClientConfiguration.builder()
-                .connectedTo(removeHttpProtocolFromUrl(elasticsearchUrl))
-                .withBasicAuth(elasticsearchUsername, elasticsearchPassword)
-                .build();
+            clientConfiguration = Boolean.TRUE.equals(elasticsearchSsl) ? 
+                    ClientConfiguration.builder()
+                        .connectedTo(elasticsearchHostPort)
+                        .usingSsl()
+                        .withBasicAuth(elasticsearchUsername, 
+                                elasticsearchPassword)
+                        .build() : 
+                            ClientConfiguration.builder()
+                                .connectedTo(elasticsearchHostPort)
+                                .withBasicAuth(elasticsearchUsername, 
+                                        elasticsearchPassword)
+                                .build();
         
         return RestClients.create(clientConfiguration).rest();
         

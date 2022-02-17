@@ -251,6 +251,7 @@ storage:
             url: 
             username: 
             password: 
+            ssl: true
             shards: 1
             replicas: 0
         azure-search:

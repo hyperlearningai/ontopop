@@ -251,6 +251,7 @@ storage:
             url: ${elasticsearch-url}
             username: ${elasticsearch-username}
             password: ${elasticsearch-password}
+            ssl: true
             shards: 1
             replicas: 0
         azure-search:
