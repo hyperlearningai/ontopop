@@ -115,7 +115,6 @@ public class OntologySearchController {
             // At least one field to search has been provided
             if ( !ontologySearchQuery.getFields().isEmpty() ) {
                 
-                
                 return ontologySearchQuery.getFields().size() > 1 ? 
                         searchService.search(indexName, 
                             ontologySearchQuery.getFields(), 
