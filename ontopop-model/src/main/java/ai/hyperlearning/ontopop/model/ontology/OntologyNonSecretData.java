@@ -66,6 +66,11 @@ public class OntologyNonSecretData implements Serializable {
 	        required = false)
 	private LocalDateTime dateLastUpdated;
 	
+	@Schema(description = "WebProtege project ID.", 
+	        example = "0b3be685-73bd-4d5a-b866-e70d0ac7169b", 
+	        required = false)
+	private String webProtegeProjectId;
+	
 	public OntologyNonSecretData() {
 		
 	}
