@@ -108,7 +108,7 @@ public class OntologyTriplestoreController {
     @ApiResponses(
             value = {
                     @ApiResponse(
-                            responseCode = "201",
+                            responseCode = "200",
                             description = "SPARQL query successfully executed."),
                     @ApiResponse(
                             responseCode = "401",
@@ -173,7 +173,7 @@ public class OntologyTriplestoreController {
     @ApiResponses(
             value = {
                     @ApiResponse(
-                            responseCode = "201",
+                            responseCode = "200",
                             description = "SPARQL query successfully executed."),
                     @ApiResponse(
                             responseCode = "401",
@@ -239,7 +239,7 @@ public class OntologyTriplestoreController {
     @ApiResponses(
             value = {
                     @ApiResponse(
-                            responseCode = "201",
+                            responseCode = "200",
                             description = "RDF data successfully retrieved."),
                     @ApiResponse(
                             responseCode = "401",
@@ -283,7 +283,7 @@ public class OntologyTriplestoreController {
     @ApiResponses(
             value = {
                     @ApiResponse(
-                            responseCode = "201",
+                            responseCode = "200",
                             description = "OWL data successfully retrieved."),
                     @ApiResponse(
                             responseCode = "401",

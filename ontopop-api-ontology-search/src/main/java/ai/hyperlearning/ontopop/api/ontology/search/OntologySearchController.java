@@ -80,8 +80,8 @@ public class OntologySearchController {
     @ApiResponses(
             value = {
                     @ApiResponse(
-                            responseCode = "201",
-                            description = "Search successfully executed."),
+                            responseCode = "200",
+                            description = "Search query successfully executed."),
                     @ApiResponse(
                             responseCode = "401",
                             description = "Search query request unauthorized."), 
