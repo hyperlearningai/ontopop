@@ -247,7 +247,7 @@ public class OntologyManagementController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Ontology successfully updated."),
+                            description = "Ontology secrets successfully updated."),
                     @ApiResponse(
                             responseCode = "401",
                             description = "Update of ontology unauthorized.", 
@@ -277,8 +277,8 @@ public class OntologyManagementController {
         LOGGER.debug("New HTTP PATCH request: Update ontology secrets by ID.");
         try {
             ontologyManagementService.update(id, ontologySecretData);
-            return new ResponseEntity<>("Ontology update request successfully "
-                    + "processed.", HttpStatus.OK);
+            return new ResponseEntity<>("Ontology secrets successfully "
+                    + "updated.", HttpStatus.OK);
         } catch (Exception e) {
             LOGGER.error("An error was encountered when attempting to update "
                     + "the secrets for this ontology.", e);
@@ -324,8 +324,8 @@ public class OntologyManagementController {
         LOGGER.debug("New HTTP DELETE request: Delete ontology by ID.");
         try {
             ontologyManagementService.delete(id);
-            return new ResponseEntity<>("Ontology deletion request "
-                    + "successfully processed.", HttpStatus.OK);
+            return new ResponseEntity<>("Ontology successfully deleted.", 
+                    HttpStatus.OK);
         } catch (Exception e) {
             LOGGER.error("An error was encountered when attempting to "
                     + "delete this ontology.", e);
