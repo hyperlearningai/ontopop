@@ -19,7 +19,7 @@ import ai.hyperlearning.ontopop.model.ontology.OntologyNonSecretData;
 public interface OntologyMapper {
 
     @BeanMapping(
-            nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
+            nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateOntology(OntologyNonSecretData ontologyNonSecretData,
             @MappingTarget Ontology ontology);
 
