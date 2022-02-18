@@ -63,6 +63,7 @@
         <module>ontopop-app-api-ontology-management</module>
         <module>ontopop-app-api-ontology-triplestore</module>
         <module>ontopop-app-api-ontology-search</module>
+        <module>ontopop-app-api-ontology-graph</module>
     </modules>
 
 </project>
