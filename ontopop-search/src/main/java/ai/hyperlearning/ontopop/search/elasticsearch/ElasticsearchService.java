@@ -13,6 +13,7 @@ import java.util.Set;
 import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.SimpleQueryStringBuilder;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -157,13 +158,16 @@ public class ElasticsearchService implements SearchService {
         MultiMatchQueryBuilder multiMatchQueryBuilder = multiMatchQuery(query)
                 .operator(operator)
                 .type(MultiMatchQueryBuilder.Type.BEST_FIELDS);
+        HighlightBuilder highlightBuilder = new HighlightBuilder();
         for ( String propertyKey : propertyKeys ) {
             multiMatchQueryBuilder = multiMatchQueryBuilder.field(propertyKey);
+            highlightBuilder = highlightBuilder.field(propertyKey);
         }
             
         // Build and execute the search query
         NativeSearchQuery nativeSearchQuery = new NativeSearchQueryBuilder()
                 .withQuery(multiMatchQueryBuilder)
+                .withHighlightBuilder(highlightBuilder)
                 .build();
         final Query searchQuery = nativeSearchQuery;
         return elasticsearchTemplate.search(searchQuery,
@@ -179,9 +183,14 @@ public class ElasticsearchService implements SearchService {
         final Query searchQuery = exact
                 ? new NativeSearchQueryBuilder().withQuery(
                         matchQuery(propertyKey, query).operator(operator))
+                        .withHighlightFields(
+                                new HighlightBuilder.Field(propertyKey))
                         .build()
                 : new NativeSearchQueryBuilder()
-                        .withQuery(fuzzyQuery(propertyKey, query)).build();
+                        .withQuery(fuzzyQuery(propertyKey, query))
+                        .withHighlightFields(
+                                new HighlightBuilder.Field(propertyKey))
+                        .build();
         return elasticsearchTemplate.search(searchQuery,
                 SimpleIndexVertex.class, IndexCoordinates.of(indexName));
 
@@ -198,6 +207,8 @@ public class ElasticsearchService implements SearchService {
         final Query searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(matchQuery(propertyKey, query).operator(operator)
                         .minimumShouldMatch(minimumShouldMatchPct))
+                .withHighlightFields(
+                        new HighlightBuilder.Field(propertyKey))
                 .build();
         return elasticsearchTemplate.search(searchQuery,
                 SimpleIndexVertex.class, IndexCoordinates.of(indexName));
