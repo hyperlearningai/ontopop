@@ -62,6 +62,7 @@
         <module>ontopop-app-data-ontology-webprotege-exporter</module>
         <module>ontopop-app-api-ontology-management</module>
         <module>ontopop-app-api-ontology-triplestore</module>
+        <module>ontopop-app-api-ontology-search</module>
     </modules>
 
 </project>
