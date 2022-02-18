@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+    xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Parent Project -->
+    <parent>
+        <groupId>ai.hyperlearning.ontopop</groupId>
+        <artifactId>ontopop-apps-aws</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <!-- Module Metadata -->
+    <artifactId>ontopop-aws-beanstalk-app-api-ontology-search</artifactId>
+    <name>ontopop-aws-beanstalk-app-api-ontology-search</name>
+    <packaging>jar</packaging>
+    <description>OntoPop - AWS Beanstalk Ontology Search API Service Web Application</description>
+    <url>https://ontopop.com</url>
+    <organization>
+        <name>HyperLearning AI</name>
+        <url>https://hyperlearning.ai</url>
+    </organization>
+    <developers>
+        <developer>
+            <id>jillurquddus</id>
+            <name>Jillur Quddus</name>
+            <email>contactus@hyperlearning.ai</email>
+            <url>https://hyperlearning.ai/team/jillurquddus</url>
+            <organization>HyperLearning AI</organization>
+            <organizationUrl>https://hyperlearning.ai</organizationUrl>
+            <roles>
+                <role>Chief Data Scientist</role>
+                <role>Principal Polyglot Software Engineer</role>
+            </roles>
+            <timezone>Europe/London</timezone>
+        </developer>
+    </developers>
+
+    <!-- Module Properties -->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <start-class>ai.hyperlearning.ontopop.apps.aws.beanstalk.api.ontology.search.OntologySearchApiAwsBeanstalkApp</start-class>
+    </properties>
+
+    <!-- Module Dependencies -->
+    <dependencies>
+    
+        <!-- OntoPop -->
+        <dependency>
+            <groupId>ai.hyperlearning.ontopop</groupId>
+            <artifactId>ontopop-api-ontology-search</artifactId>
+        </dependency>
+
+    </dependencies>
+    
+    <!-- Module Build -->
+    <build>
+    
+        <!-- JAR Name -->
+        <finalName>${project.name}-${project.version}-eb</finalName>
+        
+        <!-- Plugins -->
+        <plugins>
+        
+            <!-- Spring Boot Maven Plugin -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            
+            <!-- Maven Compiler Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>**/cloud/config/*.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        
+        </plugins>
+    
+    </build>
+
+</project>
