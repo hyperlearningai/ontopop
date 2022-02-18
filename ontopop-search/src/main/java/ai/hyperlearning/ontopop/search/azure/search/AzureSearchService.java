@@ -41,6 +41,10 @@ import ai.hyperlearning.ontopop.search.model.SimpleIndexVertex;
  * 
  * TODO - Refactor boilerplate code to use bean mappers when mapping from
  * SimpleIndexVertex to AzureSimpleIndexVertex POJOs.
+ * TODO - Query support for Azure Search is under development. All searches
+ * currently undertake a simple free-text search. This needs to be
+ * refactored to use Azure Search SearchOptions(). In the meantime, it is
+ * strongly recommended to use Elasticsearch instead.
  *
  * @author jillurquddus
  * @since 2.0.0
@@ -139,43 +143,9 @@ public class AzureSearchService implements SearchService {
     }
 
     /**
-     * Simple free-text search TODO - Refactor to use Azure Search
-     * SearchOptions()
+     * TODO - Refactor boilerplate code to use bean mappers
      */
-
-    @Override
-    public Object search(String indexName, String propertyKey, String query,
-            boolean exact, boolean and) {
-        SearchClient client =
-                beanFactory.getBean(SearchClient.class, indexName);
-        Set<AzureSimpleIndexVertex> vertices = new LinkedHashSet<>();
-        for (SearchResult searchResult : client.search("luxury")) {
-            AzureSimpleIndexVertex vertex =
-                    searchResult.getDocument(AzureSimpleIndexVertex.class);
-            vertices.add(vertex);
-        }
-        return vertices;
-    }
-
-    /**
-     * Simple free-text search TODO - Refactor to use Azure Search
-     * SearchOptions()
-     */
-
-    @Override
-    public Object search(String indexName, String propertyKey, String query,
-            boolean and, int minimumShouldMatchPercentage) {
-        SearchClient client =
-                beanFactory.getBean(SearchClient.class, indexName);
-        Set<AzureSimpleIndexVertex> vertices = new LinkedHashSet<>();
-        for (SearchResult searchResult : client.search("luxury")) {
-            AzureSimpleIndexVertex vertex =
-                    searchResult.getDocument(AzureSimpleIndexVertex.class);
-            vertices.add(vertex);
-        }
-        return vertices;
-    }
-
+    
     @Override
     public void indexDocuments(String indexName,
             Set<SimpleIndexVertex> vertices) {
@@ -248,8 +218,8 @@ public class AzureSearchService implements SearchService {
     }
 
     /**
-     * Naively delete all documents in a given index TODO - Refactor to use a
-     * matchAllQuery analogous to ElasticSearch
+     * Naively delete all documents in a given index
+     * TODO - Refactor to use a matchAllQuery analogous to ElasticSearch
      */
 
     @Override
@@ -257,12 +227,56 @@ public class AzureSearchService implements SearchService {
         // deleteIndex(indexName);
         // createIndex(indexName);
     }
-
+    
+    /**************************************************************************
+     * SEARCH
+     *************************************************************************/
+    
+    @Override
+    public Object search(String indexName, String query) {
+        SearchClient client =
+                beanFactory.getBean(SearchClient.class, indexName);
+        Set<AzureSimpleIndexVertex> vertices = new LinkedHashSet<>();
+        for (SearchResult searchResult : client.search(query)) {
+            AzureSimpleIndexVertex vertex =
+                    searchResult.getDocument(AzureSimpleIndexVertex.class);
+            vertices.add(vertex);
+        }
+        return vertices;
+    }
+    
+    /**
+     * Simple free-text search
+     * TODO - Refactor to use Azure Search SearchOptions()
+     */
+    
     @Override
     public Object search(String indexName, List<String> propertyKeys,
             String query, boolean and) {
-        // TODO Auto-generated method stub
-        return null;
+        return search(indexName, query);
+        
+    }
+
+    /**
+     * Simple free-text search
+     * TODO - Refactor to use Azure Search SearchOptions()
+     */
+
+    @Override
+    public Object search(String indexName, String propertyKey, String query,
+            boolean exact, boolean and) {
+        return search(indexName, query);
+    }
+
+    /**
+     * Simple free-text search
+     * TODO - Refactor to use Azure Search SearchOptions()
+     */
+
+    @Override
+    public Object search(String indexName, String propertyKey, String query,
+            boolean and, int minimumShouldMatchPercentage) {
+        return search(indexName, query);
     }
 
 }

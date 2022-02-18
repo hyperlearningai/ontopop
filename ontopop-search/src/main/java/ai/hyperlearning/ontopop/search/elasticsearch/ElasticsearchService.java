@@ -107,6 +107,32 @@ public class ElasticsearchService implements SearchService {
         return elasticsearchTemplate.get(String.valueOf(vertexId),
                 SimpleIndexVertex.class, IndexCoordinates.of(indexName));
     }
+
+    @Override
+    public void indexDocuments(String indexName,
+            Set<SimpleIndexVertex> vertices) {
+        elasticsearchTemplate.save(vertices, IndexCoordinates.of(indexName));
+    }
+
+    @Override
+    public void indexDocument(String indexName, SimpleIndexVertex vertex) {
+        elasticsearchTemplate.save(vertex, IndexCoordinates.of(indexName));
+    }
+
+    @Override
+    public void deleteAllDocuments(String indexName) {
+        final Query deleteQuery = new NativeSearchQueryBuilder()
+                .withQuery(matchAllQuery()).build();
+        long documentCount = elasticsearchTemplate.count(deleteQuery, 
+                IndexCoordinates.of(indexName));
+        if ( documentCount > 0 )
+            elasticsearchTemplate.delete(deleteQuery,
+                    IndexCoordinates.of(indexName));
+    }
+    
+    /**************************************************************************
+     * SEARCH
+     *************************************************************************/
     
     @Override
     public Object search(String indexName, String query) {
@@ -176,28 +202,6 @@ public class ElasticsearchService implements SearchService {
         return elasticsearchTemplate.search(searchQuery,
                 SimpleIndexVertex.class, IndexCoordinates.of(indexName));
 
-    }
-
-    @Override
-    public void indexDocuments(String indexName,
-            Set<SimpleIndexVertex> vertices) {
-        elasticsearchTemplate.save(vertices, IndexCoordinates.of(indexName));
-    }
-
-    @Override
-    public void indexDocument(String indexName, SimpleIndexVertex vertex) {
-        elasticsearchTemplate.save(vertex, IndexCoordinates.of(indexName));
-    }
-
-    @Override
-    public void deleteAllDocuments(String indexName) {
-        final Query deleteQuery = new NativeSearchQueryBuilder()
-                .withQuery(matchAllQuery()).build();
-        long documentCount = elasticsearchTemplate.count(deleteQuery, 
-                IndexCoordinates.of(indexName));
-        if ( documentCount > 0 )
-            elasticsearchTemplate.delete(deleteQuery,
-                    IndexCoordinates.of(indexName));
     }
 
 }
