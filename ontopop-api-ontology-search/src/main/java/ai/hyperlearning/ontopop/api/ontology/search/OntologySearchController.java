@@ -53,14 +53,15 @@ public class OntologySearchController {
     @Value("${storage.search.indexNamePrefix}")
     private String searchIndexNamePrefix;
     
+    private SearchServiceType searchServiceType;
     private SearchService searchService;
     
     @PostConstruct
     private void postConstruct() {
         
         // Instantiate the search service
-        SearchServiceType searchServiceType = SearchServiceType
-                .valueOfLabel(storageSearchService.toUpperCase());
+        searchServiceType = SearchServiceType.valueOfLabel(
+                storageSearchService.toUpperCase());
         searchService = searchServiceFactory.
                 getSearchService(searchServiceType);
         LOGGER.debug("Using the {} search service.", searchServiceType);
@@ -115,6 +116,15 @@ public class OntologySearchController {
             // At least one field to search has been provided
             if ( !ontologySearchQuery.getFields().isEmpty() ) {
                 
+                // Prefix the search fields to match the nested properties
+                // map as defined in the SimpleIndexVertex.class model
+                if (searchServiceType.equals(SearchServiceType.ELASTICSEARCH)) {
+                    ontologySearchQuery.prefixFields();
+                    LOGGER.debug("Transformed search query request for "
+                            + "Elasticsearch: {}", ontologySearchQuery);
+                }
+                
+                // Execute a multi-match search
                 return ontologySearchQuery.getFields().size() > 1 ? 
                         searchService.search(indexName, 
                             ontologySearchQuery.getFields(), 
