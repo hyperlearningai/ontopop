@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import ai.hyperlearning.ontopop.model.owl.SimpleAnnotationProperty;
 import ai.hyperlearning.ontopop.model.owl.SimpleClass;
 import ai.hyperlearning.ontopop.model.owl.SimpleOntology;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Simple Directed Property Graph model representation of an OWL Ontology
@@ -26,18 +27,22 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 	private static final long serialVersionUID = 4551428047838876163L;
 	
 	// One-to-one mapping between Ontology ID and Property Graph ID
+	@Schema(description = "Ontology ID", example = "13")
 	private int id;
 	
 	// The latest Git webhook ID so that it can be attached as a property
 	// to vertices and edges when they are updated
+	@Schema(description = "Latest Git webhook ID for this ontology.", example = "108")
 	private long latestGitWebhookId;
 	
 	// Map of resolved Simple Ontology Vertex Key (IRI + Ontology ID) <> 
 	// Simple Ontology Vertex objects which are a one-to-one mapping of OWL classes
+	@Schema(description = "Map of OWL classes modelled as property graph vertices.")
 	private Map<String, SimpleOntologyVertex> vertices = new LinkedHashMap<>();
 	
 	// List of resolved Simple Ontology Edge objects which are a one-to-one
 	// mapping of OWL subclass relationships
+	@Schema(description = "Map of OWL subclass relationships modelled as directed property graph edges.")
 	private List<SimpleOntologyEdge> edges = new ArrayList<>();
 	
 	public SimpleOntologyPropertyGraph() {

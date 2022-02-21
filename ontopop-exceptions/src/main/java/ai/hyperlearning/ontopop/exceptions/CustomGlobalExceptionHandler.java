@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import ai.hyperlearning.ontopop.exceptions.git.GitWebhookNotFoundException;
+import ai.hyperlearning.ontopop.exceptions.graph.InvalidGremlinQueryException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreationAlreadyExistsException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreationException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDeletionException;
@@ -53,7 +54,8 @@ public class CustomGlobalExceptionHandler
         response.sendError(HttpStatus.CONFLICT.value());
     }
     
-    @ExceptionHandler({InvalidSparqlQueryException.class})
+    @ExceptionHandler({InvalidSparqlQueryException.class, 
+        InvalidGremlinQueryException.class})
     public void springHandleBadRequest(HttpServletResponse response) 
             throws IOException {
         response.sendError(HttpStatus.BAD_REQUEST.value());
