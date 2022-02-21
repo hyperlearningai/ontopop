@@ -105,7 +105,7 @@ public class GremlinRecipes {
 	 * @return
 	 */
 	
-	private static String unfoldValueMap(boolean supportsTraversalsBy) {
+	public static String unfoldValueMap(boolean supportsTraversalsBy) {
 		return supportsTraversalsBy ? 
 				".by(unfold())" : ".unfold()";
 	}
@@ -117,7 +117,7 @@ public class GremlinRecipes {
 	 * @return
 	 */
 	
-	private static String iterateTraversal(boolean iterate) {
+	public static String iterateTraversal(boolean iterate) {
 	    return iterate ? ".iterate()" : "";
 	}
 	
@@ -132,8 +132,7 @@ public class GremlinRecipes {
 	
 	public static String getVertices(boolean supportsTraversalsBy) {
 		return "g.V()"
-				+ ".valueMap(true)"
-				+ unfoldValueMap(supportsTraversalsBy);
+				+ ".valueMap()";
 	}
 	
 	/**
@@ -146,8 +145,7 @@ public class GremlinRecipes {
 			String label, boolean supportsTraversalsBy) {
 		return "g.V()"
 				+ ".hasLabel('" + label + "')"
-				+ ".valueMap(true)"
-				+ unfoldValueMap(supportsTraversalsBy);
+				+ ".valueMap()";
 	}
 	
 	/**
@@ -165,8 +163,7 @@ public class GremlinRecipes {
 				+ ".hasLabel('" + label + "')"
 				+ ".has('" + propertyKey + "', " 
 					+ resolveHasPropertyValue(propertyValue) + ")"
-				+ ".valueMap(true)"
-				+ unfoldValueMap(supportsTraversalsBy);
+				+ ".valueMap()";
 	}
 	
 	/**
@@ -182,8 +179,7 @@ public class GremlinRecipes {
 		return "g.V()"
 				+ ".has('" + propertyKey + "', " 
 					+ resolveHasPropertyValue(propertyValue) + ")"
-				+ ".valueMap(true)"
-				+ unfoldValueMap(supportsTraversalsBy);
+				+ ".valueMap()";
 	}
 	
 	/**
@@ -196,8 +192,7 @@ public class GremlinRecipes {
 			long vertexId, boolean supportsNonStringIds, 
 			boolean supportsTraversalsBy) {
 		return resolveVertexId(vertexId, supportsNonStringIds)
-				+ ".valueMap(true)"
-				+ unfoldValueMap(supportsTraversalsBy);
+				+ ".valueMap()";
 	}
 	
 	/**
@@ -424,8 +419,7 @@ public class GremlinRecipes {
 			int ontologyId, boolean supportsTraversalsBy) {
 		return "g.V()"
 				+ ".has('" + VERTEX_PROPERTY_KEY_ONTOLOGY_ID + "', " + ontologyId + ")"
-				+ ".valueMap(true)"
-				+ unfoldValueMap(supportsTraversalsBy);
+				+ ".valueMap()";
 	}
 	
 	/**
@@ -441,8 +435,7 @@ public class GremlinRecipes {
 				+ ".and("
 					+ "__.has('" + VERTEX_PROPERTY_KEY_ONTOLOGY_ID + "', " + ontologyId + "), "
 					+ "__.has('" + VERTEX_PROPERTY_KEY_IRI + "', '" + iri + "'))"
-				+ ".valueMap(true)"
-				+ unfoldValueMap(supportsTraversalsBy);
+				+ ".valueMap()";
 	}
 	
 	/**
@@ -458,8 +451,7 @@ public class GremlinRecipes {
 				+ ".and("
 					+ "__.has('" + VERTEX_PROPERTY_KEY_ONTOLOGY_ID + "', " + ontologyId + "), "
 					+ "__.has('" + VERTEX_PROPERTY_KEY_KEY + "', '" + key + "'))"
-				+ ".valueMap(true)"
-				+ unfoldValueMap(supportsTraversalsBy);
+				+ ".valueMap()";
 	}
 	
 	/**************************************************************************
@@ -528,19 +520,7 @@ public class GremlinRecipes {
 				+ ".hasLabel('" + label + "')"
 				+ ".has('" + propertyKey + "', " 
 					+ resolveHasPropertyValue(propertyValue) + ")"
-				+ ".project("
-					+ "'sourceVertexKey', "
-					+ "'sourceVertexId', "
-					+ "'targetVertexKey', "
-					+ "'targetVertexId', "
-					+ "'ontologyId', "
-					+ "'latestGitWebhookId', "
-					+ "'relationship')"
-				+ ".by(id())"
-				+ ".by(valueMap(true))"
-				+ ".by(outV().id())"
-				+ ".by(inV().id())"
-				+ ".by(unfold())";
+				+ ".valueMap()";
 	}
 	
 	/**
@@ -555,19 +535,7 @@ public class GremlinRecipes {
 				+ ".bothE()"
 				+ ".has('" + propertyKey + "', " 
 					+ resolveHasPropertyValue(propertyValue) + ")"
-				+ ".project("
-					+ "'sourceVertexKey', "
-					+ "'sourceVertexId', "
-					+ "'targetVertexKey', "
-					+ "'targetVertexId', "
-					+ "'ontologyId', "
-					+ "'latestGitWebhookId', "
-					+ "'relationship')"
-				+ ".by(id())"
-				+ ".by(valueMap(true))"
-				+ ".by(outV().id())"
-				+ ".by(inV().id())"
-				+ ".by(unfold())";
+				+ ".valueMap()";
 	}
 	
 	/**
