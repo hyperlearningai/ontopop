@@ -37,7 +37,7 @@ public class AzureCosmosDbGremlinServerDriverClientConfig {
     private String password;
 
     private static final boolean ENABLE_SSL = true;
-    private static final boolean SERIALIZE_RESULT_TO_STRING = true;
+    private static final boolean SERIALIZE_RESULT_TO_STRING = false;
 
     @Bean("azureCosmosDbGremlinServerDriverClient")
     public Client getAzureCosmosDbGremlinServerDriverClient() {
