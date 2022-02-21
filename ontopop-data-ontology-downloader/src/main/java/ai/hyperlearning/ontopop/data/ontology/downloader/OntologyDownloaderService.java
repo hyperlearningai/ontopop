@@ -54,9 +54,13 @@ public class OntologyDownloaderService {
     @Value("${storage.object.containers.ingested}")
     private String ingestedDirectoryName;
     
+    @Value("${storage.object.containers.loaded.graph}")
+    private String loadedDirectoryName;
+    
     private ObjectStorageServiceType objectStorageServiceType;
     private ObjectStorageService objectStorageService;
-    private Map<String, String> downloadedFiles = new HashMap<>();
+    private Map<String, String> downloadedIngestedOwlFiles = new HashMap<>();
+    private Map<String, String> downloadedModelledPropetryGraphFiles = new HashMap<>();
     
     @PostConstruct
     private void postConstruct() {
@@ -91,6 +95,25 @@ public class OntologyDownloaderService {
         }
         return null;
     }
+    
+    private String generateKey(GitWebhook gitWebhook) {
+        return gitWebhook.getOntology().getId() + "_" + gitWebhook.getId();
+    }
+    
+    private String generateProcessedFilename(GitWebhook gitWebhook) {
+        return gitWebhook.getOntology()
+                .generateFilenameForPersistence(gitWebhook.getId());
+    }
+    
+    private String getReadObjectUri(String stageDirectoryName, 
+            String processedFilename) {
+        return (objectStorageServiceType.equals(
+                ObjectStorageServiceType.LOCAL)) ? 
+                        storageLocalBaseUri + File.separator 
+                        + stageDirectoryName + File.separator 
+                        + processedFilename : 
+                            stageDirectoryName + "/" + processedFilename;
+    }
 
     /**
      * Retrieve an OWL file from the object storage ingested container
@@ -104,36 +127,73 @@ public class OntologyDownloaderService {
     public String retrieveOwlFile(GitWebhook gitWebhook) 
             throws IOException {
         
-        String key = gitWebhook.getOntology().getId() 
-                + "_" + gitWebhook.getId();
-        String processedFilename = gitWebhook.getOntology()
-                .generateFilenameForPersistence(gitWebhook.getId());
-        String readObjectUri = (objectStorageServiceType.equals(
-                ObjectStorageServiceType.LOCAL)) ? 
-                        storageLocalBaseUri + File.separator 
-                        + ingestedDirectoryName + File.separator 
-                        + processedFilename : 
-                            ingestedDirectoryName + "/" + processedFilename;
+        String key = generateKey(gitWebhook);
+        String processedFilename = generateProcessedFilename(gitWebhook);
+        String readObjectUri = getReadObjectUri(ingestedDirectoryName, 
+                processedFilename);
         
         // Check whether the OWL file has been downloaded recently.
         // If so, and if the file still exists, then return the path to it
-        if ( downloadedFiles != null ) {
-            if ( downloadedFiles.containsKey(key) ) {
-                String previouslyDownloadedUri = downloadedFiles.get(key);
+        if ( downloadedIngestedOwlFiles != null ) {
+            if ( downloadedIngestedOwlFiles.containsKey(key) ) {
+                String previouslyDownloadedUri = 
+                        downloadedIngestedOwlFiles.get(key);
                 Path path = Paths.get(previouslyDownloadedUri);
                 if ( Files.exists(path) )
                     return previouslyDownloadedUri;
                 else
-                    downloadedFiles.remove(key);
+                    downloadedIngestedOwlFiles.remove(key);
             }
         } else {
-            downloadedFiles = new HashMap<>();
+            downloadedIngestedOwlFiles = new HashMap<>();
         } 
         
         // If not, download the OWL file from object storage
         String downloadedUri = objectStorageService
                 .downloadObject(readObjectUri, processedFilename);
-        downloadedFiles.put(key, downloadedUri);
+        downloadedIngestedOwlFiles.put(key, downloadedUri);
+        return downloadedUri;
+        
+    }
+    
+    /**
+     * Retrieve a modelled property graph file from the object storage 
+     * loaded container given a Git webhook object, and return the locally 
+     * downloaded absolute file path.
+     * @param gitWebhook
+     * @return
+     * @throws IOException
+     */
+    
+    public String retrieveModelledPropertyGraphFile(GitWebhook gitWebhook) 
+            throws IOException {
+        
+        String key = generateKey(gitWebhook);
+        String processedFilename = generateProcessedFilename(gitWebhook) 
+                + ".json";
+        String readObjectUri = getReadObjectUri(loadedDirectoryName, 
+                processedFilename);
+        
+        // Check whether the OWL file has been downloaded recently.
+        // If so, and if the file still exists, then return the path to it
+        if ( downloadedModelledPropetryGraphFiles != null ) {
+            if ( downloadedModelledPropetryGraphFiles.containsKey(key) ) {
+                String previouslyDownloadedUri = 
+                        downloadedModelledPropetryGraphFiles.get(key);
+                Path path = Paths.get(previouslyDownloadedUri);
+                if ( Files.exists(path) )
+                    return previouslyDownloadedUri;
+                else
+                    downloadedModelledPropetryGraphFiles.remove(key);
+            }
+        } else {
+            downloadedModelledPropetryGraphFiles = new HashMap<>();
+        } 
+        
+        // If not, download the OWL file from object storage
+        String downloadedUri = objectStorageService
+                .downloadObject(readObjectUri, processedFilename);
+        downloadedModelledPropetryGraphFiles.put(key, downloadedUri);
         return downloadedUri;
         
     }
