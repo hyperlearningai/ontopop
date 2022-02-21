@@ -331,7 +331,7 @@ public class OntologyTriplestoreController {
         } catch (Exception e) {
             
             LOGGER.error("An error was encountered when attempting to "
-                    + "retrieve the OWL file for ontology ID {}.", id);
+                    + "retrieve the OWL file for ontology ID {}.", id, e);
             throw new OntologyDownloadException();
             
         }
