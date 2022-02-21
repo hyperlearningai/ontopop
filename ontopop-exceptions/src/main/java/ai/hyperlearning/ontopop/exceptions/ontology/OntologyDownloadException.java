@@ -14,7 +14,7 @@ public class OntologyDownloadException extends RuntimeException {
     
     public OntologyDownloadException() {
         super("An error was encountered when attempting to "
-                    + "retrieve the OWL file for an ontology.");
+                    + "retrieve a data file for an ontology.");
     }
     
     public OntologyDownloadException(String message) {
