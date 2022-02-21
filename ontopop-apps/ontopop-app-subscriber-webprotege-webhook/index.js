@@ -17,6 +17,7 @@ const amqp = require('amqplib/callback_api');
 const axios = require('axios');
 const http = require('http');
 const url = require('url');
+const { Sequelize, Model, DataTypes } = require('sequelize');
 
 const requestListener = async function (req, res) {
     
@@ -102,6 +103,81 @@ const requestListener = async function (req, res) {
             
         });
         
+    }
+    
+    /**************************************************************************
+    * Publish message to a RDBMS
+    **************************************************************************/
+    
+    else if ( publishingProtocol == "SQL" ) {
+        
+        // Get the RDBMS hostname and credentials from the environment variables
+        let rdbmsHostname = process.env.RDBMS_HOSTNAME;
+        let rdbmsPort = process.env.RDBMS_PORT;
+        let rdbmsDatabase = process.env.RDBMS_DATABASE;
+        let rdbmsUsername = process.env.RDBMS_USERNAME;
+        let rdbmsPassword = process.env.RDBMS_PASSWORD;
+        let rdbmsDialect = process.env.RDBMS_DIALECT;
+        
+        // Build the connection object
+        const sequelize = new Sequelize(rdbmsDatabase, rdbmsUsername, rdbmsPassword, {
+            host: rdbmsHostname,
+            port: rdbmsPort, 
+            dialect: rdbmsDialect
+        });
+        
+        try {
+            
+            // Connect to the database
+            await sequelize.authenticate();
+            console.log('Connection has been established successfully.');
+            
+            // Define the WebProtegeWebhook model
+            const WebProtegeWebhook = sequelize.define('WebProtegeWebhook', {
+                id: {
+                    type: DataTypes.BIGINT,
+                    autoIncrement: true,
+                    primaryKey: true
+                }, 
+                projectId: {
+                    type: DataTypes.STRING,
+                    allowNull: false
+                },
+                userId: {
+                    type: DataTypes.STRING, 
+                    allowNull: false
+                }, 
+                revisionNumber: {
+                    type: DataTypes.INTEGER, 
+                    allowNull: false
+                }, 
+                timestamp: {
+                    type: DataTypes.BIGINT, 
+                    allowNull: false
+                }
+            }, {
+                tableName: 'wpwebhooks'
+            });
+            
+            // Check the current state of the table in the database and sync
+            await WebProtegeWebhook.sync();
+            
+            // Create and insert a new WebProtegeWebhook record
+            const reqBody = JSON.parse(requestBody)
+            const record = await WebProtegeWebhook.create({ 
+                projectId: reqBody.projectId, 
+                userId: reqBody.userId, 
+                revisionNumber: reqBody.revisionNumber, 
+                timestamp: reqBody.timestamp
+            });
+            console.log("Successfully created a new WebProtegeWebhook RDBMS record: " + record.toJSON());
+            
+        } catch (err) {
+            console.log("Error encountered when creating a new WebProtegeWebhook RDBMS record: " + err);
+        } finally {
+            sequelize.close();
+        }
+    
     }
 
 }
