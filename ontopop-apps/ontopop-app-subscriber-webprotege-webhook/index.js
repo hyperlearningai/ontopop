@@ -134,29 +134,34 @@ const requestListener = async function (req, res) {
             
             // Define the WebProtegeWebhook model
             const WebProtegeWebhook = sequelize.define('WebProtegeWebhook', {
-                id: {
+                wpwebhook_id: {
                     type: DataTypes.BIGINT,
                     autoIncrement: true,
                     primaryKey: true
                 }, 
-                projectId: {
+                project_id: {
                     type: DataTypes.STRING,
                     allowNull: false
                 },
-                userId: {
+                user_id: {
                     type: DataTypes.STRING, 
                     allowNull: false
                 }, 
-                revisionNumber: {
+                revision_number: {
                     type: DataTypes.INTEGER, 
                     allowNull: false
                 }, 
                 timestamp: {
                     type: DataTypes.BIGINT, 
                     allowNull: false
+                }, 
+                ontology_id: {
+                    type: DataTypes.INTEGER, 
+                    allowNull: true
                 }
             }, {
-                tableName: 'wpwebhooks'
+                tableName: 'wpwebhooks', 
+                timestamps: false
             });
             
             // Check the current state of the table in the database and sync
@@ -165,9 +170,9 @@ const requestListener = async function (req, res) {
             // Create and insert a new WebProtegeWebhook record
             const reqBody = JSON.parse(requestBody)
             const record = await WebProtegeWebhook.create({ 
-                projectId: reqBody.projectId, 
-                userId: reqBody.userId, 
-                revisionNumber: reqBody.revisionNumber, 
+                project_id: reqBody.projectId, 
+                user_id: reqBody.userId, 
+                revision_number: reqBody.revisionNumber, 
                 timestamp: reqBody.timestamp
             });
             console.log("Successfully created a new WebProtegeWebhook RDBMS record: " + record.toJSON());
