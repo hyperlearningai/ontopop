@@ -1,12 +1,12 @@
 package ai.hyperlearning.ontopop.data.ontology.webprotege.exporter;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +45,9 @@ public class WebProtegeExporterService {
     @Autowired
     private WebProtegeExporterGitPushService webProtegeExporterGitPushService;
     
+    @Value("${plugins.webprotege.exporter.scheduler.enabled:false}")
+    private Boolean schedulerEnabled;
+    
     private WebProtegeWebhook webProtegeWebhook;
     private List<Ontology> ontologies;
     private boolean isLaterWebProtegeRevision = false;
@@ -62,19 +65,23 @@ public class WebProtegeExporterService {
         
         try {
          
-            // 1. Validate that the revision number is greater than
+            // 1. Insert the WebProtege webhook record if the
+            // scheduler has been disabled
+            insert();
+            
+            // 2. Validate that the revision number is greater than
             // the latest revision number already processed for the 
             // given WebProtege project ID
             validate();
             
-            // 2. Export and download the ontology from WebProtege 
+            // 3. Export and download the ontology from WebProtege 
             // in RDF/XML OWL format
             download();
             
-            // 3. Upload the downloaded ontology to object storage
+            // 4. Upload the downloaded ontology to object storage
             upload();
             
-            // 4. Push the exported ontology to the relevant Git repositories
+            // 5. Push the exported ontology to the relevant Git repositories
             gitPush();
             
         } catch (Exception e) {
@@ -84,6 +91,19 @@ public class WebProtegeExporterService {
         }
         
         LOGGER.info("WebProtege export service finished.");
+        
+    }
+    
+    /**
+     * Insert the WebProtege webhook record if the scheduler 
+     * has been disabled.
+     */
+    
+    private void insert() {
+        
+        // Insert the WebProtege webhook record
+        if ( Boolean.FALSE.equals(schedulerEnabled) )
+            webProtegeWebhookRepository.save(webProtegeWebhook);
         
     }
     
@@ -102,34 +122,24 @@ public class WebProtegeExporterService {
                 webProtegeWebhook.getProjectId());
         LOGGER.info("Found {} ontologies with this WebProtege project ID.", 
                 ontologies.size());
-        
-        List<WebProtegeWebhook> webProtegeWebhooks = new ArrayList<>();
         int maxCurrentRevisionNumber = 0;
         if ( !ontologies.isEmpty() ) {
-        
+            
             // Get the latest revision number already processed for this 
             // WebProtege project ID
-            webProtegeWebhooks = webProtegeWebhookRepository
-                    .findByWebProtegeProjectId(webProtegeWebhook.getProjectId());
-            if ( webProtegeWebhooks.isEmpty() )
-                isLaterWebProtegeRevision = true;
-            else {
-                maxCurrentRevisionNumber = webProtegeWebhooks.stream()
-                    .max(Comparator.comparing(
-                            WebProtegeWebhook::getRevisionNumber))
-                    .get().getRevisionNumber();
-                if ( webProtegeWebhook.getRevisionNumber() 
-                        > maxCurrentRevisionNumber )
-                  isLaterWebProtegeRevision = true;
-            }
+            maxCurrentRevisionNumber = ontologies.stream().max(
+                    Comparator.comparing(
+                            Ontology::getLatestWebProtegeRevisionNumber))
+                    .get().getLatestWebProtegeRevisionNumber();
+            if ( webProtegeWebhook.getRevisionNumber() 
+                    > maxCurrentRevisionNumber )
+              isLaterWebProtegeRevision = true;
             
         }
         
         // Explicit logging
         LOGGER.info("Current highest revision number already processed for "
-                + "this WebProtege project ID: {}", 
-                webProtegeWebhooks.isEmpty() ? "None" : 
-                    maxCurrentRevisionNumber);
+                + "this WebProtege project ID: {}", maxCurrentRevisionNumber);
         LOGGER.info("Revision number received from WebProtege: {}", 
                 webProtegeWebhook.getRevisionNumber());
         if ( isLaterWebProtegeRevision )
@@ -194,11 +204,10 @@ public class WebProtegeExporterService {
                 webProtegeExporterGitPushService.run(
                         webProtegeWebhook, ontology, extractedOwlAbsolutePath);
                 
-                // Insert a new database record for this WebProtege
-                // webhook object
-                WebProtegeWebhook currentWebProtegeWebhook = webProtegeWebhook;
-                currentWebProtegeWebhook.setOntology(ontology);
-                webProtegeWebhookRepository.save(currentWebProtegeWebhook);
+                // Update the ontology record
+                ontology.setLatestWebProtegeRevisionNumber(
+                        webProtegeWebhook.getRevisionNumber());
+                ontologyRepository.save(ontology);
                 
             }
             
