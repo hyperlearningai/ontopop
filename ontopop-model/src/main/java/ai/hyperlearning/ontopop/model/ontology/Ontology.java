@@ -25,7 +25,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 import ai.hyperlearning.ontopop.model.git.GitWebhook;
-import ai.hyperlearning.ontopop.model.webprotege.WebProtegeWebhook;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
@@ -132,13 +131,14 @@ public class Ontology implements Serializable {
         required = false)
 	private String webProtegeProjectId;
 	
-	@OneToMany(mappedBy="ontology", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonIgnore
-    private Set<GitWebhook> gitWebhooks;
+	@Schema(description = "The latest Web Protege project revision number that has been processed.", 
+	        example = "2084", 
+	        required = false)
+	private Integer latestWebProtegeRevisionNumber;
 	
 	@OneToMany(mappedBy="ontology", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
-	private Set<WebProtegeWebhook> webProtegeWebhooks;
+    private Set<GitWebhook> gitWebhooks;
 	
 	public Ontology() {
 		
@@ -264,13 +264,12 @@ public class Ontology implements Serializable {
         this.webProtegeProjectId = webProtegeProjectId;
     }
 
-    public Set<WebProtegeWebhook> getWebProtegeWebhooks() {
-        return webProtegeWebhooks;
+    public int getLatestWebProtegeRevisionNumber() {
+        return latestWebProtegeRevisionNumber;
     }
 
-    public void setWebProtegeWebhooks(
-            Set<WebProtegeWebhook> webProtegeWebhooks) {
-        this.webProtegeWebhooks = webProtegeWebhooks;
+    public void setLatestWebProtegeRevisionNumber(int latestWebProtegeRevisionNumber) {
+        this.latestWebProtegeRevisionNumber = latestWebProtegeRevisionNumber;
     }
 
     public void clearSecretData() {
@@ -339,7 +338,8 @@ public class Ontology implements Serializable {
 				+ "repoBranch=" + repoBranch + ", "
 				+ "dateCreated=" + dateCreated + ", "
 				+ "dateLastUpdated=" + dateLastUpdated + ", "
-				+ "webProtegeProjectId=" + webProtegeProjectId
+				+ "webProtegeProjectId=" + webProtegeProjectId + ", "
+				+ "latestWebProtegeRevisionNumber=" + latestWebProtegeRevisionNumber
 				+ "]";
 	}	
 	

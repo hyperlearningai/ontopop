@@ -7,12 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import ai.hyperlearning.ontopop.model.ontology.Ontology;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
@@ -56,10 +53,6 @@ public class WebProtegeWebhook implements Serializable {
             example = "1644414105240", 
             required = true)
     private long timestamp;
-    
-    @ManyToOne
-    @JoinColumn(name = "ontology_id", nullable = false)
-    private Ontology ontology;
     
     public WebProtegeWebhook() {
         
@@ -113,14 +106,6 @@ public class WebProtegeWebhook implements Serializable {
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
-    
-    public Ontology getOntology() {
-        return ontology;
-    }
-
-    public void setOntology(Ontology ontology) {
-        this.ontology = ontology;
-    }
 
     @Override
     public int hashCode() {
@@ -159,7 +144,6 @@ public class WebProtegeWebhook implements Serializable {
                 + "userId=" + userId + ", "
                 + "revisionNumber=" + revisionNumber + ", "
                 + "timestamp=" + timestamp + ", "
-                + "ontologyId=" + (ontology == null ? "" : ontology.getId())
                 + "]";
     }
 
