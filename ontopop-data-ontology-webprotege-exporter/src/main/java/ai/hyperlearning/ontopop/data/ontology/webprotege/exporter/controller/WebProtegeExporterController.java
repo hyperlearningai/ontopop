@@ -1,10 +1,11 @@
-package ai.hyperlearning.ontopop.data.ontology.webprotege.exporter;
+package ai.hyperlearning.ontopop.data.ontology.webprotege.exporter.controller;
 
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/api/connectors/webprotege")
 @Tag(name = "webprotege", description = "Webprotege Connector API")
+@ConditionalOnExpression("'${plugins.webprotege.exporter.enabled}'.equals('true') and "
+        + "'${plugins.webprotege.exporter.http.enabled}'.equals('true')")
 public class WebProtegeExporterController {
     
     private static final Logger LOGGER =
