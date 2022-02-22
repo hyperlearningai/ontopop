@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import ai.hyperlearning.ontopop.model.webprotege.WebProtegeMaxRevisionNumber;
 import ai.hyperlearning.ontopop.model.webprotege.WebProtegeWebhook;
 
 /**
@@ -35,5 +36,8 @@ public interface WebProtegeWebhookRepository
     @Query("SELECT w FROM WebProtegeWebhook w WHERE w.ontology.id = ?1 AND w.id = ?2")
     Optional<WebProtegeWebhook> findByOntologyIdAndWebProtegeWebhookId(
             int ontologyId, long webProtegeWebhookId);
+    
+    @Query("SELECT new ai.hyperlearning.ontopop.model.webprotege.WebProtegeMaxRevisionNumber(w.projectId, max(w.revisionNumber)) FROM WebProtegeWebhook w")
+    List<WebProtegeMaxRevisionNumber> getMaxRevisionNumberPerWebProtegeWebhook();
 
 }
