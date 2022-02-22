@@ -273,3 +273,12 @@ web:
 springdoc:
     api-docs:
         path: /api/docs
+plugins:
+    webprotege:
+        exporter:
+            enabled: false
+            http:
+                enabled: false
+            scheduler:
+                enabled: false
+                cron: "0 0/10 * * * *"
