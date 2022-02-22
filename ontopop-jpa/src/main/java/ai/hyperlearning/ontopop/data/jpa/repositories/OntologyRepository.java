@@ -28,5 +28,9 @@ public interface OntologyRepository extends CrudRepository<Ontology, Integer> {
     
     @Query("SELECT o FROM Ontology o WHERE o.webProtegeProjectId = ?1")
     List<Ontology> findByWebProtegeProjectId(String webProtegeProjectId);
+    
+    // Spring Data JPA dynamic query creation
+    // Reference: https://docs.spring.io/spring-data/jpa/docs/1.10.1.RELEASE/reference/html/#jpa.query-methods.query-creation
+    List<Ontology> findByWebProtegeProjectIdIsNotNull();
 
 }
