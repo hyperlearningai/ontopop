@@ -64,6 +64,7 @@ public class OntologyManagementService {
             // Persist the new ontology
             ontology.setDateCreated(LocalDateTime.now());
             ontology.setDateLastUpdated(LocalDateTime.now());
+            ontology.setLatestWebProtegeRevisionNumber(-1);
             Ontology newOntology = ontologyRepository.save(ontology);
 
             // Create a new ontology secret data object
