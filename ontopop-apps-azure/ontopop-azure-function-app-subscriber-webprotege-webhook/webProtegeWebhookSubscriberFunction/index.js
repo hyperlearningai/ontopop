@@ -5,7 +5,8 @@
  * requested by the WebProtege project update webhook (POST). 
  * This Azure Function simply sends the original request body payload to the 
  * WebProtege to Git exporter URL as a HTTP POST request using the Axios 
- * library, or to an Azure Service Bus topic using the azure/service-bus library. 
+ * library, or to an Azure Service Bus topic using the azure/service-bus library, 
+ * or persists the payload to a RDBMS using the sequelize library. 
  * The Axios libary returns a promise which we do NOT handle so
  * that the HTTP response back to WebProtege is immediate.
  *
@@ -16,6 +17,7 @@
 const axios = require('axios');
 const url = require('url');
 const { ServiceBusClient } = require("@azure/service-bus");
+const { Sequelize, Model, DataTypes } = require('sequelize');
 
 module.exports = async function (context, req) {
 
@@ -90,6 +92,85 @@ module.exports = async function (context, req) {
                 body: "Successfully processed the WebProtege webhook."
             };
             
+        }
+        
+    }
+    
+    /**************************************************************************
+    * Publish message to a RDBMS
+    **************************************************************************/
+    
+    else if ( publishingProtocol == "SQL" ) {
+        
+        // Get the RDBMS hostname and credentials from the environment variables
+        let rdbmsHostname = process.env.RDBMS_HOSTNAME;
+        let rdbmsPort = process.env.RDBMS_PORT;
+        let rdbmsDatabase = process.env.RDBMS_DATABASE;
+        let rdbmsUsername = process.env.RDBMS_USERNAME;
+        let rdbmsPassword = process.env.RDBMS_PASSWORD;
+        let rdbmsDialect = process.env.RDBMS_DIALECT;
+        
+        // Build the connection object
+        const sequelize = new Sequelize(rdbmsDatabase, rdbmsUsername, rdbmsPassword, {
+            host: rdbmsHostname,
+            port: rdbmsPort, 
+            dialect: rdbmsDialect
+        });
+        
+        try {
+            
+            // Connect to the database
+            await sequelize.authenticate();
+            context.log('Connection has been established successfully.');
+            
+            // Define the WebProtegeWebhook model
+            const WebProtegeWebhook = sequelize.define('WebProtegeWebhook', {
+                wpwebhook_id: {
+                    type: DataTypes.BIGINT,
+                    autoIncrement: true,
+                    primaryKey: true
+                }, 
+                project_id: {
+                    type: DataTypes.STRING,
+                    allowNull: false
+                },
+                user_id: {
+                    type: DataTypes.STRING, 
+                    allowNull: false
+                }, 
+                revision_number: {
+                    type: DataTypes.INTEGER, 
+                    allowNull: false
+                }, 
+                timestamp: {
+                    type: DataTypes.BIGINT, 
+                    allowNull: false
+                }, 
+                ontology_id: {
+                    type: DataTypes.INTEGER, 
+                    allowNull: true
+                }
+            }, {
+                tableName: 'wpwebhooks', 
+                timestamps: false
+            });
+            
+            // Check the current state of the table in the database and sync
+            await WebProtegeWebhook.sync();
+            
+            // Create and insert a new WebProtegeWebhook record
+            const record = await WebProtegeWebhook.create({ 
+                project_id: req.body.projectId, 
+                user_id: req.body.userId, 
+                revision_number: req.body.revisionNumber, 
+                timestamp: req.body.timestamp
+            });
+            context.log("Successfully created a new WebProtegeWebhook RDBMS record: " + record.toJSON());
+            
+        } catch (err) {
+            context.log("Error encountered when creating a new WebProtegeWebhook RDBMS record: " + err);
+        } finally {
+            sequelize.close();
         }
         
     }
