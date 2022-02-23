@@ -5,7 +5,8 @@
  * requested by the WebProtege project update webhook (POST). 
  * This application simply sends the original request body payload to the 
  * OntoPop WebProtege Git Connector URL as a HTTP POST request using the Axios 
- * library, or to a RabbitMQ messaging queue using the amqplib library. 
+ * library, to a RabbitMQ messaging queue using the amqplib library, or 
+ * persists the payload to a RDBMS using the sequelize library. 
  * The Axios libary returns a promise which we do NOT handle so
  * that the HTTP response back to WebProtege is immediate.
  *
