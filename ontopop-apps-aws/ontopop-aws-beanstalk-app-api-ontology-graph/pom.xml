@@ -57,7 +57,7 @@
     <build>
     
         <!-- JAR Name -->
-        <finalName>${project.name}-${project.version}-eb</finalName>
+        <finalName>${project.name}-eb</finalName>
         
         <!-- Plugins -->
         <plugins>
