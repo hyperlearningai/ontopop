@@ -45,6 +45,12 @@
     <!-- Module Dependencies -->
     <dependencies>
     
+        <!-- AWS Java SDK -->
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk</artifactId>
+        </dependency>
+    
         <!-- OntoPop -->
         <dependency>
             <groupId>ai.hyperlearning.ontopop</groupId>
