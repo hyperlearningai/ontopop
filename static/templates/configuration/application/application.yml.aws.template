@@ -270,6 +270,9 @@ web:
     azure:
         webapps:
             port: 80
+    aws:
+        beanstalk:
+            port: 5000
 springdoc:
     api-docs:
         path: /api/docs

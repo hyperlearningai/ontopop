@@ -69,6 +69,7 @@
         <module>ontopop-aws-beanstalk-app-api-ontology-management</module>
         <module>ontopop-aws-beanstalk-app-api-ontology-triplestore</module>
         <module>ontopop-aws-beanstalk-app-api-ontology-search</module>
+        <module>ontopop-aws-beanstalk-app-api-ontology-graph</module>
     </modules>
 
 </project>
