@@ -1,6 +1,6 @@
 package ai.hyperlearning.ontopop.api.ontology.graph;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import ai.hyperlearning.ontopop.model.status.HealthCheck;
+import ai.hyperlearning.ontopop.model.status.ProjectVersion;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -26,8 +27,8 @@ public class OntologyGraphHealthCheckController {
     
     private static final String NAME = "Graph API";
     
-    @Value("${spring.application.version:2.0.0}")
-    private String version;
+    @Autowired
+    private ProjectVersion projectVersion;
     
     /**************************************************************************
      * Health Check
@@ -58,7 +59,7 @@ public class OntologyGraphHealthCheckController {
             value = "/", 
             produces = MediaType.APPLICATION_JSON_VALUE)
     public HealthCheck healthCheck() {
-        return new HealthCheck(NAME, version);
+        return new HealthCheck(NAME, projectVersion.getVersion());
     }
 
 }
