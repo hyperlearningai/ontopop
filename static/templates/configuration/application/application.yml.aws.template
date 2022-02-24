@@ -276,7 +276,7 @@ web:
             port: 5000
 springdoc:
     api-docs:
-        path: /api/docs
+        path: /docs
 plugins:
     webprotege:
         exporter:
