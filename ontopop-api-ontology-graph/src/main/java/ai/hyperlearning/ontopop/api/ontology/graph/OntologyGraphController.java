@@ -54,7 +54,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  */
 
 @RestController
-@RequestMapping("/ontologies")
+@RequestMapping("/graph/ontologies")
 @Tag(name = "Graph API", description = "API for querying the OntoPop Graph Database")
 public class OntologyGraphController {
     
@@ -121,7 +121,7 @@ public class OntologyGraphController {
                             content = @Content)})
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(
-            value = "/{id}/graph", 
+            value = "/{id}", 
             produces = MediaType.APPLICATION_JSON_VALUE)
     public SimpleOntologyPropertyGraph getGraph(
             @Parameter(
@@ -188,7 +188,7 @@ public class OntologyGraphController {
                             description = "Internal server error.")})
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(
-            value = "/{id}/graph/query/gremlin", 
+            value = "/{id}/query/gremlin", 
             consumes = MediaType.APPLICATION_JSON_VALUE, 
             produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> query(

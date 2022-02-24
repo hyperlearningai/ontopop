@@ -37,7 +37,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  */
 
 @RestController
-@RequestMapping("/ontologies")
+@RequestMapping("/search/ontologies")
 @Tag(name = "Search API", description = "API for querying the OntoPop Search Index")
 public class OntologySearchController {
     
@@ -90,7 +90,7 @@ public class OntologySearchController {
                             description = "Internal server error.")})
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(
-            value = "/{id}/search", 
+            value = "/{id}", 
             consumes = MediaType.APPLICATION_JSON_VALUE, 
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody Object search(

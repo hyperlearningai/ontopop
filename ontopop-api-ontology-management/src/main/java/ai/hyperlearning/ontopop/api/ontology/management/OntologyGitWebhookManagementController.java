@@ -33,7 +33,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  */
 
 @RestController
-@RequestMapping("/ontologies")
+@RequestMapping("/management/ontologies")
 @Tag(name = "Ontology Management API - Git Webhooks", description = "API for managing OntoPop ontology Git webhooks")
 public class OntologyGitWebhookManagementController {
 

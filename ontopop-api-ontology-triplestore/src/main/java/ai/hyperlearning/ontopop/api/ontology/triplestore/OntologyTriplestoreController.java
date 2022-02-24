@@ -50,7 +50,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  */
 
 @RestController
-@RequestMapping("/ontologies")
+@RequestMapping("/triplestore/ontologies")
 @Tag(name = "Triplestore API", description = "API for querying the OntoPop RDF Triplestore")
 public class OntologyTriplestoreController {
     
@@ -118,7 +118,7 @@ public class OntologyTriplestoreController {
                             description = "Internal server error.")})
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(
-            value = "/{id}/triplestore/data/query/sparql", 
+            value = "/{id}/query/sparql", 
             consumes = MediaType.APPLICATION_JSON_VALUE, 
             produces = {
                     MediaType.APPLICATION_JSON_VALUE, 
@@ -183,7 +183,7 @@ public class OntologyTriplestoreController {
                             description = "Internal server error.")})
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(
-            value = "/{id}/triplestore/data/query/sparql", 
+            value = "/{id}/query/sparql", 
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, 
             produces = {
                     MediaType.APPLICATION_JSON_VALUE, 
@@ -249,7 +249,7 @@ public class OntologyTriplestoreController {
                             description = "Internal server error.")})
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(
-            value = "/{id}/triplestore/data/rdf", 
+            value = "/{id}/data/rdf", 
             produces = {
                     MediaType.APPLICATION_JSON_VALUE, 
                     MediaType.APPLICATION_XML_VALUE, 
@@ -293,7 +293,7 @@ public class OntologyTriplestoreController {
                             description = "Internal server error.")})
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(
-            value = "/{id}/triplestore/data/owl", 
+            value = "/{id}/data/owl", 
             produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<String> getOwlData(
             @Parameter(

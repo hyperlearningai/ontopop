@@ -47,7 +47,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  */
 
 @RestController
-@RequestMapping("/ontologies")
+@RequestMapping("/management/ontologies")
 @Tag(name = "Ontology Management API - Ontologies", description = "API for managing OntoPop ontologies")
 public class OntologyManagementController {
 
