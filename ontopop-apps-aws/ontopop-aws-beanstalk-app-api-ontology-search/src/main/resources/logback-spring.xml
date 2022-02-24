@@ -2,7 +2,7 @@
 <configuration>
  
     <!-- Persist logs relative to the application -->
-    <property name="LOGS" value="/var/log/tomcat" />
+    <property name="LOGS" value="/var/log" />
  
     <!-- Console Appender -->
     <appender name="Console"
