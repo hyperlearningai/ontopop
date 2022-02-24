@@ -56,7 +56,7 @@ public class OntologyManagementHealthCheckController {
                             content = @Content)})
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(
-            value = "/", 
+            value = {"/", "/management/"}, 
             produces = MediaType.APPLICATION_JSON_VALUE)
     public HealthCheck healthCheck() {
         return new HealthCheck(NAME, projectVersion.getVersion());
