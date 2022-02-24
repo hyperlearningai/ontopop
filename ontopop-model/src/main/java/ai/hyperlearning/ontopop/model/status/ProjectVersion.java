@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "spring.application")
 public class ProjectVersion {
     
-    private static final String VERSION_PLACEHOLDER = "${project.version}";
+    private static final String VERSION_PLACEHOLDER = "@project.version@";
     private static final String VERSION_DEFAULT = "2.0.0";
     
     private String version;
