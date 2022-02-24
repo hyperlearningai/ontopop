@@ -17,6 +17,10 @@ const AWS = require('aws-sdk');
 const { Sequelize, Model, DataTypes } = require('sequelize');
 exports.handler = async (event) => {
     
+    // Log the HTTP request headers for debugging purposes
+    console.log("New HTTP POST request: WebProtege project update webhook.");
+    console.log("WebProtege project update webhook event: " + JSON.stringify(event));
+    
     // Get the query parameters as a query object
     // Reference: https://docs.aws.amazon.com/lambda/latest/dg/services-apigateway.html#apigateway-example-event
     let publishingProtocol = event.queryStringParameters.protocol.toUpperCase();
@@ -110,11 +114,12 @@ exports.handler = async (event) => {
             await WebProtegeWebhook.sync();
             
             // Create and insert a new WebProtegeWebhook record
+            const requestBody = JSON.parse(event.body);
             const record = await WebProtegeWebhook.create({ 
-                project_id: event.body.projectId, 
-                user_id: event.body.userId, 
-                revision_number: event.body.revisionNumber, 
-                timestamp: event.body.timestamp
+                project_id: requestBody.projectId, 
+                user_id: requestBody.userId, 
+                revision_number: requestBody.revisionNumber, 
+                timestamp: requestBody.timestamp
             });
             console.log("Successfully created a new WebProtegeWebhook RDBMS record: " + record.toJSON());
             
