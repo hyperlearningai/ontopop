@@ -54,7 +54,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  */
 
 @RestController
-@RequestMapping("/api/ontologies")
+@RequestMapping("/ontologies")
 @Tag(name = "Graph API", description = "API for querying the OntoPop Graph Database")
 public class OntologyGraphController {
     

@@ -50,7 +50,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  */
 
 @RestController
-@RequestMapping("/api/ontologies")
+@RequestMapping("/ontologies")
 @Tag(name = "Triplestore API", description = "API for querying the OntoPop RDF Triplestore")
 public class OntologyTriplestoreController {
     

@@ -37,7 +37,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  */
 
 @RestController
-@RequestMapping("/api/ontologies")
+@RequestMapping("/ontologies")
 @Tag(name = "Search API", description = "API for querying the OntoPop Search Index")
 public class OntologySearchController {
     
