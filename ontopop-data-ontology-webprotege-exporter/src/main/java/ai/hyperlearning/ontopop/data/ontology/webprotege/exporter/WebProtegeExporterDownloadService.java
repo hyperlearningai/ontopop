@@ -10,6 +10,7 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
@@ -162,69 +163,109 @@ public class WebProtegeExporterDownloadService {
         // Load the WebProtege login page
         webDriver.get(WEBPROTEGE_LOGIN_URL);
         
-        // Wait until the page had fully loaded by waiting until the
-        // visibility of the login form
+        // Initialize a wait condition implementation
         FluentWait<WebDriver> fluentWait = new FluentWait<>(webDriver)
                 .withTimeout(Duration.ofSeconds(30))
                 .pollingEvery(Duration.ofMillis(200))
                 .ignoring(NoSuchElementException.class);
-        fluentWait.until(
-                ExpectedConditions.visibilityOfAllElementsLocatedBy(
-                        By.className(WEBPROTEGE_LOGIN_FORM_CLASS_NAME)));
         
-        // Get the username input box as a web element
-        WebElement usernameInputBox = webDriver
-                .findElement(By.className(WEBPROTEGE_LOGIN_FORM_CLASS_NAME))
-                .findElement(By.className(WEBPROTEGE_LOGIN_FORM_USERNAME_TEXTBOX_CLASS_NAME));
-        
-        // Get the password input box as a web element
-        WebElement passwordInputBox = webDriver
-                .findElement(By.className(WEBPROTEGE_LOGIN_FORM_CLASS_NAME))
-                .findElement(By.className(WEBPROTEGE_LOGIN_FORM_PASSWORD_TEXTBOX_CLASS_NAME));
-        
-        // Get the sign in button as a web element
-        WebElement submitButton = webDriver
-                .findElement(By.className(WEBPROTEGE_LOGIN_FORM_CLASS_NAME))
-                .findElement(By.className(WEBPROTEGE_LOGIN_FORM_SUBMIT_BUTTON_CLASS_NAME));
-        
-        // Enter the WebProtege service account username
-        usernameInputBox.sendKeys(System.getenv(WEBPROTEGE_USERNAME_ENV_KEY));
-
-        // Enter the WebProtege service account password
-        passwordInputBox.sendKeys(System.getenv(WEBPROTEGE_PASSWORD_ENV_KEY));
-        
-        // Click the submit button to login
-        submitButton.click();
-        
-        // Wait until the login operation has completed
-        // and the WebProtege project list is visible
-        fluentWait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
-                By.className(WEBPROTEGE_PROJECT_LIST_TOPBAR_CLASS_NAME)));
-        
-        // Wait until the JSESSIONID cookie has been set
-        ExpectedCondition<Cookie> jsessionIdCookieEC = 
-                new ExpectedCondition<Cookie>() {
+        // Test to see if an authenticated session already exists.
+        // This can be tested by the presence of the WebProtege project list
+        // which only appears if successfully authenticated
+        try {
             
-            @Override
-            public Cookie apply(WebDriver webDriver) {
-                Cookie tokenCookie = webDriver.manage()
-                        .getCookieNamed(JSESSIONID_COOKIE_NAME);
-                if (tokenCookie != null) {
-                    LOGGER.debug("Token Cookie added: {}", tokenCookie);
-                    return tokenCookie;
-                } else {
-                    LOGGER.debug("Waiting for cookie...");
-                    return null;
+            // Wait for the WebProtege project list to become visible
+            fluentWait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                    By.className(WEBPROTEGE_PROJECT_LIST_TOPBAR_CLASS_NAME)));
+            
+            // Wait until the JSESSIONID cookie has been set
+            ExpectedCondition<Cookie> jsessionIdCookieEC = 
+                    new ExpectedCondition<Cookie>() {
+                
+                @Override
+                public Cookie apply(WebDriver webDriver) {
+                    Cookie tokenCookie = webDriver.manage()
+                            .getCookieNamed(JSESSIONID_COOKIE_NAME);
+                    if (tokenCookie != null) {
+                        LOGGER.debug("Token Cookie added: {}", tokenCookie);
+                        return tokenCookie;
+                    } else {
+                        LOGGER.debug("Waiting for cookie...");
+                        return null;
+                    }
                 }
-            }
+                
+            };
             
-        };
-        
-        // Get the JSESSIONID cookie
-        fluentWait.until(jsessionIdCookieEC);
-        Cookie jsessionIdCookie = webDriver.manage()
-                .getCookieNamed(JSESSIONID_COOKIE_NAME);
-        jsessionIdCookieValue = jsessionIdCookie.getValue();
+            // Get the JSESSIONID cookie
+            fluentWait.until(jsessionIdCookieEC);
+            Cookie jsessionIdCookie = webDriver.manage()
+                    .getCookieNamed(JSESSIONID_COOKIE_NAME);
+            jsessionIdCookieValue = jsessionIdCookie.getValue();
+            
+        } catch (TimeoutException e) {
+            
+            // Wait until the page had fully loaded by waiting until the
+            // visibility of the login form
+            fluentWait.until(
+                    ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                            By.className(WEBPROTEGE_LOGIN_FORM_CLASS_NAME)));
+            
+            // Get the username input box as a web element
+            WebElement usernameInputBox = webDriver
+                    .findElement(By.className(WEBPROTEGE_LOGIN_FORM_CLASS_NAME))
+                    .findElement(By.className(WEBPROTEGE_LOGIN_FORM_USERNAME_TEXTBOX_CLASS_NAME));
+            
+            // Get the password input box as a web element
+            WebElement passwordInputBox = webDriver
+                    .findElement(By.className(WEBPROTEGE_LOGIN_FORM_CLASS_NAME))
+                    .findElement(By.className(WEBPROTEGE_LOGIN_FORM_PASSWORD_TEXTBOX_CLASS_NAME));
+            
+            // Get the sign in button as a web element
+            WebElement submitButton = webDriver
+                    .findElement(By.className(WEBPROTEGE_LOGIN_FORM_CLASS_NAME))
+                    .findElement(By.className(WEBPROTEGE_LOGIN_FORM_SUBMIT_BUTTON_CLASS_NAME));
+            
+            // Enter the WebProtege service account username
+            usernameInputBox.sendKeys(System.getenv(WEBPROTEGE_USERNAME_ENV_KEY));
+
+            // Enter the WebProtege service account password
+            passwordInputBox.sendKeys(System.getenv(WEBPROTEGE_PASSWORD_ENV_KEY));
+            
+            // Click the submit button to login
+            submitButton.click();
+            
+            // Wait until the login operation has completed
+            // and the WebProtege project list is visible
+            fluentWait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                    By.className(WEBPROTEGE_PROJECT_LIST_TOPBAR_CLASS_NAME)));
+            
+            // Wait until the JSESSIONID cookie has been set
+            ExpectedCondition<Cookie> jsessionIdCookieEC = 
+                    new ExpectedCondition<Cookie>() {
+                
+                @Override
+                public Cookie apply(WebDriver webDriver) {
+                    Cookie tokenCookie = webDriver.manage()
+                            .getCookieNamed(JSESSIONID_COOKIE_NAME);
+                    if (tokenCookie != null) {
+                        LOGGER.debug("Token Cookie added: {}", tokenCookie);
+                        return tokenCookie;
+                    } else {
+                        LOGGER.debug("Waiting for cookie...");
+                        return null;
+                    }
+                }
+                
+            };
+            
+            // Get the JSESSIONID cookie
+            fluentWait.until(jsessionIdCookieEC);
+            Cookie jsessionIdCookie = webDriver.manage()
+                    .getCookieNamed(JSESSIONID_COOKIE_NAME);
+            jsessionIdCookieValue = jsessionIdCookie.getValue();
+            
+        }
         
     }
     
