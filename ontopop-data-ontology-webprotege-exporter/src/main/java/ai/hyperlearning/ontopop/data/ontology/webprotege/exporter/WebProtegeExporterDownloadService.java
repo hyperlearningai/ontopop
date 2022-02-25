@@ -175,8 +175,11 @@ public class WebProtegeExporterDownloadService {
         try {
             
             // Wait for the WebProtege project list to become visible
+            LOGGER.info("Testing whether an authenticated session already exists.");
             fluentWait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
                     By.className(WEBPROTEGE_PROJECT_LIST_TOPBAR_CLASS_NAME)));
+            LOGGER.info("Authenticated session already exists. Proceeding to "
+                    + "obtain the JSESSIONID.");
             
             // Wait until the JSESSIONID cookie has been set
             ExpectedCondition<Cookie> jsessionIdCookieEC = 
@@ -202,11 +205,15 @@ public class WebProtegeExporterDownloadService {
             Cookie jsessionIdCookie = webDriver.manage()
                     .getCookieNamed(JSESSIONID_COOKIE_NAME);
             jsessionIdCookieValue = jsessionIdCookie.getValue();
+            LOGGER.info("JSESSIONID successfully obtained: {}", 
+                    jsessionIdCookieValue);
             
         } catch (TimeoutException e) {
             
             // Wait until the page had fully loaded by waiting until the
             // visibility of the login form
+            LOGGER.info("Authenticated session does NOT already exist. "
+                    + "Proceeding to authenticate.");
             fluentWait.until(
                     ExpectedConditions.visibilityOfAllElementsLocatedBy(
                             By.className(WEBPROTEGE_LOGIN_FORM_CLASS_NAME)));
@@ -264,6 +271,8 @@ public class WebProtegeExporterDownloadService {
             Cookie jsessionIdCookie = webDriver.manage()
                     .getCookieNamed(JSESSIONID_COOKIE_NAME);
             jsessionIdCookieValue = jsessionIdCookie.getValue();
+            LOGGER.info("JSESSIONID successfully obtained: {}", 
+                    jsessionIdCookieValue);
             
         }
         
