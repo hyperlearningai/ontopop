@@ -21,7 +21,7 @@ exports.handler = async (event) => {
     // Note that this lambda (invoker) will require permissions to invoke
     // the lambda (invokee) below via the lambda:InvokeFunction action.
     // Reference: https://docs.aws.amazon.com/lambda/latest/dg/API_Invoke.html
-    let functionName = process.env.FUNCTION_NAME_ONTOLOGY_INGESTOR;
+    let functionName = process.env.ONTOPOP_ONTOLOGY_INGESTOR_FUNCTION_NAME;
     
     // InvocationType of Event invokes the function asynchronously.
     const params = {
