@@ -23,13 +23,13 @@ import ai.hyperlearning.ontopop.messaging.processors.DataPipelineWebProtegeExpor
 @EntityScan("ai.hyperlearning.ontopop.model")
 @SpringBootApplication
 @EnableBinding(DataPipelineWebProtegeExporterSource.class)
-public class WebProtegeExporterApp {
+public class WebProtegeExporterConsumerApp {
     
     @Autowired
     private WebProtegeExporterFunction webProtegeExporterFunction;
     
     public static void main(String[] args) {
-        SpringApplication.run(WebProtegeExporterApp.class, args);
+        SpringApplication.run(WebProtegeExporterConsumerApp.class, args);
     }
     
     @StreamListener("webProtegeProjectUpdatedConsumptionChannel")

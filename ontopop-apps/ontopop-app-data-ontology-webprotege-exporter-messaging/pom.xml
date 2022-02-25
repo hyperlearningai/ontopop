@@ -11,10 +11,10 @@
     </parent>
 
     <!-- Module Metadata -->
-    <artifactId>ontopop-app-data-ontology-webprotege-exporter</artifactId>
-    <name>ontopop-app-data-ontology-webprotege-exporter</name>
+    <artifactId>ontopop-app-data-ontology-webprotege-exporter-messaging</artifactId>
+    <name>ontopop-app-data-ontology-webprotege-exporter-messaging</name>
     <packaging>jar</packaging>
-    <description>OntoPop - WebProtege Exporter Service Spring Boot Application</description>
+    <description>OntoPop - WebProtege Exporter Service Spring Boot Application (Messaging)</description>
     <url>https://ontopop.com</url>
     <organization>
         <name>HyperLearning AI</name>
@@ -39,7 +39,7 @@
     <!-- Module Properties -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <start-class>ai.hyperlearning.ontopop.apps.data.ontology.webprotege.exporter.WebProtegeExporterApp</start-class>
+        <start-class>ai.hyperlearning.ontopop.apps.data.ontology.webprotege.exporter.WebProtegeExporterConsumerApp</start-class>
     </properties>
 
     <!-- Module Dependencies -->

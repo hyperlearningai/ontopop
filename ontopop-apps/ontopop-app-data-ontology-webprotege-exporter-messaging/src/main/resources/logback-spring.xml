@@ -17,7 +17,7 @@
     <!-- Log File Appender -->
     <appender name="RollingFile"
         class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOGS}/ontopop-app-data-ontology-webprotege-exporter/ontopop-app-data-ontology-webprotege-exporter.log</file>
+        <file>${LOGS}/ontopop-app-data-ontology-webprotege-exporter-messaging/ontopop-app-data-ontology-webprotege-exporter-messaging.log</file>
         <encoder
             class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
@@ -27,7 +27,7 @@
             class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             
             <!-- Rollover - Either daily and/or when log file exceeds 10MB -->
-            <fileNamePattern>${LOGS}/ontopop-app-data-ontology-webprotege-exporter/archived/ontopop-app-data-ontology-webprotege-exporter-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOGS}/ontopop-app-data-ontology-webprotege-exporter-messaging/archived/ontopop-app-data-ontology-webprotege-exporter-messaging-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy
                 class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>10MB</maxFileSize>
