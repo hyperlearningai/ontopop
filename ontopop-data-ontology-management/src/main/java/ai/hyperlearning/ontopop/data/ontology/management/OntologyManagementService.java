@@ -110,6 +110,7 @@ public class OntologyManagementService {
 
         // Persist the partially updated ontology
         ontologyNonSecretData.setId(id);
+        ontologyNonSecretData.setRepoPrivate(ontology.isRepoPrivate());
         ontologyNonSecretData.setDateLastUpdated(LocalDateTime.now());
         ontologyMapper.updateOntology(ontologyNonSecretData, ontology);
         Ontology updatedOntology = ontologyRepository.save(ontology);
