@@ -10,8 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import ai.hyperlearning.ontopop.data.jpa.repositories.OntologyRepository;
@@ -29,7 +27,6 @@ import ai.hyperlearning.ontopop.model.webprotege.WebProtegeWebhook;
  */
 
 @Service
-@EnableScheduling
 @ConditionalOnExpression("'${plugins.webprotege.exporter.enabled}'.equals('true') and "
         + "'${plugins.webprotege.exporter.scheduler.enabled}'.equals('true')")
 public class WebProtegeExporterSchedulerService {
@@ -90,7 +87,6 @@ public class WebProtegeExporterSchedulerService {
      * number that has been processed
      */
     
-    @Scheduled(cron = "${plugins.webprotege.exporter.scheduler.cron}")
     public void runScheduledWebProtegeExporterService() {
         
         // Get the latest revision numbers for each WebProtege project ID
