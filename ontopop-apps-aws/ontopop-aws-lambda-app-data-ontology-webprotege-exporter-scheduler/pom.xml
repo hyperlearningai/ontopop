@@ -96,18 +96,6 @@
                 
             </exclusions>
         </dependency>
-        
-        <!-- OntoPop Cloud AWS -->
-        <dependency>
-            <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-aws-utils</artifactId>
-        </dependency>
-        
-        <!-- Spring Boot Starter Data JPA -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
 
         <!-- Spring Cloud Function -->
         <dependency>
