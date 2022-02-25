@@ -22,11 +22,11 @@ import ai.hyperlearning.ontopop.model.webprotege.WebProtegeWebhook;
  */
 
 @Component
-public class WebProtegeExporterAwsLambdaApiGatewayProxyRequestEventConsumer 
+public class WebProtegeExporterHttpAwsLambdaApiGatewayProxyRequestEventConsumer 
         implements Consumer<APIGatewayProxyRequestEvent> {
     
     private static final Logger LOGGER = LoggerFactory.getLogger(
-            WebProtegeExporterAwsLambdaApiGatewayProxyRequestEventConsumer.class);
+            WebProtegeExporterHttpAwsLambdaApiGatewayProxyRequestEventConsumer.class);
     
     @Autowired
     private WebProtegeExporterService webProtegeExporterService;

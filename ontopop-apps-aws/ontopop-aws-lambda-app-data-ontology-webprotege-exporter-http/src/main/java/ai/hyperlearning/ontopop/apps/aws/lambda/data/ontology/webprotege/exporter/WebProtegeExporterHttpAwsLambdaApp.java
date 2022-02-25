@@ -15,10 +15,10 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages = {"ai.hyperlearning.ontopop"})
 @EntityScan("ai.hyperlearning.ontopop.model")
 @SpringBootApplication
-public class WebProtegeExporterAwsLambdaApp {
+public class WebProtegeExporterHttpAwsLambdaApp {
     
     public static void main(String[] args) {
-        SpringApplication.run(WebProtegeExporterAwsLambdaApp.class, args);
+        SpringApplication.run(WebProtegeExporterHttpAwsLambdaApp.class, args);
     }
 
 }

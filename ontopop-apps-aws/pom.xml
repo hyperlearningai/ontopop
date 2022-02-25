@@ -65,7 +65,7 @@
         <module>ontopop-aws-lambda-app-data-ontology-loader-graph</module>
         <module>ontopop-aws-lambda-app-data-ontology-indexer-graph</module>
         <module>ontopop-aws-lambda-app-data-ontology-pipeline</module>
-        <module>ontopop-aws-lambda-app-data-ontology-webprotege-exporter</module>
+        <module>ontopop-aws-lambda-app-data-ontology-webprotege-exporter-http</module>
         <module>ontopop-aws-beanstalk-app-api-ontology-management</module>
         <module>ontopop-aws-beanstalk-app-api-ontology-triplestore</module>
         <module>ontopop-aws-beanstalk-app-api-ontology-search</module>
