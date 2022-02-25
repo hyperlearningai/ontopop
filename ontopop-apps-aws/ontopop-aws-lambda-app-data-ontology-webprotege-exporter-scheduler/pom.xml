@@ -89,6 +89,10 @@
                     <groupId>com.azure</groupId>
                     <artifactId>azure-security-keyvault-secrets</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-stream-binder-rabbit</artifactId>
+                </exclusion>
                 
             </exclusions>
         </dependency>
