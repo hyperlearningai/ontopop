@@ -49,7 +49,7 @@ public class OntologyNonSecretData implements Serializable {
 	@Schema(description = "Whether the Git repository managing the OWL file for this ontology is a private repository.", 
 	        example = "true", 
 	        required = false)
-	private boolean repoPrivate;
+	private Boolean repoPrivate;
 	
 	@Schema(description = "Updated path to the OWL file for this ontology inside the Git repository.", 
 	        example = "data/ontology.owl", 
@@ -123,11 +123,11 @@ public class OntologyNonSecretData implements Serializable {
 		this.repoOwner = repoOwner;
 	}
 
-	public boolean isRepoPrivate() {
+	public Boolean isRepoPrivate() {
 		return repoPrivate;
 	}
 
-	public void setRepoPrivate(boolean repoPrivate) {
+	public void setRepoPrivate(Boolean repoPrivate) {
 		this.repoPrivate = repoPrivate;
 	}
 

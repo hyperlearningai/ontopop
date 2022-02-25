@@ -110,8 +110,14 @@ public class OntologyManagementService {
 
         // Persist the partially updated ontology
         ontologyNonSecretData.setId(id);
-        ontologyNonSecretData.setRepoPrivate(ontology.isRepoPrivate());
         ontologyNonSecretData.setDateLastUpdated(LocalDateTime.now());
+        
+        // Overcome MapStruct mapping feature.bug where if a boolean 
+        // is not provided, it defaults to false.
+        if (ontologyNonSecretData.isRepoPrivate() == null )
+            ontologyNonSecretData.setRepoPrivate(ontology.isRepoPrivate());
+        
+        // Map the OntologyNonSecretData object to the ontology object
         ontologyMapper.updateOntology(ontologyNonSecretData, ontology);
         Ontology updatedOntology = ontologyRepository.save(ontology);
         LOGGER.debug("Updated ontology with ID: {}", id);
