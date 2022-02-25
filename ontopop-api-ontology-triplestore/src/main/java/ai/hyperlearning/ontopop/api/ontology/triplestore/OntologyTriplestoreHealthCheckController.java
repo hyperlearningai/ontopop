@@ -25,7 +25,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @RestController
 public class OntologyTriplestoreHealthCheckController {
     
-    private static final String NAME = "Triplestore API";
+    private static final String NAME = "OntoPop Triplestore API";
     
     @Autowired
     private ProjectVersion projectVersion;

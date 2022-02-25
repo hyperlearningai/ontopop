@@ -25,7 +25,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @RestController
 public class OntologySearchHealthCheckController {
     
-    private static final String NAME = "Search API";
+    private static final String NAME = "OntoPop Search API";
     
     @Autowired
     private ProjectVersion projectVersion;
