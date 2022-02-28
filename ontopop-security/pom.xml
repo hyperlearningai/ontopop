@@ -43,6 +43,12 @@
 
     <!-- Module Dependencies -->
     <dependencies>
+    
+        <!-- Apache Commons Lang -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
 
         <!-- OntoPop -->
         <dependency>

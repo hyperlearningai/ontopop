@@ -1,7 +1,7 @@
 package ai.hyperlearning.ontopop.security.auth.model;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -15,19 +15,19 @@ public class ApiKey implements Serializable {
 
     private static final long serialVersionUID = 8216664197904580728L;
     private String key;
-    private LocalDateTime issueDate;
-    private LocalDateTime expirationDate;
+    private String issueDate;
+    private String expirationDate;
     private String issuer;
     private String client;
     private boolean enabled = false;
-    private Set<String> roles;
+    private Set<String> roles = new HashSet<>();
     
     public ApiKey() {
         
     }
 
-    public ApiKey(String key, LocalDateTime issueDate,
-            LocalDateTime expirationDate, String issuer, String client,
+    public ApiKey(String key, String issueDate,
+            String expirationDate, String issuer, String client,
             boolean enabled, Set<String> roles) {
         super();
         this.key = key;
@@ -47,20 +47,20 @@ public class ApiKey implements Serializable {
         this.key = key;
     }
 
-    public LocalDateTime getIssueDate() {
+    public String getIssueDate() {
         return issueDate;
     }
 
-    public void setIssueDate(LocalDateTime issueDate) {
-        this.issueDate = issueDate;
+    public void setIssueDate(String issueDate) {
+        this.issueDate = issueDate.toString();
     }
 
-    public LocalDateTime getExpirationDate() {
+    public String getExpirationDate() {
         return expirationDate;
     }
 
-    public void setExpirationDate(LocalDateTime expirationDate) {
-        this.expirationDate = expirationDate;
+    public void setExpirationDate(String expirationDate) {
+        this.expirationDate = expirationDate.toString();
     }
 
     public String getIssuer() {

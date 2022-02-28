@@ -9,6 +9,8 @@ import com.amazonaws.services.secretsmanager.AWSSecretsManager;
 import com.amazonaws.services.secretsmanager.model.CreateSecretRequest;
 import com.amazonaws.services.secretsmanager.model.DeleteSecretRequest;
 import com.amazonaws.services.secretsmanager.model.GetSecretValueRequest;
+import com.amazonaws.services.secretsmanager.model.ResourceExistsException;
+import com.amazonaws.services.secretsmanager.model.UpdateSecretRequest;
 
 import ai.hyperlearning.ontopop.security.secrets.SecretsService;
 
@@ -43,9 +45,16 @@ public class AwsSecretsManagerSecretsService implements SecretsService {
 
     @Override
     public void set(String key, Object value) throws Exception {
-        CreateSecretRequest createSecretRequest = new CreateSecretRequest()
-                .withName(key).withSecretString(value.toString());
-        secretsManager.createSecret(createSecretRequest);
+        try {
+            CreateSecretRequest createSecretRequest = new CreateSecretRequest()
+                    .withName(key).withSecretString(value.toString());
+            secretsManager.createSecret(createSecretRequest);
+        } catch (ResourceExistsException e) {
+            UpdateSecretRequest updateSecretRequest = new UpdateSecretRequest()
+                    .withSecretId(key);
+            updateSecretRequest.setSecretString(value.toString());
+            secretsManager.updateSecret(updateSecretRequest);
+        }
     }
 
     @Override

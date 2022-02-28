@@ -1,21 +1,23 @@
 package ai.hyperlearning.ontopop.security.auth.providers;
 
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.vault.core.VaultTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ai.hyperlearning.ontopop.security.auth.ApiKeyAuthenticationService;
 import ai.hyperlearning.ontopop.security.auth.model.ApiKey;
-import ai.hyperlearning.ontopop.security.auth.model.ApiKeys;
 import ai.hyperlearning.ontopop.security.secrets.SecretsService;
 import ai.hyperlearning.ontopop.security.secrets.SecretsServiceFactory;
 import ai.hyperlearning.ontopop.security.secrets.SecretsServiceType;
@@ -32,7 +34,12 @@ import ai.hyperlearning.ontopop.security.secrets.hashicorp.vault.HashicorpVaultS
 public class SecretsEngineApiKeyAuthenticationService 
         implements ApiKeyAuthenticationService {
     
-    private static final String SECRET_KV_KEY = "apikeys";
+    private static final DateTimeFormatter API_KEY_DEFAULT_DATE_TIME_FORMATTER = 
+            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+    private static final int API_KEY_DEFAULT_LENGTH = 24;
+    private static final int API_KEY_DEAFULT_DURATION_DAYS = 90;
+    private static final String API_KEY_DEFAULT_ISSUER = "HyperLearning AI";
+    private static final String API_KEY_PREFIX = "APIKEY_";
     
     @Autowired(required = false)
     private VaultTemplate vaultTemplate;
@@ -66,96 +73,85 @@ public class SecretsEngineApiKeyAuthenticationService
             useVault = true;
 
     }
-    
+
     @Override
-    public ApiKeys getApiKeys() 
-            throws JsonMappingException, JsonProcessingException {
-        
-        // Get the API Keys secret value
+    public ApiKey get(String key) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         String json = useVault ? HashicorpVaultSecretsService.get(
                 vaultTemplate,
                 springCloudVaultKvBackend, 
-                springCloudVaultKvDefaultContext + "/" + SECRET_KV_KEY, 
-                String.class).getData() : secretsService.get(SECRET_KV_KEY);
-        return json != null ? mapper.readValue(json, ApiKeys.class) : null;
-        
+                springCloudVaultKvDefaultContext 
+                    + "/" + API_KEY_PREFIX + key, 
+                String.class).getData() : 
+                    secretsService.get(API_KEY_PREFIX + key);
+        return json != null ? mapper.readValue(json, ApiKey.class) : null;
     }
 
     @Override
-    public ApiKey get(String key) 
-            throws JsonMappingException, JsonProcessingException {
-        ApiKeys apiKeys = getApiKeys();
-        if ( apiKeys != null ) {
-            Map<String, ApiKey> apiKeysMap = apiKeys.getApiKeys();
-            if ( !apiKeysMap.isEmpty() && apiKeysMap.containsKey(key) ) {
-                return apiKeysMap.get(key);
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public void create(ApiKey apiKey) 
-            throws Exception {
-        ApiKeys apiKeys = getApiKeys();
-        if ( apiKeys == null )
-            apiKeys = new ApiKeys();
-        Map<String, ApiKey> apiKeysMap = apiKeys.getApiKeys();
-        apiKeysMap.put(apiKey.getKey(), apiKey);
+    public void create(ApiKey apiKey) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(apiKey);
         if ( useVault )
             HashicorpVaultSecretsService.put(vaultTemplate,
                     springCloudVaultKvBackend,
-                    springCloudVaultKvDefaultContext + "/" + SECRET_KV_KEY,
-                    apiKeysMap);
-        else secretsService.set(SECRET_KV_KEY, apiKeysMap.toString());
+                    springCloudVaultKvDefaultContext 
+                        + "/" + API_KEY_PREFIX + apiKey.getKey(),
+                        json);
+        else secretsService.set(API_KEY_PREFIX + apiKey.getKey(), json);
+    }
+    
+    @Override
+    public void create(String client) throws Exception {
+        ApiKey apiKey = new ApiKey();
+        apiKey.setKey(RandomStringUtils.randomAlphanumeric(
+                API_KEY_DEFAULT_LENGTH).toUpperCase());
+        apiKey.setIssueDate(LocalDateTime.now(ZoneOffset.UTC)
+                .format(API_KEY_DEFAULT_DATE_TIME_FORMATTER));
+        apiKey.setExpirationDate(LocalDateTime.now(ZoneOffset.UTC)
+                .plusDays(API_KEY_DEAFULT_DURATION_DAYS)
+                .format(API_KEY_DEFAULT_DATE_TIME_FORMATTER));
+        apiKey.setIssuer(API_KEY_DEFAULT_ISSUER);
+        apiKey.setClient(client);
+        apiKey.setEnabled(true);
+        create(apiKey);
+    }
+
+    @Override
+    public void create(String client, Set<String> roles) throws Exception {
+        ApiKey apiKey = new ApiKey();
+        apiKey.setKey(RandomStringUtils.random(
+                API_KEY_DEFAULT_LENGTH, true, true).toUpperCase());
+        apiKey.setIssueDate(LocalDateTime.now(ZoneOffset.UTC)
+                .format(API_KEY_DEFAULT_DATE_TIME_FORMATTER));
+        apiKey.setExpirationDate(LocalDateTime.now(ZoneOffset.UTC)
+                .plusDays(API_KEY_DEAFULT_DURATION_DAYS)
+                .format(API_KEY_DEFAULT_DATE_TIME_FORMATTER));
+        apiKey.setIssuer(API_KEY_DEFAULT_ISSUER);
+        apiKey.setClient(client);
+        apiKey.setEnabled(true);
+        apiKey.setRoles(roles);
+        create(apiKey);
     }
 
     @Override
     public void delete(String key) throws Exception {
-        ApiKeys apiKeys = getApiKeys();
-        if ( apiKeys != null ) {
-            Map<String, ApiKey> apiKeysMap = apiKeys.getApiKeys();
-            if ( apiKeysMap.containsKey(key) ) {
-                apiKeysMap.remove(key);
-                if ( useVault )
-                    HashicorpVaultSecretsService.put(vaultTemplate,
-                            springCloudVaultKvBackend,
-                            springCloudVaultKvDefaultContext 
-                                + "/" + SECRET_KV_KEY,
-                            apiKeysMap.toString());
-                else secretsService.set(SECRET_KV_KEY, apiKeysMap.toString());
-            }
-        }
+        if ( useVault )
+            HashicorpVaultSecretsService.delete(vaultTemplate, 
+                    springCloudVaultKvBackend, 
+                    springCloudVaultKvDefaultContext 
+                        + "/" + API_KEY_PREFIX + key);
+        else secretsService.delete(API_KEY_PREFIX + key);
     }
 
     @Override
-    public void setEnabled(String key, boolean enabled) 
-            throws Exception {
-        ApiKey apiKey = get(key);
-        if ( apiKey != null ) {
-            apiKey.setEnabled(enabled);
-            ApiKeys apiKeys = getApiKeys();
-            if ( apiKeys != null ) {
-                Map<String, ApiKey> apiKeysMap = apiKeys.getApiKeys();
-                apiKeysMap.put(apiKey.getKey(), apiKey);
-                if ( useVault )
-                    HashicorpVaultSecretsService.put(vaultTemplate,
-                            springCloudVaultKvBackend,
-                            springCloudVaultKvDefaultContext 
-                                + "/" + SECRET_KV_KEY,
-                            apiKeysMap.toString());
-                else secretsService.set(SECRET_KV_KEY, apiKeysMap.toString());
-            }
-        }
-    }
-
-    @Override
-    public boolean authenticate(String key) 
-            throws JsonMappingException, JsonProcessingException {
+    public boolean authenticate(String key) throws JsonProcessingException {
         ApiKey apiKey = get(key);
         if ( apiKey!= null ) {
-            return apiKey.isEnabled();
+            LocalDateTime expirationDate = LocalDateTime.parse(
+                    apiKey.getExpirationDate(), 
+                    API_KEY_DEFAULT_DATE_TIME_FORMATTER);
+            LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
+            return apiKey.isEnabled() && expirationDate.isAfter(now);
         }
         return false;
     }
