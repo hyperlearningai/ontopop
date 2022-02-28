@@ -33,71 +33,71 @@ spring:
                     binder: azure_service_bus
                 webProtegeProjectUpdatedConsumptionChannel:
                     destination: webprotege.project.updated
-                    group: webprotege.project.updated.consumers
+                    group: ontopop
                     binder: azure_service_bus
                 gitRepositoryUpdatedPublicationChannel:
                     destination: git.repository.updated
                     binder: azure_service_bus
                 gitRepositoryUpdatedConsumptionChannel:
                     destination: git.repository.updated
-                    group: git.repository.updated.consumers
+                    group: ontopop
                     binder: azure_service_bus
                 ingestedPublicationChannel:
                     destination: ontopop.data.ingested
                     binder: azure_service_bus
                 ingestedConsumptionChannel:
                     destination: ontopop.data.ingested
-                    group: ontopop.data.ingested.consumers
+                    group: ontopop
                     binder: azure_service_bus
                 validatedPublicationChannel:
                     destination: ontopop.data.validated
                     binder: azure_service_bus
                 validatedTriplestoreLoaderConsumptionChannel:
                     destination: ontopop.data.validated
-                    group: ontopop.data.validated.consumers.loaders.rdf
+                    group: ontopop.loaders.triplestore
                     binder: azure_service_bus
                 validatedParserConsumptionChannel:
                     destination: ontopop.data.validated
-                    group: ontopop.data.validated.consumers.parsers
+                    group: ontopop.parsers
                     binder: azure_service_bus
                 triplestoreLoadedPublicationChannel:
                     destination: ontopop.data.loaded.triplestore
                     binder: azure_service_bus
                 triplestoreLoadedConsumptionChannel:
                     destination: ontopop.data.loaded.triplestore
-                    group: ontopop.data.loaded.triplestore.consumers
+                    group: ontopop
                     binder: azure_service_bus
                 parsedPublicationChannel:
                     destination: ontopop.data.parsed
                     binder: azure_service_bus
                 parsedConsumptionChannel:
                     destination: ontopop.data.parsed
-                    group: ontopop.data.parsed.consumers
+                    group: ontopop
                     binder: azure_service_bus
                 modelledPublicationChannel:
                     destination: ontopop.data.modelled
                     binder: azure_service_bus
                 modelledGraphLoaderConsumptionChannel:
                     destination: ontopop.data.modelled
-                    group: ontopop.data.modelled.consumers.loaders.graph
+                    group: ontopop.loaders.graph
                     binder: azure_service_bus
                 modelledGraphIndexerConsumptionChannel:
                     destination: ontopop.data.modelled
-                    group: ontopop.data.modelled.consumers.indexers.graph
+                    group: ontopop.indexers.graph
                     binder: azure_service_bus
                 graphLoadedPublicationChannel:
                     destination: ontopop.data.loaded.graph
                     binder: azure_service_bus
                 graphLoadedConsumptionChannel:
                     destination: ontopop.data.loaded.graph
-                    group: ontopop.data.loaded.graph.consumers
+                    group: ontopop
                     binder: azure_service_bus
                 graphIndexedPublicationChannel:
                     destination: ontopop.data.indexed.graph
                     binder: azure_service_bus
                 graphIndexedConsumptionChannel:
                     destination: ontopop.data.indexed.graph
-                    group: ontopop.data.indexed.graph.consumers
+                    group: ontopop
                     binder: azure_service_bus
             servicebus:
                 topic:
@@ -195,7 +195,7 @@ storage:
             account-name: ${azure-storage-account-name}
             account-key: ${azure-storage-account-key}
             blob-endpoint: ${azure-storage-blob-endpoint}
-            container-name: ontopop
+            container-name: ontopop-data
         containers:
             ingested: ingested
             validated: validated
@@ -280,9 +280,9 @@ springdoc:
 plugins:
     webprotege:
         exporter:
-            enabled: false
+            enabled: true
             http:
                 enabled: false
             scheduler:
-                enabled: false
+                enabled: true
                 cron: "0 0/10 * * * *"

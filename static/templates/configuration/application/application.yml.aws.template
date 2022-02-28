@@ -33,71 +33,71 @@ spring:
                     binder: rabbitmq
                 webProtegeProjectUpdatedConsumptionChannel:
                     destination: webprotege.project.updated
-                    group: webprotege.project.updated.consumers
+                    group: ontopop
                     binder: rabbitmq
                 gitRepositoryUpdatedPublicationChannel:
                     destination: git.repository.updated
                     binder: rabbitmq
                 gitRepositoryUpdatedConsumptionChannel:
                     destination: git.repository.updated
-                    group: git.repository.updated.consumers
+                    group: ontopop
                     binder: rabbitmq
                 ingestedPublicationChannel:
                     destination: ontopop.data.ingested
                     binder: rabbitmq
                 ingestedConsumptionChannel:
                     destination: ontopop.data.ingested
-                    group: ontopop.data.ingested.consumers
+                    group: ontopop
                     binder: rabbitmq
                 validatedPublicationChannel:
                     destination: ontopop.data.validated
                     binder: rabbitmq
                 validatedTriplestoreLoaderConsumptionChannel:
                     destination: ontopop.data.validated
-                    group: ontopop.data.validated.consumers.loaders.rdf
+                    group: ontopop.loaders.triplestore
                     binder: rabbitmq
                 validatedParserConsumptionChannel:
                     destination: ontopop.data.validated
-                    group: ontopop.data.validated.consumers.parsers
+                    group: ontopop.parsers
                     binder: rabbitmq
                 triplestoreLoadedPublicationChannel:
                     destination: ontopop.data.loaded.triplestore
                     binder: rabbitmq
                 triplestoreLoadedConsumptionChannel:
                     destination: ontopop.data.loaded.triplestore
-                    group: ontopop.data.loaded.triplestore.consumers
+                    group: ontopop
                     binder: rabbitmq
                 parsedPublicationChannel:
                     destination: ontopop.data.parsed
                     binder: rabbitmq
                 parsedConsumptionChannel:
                     destination: ontopop.data.parsed
-                    group: ontopop.data.parsed.consumers
+                    group: ontopop
                     binder: rabbitmq
                 modelledPublicationChannel:
                     destination: ontopop.data.modelled
                     binder: rabbitmq
                 modelledGraphLoaderConsumptionChannel:
                     destination: ontopop.data.modelled
-                    group: ontopop.data.modelled.consumers.loaders.graph
+                    group: ontopop.loaders.graph
                     binder: rabbitmq
                 modelledGraphIndexerConsumptionChannel:
                     destination: ontopop.data.modelled
-                    group: ontopop.data.modelled.consumers.indexers.graph
+                    group: ontopop.indexers.graph
                     binder: rabbitmq
                 graphLoadedPublicationChannel:
                     destination: ontopop.data.loaded.graph
                     binder: rabbitmq
                 graphLoadedConsumptionChannel:
                     destination: ontopop.data.loaded.graph
-                    group: ontopop.data.loaded.graph.consumers
+                    group: ontopop
                     binder: rabbitmq
                 graphIndexedPublicationChannel:
                     destination: ontopop.data.indexed.graph
                     binder: rabbitmq
                 graphIndexedConsumptionChannel:
                     destination: ontopop.data.indexed.graph
-                    group: ontopop.data.indexed.graph.consumers
+                    group: ontopop
                     binder: rabbitmq
             servicebus:
                 topic:
@@ -190,7 +190,7 @@ storage:
             access-key-id: ${aws-s3-access-key-id}
             access-key-secret: ${aws-s3-access-key-secret}
             region: eu-west-2
-            bucket-name: ontopop
+            bucket-name: ontopop-data
         azure-storage:
             account-name:
             account-key:
@@ -280,9 +280,9 @@ springdoc:
 plugins:
     webprotege:
         exporter:
-            enabled: false
+            enabled: true
             http:
                 enabled: false
             scheduler:
-                enabled: false
+                enabled: true
                 cron: "0 0/10 * * * *"
