@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -117,9 +118,17 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
             .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
+            .exceptionHandling()
+                .authenticationEntryPoint(
+                    (request, response, ex) -> {
+                        response.sendError(
+                                HttpStatus.UNAUTHORIZED.value(), 
+                                "Invalid API Key.");
+                    })
+            .and()
             .addFilter(filter)
             .authorizeRequests()
-                .anyRequest()
+            .anyRequest()
             .authenticated();
         
     }
