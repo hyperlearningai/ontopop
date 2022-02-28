@@ -90,6 +90,12 @@
                     <artifactId>azure-security-keyvault-secrets</artifactId>
                 </exclusion>
                 
+                <!-- Exclude OntoText GraphDB -->
+                <exclusion>
+                    <groupId>com.ontotext.graphdb</groupId>
+                    <artifactId>graphdb-free-runtime</artifactId>
+                </exclusion>
+                
             </exclusions>
         </dependency>
         
