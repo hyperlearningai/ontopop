@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.security.auth.providers;
+package ai.hyperlearning.ontopop.security.auth.engines;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.vault.core.VaultTemplate;
 
@@ -31,6 +32,9 @@ import ai.hyperlearning.ontopop.security.secrets.hashicorp.vault.HashicorpVaultS
  */
 
 @Service
+@ConditionalOnProperty(
+        value = "security.authentication.api.engine",
+        havingValue = "secrets")
 public class SecretsEngineApiKeyAuthenticationService 
         implements ApiKeyAuthenticationService {
     

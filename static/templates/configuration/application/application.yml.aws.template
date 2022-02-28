@@ -181,6 +181,10 @@ security:
             paths:
                 subpaths:
                     ontologies: /ontologies/
+    authentication:
+        api:
+            enabled: true
+            engine: secrets
 storage:
     object:
         service: aws-s3
