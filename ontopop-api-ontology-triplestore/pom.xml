@@ -60,6 +60,15 @@
         <dependency>
             <groupId>ai.hyperlearning.ontopop</groupId>
             <artifactId>ontopop-triplestore</artifactId>
+            <exclusions>
+            
+                <!-- Exclude OntoText GraphDB -->
+                <exclusion>
+                    <groupId>com.ontotext.graphdb</groupId>
+                    <artifactId>graphdb-free-runtime</artifactId>
+                </exclusion>
+            
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>ai.hyperlearning.ontopop</groupId>
