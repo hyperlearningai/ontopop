@@ -59,6 +59,12 @@
             <groupId>ai.hyperlearning.ontopop</groupId>
             <artifactId>ontopop-secrets</artifactId>
         </dependency>
+        
+        <!-- Spring Boot Starter Security -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
 
     </dependencies>
 
