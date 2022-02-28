@@ -77,6 +77,10 @@
         </dependency>
         <dependency>
             <groupId>ai.hyperlearning.ontopop</groupId>
+            <artifactId>ontopop-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ai.hyperlearning.ontopop</groupId>
             <artifactId>ontopop-data-ontology-management</artifactId>
         </dependency>
 
