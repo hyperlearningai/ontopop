@@ -165,6 +165,8 @@ spring:
         hibernate:
             ddl-auto: update
         show-sql: false
+    autoconfigure:
+        exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
 security:
     secrets:
         service: azure-key-vault
