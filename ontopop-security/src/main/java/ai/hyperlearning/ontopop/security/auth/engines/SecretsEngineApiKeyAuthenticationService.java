@@ -158,5 +158,10 @@ public class SecretsEngineApiKeyAuthenticationService
         }
         return false;
     }
+    
+    @Override
+    public boolean authenticate(ApiKey apiKey) throws JsonProcessingException {
+        return authenticate(apiKey.getKey());
+    }
 
 }

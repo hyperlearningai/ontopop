@@ -24,5 +24,7 @@ public interface ApiKeyAuthenticationService {
     public void delete(String key) throws Exception;
     
     public boolean authenticate(String key) throws Exception;
+    
+    public boolean authenticate(ApiKey apiKey) throws Exception;
 
 }
