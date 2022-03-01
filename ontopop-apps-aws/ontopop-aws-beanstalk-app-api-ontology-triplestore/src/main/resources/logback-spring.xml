@@ -51,6 +51,12 @@
     <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" level="INFO">
         <appender-ref ref="RollingFile" />
     </logger>
+    
+    <!-- OntoPop Security Logger -->
+    <logger name="ai.hyperlearning.ontopop.security" level="DEBUG" additivity="false">
+        <appender-ref ref="RollingFile" />
+        <appender-ref ref="Console" />
+    </logger>
  
     <!-- OntoPop Logger -->
     <logger name="ai.hyperlearning.ontopop" level="DEBUG" additivity="false">
