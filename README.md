@@ -222,3 +222,30 @@ Assuming that `mvn package` completes successfully, you are now ready to deploy 
 * **[Self Managed](https://docs.ontopop.com/deployment-guides/self-managed)** - deploy OntoPop to a self-managed on-premise, public/private cloud or hybrid environment, integrated with entirely open-source self-managed software services such as HashiCorp Vault, RabbitMQ, MySQL, Apache Jena Fuseki, JanusGraph and Elasticsearch.<br/><br/>
 * **[Microsoft Azure](https://docs.ontopop.com/deployment-guides/microsoft-azure)** - deploy OntoPop to the Microsoft Azure cloud computing platform, integrated with Azure managed services including Azure Key Vault, Azure Blob Storage, Azure Service Bus, Azure Functions and Azure Web Apps.<br/><br/>
 * **[Amazon Web Services](https://docs.ontopop.com/deployment-guides/amazon-web-services)** - deploy OntoPop to the Amazon Web Services (AWS) cloud computing platform, integrated with AWS managed services including AWS Secrets Manager, Amazon S3, Amazon MQ, Amazon RDS, AWS Lambda and AWS Elastic Beanstalk.
+<br/>
+
+## <a name="license"></a>4. License
+
+OntoPop is an open-source software project available under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html) (GNU GPLv3) software license.
+<br/><br/>
+
+## <a name="acknowledgements"></a>5. Acknowledgements
+
+Provided below is the list of organisations and individuals who sponsor, and contribute towards, the development of the OntoPop project.
+
+### Organisations
+
+* **[National Highways](https://nationalhighways.co.uk/)** - Primary project sponsor
+* **[HyperLearning AI](https://hyperlearning.ai/)** - Product Owner and Project management
+
+### Individuals
+
+* **[Jillur Quddus](https://hyperlearning.ai/team/jillurquddus)** - Project Lead, Lead Technical Architect & Lead Java Engineer
+* **[Christian Carestia](https://www.linkedin.com/in/christiancarestia)** - Lead Front End Engineer
+<br/>
+
+## <a name="contact"></a>6. Contact and Further Information
+
+For further information, please visit the OntoPop documentation website at https://docs.ontopop.com or contact HyperLearning AI using the details below.
+
+* **[Jillur Quddus](https://hyperlearning.ai/team/jillurquddus)**<br/>Chief Data Scientist and Principal Polyglot Software Engineer<br/>ontopop@hyperlearning.ai
