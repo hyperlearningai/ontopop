@@ -1,5 +1,4 @@
-<!-- PROJECT LOGO -->
-<br />
+<br/>
 <p align="center">
   <a href="https://ontopop.com" target="_blank">
     <img src="static/assets/images/logos/ontopop-logo-small.png" alt="OntoPop" width="500" height="150">
@@ -158,3 +157,68 @@ For further information regarding the technical, integration and security archit
 <br/><br/>
 
 ## <a name="getting-started"></a>3. Getting Started
+
+The following instructions describe how to clone the OntoPop source code repository into your development or deployment environment, and then how to compile, build and package the respective OntoPop software services and applications ready for deployment.
+
+### <a name="build"></a>3.1. Build from Source
+
+#### Build Tools
+
+Please ensure that the following prerequisite build tools are installed in your development or deployment environment.
+
+* **[OpenJDK 11](https://openjdk.java.net/projects/jdk/11/)** - open source reference implementation of Java 11.
+* **[Apache Maven](https://maven.apache.org/)** - open source build automation tool for Java.
+* **[Git](https://git-scm.com/)** - open source distributed version control system.
+* **[Node.js](https://nodejs.org/)** - open source backend JavaScript runtime environment.
+* **[npm](https://www.npmjs.com/)** - Package manager for the Node.js JavaScript runtime environment.
+
+#### Clone the Source Code
+
+The open-source source code for the OntoPop project may be found on GitHub at https://github.com/hyperlearningai/ontopop. To clone the OntoPop source code repository into your development or deployment environment, please run the following Git command via your command line (or via your preferred Git GUI tool). The location of the cloned OntoPop source code project folder will hereafter be referred to as `$ONTOPOP_BASE`.
+
+```
+# Clone the OntoPop GitHub public repository
+$ git clone https://github.com/hyperlearningai/ontopop.git
+
+# Navigate into the OntoPop project folder
+# This location will hereafter be referred to as $ONTOPOP_BASE
+$ cd ontopop
+```
+
+#### Maven Profiles
+
+The following table describes the Maven profiles defined in `$ONTOPOP_BASE/pom.xml`.
+
+Profile Name | Default | Description
+:--- | :--- | --- 
+`multicloud` | Yes | Manages the lifecycle of all OntoPop backend services as well as all OntoPop Spring Boot applications (i.e. serverless function apps and API apps) across all cloud vendors.
+`spring` | No | Manages the lifecycle of all OntoPop backend services but, from an application perspective, manages the lifecycle of only Spring Boot applications designed for development and testing purposes, or for deployment to on-premise, private cloud or Spring Cloud environments.
+`azure` | No | Manages the lifecycle of all OntoPop backend services but, from an application perspective, manages the lifecycle of only Microsoft Azure Spring Boot applications designed for deployment to Azure Function and Azure Web App managed services respectively.
+`aws` | No | Manages the lifecycle of all OntoPop backend services but, from an application perspective, managed the lifecycle of only AWS Spring Boot applications designed for deployment to AWS Lambda and AWS Elastic Beanstalk managed services respectively.
+
+#### Compile and Build
+
+Please ensure that you have entered the correct configuration into the Spring bootstrap and application property files respectively, appropriate to your target deployment environment, prior to packaging OntoPop. For further information regarding configuring OntoPop, please refer to the OntoPop Spring [bootstrap context](https://docs.ontopop.com/deployment-guides/configuration/bootstrap-context) and [application context](https://docs.ontopop.com/deployment-guides/configuration/application-context) documentation pages respectively. To compile and build OntoPop backend services and applications from source, please run the following commands via your command line.
+
+```
+# Navigate to $ONTOPOP_BASE
+$ cd $ONTOPOP_BASE
+
+# Clean the project working directory
+$ mvn clean
+
+# Compile, build and package OntoPop
+# Please select your required OntoPop Maven profile name
+# If no profile is provided, the default "multicloud" Maven profile will be used
+$ mvn package -P [OntoPop Maven profile name e.g. azure]
+```
+
+If you are running `mvn package` for the first time, it will take approximately 5 - 10 minutes to complete the build (dependent on the speed of your internet connection) as Maven will download all the required Java dependencies for the first time. Subsequent executions of mvn package should take between 2 - 3 minutes to complete.
+
+### <a name="deployment"></a>3.2. Deployment
+
+Assuming that `mvn package` completes successfully, you are now ready to deploy OntoPop. Please follow the links below for deployment instructions specific to your target deployment environment.<br/>
+
+* **[Self Managed](https://docs.ontopop.com/deployment-guides/self-managed)** - deploy OntoPop to a self-managed on-premise, public/private cloud or hybrid environment, integrated with entirely open-source self-managed software services such as HashiCorp Vault, RabbitMQ, MySQL, Apache Jena Fuseki, JanusGraph and Elasticsearch.<br/><br/>
+* **[Microsoft Azure](https://docs.ontopop.com/deployment-guides/microsoft-azure)** - deploy OntoPop to the Microsoft Azure cloud computing platform, integrated with Azure managed services including Azure Key Vault, Azure Blob Storage, Azure Service Bus, Azure Functions and Azure Web Apps.<br/><br/>
+* **[Amazon Web Services](https://docs.ontopop.com/deployment-guides/amazon-web-services)** - deploy OntoPop to the Amazon Web Services (AWS) cloud computing platform, integrated with AWS managed services including AWS Secrets Manager, Amazon S3, Amazon MQ, Amazon RDS, AWS Lambda and AWS Elastic Beanstalk.
