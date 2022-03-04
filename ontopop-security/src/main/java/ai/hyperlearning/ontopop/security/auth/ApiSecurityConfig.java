@@ -166,6 +166,7 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
             .addFilter(filter)
             .authorizeRequests()
+                .antMatchers("/").permitAll()
                 .antMatchers("/management/**").hasRole(MANAGEMENT_API_ROLE_NAME)
                 .antMatchers("/triplestore/**").hasRole(TRIPLESTORE_API_ROLE_NAME)
                 .antMatchers("/search/**").hasRole(SEARCH_API_ROLE_NAME)
