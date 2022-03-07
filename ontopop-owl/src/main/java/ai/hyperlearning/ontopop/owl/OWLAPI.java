@@ -3,6 +3,7 @@ package ai.hyperlearning.ontopop.owl;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +56,7 @@ public class OWLAPI {
             OWLManager.createOWLOntologyManager();
     private static final OWLDataFactory SHARED_OWL_DATA_FACTORY =
             SHARED_OWL_ONTOLOGY_MANAGER.getOWLDataFactory();
+    private static final String DELIMITER = "|";
 
     /**************************************************************************
      * Loaders
@@ -189,8 +191,12 @@ public class OWLAPI {
             // Generate a map of annotation IRI to annotation literal value
             Map<String, String> annotations = new LinkedHashMap<>();
             for (OWLAnnotation owlAnnotation : owlAnnotations) {
-                annotations.put(owlAnnotation.getProperty().getIRI().toString(),
-                        getAnnotationValueLiteral(owlAnnotation));
+                String iri = owlAnnotation.getProperty().getIRI().toString();
+                String literalValue = annotations.containsKey(iri) ? 
+                        annotations.get(iri) + " " + DELIMITER + " " + 
+                            getAnnotationValueLiteral(owlAnnotation) : 
+                                getAnnotationValueLiteral(owlAnnotation);
+                annotations.put(iri, literalValue);
             }
 
             // Create a Simple Annotation Property object and add it
@@ -287,8 +293,12 @@ public class OWLAPI {
             // Generate a map of annotation IRI to annotation literal value
             Map<String, String> annotations = new LinkedHashMap<>();
             for (OWLAnnotation owlAnnotation : owlAnnotations) {
-                annotations.put(owlAnnotation.getProperty().getIRI().toString(),
-                        getAnnotationValueLiteral(owlAnnotation));
+                String iri = owlAnnotation.getProperty().getIRI().toString();
+                String literalValue = annotations.containsKey(iri) ? 
+                        annotations.get(iri) + " " + DELIMITER + " " + 
+                            getAnnotationValueLiteral(owlAnnotation) : 
+                                getAnnotationValueLiteral(owlAnnotation);
+                annotations.put(iri, literalValue);
             }
 
             // Create a Simple Object Property object
@@ -394,8 +404,12 @@ public class OWLAPI {
             // Generate a map of annotation IRI to annotation literal value
             Map<String, String> annotations = new LinkedHashMap<>();
             for (OWLAnnotation owlAnnotation : owlAnnotations) {
-                annotations.put(owlAnnotation.getProperty().getIRI().toString(),
-                        getAnnotationValueLiteral(owlAnnotation));
+                String iri = owlAnnotation.getProperty().getIRI().toString();
+                String literalValue = annotations.containsKey(iri) ? 
+                        annotations.get(iri) + " " + DELIMITER + " " + 
+                            getAnnotationValueLiteral(owlAnnotation) : 
+                                getAnnotationValueLiteral(owlAnnotation);
+                annotations.put(iri, literalValue);
             }
 
             // Create a Simple Class object
@@ -426,8 +440,10 @@ public class OWLAPI {
                         String superClassIRI =
                                 owlClassSubClassOfAxiom.getSuperClass()
                                         .asOWLClass().getIRI().toString();
-                        if (!classIri.equals(superClassIRI))
-                            parentClasses.put(superClassIRI, null);
+                        if (!classIri.equals(superClassIRI)) {
+                            if ( !parentClasses.containsKey(superClassIRI) )
+                                parentClasses.put(superClassIRI, null);
+                        };
 
                     }
 
@@ -449,8 +465,24 @@ public class OWLAPI {
                         String superClassIRI =
                                 ((OWLClass) owlObjectPropertySomeValuesFrom
                                         .getFiller()).getIRI().toString();
-                        if (!classIri.equals(superClassIRI))
-                            parentClasses.put(superClassIRI, objectPropertyIRI);
+                        if (!classIri.equals(superClassIRI)) {
+                            if ( parentClasses.containsKey(superClassIRI) ) {
+                                String currentObjectPropertyIRI = 
+                                        parentClasses.get(superClassIRI);
+                                if ( currentObjectPropertyIRI == null ) {
+                                    parentClasses.put(superClassIRI, 
+                                            objectPropertyIRI);
+                                } else {
+                                    parentClasses.put(superClassIRI, 
+                                            currentObjectPropertyIRI 
+                                                + " " + DELIMITER + " " 
+                                                +  objectPropertyIRI);
+                                }
+                            } else {
+                                parentClasses.put(superClassIRI, 
+                                        objectPropertyIRI);
+                            }
+                        }
 
                     }
 
@@ -460,8 +492,8 @@ public class OWLAPI {
             // Set the parent class IRI <> object property IRI mapping
             simpleClass.setParentClasses(parentClasses);
 
-            // Add the new Simple Class object to the map of Simple Class
-            // objects
+            // Add the new Simple Class object to the map of 
+            // Simple Class objects
             simpleClassMap.put(classIri, simpleClass);
 
         }
@@ -568,12 +600,13 @@ public class OWLAPI {
                         rightSimpleAnnotationPropertyMap.get(leftIri);
                 
                 // Updated RDFS label
-                if ( !leftSimpleAnnotationProperty.getLabel().equals(
+                if ( isLabelUpdated(leftSimpleAnnotationProperty.getLabel(), 
                         rightSimpleAnnotationProperty.getLabel()) )
                     updatedSimpleAnnotationProperties.add(
                             new SimpleAnnotationPropertyDiff(
                                     leftSimpleAnnotationProperty, 
                                     rightSimpleAnnotationProperty));
+                
                 else {
                     
                     // Deleted or updated annotation property annotations
@@ -601,7 +634,8 @@ public class OWLAPI {
                             String rightAnnotationPropertyValue = 
                                     rightSimpleAnnotationProperty.getAnnotations()
                                         .get(annotationPropertyIri);
-                            if ( !leftAnnotationPropertyValue.equals(
+                            if ( isAnnotationUpdated(
+                                    leftAnnotationPropertyValue, 
                                     rightAnnotationPropertyValue) ) {
                                 updatedSimpleAnnotationProperties.add(
                                         new SimpleAnnotationPropertyDiff(
@@ -697,7 +731,7 @@ public class OWLAPI {
                         rightSimpleObjectPropertyMap.get(leftIri);
                 
                 // Updated RDFS label
-                if ( !leftSimpleObjectProperty.getLabel().equals(
+                if ( isLabelUpdated(leftSimpleObjectProperty.getLabel(), 
                         rightSimpleObjectProperty.getLabel()) )
                     updatedSimpleObjectProperties.add(
                             new SimpleObjectPropertyDiff(
@@ -705,9 +739,11 @@ public class OWLAPI {
                                     rightSimpleObjectProperty));
                 
                 // Updated parent object property IRI
-                else if ( !leftSimpleObjectProperty.getParentObjectPropertyIRI()
-                        .equals(rightSimpleObjectProperty
-                                .getParentObjectPropertyIRI()) )
+                else if ( leftSimpleObjectProperty.getParentObjectPropertyIRI() != null && 
+                            rightSimpleObjectProperty.getParentObjectPropertyIRI() != null && 
+                            !leftSimpleObjectProperty.getParentObjectPropertyIRI()
+                                .equals(rightSimpleObjectProperty
+                                        .getParentObjectPropertyIRI()) )
                     updatedSimpleObjectProperties.add(
                             new SimpleObjectPropertyDiff(
                                     leftSimpleObjectProperty, 
@@ -740,7 +776,8 @@ public class OWLAPI {
                             String rightAnnotationPropertyValue = 
                                     rightSimpleObjectProperty.getAnnotations()
                                         .get(annotationPropertyIri);
-                            if ( !leftAnnotationPropertyValue.equals(
+                            if ( isAnnotationUpdated(
+                                    leftAnnotationPropertyValue, 
                                     rightAnnotationPropertyValue) ) {
                                 updatedSimpleObjectProperties.add(
                                         new SimpleObjectPropertyDiff(
@@ -830,7 +867,7 @@ public class OWLAPI {
                 SimpleClass rightSimpleClass = rightSimpleClassMap.get(leftIri);
                 
                 // Updated RDFS label
-                if ( !leftSimpleClass.getLabel().equals(
+                if ( isLabelUpdated(leftSimpleClass.getLabel(), 
                         rightSimpleClass.getLabel()) )
                     updatedSimpleClasses.add(
                             new SimpleClassDiff(leftSimpleClass, 
@@ -863,7 +900,8 @@ public class OWLAPI {
                             String rightAnnotationPropertyValue = 
                                     rightSimpleClass.getAnnotations()
                                         .get(annotationPropertyIri);
-                            if ( !leftAnnotationPropertyValue.equals(
+                            if ( isAnnotationUpdated(
+                                    leftAnnotationPropertyValue, 
                                     rightAnnotationPropertyValue) ) {
                                 updatedSimpleClasses.add(
                                         new SimpleClassDiff(
@@ -919,7 +957,8 @@ public class OWLAPI {
                                 String rightParentClassRestrictionIri = 
                                         rightSimpleClass.getParentClasses()
                                             .get(parentClassIri);
-                                if ( !leftParentClassRestrictionIri.equals(
+                                if ( isParentClassRelationshipUpdated(
+                                        leftParentClassRestrictionIri, 
                                         rightParentClassRestrictionIri) ) {
                                     updatedSimpleClasses.add(
                                             new SimpleClassDiff(
@@ -975,6 +1014,98 @@ public class OWLAPI {
         diff.add(deletedSimpleClasses);
         return diff;
         
+    }
+    
+    /**
+     * Ascertain whether the RDFS label has been updated
+     * @param leftLabel
+     * @param rightLabel
+     * @return
+     */
+    
+    public static boolean isLabelUpdated(String leftLabel, String rightLabel) {
+        return (leftLabel != null && rightLabel == null) || 
+        (leftLabel == null && rightLabel != null) || 
+        (leftLabel != null && rightLabel != null && 
+            !leftLabel.equals(rightLabel));
+    }
+    
+    /**
+     * Ascertain whether an annotation property has been updated
+     * @param leftAnnotationPropertyValue
+     * @param rightAnnotationPropertyValue
+     * @return
+     */
+    
+    public static boolean isAnnotationUpdated(
+            String leftAnnotationPropertyValue, 
+            String rightAnnotationPropertyValue) {
+        boolean updated = false;
+        if ( leftAnnotationPropertyValue != null && 
+                rightAnnotationPropertyValue == null )
+            updated = true;
+        else if ( leftAnnotationPropertyValue == null && 
+                rightAnnotationPropertyValue != null )
+            updated = true;
+        else if ( leftAnnotationPropertyValue != null && 
+                rightAnnotationPropertyValue != null ) {
+            List<String> leftAnnotationPropertyValues = 
+                    Arrays.asList(leftAnnotationPropertyValue
+                            .replace(" " + DELIMITER + " ", DELIMITER)
+                            .split("\\" + DELIMITER));
+            List<String> rightAnnotationPropertyValues = 
+                    Arrays.asList(rightAnnotationPropertyValue
+                            .replace(" " + DELIMITER + " ", DELIMITER)
+                            .split("\\" + DELIMITER));
+            for ( String currentLeftAnnotationPropertyValue : 
+                leftAnnotationPropertyValues ) {
+                if ( !rightAnnotationPropertyValues.contains(
+                        currentLeftAnnotationPropertyValue) ) {
+                    updated = true;
+                    break;
+                }
+            }
+        }
+        return updated;
+    }
+    
+    /**
+     * Ascertain whether a parent class relationship has been updated
+     * @param leftParentClassRestrictionIri
+     * @param rightParentClassRestrictionIri
+     * @return
+     */
+    
+    public static boolean isParentClassRelationshipUpdated(
+            String leftParentClassRestrictionIri, 
+            String rightParentClassRestrictionIri) {
+        boolean updated = false;
+        if ( leftParentClassRestrictionIri != null && 
+                rightParentClassRestrictionIri == null )
+            updated = true;
+        else if ( leftParentClassRestrictionIri == null && 
+                rightParentClassRestrictionIri != null )
+            updated = true;
+        else if ( leftParentClassRestrictionIri != null && 
+                rightParentClassRestrictionIri != null ) {
+            List<String> leftParentClassRestrictionIris = 
+                    Arrays.asList(leftParentClassRestrictionIri
+                            .replace(" " + DELIMITER + " ", DELIMITER)
+                            .split("\\" + DELIMITER));
+            List<String> rightParentClassRestrictionIris = 
+                    Arrays.asList(rightParentClassRestrictionIri
+                            .replace(" " + DELIMITER + " ", DELIMITER)
+                            .split("\\" + DELIMITER));
+            for ( String currentLeftParentClassRestrictionIri : 
+                leftParentClassRestrictionIris ) {
+                if ( !rightParentClassRestrictionIris.contains(
+                        currentLeftParentClassRestrictionIri) ) {
+                    updated = true;
+                    break;
+                }
+            }
+        }
+        return updated;
     }
     
 }
