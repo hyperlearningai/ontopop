@@ -322,9 +322,12 @@ public class OWLAPI {
                             owlObjectPropertySubObjectPropertyOfAxiom
                                     .getSuperProperty().asOWLObjectProperty()
                                     .getIRI().toString();
-                    simpleObjectProperty
-                            .setParentObjectPropertyIRI(superObjectPropertyIRI);
-                    break;
+                    if ( !objectPropertyIri.equals(superObjectPropertyIRI) ) {
+                        simpleObjectProperty
+                            .setParentObjectPropertyIRI(
+                                    superObjectPropertyIRI);
+                        break;
+                    }
 
                 }
             }
