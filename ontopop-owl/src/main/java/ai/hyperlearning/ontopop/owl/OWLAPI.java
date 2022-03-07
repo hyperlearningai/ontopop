@@ -2,6 +2,7 @@ package ai.hyperlearning.ontopop.owl;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +37,10 @@ import org.semanticweb.owlapi.util.OWLAPIStreamUtils;
 import ai.hyperlearning.ontopop.model.owl.SimpleAnnotationProperty;
 import ai.hyperlearning.ontopop.model.owl.SimpleClass;
 import ai.hyperlearning.ontopop.model.owl.SimpleObjectProperty;
+import ai.hyperlearning.ontopop.model.owl.diff.SimpleAnnotationPropertyDiff;
+import ai.hyperlearning.ontopop.model.owl.diff.SimpleClassDiff;
+import ai.hyperlearning.ontopop.model.owl.diff.SimpleObjectPropertyDiff;
+import ai.hyperlearning.ontopop.model.owl.diff.SimpleOntologyDiff;
 
 /**
  * OWL API 5 Helper Methods
@@ -474,5 +479,351 @@ public class OWLAPI {
         return OWLAPIStreamUtils.asList(
                 EntitySearcher.getReferencingAxioms(owlEntity, ontology));
     }
+    
+    /**************************************************************************
+     * Diff
+     *************************************************************************/
 
+    public static SimpleOntologyDiff diff(
+            String leftOwlFile, String rightOwlFile ) 
+                    throws OWLOntologyCreationException {
+        
+        // Load and parse the left OWL ontology
+        OWLOntology leftOntology = OWLAPI.loadOntology(new File(leftOwlFile));
+        Map<String, SimpleAnnotationProperty> leftSimpleAnnotationPropertyMap =
+                OWLAPI.parseAnnotationProperties(leftOntology);
+        Map<String, SimpleObjectProperty> leftSimpleObjectPropertyMap =
+                OWLAPI.parseObjectProperties(leftOntology);
+        Map<String, SimpleClass> leftSimpleClassMap = 
+                OWLAPI.parseClasses(leftOntology);
+        
+        // Load and parse the right OWL ontology
+        OWLOntology rightOntology = OWLAPI.loadOntology(new File(rightOwlFile));
+        Map<String, SimpleAnnotationProperty> rightSimpleAnnotationPropertyMap =
+                OWLAPI.parseAnnotationProperties(rightOntology);
+        Map<String, SimpleObjectProperty> rightSimpleObjectPropertyMap =
+                OWLAPI.parseObjectProperties(rightOntology);
+        Map<String, SimpleClass> rightSimpleClassMap = 
+                OWLAPI.parseClasses(rightOntology);
+        
+        // Resolve the diffs
+        List<List<SimpleAnnotationPropertyDiff>> simpleAnnotationPropertyDiff = 
+                simpleAnnotationPropertyDiff(leftSimpleAnnotationPropertyMap, 
+                        rightSimpleAnnotationPropertyMap);
+        List<List<SimpleObjectPropertyDiff>> simpleObjectPropertyDiff = 
+                simpleObjectPropertyDiff(leftSimpleObjectPropertyMap, 
+                        rightSimpleObjectPropertyMap);
+        List<List<SimpleClassDiff>> simpleClassDiff = 
+                simpleClassDiff(leftSimpleClassMap, rightSimpleClassMap);
+        
+        // Return the diff
+        return new SimpleOntologyDiff(
+                simpleAnnotationPropertyDiff.get(0), 
+                simpleAnnotationPropertyDiff.get(1), 
+                simpleAnnotationPropertyDiff.get(2), 
+                simpleObjectPropertyDiff.get(0), 
+                simpleObjectPropertyDiff.get(1), 
+                simpleObjectPropertyDiff.get(2), 
+                simpleClassDiff.get(0), 
+                simpleClassDiff.get(1), 
+                simpleClassDiff.get(2) 
+                );
+        
+    }
+    
+    /**
+     * Resolve simple annotation property diffs
+     * @param leftSimpleAnnotationPropertyMap
+     * @param rightSimpleAnnotationPropertyMap
+     * @return
+     */
+    
+    public static List<List<SimpleAnnotationPropertyDiff>> simpleAnnotationPropertyDiff(
+            Map<String, SimpleAnnotationProperty> leftSimpleAnnotationPropertyMap, 
+            Map<String, SimpleAnnotationProperty> rightSimpleAnnotationPropertyMap) {
+        
+        // Instantiate diff collections
+        List<SimpleAnnotationPropertyDiff> createdSimpleAnnotationProperties = 
+                new ArrayList<>();
+        List<SimpleAnnotationPropertyDiff> updatedSimpleAnnotationProperties = 
+                new ArrayList<>();
+        List<SimpleAnnotationPropertyDiff> deletedSimpleAnnotationProperties = 
+                new ArrayList<>();
+        
+        // Iterate over left annotation properties
+        for (var entry : leftSimpleAnnotationPropertyMap.entrySet()) {
+            String leftIri = entry.getKey();
+            SimpleAnnotationProperty leftSimpleAnnotationProperty = 
+                    entry.getValue();
+            
+            // Deletes
+            if ( !rightSimpleAnnotationPropertyMap.containsKey(leftIri) )
+                deletedSimpleAnnotationProperties.add(
+                        new SimpleAnnotationPropertyDiff(
+                                leftSimpleAnnotationProperty, true));
+            
+            // Updates
+            else {
+                SimpleAnnotationProperty rightSimpleAnnotationProperty = 
+                        rightSimpleAnnotationPropertyMap.get(leftIri);
+                
+                // Updated RDFS label
+                if ( !leftSimpleAnnotationProperty.getLabel().equals(
+                        rightSimpleAnnotationProperty.getLabel()) )
+                    updatedSimpleAnnotationProperties.add(
+                            new SimpleAnnotationPropertyDiff(
+                                    leftSimpleAnnotationProperty, 
+                                    rightSimpleAnnotationProperty));
+                else {
+                    
+                    // Deleted or updated annotation property annotations
+                    boolean updatedAnnotation = false;
+                    for (var annotationEntry : leftSimpleAnnotationProperty
+                            .getAnnotations().entrySet()) {
+                        String annotationPropertyIri = 
+                                annotationEntry.getKey();
+                        String leftAnnotationPropertyValue = 
+                                annotationEntry.getValue();
+                        
+                        // Deleted annotation property annotation
+                        if ( !rightSimpleAnnotationProperty.getAnnotations()
+                                .containsKey(annotationPropertyIri) ) {
+                            updatedSimpleAnnotationProperties.add(
+                                    new SimpleAnnotationPropertyDiff(
+                                            leftSimpleAnnotationProperty, 
+                                            rightSimpleAnnotationProperty));
+                            updatedAnnotation = true;
+                            break;
+                        }
+                        
+                        // Updated annotation property annotation
+                        else {
+                            String rightAnnotationPropertyValue = 
+                                    rightSimpleAnnotationProperty.getAnnotations()
+                                        .get(annotationPropertyIri);
+                            if ( !leftAnnotationPropertyValue.equals(
+                                    rightAnnotationPropertyValue) ) {
+                                updatedSimpleAnnotationProperties.add(
+                                        new SimpleAnnotationPropertyDiff(
+                                                leftSimpleAnnotationProperty, 
+                                                rightSimpleAnnotationProperty));
+                                updatedAnnotation = true;
+                                break;
+                            }
+                        }
+                        
+                    }
+                    
+                    // Created annotation property annotation
+                    if (!updatedAnnotation) {
+                        for (var annotationEntry : rightSimpleAnnotationProperty
+                                .getAnnotations().entrySet()) {
+                            String annotationPropertyIri = 
+                                    annotationEntry.getKey();
+                            if ( !leftSimpleAnnotationProperty.getAnnotations()
+                                    .containsKey(annotationPropertyIri) ) {
+                                updatedSimpleAnnotationProperties.add(
+                                        new SimpleAnnotationPropertyDiff(
+                                                leftSimpleAnnotationProperty, 
+                                                rightSimpleAnnotationProperty));
+                                break;
+                            }
+                        }
+                    }
+                    
+                }
+                
+            }
+            
+        }
+        
+        // Iterate over right annotation properties
+        for (var entry : rightSimpleAnnotationPropertyMap.entrySet()) {
+            String rightIri = entry.getKey();
+            SimpleAnnotationProperty rightSimpleAnnotationProperty = 
+                    entry.getValue();
+            
+            // Creates
+            if ( !leftSimpleAnnotationPropertyMap.containsKey(rightIri) )
+                createdSimpleAnnotationProperties.add(
+                        new SimpleAnnotationPropertyDiff(
+                                rightSimpleAnnotationProperty, false));
+            
+        }
+        
+        // Return the diff collections
+        List<List<SimpleAnnotationPropertyDiff>> diff = new ArrayList<>();
+        diff.add(createdSimpleAnnotationProperties);
+        diff.add(updatedSimpleAnnotationProperties);
+        diff.add(deletedSimpleAnnotationProperties);
+        return diff;
+        
+    }
+    
+    /**
+     * Resolve simple object property diffs
+     * @param leftSimpleObjectPropertyMap
+     * @param rightSimpleObjectPropertyMap
+     * @return
+     */
+    
+    public static List<List<SimpleObjectPropertyDiff>> simpleObjectPropertyDiff(
+            Map<String, SimpleObjectProperty> leftSimpleObjectPropertyMap, 
+            Map<String, SimpleObjectProperty> rightSimpleObjectPropertyMap) {
+        
+        // Instantiate diff collections
+        List<SimpleObjectPropertyDiff> createdSimpleObjectProperties = 
+                new ArrayList<>();
+        List<SimpleObjectPropertyDiff> updatedSimpleObjectProperties = 
+                new ArrayList<>();
+        List<SimpleObjectPropertyDiff> deletedSimpleObjectProperties = 
+                new ArrayList<>();
+        
+        // Iterate over left object properties
+        for (var entry : leftSimpleObjectPropertyMap.entrySet()) {
+            String leftIri = entry.getKey();
+            SimpleObjectProperty leftSimpleObjectProperty = 
+                    entry.getValue();
+            
+            // Deletes
+            if ( !rightSimpleObjectPropertyMap.containsKey(leftIri) )
+                deletedSimpleObjectProperties.add(
+                        new SimpleObjectPropertyDiff(
+                                leftSimpleObjectProperty, true));
+            
+            // Updates
+            else {
+                SimpleObjectProperty rightSimpleObjectProperty = 
+                        rightSimpleObjectPropertyMap.get(leftIri);
+                
+                // Updated RDFS label
+                if ( !leftSimpleObjectProperty.getLabel().equals(
+                        rightSimpleObjectProperty.getLabel()) )
+                    updatedSimpleObjectProperties.add(
+                            new SimpleObjectPropertyDiff(
+                                    leftSimpleObjectProperty, 
+                                    rightSimpleObjectProperty));
+                
+                // Updated parent object property IRI
+                else if ( !leftSimpleObjectProperty.getParentObjectPropertyIRI()
+                        .equals(rightSimpleObjectProperty
+                                .getParentObjectPropertyIRI()) )
+                    updatedSimpleObjectProperties.add(
+                            new SimpleObjectPropertyDiff(
+                                    leftSimpleObjectProperty, 
+                                    rightSimpleObjectProperty));
+                
+                else {
+                    
+                    // Deleted or updated object property annotations
+                    boolean updatedAnnotation = false;
+                    for (var annotationEntry : leftSimpleObjectProperty
+                            .getAnnotations().entrySet()) {
+                        String annotationPropertyIri = 
+                                annotationEntry.getKey();
+                        String leftAnnotationPropertyValue = 
+                                annotationEntry.getValue();
+                        
+                        // Deleted object property annotation
+                        if ( !rightSimpleObjectProperty.getAnnotations()
+                                .containsKey(annotationPropertyIri) ) {
+                            updatedSimpleObjectProperties.add(
+                                    new SimpleObjectPropertyDiff(
+                                            leftSimpleObjectProperty, 
+                                            rightSimpleObjectProperty));
+                            updatedAnnotation = true;
+                            break;
+                        }
+                        
+                        // Updated object property annotation
+                        else {
+                            String rightAnnotationPropertyValue = 
+                                    rightSimpleObjectProperty.getAnnotations()
+                                        .get(annotationPropertyIri);
+                            if ( !leftAnnotationPropertyValue.equals(
+                                    rightAnnotationPropertyValue) ) {
+                                updatedSimpleObjectProperties.add(
+                                        new SimpleObjectPropertyDiff(
+                                                leftSimpleObjectProperty, 
+                                                rightSimpleObjectProperty));
+                                updatedAnnotation = true;
+                                break;
+                            }
+                        }
+                        
+                    }
+                    
+                    // Created annotation property annotation
+                    if (!updatedAnnotation) {
+                        for (var annotationEntry : rightSimpleObjectProperty
+                                .getAnnotations().entrySet()) {
+                            String annotationPropertyIri = 
+                                    annotationEntry.getKey();
+                            if ( !leftSimpleObjectProperty.getAnnotations()
+                                    .containsKey(annotationPropertyIri) ) {
+                                updatedSimpleObjectProperties.add(
+                                        new SimpleObjectPropertyDiff(
+                                                leftSimpleObjectProperty, 
+                                                rightSimpleObjectProperty));
+                                break;
+                            }
+                        }
+                    }
+                    
+                }
+                
+            }
+            
+        }
+        
+        // Iterate over right object properties
+        for (var entry : rightSimpleObjectPropertyMap.entrySet()) {
+            String rightIri = entry.getKey();
+            SimpleObjectProperty rightSimpleObjectProperty = 
+                    entry.getValue();
+            
+            // Creates
+            if ( !leftSimpleObjectPropertyMap.containsKey(rightIri) )
+                createdSimpleObjectProperties.add(
+                        new SimpleObjectPropertyDiff(
+                                rightSimpleObjectProperty, false));
+            
+        }
+        
+        // Return the diff collections
+        List<List<SimpleObjectPropertyDiff>> diff = new ArrayList<>();
+        diff.add(createdSimpleObjectProperties);
+        diff.add(updatedSimpleObjectProperties);
+        diff.add(deletedSimpleObjectProperties);
+        return diff;
+        
+    }
+    
+    /**
+     * Resolve simple class diffs
+     * @param leftSimpleClassMap
+     * @param rightSimpleClassMap
+     * @return
+     */
+    
+    public static List<List<SimpleClassDiff>> simpleClassDiff(
+            Map<String, SimpleClass> leftSimpleClassMap, 
+            Map<String, SimpleClass> rightSimpleClassMap) {
+        
+        // Instantiate diff collections
+        List<SimpleClassDiff> createdClasses = new ArrayList<>();
+        List<SimpleClassDiff> updatedClasses = new ArrayList<>();
+        List<SimpleClassDiff> deletedClasses = new ArrayList<>();
+        
+        
+        
+        // Return the diff collections
+        List<List<SimpleClassDiff>> diff = new ArrayList<>();
+        diff.add(createdClasses);
+        diff.add(updatedClasses);
+        diff.add(deletedClasses);
+        return diff;
+        
+    }
+    
 }
