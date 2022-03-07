@@ -14,6 +14,7 @@ import ai.hyperlearning.ontopop.exceptions.graph.InvalidGremlinQueryException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreationAlreadyExistsException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreationException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDeletionException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffProcessingException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDownloadException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyNotFoundException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyUpdateSecretDataException;
@@ -42,7 +43,8 @@ public class CustomGlobalExceptionHandler
     @ExceptionHandler({OntologyCreationException.class,
             OntologyUpdateSecretDataException.class, 
             OntologyDeletionException.class, 
-            OntologyDownloadException.class})
+            OntologyDownloadException.class, 
+            OntologyDiffProcessingException.class})
     public void springHandleCreationException(HttpServletResponse response)
             throws IOException {
         response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
