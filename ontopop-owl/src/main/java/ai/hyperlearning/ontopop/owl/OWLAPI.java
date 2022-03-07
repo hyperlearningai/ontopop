@@ -811,17 +811,168 @@ public class OWLAPI {
             Map<String, SimpleClass> rightSimpleClassMap) {
         
         // Instantiate diff collections
-        List<SimpleClassDiff> createdClasses = new ArrayList<>();
-        List<SimpleClassDiff> updatedClasses = new ArrayList<>();
-        List<SimpleClassDiff> deletedClasses = new ArrayList<>();
+        List<SimpleClassDiff> createdSimpleClasses = new ArrayList<>();
+        List<SimpleClassDiff> updatedSimpleClasses = new ArrayList<>();
+        List<SimpleClassDiff> deletedSimpleClasses = new ArrayList<>();
         
+        // Iterate over left classes
+        for (var entry : leftSimpleClassMap.entrySet()) {
+            String leftIri = entry.getKey();
+            SimpleClass leftSimpleClass = entry.getValue();
+            
+            // Deletes
+            if ( !rightSimpleClassMap.containsKey(leftIri) )
+                deletedSimpleClasses.add(
+                        new SimpleClassDiff(leftSimpleClass, true));
+            
+            // Updates
+            else {
+                SimpleClass rightSimpleClass = rightSimpleClassMap.get(leftIri);
+                
+                // Updated RDFS label
+                if ( !leftSimpleClass.getLabel().equals(
+                        rightSimpleClass.getLabel()) )
+                    updatedSimpleClasses.add(
+                            new SimpleClassDiff(leftSimpleClass, 
+                                    rightSimpleClass));
+                
+                else {
+                    
+                    // Deleted or updated class annotations
+                    boolean updatedAnnotationOrParentClass = false;
+                    for (var annotationEntry : leftSimpleClass
+                            .getAnnotations().entrySet()) {
+                        String annotationPropertyIri = 
+                                annotationEntry.getKey();
+                        String leftAnnotationPropertyValue = 
+                                annotationEntry.getValue();
+                        
+                        // Deleted class annotation
+                        if ( !rightSimpleClass.getAnnotations()
+                                .containsKey(annotationPropertyIri) ) {
+                            updatedSimpleClasses.add(
+                                    new SimpleClassDiff(
+                                            leftSimpleClass, 
+                                            rightSimpleClass));
+                            updatedAnnotationOrParentClass = true;
+                            break;
+                        }
+                        
+                        // Updated class annotation
+                        else {
+                            String rightAnnotationPropertyValue = 
+                                    rightSimpleClass.getAnnotations()
+                                        .get(annotationPropertyIri);
+                            if ( !leftAnnotationPropertyValue.equals(
+                                    rightAnnotationPropertyValue) ) {
+                                updatedSimpleClasses.add(
+                                        new SimpleClassDiff(
+                                                leftSimpleClass, 
+                                                rightSimpleClass));
+                                updatedAnnotationOrParentClass = true;
+                                break;
+                            }
+                        }
+                        
+                    }
+                    
+                    // Created class annotation
+                    if (!updatedAnnotationOrParentClass) {
+                        for (var annotationEntry : rightSimpleClass
+                                .getAnnotations().entrySet()) {
+                            String annotationPropertyIri = 
+                                    annotationEntry.getKey();
+                            if ( !leftSimpleClass.getAnnotations()
+                                    .containsKey(annotationPropertyIri) ) {
+                                updatedSimpleClasses.add(
+                                        new SimpleClassDiff(
+                                                leftSimpleClass, 
+                                                rightSimpleClass));
+                                updatedAnnotationOrParentClass = true;
+                                break;
+                            }
+                        }
+                    }
+                    
+                    // Deleted or updated parent class relationships
+                    if (!updatedAnnotationOrParentClass) {
+                        for (var parentEntry : leftSimpleClass
+                                .getParentClasses().entrySet()) {
+                            String parentClassIri = 
+                                    parentEntry.getKey();
+                            String leftParentClassRestrictionIri = 
+                                    parentEntry.getValue();
+                            
+                            // Deleted parent class relationship
+                            if ( !rightSimpleClass.getParentClasses()
+                                    .containsKey(parentClassIri) ) {
+                                updatedSimpleClasses.add(
+                                        new SimpleClassDiff(
+                                                leftSimpleClass, 
+                                                rightSimpleClass));
+                                updatedAnnotationOrParentClass = true;
+                                break;
+                            }
+                            
+                            // Updated parent class relationship
+                            else {
+                                String rightParentClassRestrictionIri = 
+                                        rightSimpleClass.getParentClasses()
+                                            .get(parentClassIri);
+                                if ( !leftParentClassRestrictionIri.equals(
+                                        rightParentClassRestrictionIri) ) {
+                                    updatedSimpleClasses.add(
+                                            new SimpleClassDiff(
+                                                    leftSimpleClass, 
+                                                    rightSimpleClass));
+                                    updatedAnnotationOrParentClass = true;
+                                    break;
+                                }
+                            }
+                            
+                        }
+                    }
+                    
+                    // Created parent class relationships
+                    if (!updatedAnnotationOrParentClass) {
+                        for (var parentEntry : rightSimpleClass
+                                .getParentClasses().entrySet()) {
+                            String parentClassIri = 
+                                    parentEntry.getKey();
+                            if ( !leftSimpleClass.getParentClasses()
+                                    .containsKey(parentClassIri) ) {
+                                updatedSimpleClasses.add(
+                                        new SimpleClassDiff(
+                                                leftSimpleClass, 
+                                                rightSimpleClass));
+                                break;
+                            }
+                        }
+                    }
+                    
+                }
+                
+            }
+            
+        }
         
+        // Iterate over right classes
+        for (var entry : rightSimpleClassMap.entrySet()) {
+            String rightIri = entry.getKey();
+            SimpleClass rightSimpleClass = entry.getValue();
+            
+            // Creates
+            if ( !leftSimpleClassMap.containsKey(rightIri) )
+                createdSimpleClasses.add(
+                        new SimpleClassDiff(rightSimpleClass, false));
+            
+        }
         
         // Return the diff collections
         List<List<SimpleClassDiff>> diff = new ArrayList<>();
-        diff.add(createdClasses);
-        diff.add(updatedClasses);
-        diff.add(deletedClasses);
+        diff.add(createdSimpleClasses);
+        diff.add(updatedSimpleClasses);
+        diff.add(deletedSimpleClasses);
         return diff;
         
     }
