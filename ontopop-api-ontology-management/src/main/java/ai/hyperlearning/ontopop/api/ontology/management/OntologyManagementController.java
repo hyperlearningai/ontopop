@@ -1,9 +1,11 @@
 package ai.hyperlearning.ontopop.api.ontology.management;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,15 +22,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import ai.hyperlearning.ontopop.data.jpa.repositories.GitWebhookRepository;
 import ai.hyperlearning.ontopop.data.jpa.repositories.OntologyRepository;
+import ai.hyperlearning.ontopop.data.jpa.repositories.WebProtegeWebhookRepository;
 import ai.hyperlearning.ontopop.data.ontology.management.OntologyManagementService;
+import ai.hyperlearning.ontopop.exceptions.git.GitWebhookNotFoundException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreationAlreadyExistsException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreationException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDeletionException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyNotFoundException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyUpdateSecretDataException;
+import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeWebhookNotFoundException;
+import ai.hyperlearning.ontopop.model.git.GitWebhook;
 import ai.hyperlearning.ontopop.model.ontology.Ontology;
 import ai.hyperlearning.ontopop.model.ontology.OntologyNonSecretData;
+import ai.hyperlearning.ontopop.model.webprotege.WebProtegeWebhook;
 import ai.hyperlearning.ontopop.security.secrets.model.OntologySecretData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -56,9 +64,19 @@ public class OntologyManagementController {
 
     @Autowired
     private OntologyRepository ontologyRepository;
+    
+    @Autowired
+    private GitWebhookRepository gitWebhookRepository;
+    
+    @Autowired
+    private WebProtegeWebhookRepository webProtegeWebhookRepository;
 
     @Autowired
     private OntologyManagementService ontologyManagementService;
+    
+    /**************************************************************************
+     * A. ONTOLOGIES
+     *************************************************************************/
 
     /**************************************************************************
      * 1. POST - Create Ontology
@@ -330,6 +348,206 @@ public class OntologyManagementController {
             LOGGER.error("An error was encountered when attempting to "
                     + "delete this ontology.", e);
             throw new OntologyDeletionException(id);
+        }
+    }
+    
+    /**************************************************************************
+     * B. GIT WEBHOOKS
+     *************************************************************************/
+    
+    /**************************************************************************
+     * 1.1. GET - Get Ontology Git Webhooks
+     *************************************************************************/
+
+    @Operation(
+            summary = "Get all ontology Git webhooks",
+            description = "Get all Git webhooks for a specific ontology consumed by "
+                    + "OntoPop given the ontology ID.",
+            tags = {"ontology", "webhook", "git"})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Ontology Git webhooks successfully retrieved.", 
+                            content = @Content(
+                                    array = @ArraySchema(
+                                            schema = @Schema(implementation = GitWebhook.class)))),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Retrieval of ontology Git webhooks unauthorized.", 
+                            content = @Content), 
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Internal server error.", 
+                            content = @Content)})
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(
+            value = "/{id}/webhooks/git",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<GitWebhook> getOntologyGitWebhooks(
+            @Parameter(
+                    description = "ID of the ontology whose Git webhooks will be retrieved.", 
+                    required = true)
+            @PathVariable(required = true) int id) {
+        LOGGER.debug("New HTTP GET request: Get all ontology Git webhooks.");
+        return gitWebhookRepository.findByOntologyId(id);
+    }
+
+    /**************************************************************************
+     * 1.2. GET - Get Ontology Git Webhook
+     *************************************************************************/
+
+    @Operation(
+            summary = "Get ontology Git webhook",
+            description = "Get a specific Git webhook for a specific ontology "
+                    + "consumed by OntoPop given the ontology ID and "
+                    + "Git webhook ID.",
+            tags = {"ontology", "webhook", "git"})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Ontology Git webhook successfully retrieved.", 
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE, 
+                                    schema = @Schema(implementation = GitWebhook.class))),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Retrieval of ontology Git webhook unauthorized.", 
+                            content = @Content),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Ontology Git webhook not found.", 
+                            content = @Content), 
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Internal server error.", 
+                            content = @Content)})
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(
+            value = "/{id}/webhooks/git/{gitWebhookId}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public GitWebhook getOntologyGitWebhook(
+            @Parameter(
+                    description = "ID of the ontology whose Git webhook will be retrieved.", 
+                    required = true)
+            @PathVariable(required = true) int id,
+            @Parameter(
+                    description = "ID of the Git webhook to be retrieved associated with this ontology.", 
+                    required = true)
+            @PathVariable(required = true) long gitWebhookId) {
+        LOGGER.debug("New HTTP GET request: Get ontology Git webhooks.");
+        return gitWebhookRepository
+                .findByOntologyIdAndGitWebhookId(id, gitWebhookId)
+                .orElseThrow(() -> new GitWebhookNotFoundException(
+                        gitWebhookId));
+    }
+    
+    /**************************************************************************
+     * C. WEBPROTEGE WEBHOOKS
+     *************************************************************************/
+    
+    /**************************************************************************
+     * 1.1. GET - Get Ontology WebProtege Webhooks
+     *************************************************************************/
+
+    @Operation(
+            summary = "Get all ontology WebProtege webhooks",
+            description = "Get all WebProtege webhooks for a specific ontology consumed by "
+                    + "OntoPop given the ontology ID.",
+            tags = {"ontology", "webhook", "webprotege"})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Ontology WebProtege webhooks successfully retrieved.", 
+                            content = @Content(
+                                    array = @ArraySchema(
+                                            schema = @Schema(implementation = WebProtegeWebhook.class)))),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Retrieval of Ontology WebProtege webhooks unauthorized.", 
+                            content = @Content), 
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Internal server error.", 
+                            content = @Content)})
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(
+            value = "/{id}/webhooks/webprotege",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<WebProtegeWebhook> getOntologyWebProtegeWebhooks(
+            @Parameter(
+                    description = "ID of the ontology whose WebProtege webhooks will be retrieved.", 
+                    required = true)
+            @PathVariable(required = true) int id) {
+        LOGGER.debug("New HTTP GET request: Get all WebProtege webhooks "
+                + "for ontology ID: {}.", id);
+        Ontology ontology = ontologyRepository.findById(id)
+                .orElseThrow(() -> new OntologyNotFoundException(id));
+        if ( !StringUtils.isBlank(ontology.getWebProtegeProjectId()) ) {
+            return webProtegeWebhookRepository.findByWebProtegeProjectId(
+                    ontology.getWebProtegeProjectId());
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    /**************************************************************************
+     * 1.2. GET - Get Ontology WebProtege Webhook
+     *************************************************************************/
+
+    @Operation(
+            summary = "Get a WebProtege webhook",
+            description = "Get a specific WebProtege webhook for a specific "
+                    + "ontology consumed by OntoPop given the ontology ID and "
+                    + "WebProtege webhook ID.",
+            tags = {"ontology", "webhook", "webprotege"})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Ontology WebProtege webhook successfully retrieved.", 
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE, 
+                                    schema = @Schema(implementation = WebProtegeWebhook.class))),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Retrieval of Ontology WebProtege webhook unauthorized.", 
+                            content = @Content),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Ontology WebProtege webhook not found.", 
+                            content = @Content), 
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Internal server error.", 
+                            content = @Content)})
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(
+            value = "/{id}/webhooks/webprotege/{webProtegeWebhookId}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public WebProtegeWebhook getOntologyWebProtegeWebhook(
+            @Parameter(
+                    description = "ID of the ontology whose WebProtege webhook will be retrieved.", 
+                    required = true)
+            @PathVariable(required = true) int id,
+            @Parameter(
+                    description = "ID of the WebProtege webhook to be retrieved associated with this ontology.", 
+                    required = true)
+            @PathVariable(required = true) long webProtegeWebhookId) {
+        LOGGER.debug("New HTTP GET request: Get Ontology WebProtege webhook by ID.");
+        Ontology ontology = ontologyRepository.findById(id)
+                .orElseThrow(() -> new OntologyNotFoundException(id));
+        if ( !StringUtils.isBlank(ontology.getWebProtegeProjectId()) ) {
+            return webProtegeWebhookRepository
+                    .findByWebProtegeProjectIdAndWebProtegeWebhookId(
+                            ontology.getWebProtegeProjectId(), 
+                            webProtegeWebhookId)
+                    .orElseThrow(() -> new WebProtegeWebhookNotFoundException(
+                            webProtegeWebhookId));
+        } else {
+            throw new WebProtegeWebhookNotFoundException(webProtegeWebhookId);
         }
     }
 

@@ -1,6 +1,7 @@
 package ai.hyperlearning.ontopop.data.jpa.repositories;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -22,6 +23,9 @@ public interface WebProtegeWebhookRepository
     
     @Query("SELECT w FROM WebProtegeWebhook w WHERE w.projectId = ?1")
     List<WebProtegeWebhook> findByWebProtegeProjectId(String webProtegeProjectId);
+    
+    @Query("SELECT w FROM WebProtegeWebhook w WHERE w.projectId = ?1 AND w.id = ?2")
+    Optional<WebProtegeWebhook> findByWebProtegeProjectIdAndWebProtegeWebhookId(String webProtegeProjectId, long webProtegeWebhookId);
     
     @Query("SELECT w FROM WebProtegeWebhook w WHERE w.projectId = ?1 AND w.revisionNumber = ?2")
     List<WebProtegeWebhook> findByWebProtegeProjectIdAndRevisionNumber(String webProtegeProjectId, int revisionNumber);
