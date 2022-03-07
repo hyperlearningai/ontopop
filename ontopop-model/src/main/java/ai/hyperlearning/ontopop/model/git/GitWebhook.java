@@ -103,6 +103,11 @@ public class GitWebhook implements Serializable {
 	@NotNull
 	private String requestHeaderSignature;
 	
+	@Basic
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	private LocalDateTime dateCreated;
+	
 	@ManyToOne
     @JoinColumn(name = "ontology_id", nullable = false)
     private Ontology ontology;
@@ -293,7 +298,15 @@ public class GitWebhook implements Serializable {
 		this.requestHeaderSignature = requestHeaderSignature;
 	}
 
-	public Ontology getOntology() {
+	public LocalDateTime getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(LocalDateTime dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public Ontology getOntology() {
 		return ontology;
 	}
 
@@ -348,6 +361,7 @@ public class GitWebhook implements Serializable {
 				+ "latestRelevantCommitCommitterEmail=" + latestRelevantCommitCommitterEmail + ", "
 				+ "latestRelevantCommitCommitterUsername=" + latestRelevantCommitCommitterUsername + ", "
 				+ "requestHeaderSignature=" + requestHeaderSignature + ", "
+				+ "dateCreated=" + dateCreated
 				+ "]";
 	}
 	

@@ -2,6 +2,7 @@ package ai.hyperlearning.ontopop.model.git.github;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.List;
@@ -23,6 +24,7 @@ import ai.hyperlearning.ontopop.model.git.GitWebhook;
 public class GitHubWebhook implements Serializable {
 	
 	private static final long serialVersionUID = 7283618078343604424L;
+	
 	private String ref;
 	private String before;
 	private String after;
@@ -161,6 +163,9 @@ public class GitHubWebhook implements Serializable {
 		GitWebhook gitWebhook = new GitWebhook();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(
 				"yyyy-MM-dd'T'HH:mm:ss'Z'");
+		
+		// Set system date created
+		gitWebhook.setDateCreated( LocalDateTime.now(ZoneOffset.UTC) );
 		
 		// Set reference
 		gitWebhook.setRef( this.ref );
