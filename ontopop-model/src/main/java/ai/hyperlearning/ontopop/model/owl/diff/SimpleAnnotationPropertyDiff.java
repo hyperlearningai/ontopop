@@ -23,6 +23,22 @@ public class SimpleAnnotationPropertyDiff implements Serializable {
     public SimpleAnnotationPropertyDiff() {
         
     }
+    
+    public SimpleAnnotationPropertyDiff(
+            SimpleAnnotationProperty simpleAnnotationProperty, 
+            boolean before) {
+        if (before)
+            this.before = simpleAnnotationProperty;
+        else
+            this.after = simpleAnnotationProperty;
+    }
+    
+    public SimpleAnnotationPropertyDiff(
+            SimpleAnnotationProperty before, 
+            SimpleAnnotationProperty after) {
+        this.before = before;
+        this.after = after;
+    }
 
     public SimpleAnnotationPropertyDiff(
             SimpleAnnotationProperty before, String beforeXml, 

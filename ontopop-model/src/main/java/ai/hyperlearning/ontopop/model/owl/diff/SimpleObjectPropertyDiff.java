@@ -23,6 +23,22 @@ public class SimpleObjectPropertyDiff implements Serializable {
     public SimpleObjectPropertyDiff() {
         
     }
+    
+    public SimpleObjectPropertyDiff(
+            SimpleObjectProperty simpleObjectProperty, 
+            boolean before) {
+        if (before)
+            this.before = simpleObjectProperty;
+        else
+            this.after = simpleObjectProperty;
+    }
+    
+    public SimpleObjectPropertyDiff(
+            SimpleObjectProperty before, 
+            SimpleObjectProperty after) {
+        this.before = before;
+        this.after = after;
+    }
 
     public SimpleObjectPropertyDiff(SimpleObjectProperty before,
             String beforeXml, SimpleObjectProperty after, String afterXml) {
