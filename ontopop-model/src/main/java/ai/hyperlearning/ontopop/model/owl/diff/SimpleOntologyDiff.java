@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Simple OWL Model - Ontology Diff
  *
@@ -57,6 +59,7 @@ public class SimpleOntologyDiff implements Serializable {
         
     }
 
+    @JsonProperty("createdAnnotationProperties")
     public List<SimpleAnnotationPropertyDiff> getCreatedSimpleAnnotationProperties() {
         return createdSimpleAnnotationProperties;
     }
@@ -66,6 +69,7 @@ public class SimpleOntologyDiff implements Serializable {
         this.createdSimpleAnnotationProperties = createdSimpleAnnotationProperties;
     }
 
+    @JsonProperty("updatedAnnotationProperties")
     public List<SimpleAnnotationPropertyDiff> getUpdatedSimpleAnnotationProperties() {
         return updatedSimpleAnnotationProperties;
     }
@@ -75,6 +79,7 @@ public class SimpleOntologyDiff implements Serializable {
         this.updatedSimpleAnnotationProperties = updatedSimpleAnnotationProperties;
     }
 
+    @JsonProperty("deletedAnnotationProperties")
     public List<SimpleAnnotationPropertyDiff> getDeletedSimpleAnnotationProperties() {
         return deletedSimpleAnnotationProperties;
     }
@@ -84,6 +89,7 @@ public class SimpleOntologyDiff implements Serializable {
         this.deletedSimpleAnnotationProperties = deletedSimpleAnnotationProperties;
     }
 
+    @JsonProperty("createdObjectProperties")
     public List<SimpleObjectPropertyDiff> getCreatedSimpleObjectProperties() {
         return createdSimpleObjectProperties;
     }
@@ -93,6 +99,7 @@ public class SimpleOntologyDiff implements Serializable {
         this.createdSimpleObjectProperties = createdSimpleObjectProperties;
     }
 
+    @JsonProperty("updatedObjectProperties")
     public List<SimpleObjectPropertyDiff> getUpdatedSimpleObjectProperties() {
         return updatedSimpleObjectProperties;
     }
@@ -102,6 +109,7 @@ public class SimpleOntologyDiff implements Serializable {
         this.updatedSimpleObjectProperties = updatedSimpleObjectProperties;
     }
 
+    @JsonProperty("deletedObjectProperties")
     public List<SimpleObjectPropertyDiff> getDeletedSimpleObjectProperties() {
         return deletedSimpleObjectProperties;
     }
@@ -111,6 +119,7 @@ public class SimpleOntologyDiff implements Serializable {
         this.deletedSimpleObjectProperties = deletedSimpleObjectProperties;
     }
 
+    @JsonProperty("createdClasses")
     public List<SimpleClassDiff> getCreatedSimpleClasses() {
         return createdSimpleClasses;
     }
@@ -120,6 +129,7 @@ public class SimpleOntologyDiff implements Serializable {
         this.createdSimpleClasses = createdSimpleClasses;
     }
 
+    @JsonProperty("updatedClasses")
     public List<SimpleClassDiff> getUpdatedSimpleClasses() {
         return updatedSimpleClasses;
     }
@@ -129,6 +139,7 @@ public class SimpleOntologyDiff implements Serializable {
         this.updatedSimpleClasses = updatedSimpleClasses;
     }
 
+    @JsonProperty("deletedClasses")
     public List<SimpleClassDiff> getDeletedSimpleClasses() {
         return deletedSimpleClasses;
     }
