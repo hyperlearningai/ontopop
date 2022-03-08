@@ -2,6 +2,8 @@ package ai.hyperlearning.ontopop.api.ontology.triplestore;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
@@ -26,17 +28,20 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import ai.hyperlearning.ontopop.data.jpa.repositories.GitWebhookRepository;
+import ai.hyperlearning.ontopop.data.ontology.diff.OntologyDiffService;
 import ai.hyperlearning.ontopop.data.ontology.downloader.OntologyDownloaderService;
 import ai.hyperlearning.ontopop.exceptions.git.GitWebhookNotFoundException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDownloadException;
 import ai.hyperlearning.ontopop.exceptions.triplestore.InvalidSparqlQueryException;
 import ai.hyperlearning.ontopop.model.git.GitWebhook;
+import ai.hyperlearning.ontopop.model.owl.diff.SimpleOntologyTimestampDiff;
 import ai.hyperlearning.ontopop.model.triplestore.OntologyTriplestoreSparqlQuery;
 import ai.hyperlearning.ontopop.triplestore.TriplestoreService;
 import ai.hyperlearning.ontopop.triplestore.TriplestoreServiceFactory;
 import ai.hyperlearning.ontopop.triplestore.TriplestoreServiceType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -57,6 +62,9 @@ public class OntologyTriplestoreController {
     private static final Logger LOGGER =
             LoggerFactory.getLogger(OntologyTriplestoreController.class);
     
+    private static final DateTimeFormatter DIFF_TIMESTAMP_DATE_TIME_FORMATTER = 
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    
     @Autowired
     private TriplestoreServiceFactory triplestoreServiceFactory;
     
@@ -65,6 +73,9 @@ public class OntologyTriplestoreController {
     
     @Autowired
     private GitWebhookRepository gitWebhookRepository;
+    
+    @Autowired
+    private OntologyDiffService ontologyDiffService;
     
     @Value("${storage.triplestore.service}")
     private String storageTriplestoreService;
@@ -337,5 +348,54 @@ public class OntologyTriplestoreController {
         }
         
     }
+    
+    /**************************************************************************
+     * 2.3. GET - Get TEMPORAL DIFF
+     *************************************************************************/
+    
+    @Operation(
+            summary = "Temporal ontological diff",
+            description = "Perform a temporal ontological diff given an "
+                    + "ontology ID and a timestamp.",
+            tags = {"ontology", "diff"})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Ontological temporal diff successfully processed.", 
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE, 
+                                    schema = @Schema(implementation = SimpleOntologyTimestampDiff.class))),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Ontological temporal diff operation unauthorized.", 
+                            content = @Content),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Ontology not found.", 
+                            content = @Content), 
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Internal server error.", 
+                            content = @Content)})
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(
+            value = "/{id}/diff", 
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public SimpleOntologyTimestampDiff getTemporaldiff(
+            @Parameter(
+                    description = "ID of the ontology on which to perform the diff.", 
+                    required = true)
+            @PathVariable(required = true) int id, 
+            @Parameter(
+                    description = "Timestamp (UTC) to use for processing the temporal "
+                            + "ontological diff.", 
+                    required = true)
+            @RequestParam(name = "timestamp", required = true) String timestamp) {
+        LocalDateTime requestedTimestamp = LocalDateTime.parse(
+                timestamp, DIFF_TIMESTAMP_DATE_TIME_FORMATTER);
+        return ontologyDiffService.run(id, requestedTimestamp);
+    }
+    
     
 }
