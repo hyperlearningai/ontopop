@@ -1,6 +1,7 @@
 package ai.hyperlearning.ontopop.owl;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -517,11 +518,12 @@ public class OWLAPI {
     
     /**************************************************************************
      * Diff
+     * @throws IOException 
      *************************************************************************/
 
     public static SimpleOntologyDiff diff(
             String leftOwlFile, String rightOwlFile ) 
-                    throws OWLOntologyCreationException {
+                    throws OWLOntologyCreationException, IOException {
         
         // Load and parse the left OWL ontology
         OWLOntology leftOntology = OWLAPI.loadOntology(new File(leftOwlFile));
@@ -531,6 +533,7 @@ public class OWLAPI {
                 OWLAPI.parseObjectProperties(leftOntology);
         Map<String, SimpleClass> leftSimpleClassMap = 
                 OWLAPI.parseClasses(leftOntology);
+        String leftOntologyXml = OWLRDFXMLAPI.read(leftOwlFile);
         
         // Load and parse the right OWL ontology
         OWLOntology rightOntology = OWLAPI.loadOntology(new File(rightOwlFile));
@@ -540,16 +543,20 @@ public class OWLAPI {
                 OWLAPI.parseObjectProperties(rightOntology);
         Map<String, SimpleClass> rightSimpleClassMap = 
                 OWLAPI.parseClasses(rightOntology);
+        String rightOntologyXml = OWLRDFXMLAPI.read(rightOwlFile);
         
         // Resolve the diffs
         List<List<SimpleAnnotationPropertyDiff>> simpleAnnotationPropertyDiff = 
                 simpleAnnotationPropertyDiff(leftSimpleAnnotationPropertyMap, 
-                        rightSimpleAnnotationPropertyMap);
+                        rightSimpleAnnotationPropertyMap, 
+                        leftOntologyXml, rightOntologyXml);
         List<List<SimpleObjectPropertyDiff>> simpleObjectPropertyDiff = 
                 simpleObjectPropertyDiff(leftSimpleObjectPropertyMap, 
-                        rightSimpleObjectPropertyMap);
+                        rightSimpleObjectPropertyMap, 
+                        leftOntologyXml, rightOntologyXml);
         List<List<SimpleClassDiff>> simpleClassDiff = 
-                simpleClassDiff(leftSimpleClassMap, rightSimpleClassMap);
+                simpleClassDiff(leftSimpleClassMap, rightSimpleClassMap, 
+                        leftOntologyXml, rightOntologyXml);
         
         // Return the diff
         return new SimpleOntologyDiff(
@@ -575,7 +582,8 @@ public class OWLAPI {
     
     public static List<List<SimpleAnnotationPropertyDiff>> simpleAnnotationPropertyDiff(
             Map<String, SimpleAnnotationProperty> leftSimpleAnnotationPropertyMap, 
-            Map<String, SimpleAnnotationProperty> rightSimpleAnnotationPropertyMap) {
+            Map<String, SimpleAnnotationProperty> rightSimpleAnnotationPropertyMap, 
+            String leftOntologyXml, String rightOntologyXml) {
         
         // Instantiate diff collections
         List<SimpleAnnotationPropertyDiff> createdSimpleAnnotationProperties = 
@@ -595,7 +603,11 @@ public class OWLAPI {
             if ( !rightSimpleAnnotationPropertyMap.containsKey(leftIri) )
                 deletedSimpleAnnotationProperties.add(
                         new SimpleAnnotationPropertyDiff(
-                                leftSimpleAnnotationProperty, true));
+                                leftSimpleAnnotationProperty, 
+                                extractXmlNode(leftOntologyXml, 
+                                        OWLSchemaVocabulary.ANNOTATION_PROPERTY, 
+                                        leftIri), 
+                                true));
             
             // Updates
             else {
@@ -606,9 +618,10 @@ public class OWLAPI {
                 if ( isLabelUpdated(leftSimpleAnnotationProperty.getLabel(), 
                         rightSimpleAnnotationProperty.getLabel()) )
                     updatedSimpleAnnotationProperties.add(
-                            new SimpleAnnotationPropertyDiff(
-                                    leftSimpleAnnotationProperty, 
-                                    rightSimpleAnnotationProperty));
+                            generateUpdatedSimpleAnnotationPropertyDiff(
+                                    leftIri, leftSimpleAnnotationProperty, 
+                                    leftOntologyXml, rightSimpleAnnotationProperty, 
+                                    rightOntologyXml));
                 
                 else {
                     
@@ -625,9 +638,10 @@ public class OWLAPI {
                         if ( !rightSimpleAnnotationProperty.getAnnotations()
                                 .containsKey(annotationPropertyIri) ) {
                             updatedSimpleAnnotationProperties.add(
-                                    new SimpleAnnotationPropertyDiff(
-                                            leftSimpleAnnotationProperty, 
-                                            rightSimpleAnnotationProperty));
+                                    generateUpdatedSimpleAnnotationPropertyDiff(
+                                            leftIri, leftSimpleAnnotationProperty, 
+                                            leftOntologyXml, rightSimpleAnnotationProperty, 
+                                            rightOntologyXml));
                             updatedAnnotation = true;
                             break;
                         }
@@ -641,9 +655,10 @@ public class OWLAPI {
                                     leftAnnotationPropertyValue, 
                                     rightAnnotationPropertyValue) ) {
                                 updatedSimpleAnnotationProperties.add(
-                                        new SimpleAnnotationPropertyDiff(
-                                                leftSimpleAnnotationProperty, 
-                                                rightSimpleAnnotationProperty));
+                                        generateUpdatedSimpleAnnotationPropertyDiff(
+                                                leftIri, leftSimpleAnnotationProperty, 
+                                                leftOntologyXml, rightSimpleAnnotationProperty, 
+                                                rightOntologyXml));
                                 updatedAnnotation = true;
                                 break;
                             }
@@ -660,9 +675,10 @@ public class OWLAPI {
                             if ( !leftSimpleAnnotationProperty.getAnnotations()
                                     .containsKey(annotationPropertyIri) ) {
                                 updatedSimpleAnnotationProperties.add(
-                                        new SimpleAnnotationPropertyDiff(
-                                                leftSimpleAnnotationProperty, 
-                                                rightSimpleAnnotationProperty));
+                                        generateUpdatedSimpleAnnotationPropertyDiff(
+                                                leftIri, leftSimpleAnnotationProperty, 
+                                                leftOntologyXml, rightSimpleAnnotationProperty, 
+                                                rightOntologyXml));
                                 break;
                             }
                         }
@@ -684,7 +700,11 @@ public class OWLAPI {
             if ( !leftSimpleAnnotationPropertyMap.containsKey(rightIri) )
                 createdSimpleAnnotationProperties.add(
                         new SimpleAnnotationPropertyDiff(
-                                rightSimpleAnnotationProperty, false));
+                                rightSimpleAnnotationProperty, 
+                                extractXmlNode(rightOntologyXml, 
+                                        OWLSchemaVocabulary.ANNOTATION_PROPERTY, 
+                                        rightIri), 
+                                false));
             
         }
         
@@ -706,7 +726,8 @@ public class OWLAPI {
     
     public static List<List<SimpleObjectPropertyDiff>> simpleObjectPropertyDiff(
             Map<String, SimpleObjectProperty> leftSimpleObjectPropertyMap, 
-            Map<String, SimpleObjectProperty> rightSimpleObjectPropertyMap) {
+            Map<String, SimpleObjectProperty> rightSimpleObjectPropertyMap, 
+            String leftOntologyXml, String rightOntologyXml) {
         
         // Instantiate diff collections
         List<SimpleObjectPropertyDiff> createdSimpleObjectProperties = 
@@ -727,7 +748,11 @@ public class OWLAPI {
                     rightSimpleObjectPropertyMap) )
                 deletedSimpleObjectProperties.add(
                         new SimpleObjectPropertyDiff(
-                                leftSimpleObjectProperty, true));
+                                leftSimpleObjectProperty, 
+                                extractXmlNode(leftOntologyXml, 
+                                        OWLSchemaVocabulary.OBJECT_PROPERTY, 
+                                        leftIri), 
+                                true));
             
             // Updates
             else {
@@ -738,9 +763,10 @@ public class OWLAPI {
                 if ( isLabelUpdated(leftSimpleObjectProperty.getLabel(), 
                         rightSimpleObjectProperty.getLabel()) )
                     updatedSimpleObjectProperties.add(
-                            new SimpleObjectPropertyDiff(
-                                    leftSimpleObjectProperty, 
-                                    rightSimpleObjectProperty));
+                            generateUpdatedSimpleObjectPropertyDiff(
+                                    leftIri, leftSimpleObjectProperty, 
+                                    leftOntologyXml, rightSimpleObjectProperty, 
+                                    rightOntologyXml));
                 
                 // Updated parent object property IRI
                 else if ( leftSimpleObjectProperty.getParentObjectPropertyIRI() != null && 
@@ -749,9 +775,10 @@ public class OWLAPI {
                                 .equals(rightSimpleObjectProperty
                                         .getParentObjectPropertyIRI()) )
                     updatedSimpleObjectProperties.add(
-                            new SimpleObjectPropertyDiff(
-                                    leftSimpleObjectProperty, 
-                                    rightSimpleObjectProperty));
+                            generateUpdatedSimpleObjectPropertyDiff(
+                                    leftIri, leftSimpleObjectProperty, 
+                                    leftOntologyXml, rightSimpleObjectProperty, 
+                                    rightOntologyXml));
                 
                 else {
                     
@@ -768,9 +795,10 @@ public class OWLAPI {
                         if ( !rightSimpleObjectProperty.getAnnotations()
                                 .containsKey(annotationPropertyIri) ) {
                             updatedSimpleObjectProperties.add(
-                                    new SimpleObjectPropertyDiff(
-                                            leftSimpleObjectProperty, 
-                                            rightSimpleObjectProperty));
+                                    generateUpdatedSimpleObjectPropertyDiff(
+                                            leftIri, leftSimpleObjectProperty, 
+                                            leftOntologyXml, rightSimpleObjectProperty, 
+                                            rightOntologyXml));
                             updatedAnnotation = true;
                             break;
                         }
@@ -784,9 +812,10 @@ public class OWLAPI {
                                     leftAnnotationPropertyValue, 
                                     rightAnnotationPropertyValue) ) {
                                 updatedSimpleObjectProperties.add(
-                                        new SimpleObjectPropertyDiff(
-                                                leftSimpleObjectProperty, 
-                                                rightSimpleObjectProperty));
+                                        generateUpdatedSimpleObjectPropertyDiff(
+                                                leftIri, leftSimpleObjectProperty, 
+                                                leftOntologyXml, rightSimpleObjectProperty, 
+                                                rightOntologyXml));
                                 updatedAnnotation = true;
                                 break;
                             }
@@ -803,9 +832,10 @@ public class OWLAPI {
                             if ( !leftSimpleObjectProperty.getAnnotations()
                                     .containsKey(annotationPropertyIri) ) {
                                 updatedSimpleObjectProperties.add(
-                                        new SimpleObjectPropertyDiff(
-                                                leftSimpleObjectProperty, 
-                                                rightSimpleObjectProperty));
+                                        generateUpdatedSimpleObjectPropertyDiff(
+                                                leftIri, leftSimpleObjectProperty, 
+                                                leftOntologyXml, rightSimpleObjectProperty, 
+                                                rightOntologyXml));
                                 break;
                             }
                         }
@@ -827,7 +857,11 @@ public class OWLAPI {
             if ( !leftSimpleObjectPropertyMap.containsKey(rightIri) )
                 createdSimpleObjectProperties.add(
                         new SimpleObjectPropertyDiff(
-                                rightSimpleObjectProperty, false));
+                                rightSimpleObjectProperty, 
+                                extractXmlNode(rightOntologyXml, 
+                                        OWLSchemaVocabulary.OBJECT_PROPERTY, 
+                                        rightIri), 
+                                false));
             
         }
         
@@ -849,7 +883,8 @@ public class OWLAPI {
     
     public static List<List<SimpleClassDiff>> simpleClassDiff(
             Map<String, SimpleClass> leftSimpleClassMap, 
-            Map<String, SimpleClass> rightSimpleClassMap) {
+            Map<String, SimpleClass> rightSimpleClassMap, 
+            String leftOntologyXml, String rightOntologyXml) {
         
         // Instantiate diff collections
         List<SimpleClassDiff> createdSimpleClasses = new ArrayList<>();
@@ -865,7 +900,11 @@ public class OWLAPI {
             if ( isClassDeleted(leftIri, leftSimpleClassMap, 
                     rightSimpleClassMap) )
                 deletedSimpleClasses.add(
-                        new SimpleClassDiff(leftSimpleClass, true));
+                        new SimpleClassDiff(leftSimpleClass, 
+                                extractXmlNode(leftOntologyXml, 
+                                        OWLSchemaVocabulary.CLASS, 
+                                        leftIri), 
+                                true));
             
             // Updates
             else {
@@ -875,8 +914,9 @@ public class OWLAPI {
                 if ( isLabelUpdated(leftSimpleClass.getLabel(), 
                         rightSimpleClass.getLabel()) )
                     updatedSimpleClasses.add(
-                            new SimpleClassDiff(leftSimpleClass, 
-                                    rightSimpleClass));
+                            generateUpdatedSimpleClassDiff(
+                                    leftIri, leftSimpleClass, leftOntologyXml, 
+                                    rightSimpleClass, rightOntologyXml));
                 
                 else {
                     
@@ -893,9 +933,10 @@ public class OWLAPI {
                         if ( !rightSimpleClass.getAnnotations()
                                 .containsKey(annotationPropertyIri) ) {
                             updatedSimpleClasses.add(
-                                    new SimpleClassDiff(
-                                            leftSimpleClass, 
-                                            rightSimpleClass));
+                                    generateUpdatedSimpleClassDiff(
+                                            leftIri, leftSimpleClass, 
+                                            leftOntologyXml, rightSimpleClass, 
+                                            rightOntologyXml));
                             updatedAnnotationOrParentClass = true;
                             break;
                         }
@@ -909,9 +950,10 @@ public class OWLAPI {
                                     leftAnnotationPropertyValue, 
                                     rightAnnotationPropertyValue) ) {
                                 updatedSimpleClasses.add(
-                                        new SimpleClassDiff(
-                                                leftSimpleClass, 
-                                                rightSimpleClass));
+                                        generateUpdatedSimpleClassDiff(
+                                                leftIri, leftSimpleClass, 
+                                                leftOntologyXml, rightSimpleClass, 
+                                                rightOntologyXml));
                                 updatedAnnotationOrParentClass = true;
                                 break;
                             }
@@ -928,9 +970,10 @@ public class OWLAPI {
                             if ( !leftSimpleClass.getAnnotations()
                                     .containsKey(annotationPropertyIri) ) {
                                 updatedSimpleClasses.add(
-                                        new SimpleClassDiff(
-                                                leftSimpleClass, 
-                                                rightSimpleClass));
+                                        generateUpdatedSimpleClassDiff(
+                                                leftIri, leftSimpleClass, 
+                                                leftOntologyXml, rightSimpleClass, 
+                                                rightOntologyXml));
                                 updatedAnnotationOrParentClass = true;
                                 break;
                             }
@@ -950,9 +993,10 @@ public class OWLAPI {
                             if ( !rightSimpleClass.getParentClasses()
                                     .containsKey(parentClassIri) ) {
                                 updatedSimpleClasses.add(
-                                        new SimpleClassDiff(
-                                                leftSimpleClass, 
-                                                rightSimpleClass));
+                                        generateUpdatedSimpleClassDiff(
+                                                leftIri, leftSimpleClass, 
+                                                leftOntologyXml, rightSimpleClass, 
+                                                rightOntologyXml));
                                 updatedAnnotationOrParentClass = true;
                                 break;
                             }
@@ -966,9 +1010,10 @@ public class OWLAPI {
                                         leftParentClassRestrictionIri, 
                                         rightParentClassRestrictionIri) ) {
                                     updatedSimpleClasses.add(
-                                            new SimpleClassDiff(
-                                                    leftSimpleClass, 
-                                                    rightSimpleClass));
+                                            generateUpdatedSimpleClassDiff(
+                                                    leftIri, leftSimpleClass, 
+                                                    leftOntologyXml, rightSimpleClass, 
+                                                    rightOntologyXml));
                                     updatedAnnotationOrParentClass = true;
                                     break;
                                 }
@@ -986,9 +1031,10 @@ public class OWLAPI {
                             if ( !leftSimpleClass.getParentClasses()
                                     .containsKey(parentClassIri) ) {
                                 updatedSimpleClasses.add(
-                                        new SimpleClassDiff(
-                                                leftSimpleClass, 
-                                                rightSimpleClass));
+                                        generateUpdatedSimpleClassDiff(
+                                                leftIri, leftSimpleClass, 
+                                                leftOntologyXml, rightSimpleClass, 
+                                                rightOntologyXml));
                                 break;
                             }
                         }
@@ -1008,7 +1054,11 @@ public class OWLAPI {
             // Creates
             if ( !leftSimpleClassMap.containsKey(rightIri) )
                 createdSimpleClasses.add(
-                        new SimpleClassDiff(rightSimpleClass, false));
+                        new SimpleClassDiff(rightSimpleClass, 
+                                extractXmlNode(rightOntologyXml, 
+                                        OWLSchemaVocabulary.CLASS, 
+                                        rightIri), 
+                                false));
             
         }
         
@@ -1165,6 +1215,103 @@ public class OWLAPI {
             }
         }
         return updated;
+    }
+    
+    /**
+     * Extract a node from the full OWL RDF XML given the IRI 
+     * and OWL 2 object type
+     * @param fullXml
+     * @param owlSchemaVocabulary
+     * @param iri
+     * @return
+     */
+    
+    public static String extractXmlNode(String fullXml, 
+            OWLSchemaVocabulary owlSchemaVocabulary, String iri) {
+        return OWLRDFXMLAPI.getNodeAsString(fullXml, owlSchemaVocabulary, iri)
+                .replace("\n", "")
+                .replace("\r", "")
+                .replace("\t", "")
+                .replaceAll(" +", " ")
+                .replace("> <", "><")
+                .strip();
+    }
+    
+    /**
+     * Generate a new SimpleAnnotationPropertyDiff for an updated
+     * annotation property
+     * @param iri
+     * @param leftSimpleAnnotationProperty
+     * @param leftOntologyXml
+     * @param rightSimpleAnnotationProperty
+     * @param rightOntologyXml
+     * @return
+     */
+    
+    public static SimpleAnnotationPropertyDiff generateUpdatedSimpleAnnotationPropertyDiff(
+            String iri, 
+            SimpleAnnotationProperty leftSimpleAnnotationProperty, 
+            String leftOntologyXml, 
+            SimpleAnnotationProperty rightSimpleAnnotationProperty, 
+            String rightOntologyXml) {
+        return new SimpleAnnotationPropertyDiff(
+                leftSimpleAnnotationProperty, 
+                extractXmlNode(leftOntologyXml, 
+                        OWLSchemaVocabulary.ANNOTATION_PROPERTY, iri), 
+                rightSimpleAnnotationProperty, 
+                extractXmlNode(rightOntologyXml, 
+                        OWLSchemaVocabulary.ANNOTATION_PROPERTY, iri));
+    }
+    
+    /**
+     * Generate a new SimpleObjectPropertyDiff for an updated
+     * object property
+     * @param iri
+     * @param leftSimpleObjectProperty
+     * @param leftOntologyXml
+     * @param rightSimpleObjectProperty
+     * @param rightOntologyXml
+     * @return
+     */
+    
+    public static SimpleObjectPropertyDiff generateUpdatedSimpleObjectPropertyDiff(
+            String iri, 
+            SimpleObjectProperty leftSimpleObjectProperty, 
+            String leftOntologyXml, 
+            SimpleObjectProperty rightSimpleObjectProperty, 
+            String rightOntologyXml) {
+        return new SimpleObjectPropertyDiff(
+                leftSimpleObjectProperty, 
+                extractXmlNode(leftOntologyXml, 
+                        OWLSchemaVocabulary.OBJECT_PROPERTY, iri), 
+                rightSimpleObjectProperty, 
+                extractXmlNode(rightOntologyXml, 
+                        OWLSchemaVocabulary.OBJECT_PROPERTY, iri));
+    }
+    
+    /**
+     * Generate a new SimpleObjectPropertyDiff for an updated class
+     * @param iri
+     * @param leftSimpleClass
+     * @param leftOntologyXml
+     * @param rightSimpleClass
+     * @param rightOntologyXml
+     * @return
+     */
+    
+    public static SimpleClassDiff generateUpdatedSimpleClassDiff(
+            String iri, 
+            SimpleClass leftSimpleClass, 
+            String leftOntologyXml, 
+            SimpleClass rightSimpleClass, 
+            String rightOntologyXml) {
+        return new SimpleClassDiff(
+                leftSimpleClass, 
+                extractXmlNode(leftOntologyXml, 
+                        OWLSchemaVocabulary.CLASS, iri), 
+                rightSimpleClass, 
+                extractXmlNode(rightOntologyXml, 
+                        OWLSchemaVocabulary.CLASS, iri));
     }
     
 }

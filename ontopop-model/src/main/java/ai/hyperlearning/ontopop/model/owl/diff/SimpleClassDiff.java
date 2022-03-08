@@ -26,18 +26,15 @@ public class SimpleClassDiff implements Serializable {
     
     public SimpleClassDiff(
             SimpleClass simpleClass, 
+            String xml, 
             boolean before) {
-        if (before)
+        if (before) {
             this.before = simpleClass;
-        else
+            this.beforeXml = xml;
+        } else {
             this.after = simpleClass;
-    }
-    
-    public SimpleClassDiff(
-            SimpleClass before, 
-            SimpleClass after) {
-        this.before = before;
-        this.after = after;
+            this.afterXml = xml;
+        }
     }
 
     public SimpleClassDiff(SimpleClass before, String beforeXml,
