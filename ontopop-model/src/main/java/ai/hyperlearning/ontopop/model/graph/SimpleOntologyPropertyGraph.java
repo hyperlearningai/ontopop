@@ -2,9 +2,11 @@ package ai.hyperlearning.ontopop.model.graph;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
 
 import org.apache.commons.text.CaseUtils;
 
@@ -25,6 +27,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public class SimpleOntologyPropertyGraph implements Serializable {
 	
 	private static final long serialVersionUID = 4551428047838876163L;
+	private static final String PARENT_CLASS_OBJECT_PROPERTY_DELIMITER = "|";
 	
 	// One-to-one mapping between Ontology ID and Property Graph ID
 	@Schema(description = "Ontology ID", example = "13")
@@ -194,17 +197,28 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 						Map<String, Object> edgeProperties = new LinkedHashMap<>();
 						if ( objectPropertyIRI != null ) {
 							
-							String objectPropertyLabel = simpleOntology
-									.getSimpleObjectPropertyMap()
-									.containsKey(objectPropertyIRI) ?
-											simpleOntology
-												.getSimpleObjectPropertyMap()
-												.get(objectPropertyIRI)
-												.getLabel() : 
-											objectPropertyIRI;
+							// There may be many object property IRIs
+						    // delimited by the | symbol
+						    List<String> objectPropertyIRIs = 
+				                    Arrays.asList(objectPropertyIRI
+				                            .replace(" " + PARENT_CLASS_OBJECT_PROPERTY_DELIMITER + " ", 
+				                                    PARENT_CLASS_OBJECT_PROPERTY_DELIMITER)
+				                            .split("\\" + PARENT_CLASS_OBJECT_PROPERTY_DELIMITER));
+						    StringJoiner objectPropertyLabel = new StringJoiner(
+						            " " + PARENT_CLASS_OBJECT_PROPERTY_DELIMITER + " ");
+						    for (String currentObjectPropertyIRI : 
+						        objectPropertyIRIs) {
+						        objectPropertyLabel.add(simpleOntology
+	                                    .getSimpleObjectPropertyMap()
+	                                    .containsKey(currentObjectPropertyIRI) ? 
+	                                            simpleOntology
+                                                .getSimpleObjectPropertyMap()
+                                                .get(currentObjectPropertyIRI)
+                                                .getLabel() : currentObjectPropertyIRI);
+						    }
 							edgeProperties.put(
 									SimpleOntologyEdge.RELATIONSHIP_TYPE_KEY, 
-									objectPropertyLabel);
+									objectPropertyLabel.toString());
 							
 						}
 						
