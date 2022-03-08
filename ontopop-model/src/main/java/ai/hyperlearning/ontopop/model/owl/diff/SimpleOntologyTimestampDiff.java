@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
@@ -50,6 +51,7 @@ public class SimpleOntologyTimestampDiff implements Serializable {
         
     }
 
+    @JsonProperty("ontologyId")
     public int getId() {
         return id;
     }
@@ -118,6 +120,7 @@ public class SimpleOntologyTimestampDiff implements Serializable {
         this.updatesExist = updatesExist;
     }
 
+    @JsonProperty("diff")
     public SimpleOntologyDiff getSimpleOntologyDiff() {
         return simpleOntologyDiff;
     }

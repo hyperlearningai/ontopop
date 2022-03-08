@@ -50,6 +50,38 @@ public class SimpleAnnotationPropertyDiff implements Serializable {
         this.afterXml = afterXml;
     }
 
+    public SimpleAnnotationProperty getBefore() {
+        return before;
+    }
+
+    public void setBefore(SimpleAnnotationProperty before) {
+        this.before = before;
+    }
+
+    public String getBeforeXml() {
+        return beforeXml;
+    }
+
+    public void setBeforeXml(String beforeXml) {
+        this.beforeXml = beforeXml;
+    }
+
+    public SimpleAnnotationProperty getAfter() {
+        return after;
+    }
+
+    public void setAfter(SimpleAnnotationProperty after) {
+        this.after = after;
+    }
+
+    public String getAfterXml() {
+        return afterXml;
+    }
+
+    public void setAfterXml(String afterXml) {
+        this.afterXml = afterXml;
+    }
+
     @Override
     public String toString() {
         return "SimpleAnnotationPropertyDiff ["
