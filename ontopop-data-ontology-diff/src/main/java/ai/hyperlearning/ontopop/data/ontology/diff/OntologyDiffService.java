@@ -346,10 +346,11 @@ public class OntologyDiffService {
     /**
      * Process the ontological diff
      * @throws OWLOntologyCreationException
+     * @throws IOException 
      */
     
     private void diff(boolean timestampDiff) 
-            throws OWLOntologyCreationException {
+            throws OWLOntologyCreationException, IOException {
         if ( timestampDiff ) {
             if ( simpleOntologyTimestampDiff.doUpdatesExist() ) {
                 simpleOntologyTimestampDiff.setSimpleOntologyDiff(

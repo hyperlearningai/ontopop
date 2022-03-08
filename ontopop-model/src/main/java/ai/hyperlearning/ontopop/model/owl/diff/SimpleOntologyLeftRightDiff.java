@@ -2,6 +2,8 @@ package ai.hyperlearning.ontopop.model.owl.diff;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Simple OWL Model - Ontology Diff relative to given left and right
  * Git webhooks IDs
@@ -36,6 +38,7 @@ public class SimpleOntologyLeftRightDiff implements Serializable {
         this.simpleOntologyDiff = simpleOntologyDiff;
     }
 
+    @JsonProperty("ontologyId")
     public int getId() {
         return id;
     }
@@ -60,6 +63,7 @@ public class SimpleOntologyLeftRightDiff implements Serializable {
         this.rightGitWebhookId = rightGitWebhookId;
     }
 
+    @JsonProperty("diff")
     public SimpleOntologyDiff getSimpleOntologyDiff() {
         return simpleOntologyDiff;
     }
