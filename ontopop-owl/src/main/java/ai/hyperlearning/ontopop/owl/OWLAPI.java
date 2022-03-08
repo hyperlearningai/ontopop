@@ -723,7 +723,8 @@ public class OWLAPI {
                     entry.getValue();
             
             // Deletes
-            if ( !rightSimpleObjectPropertyMap.containsKey(leftIri) )
+            if ( isObjectPropertyDeleted(leftIri, leftSimpleObjectPropertyMap, 
+                    rightSimpleObjectPropertyMap) )
                 deletedSimpleObjectProperties.add(
                         new SimpleObjectPropertyDiff(
                                 leftSimpleObjectProperty, true));
@@ -861,7 +862,8 @@ public class OWLAPI {
             SimpleClass leftSimpleClass = entry.getValue();
             
             // Deletes
-            if ( !rightSimpleClassMap.containsKey(leftIri) )
+            if ( isClassDeleted(leftIri, leftSimpleClassMap, 
+                    rightSimpleClassMap) )
                 deletedSimpleClasses.add(
                         new SimpleClassDiff(leftSimpleClass, true));
             
@@ -1070,6 +1072,60 @@ public class OWLAPI {
             }
         }
         return updated;
+    }
+    
+    /**
+     * Ascertain whether an object property has been deleted
+     * @param leftIri
+     * @param leftSimpleObjectPropertyMap
+     * @param rightSimpleObjectPropertyMap
+     * @return
+     */
+    
+    public static boolean isObjectPropertyDeleted(
+            String leftIri, 
+            Map<String, SimpleObjectProperty> leftSimpleObjectPropertyMap, 
+            Map<String, SimpleObjectProperty> rightSimpleObjectPropertyMap) {
+        return (!rightSimpleObjectPropertyMap.containsKey(leftIri) ) || 
+                ( rightSimpleObjectPropertyMap.containsKey(leftIri) && 
+                        rightSimpleObjectPropertyMap.get(leftIri)
+                            .getLabel() == null && 
+                        rightSimpleObjectPropertyMap.get(leftIri)
+                            .getAnnotations().isEmpty() && 
+                        rightSimpleObjectPropertyMap.get(leftIri)
+                            .getParentObjectPropertyIRI() == null && ( 
+                            leftSimpleObjectPropertyMap.get(leftIri)
+                                .getLabel() != null || 
+                            !leftSimpleObjectPropertyMap.get(leftIri)
+                                .getAnnotations().isEmpty() ||
+                            leftSimpleObjectPropertyMap.get(leftIri)
+                                 .getParentObjectPropertyIRI() != null ) );
+    }
+    
+    /**
+     * Ascertain whether a class has been deleted
+     * @param leftIri
+     * @param leftSimpleClassMap
+     * @param rightSimpleClassMap
+     * @return
+     */
+    
+    public static boolean isClassDeleted(
+            String leftIri, 
+            Map<String, SimpleClass> leftSimpleClassMap, 
+            Map<String, SimpleClass> rightSimpleClassMap) {
+        return (!rightSimpleClassMap.containsKey(leftIri)) || 
+                ( rightSimpleClassMap.containsKey(leftIri) && 
+                        rightSimpleClassMap.get(leftIri).getLabel() == null && 
+                        rightSimpleClassMap.get(leftIri).getAnnotations()
+                            .isEmpty() && 
+                        rightSimpleClassMap.get(leftIri).getParentClasses()
+                            .isEmpty() && 
+                        ( leftSimpleClassMap.get(leftIri).getLabel() != null || 
+                          !leftSimpleClassMap.get(leftIri).getAnnotations()
+                              .isEmpty() || 
+                          !leftSimpleClassMap.get(leftIri).getParentClasses()
+                              .isEmpty() ) );
     }
     
     /**
