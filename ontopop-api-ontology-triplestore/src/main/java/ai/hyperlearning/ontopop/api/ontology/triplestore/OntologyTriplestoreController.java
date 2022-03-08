@@ -397,5 +397,4 @@ public class OntologyTriplestoreController {
         return ontologyDiffService.run(id, requestedTimestamp);
     }
     
-    
 }
