@@ -1,7 +1,9 @@
 package ai.hyperlearning.ontopop.data.ontology.management;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,10 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Strings;
 
+import ai.hyperlearning.ontopop.data.jpa.repositories.GitWebhookRepository;
 import ai.hyperlearning.ontopop.data.jpa.repositories.OntologyRepository;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreationAlreadyExistsException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyNotFoundException;
 import ai.hyperlearning.ontopop.mappers.OntologyMapper;
+import ai.hyperlearning.ontopop.model.git.GitWebhook;
 import ai.hyperlearning.ontopop.model.ontology.Ontology;
 import ai.hyperlearning.ontopop.model.ontology.OntologyNonSecretData;
 import ai.hyperlearning.ontopop.security.secrets.managers.OntologySecretDataManager;
@@ -36,6 +40,9 @@ public class OntologyManagementService {
 
     @Autowired
     private OntologyRepository ontologyRepository;
+    
+    @Autowired
+    private GitWebhookRepository gitWebhookRepository;
 
     @Autowired
     private OntologyMapper ontologyMapper;
@@ -172,6 +179,32 @@ public class OntologyManagementService {
         ontologySecretDataManager.delete(id);
         LOGGER.debug("Deleted ontology with ID: {}", id);
 
+    }
+    
+    /**
+     * Get the latest Git webhook ID consumed for a given ontology
+     * @param id
+     * @return
+     */
+    
+    public Long getLatestGitWebhookId(int id) {
+        
+        // Get the Git webhooks consumed for this ontology
+        List<GitWebhook> gitWebhooks = gitWebhookRepository
+                .findByOntologyId(id);
+        
+        // Get the latest Git webhook ID
+        if ( !gitWebhooks.isEmpty() ) {
+            Optional<GitWebhook> latestGitWebhook = gitWebhooks.stream()
+                    .max(Comparator.comparing(GitWebhook::getId));
+            if ( latestGitWebhook.isPresent() )
+                return latestGitWebhook.get().getId();
+        }
+        
+        // If no Git webhooks have been consumed for this ontology
+        // then return a default value
+        return null;
+        
     }
 
 }

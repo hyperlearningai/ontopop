@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.apache.commons.io.FileUtils;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ai.hyperlearning.ontopop.data.jpa.repositories.GitWebhookRepository;
 import ai.hyperlearning.ontopop.data.ontology.diff.OntologyDiffService;
 import ai.hyperlearning.ontopop.data.ontology.downloader.OntologyDownloaderService;
+import ai.hyperlearning.ontopop.data.ontology.management.OntologyManagementService;
 import ai.hyperlearning.ontopop.exceptions.git.GitWebhookNotFoundException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffInvalidTimestampException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDownloadException;
@@ -65,8 +67,13 @@ public class OntologyTriplestoreController {
     private static final Logger LOGGER =
             LoggerFactory.getLogger(OntologyTriplestoreController.class);
     
+    private static final String RESPONSE_HEADER_LATEST_GIT_WEBHOOK_ID = 
+            "x-ontopop-latest-git-webhook-id";
     private static final DateTimeFormatter DIFF_TIMESTAMP_DATE_TIME_FORMATTER = 
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    
+    @Autowired
+    private OntologyManagementService ontologyManagementService;
     
     @Autowired
     private TriplestoreServiceFactory triplestoreServiceFactory;
@@ -140,6 +147,7 @@ public class OntologyTriplestoreController {
                     "application/sparql-results+json", 
                     "application/sparql-results+xml"})
     public ResponseEntity<String> query(
+            HttpServletResponse response, 
             @Parameter(
                     description = "Content type that should be returned.", 
                     required = false)
@@ -167,6 +175,9 @@ public class OntologyTriplestoreController {
         
         LOGGER.debug("New HTTP POST request - SPARQL query request for "
                 + "ontology ID {}: {}", id, sparqlQuery);
+        response.addHeader(RESPONSE_HEADER_LATEST_GIT_WEBHOOK_ID, 
+                String.valueOf(ontologyManagementService
+                        .getLatestGitWebhookId(id)));
         return triplestoreService.query(id, sparqlQuery, acceptHeader);
         
     }
@@ -205,6 +216,7 @@ public class OntologyTriplestoreController {
                     "application/sparql-results+json", 
                     "application/sparql-results+xml"})
     public ResponseEntity<String> query(
+            HttpServletResponse response, 
             @Parameter(
                     description = "Content type that should be returned.", 
                     required = false)
@@ -232,6 +244,9 @@ public class OntologyTriplestoreController {
         
         LOGGER.debug("New HTTP POST request - SPARQL query request for "
                 + "ontology ID {}: {}", id, sparqlQuery);
+        response.addHeader(RESPONSE_HEADER_LATEST_GIT_WEBHOOK_ID, 
+                String.valueOf(ontologyManagementService
+                        .getLatestGitWebhookId(id)));
         return triplestoreService.query(id, sparqlQuery, acceptHeader);
         
     }
@@ -272,6 +287,7 @@ public class OntologyTriplestoreController {
                     "application/ld+json", 
                     "application/trig"})
     public ResponseEntity<String> getRdfData(
+            HttpServletResponse response, 
             @Parameter(
                     description = "Content type that should be returned.", 
                     required = false)
@@ -282,6 +298,9 @@ public class OntologyTriplestoreController {
             @PathVariable(required = true) int id) {
         LOGGER.debug("New HTTP GET request - Get triplestore RDF data "
                 + "for ontology ID {}.", id);
+        response.addHeader(RESPONSE_HEADER_LATEST_GIT_WEBHOOK_ID, 
+                String.valueOf(ontologyManagementService
+                        .getLatestGitWebhookId(id)));
         return triplestoreService.getData(id, acceptHeader);
     }
     
@@ -310,6 +329,7 @@ public class OntologyTriplestoreController {
             value = "/{id}/data/owl", 
             produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<String> getOwlData(
+            HttpServletResponse response, 
             @Parameter(
                     description = "ID of the ontology for which to retrieve data.", 
                     required = true)
@@ -333,6 +353,9 @@ public class OntologyTriplestoreController {
                         .retrieveOwlFile(gitWebhook);
                 
                 // Return the contents of the OWL file as a string
+                response.addHeader(RESPONSE_HEADER_LATEST_GIT_WEBHOOK_ID, 
+                        String.valueOf(ontologyManagementService
+                                .getLatestGitWebhookId(id)));
                 return new ResponseEntity<>(
                         FileUtils.readFileToString(
                                 new File(downloadedUri), StandardCharsets.UTF_8), 
