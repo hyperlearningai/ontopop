@@ -80,12 +80,11 @@ public class SecretsEngineApiKeyAuthenticationService
     @Override
     public ApiKey get(String key) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        String json = useVault ? HashicorpVaultSecretsService.get(
+        String json = useVault ? (String) HashicorpVaultSecretsService.get(
                 vaultTemplate,
                 springCloudVaultKvBackend, 
-                springCloudVaultKvDefaultContext 
-                    + "/" + API_KEY_PREFIX + key, 
-                String.class).getData() : 
+                springCloudVaultKvDefaultContext,  
+                API_KEY_PREFIX + key) : 
                     secretsService.get(API_KEY_PREFIX + key);
         return json != null ? mapper.readValue(json, ApiKey.class) : null;
     }
