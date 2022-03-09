@@ -57,7 +57,7 @@ public class OntologyDiffService {
     @Value("${storage.object.local.baseUri}")
     private String storageLocalBaseUri;
 
-    @Value("${storage.object.loaded.triplestore}")
+    @Value("${storage.object.containers.loaded.triplestore}")
     private String loadedDirectoryName;
     
     private ObjectStorageService objectStorageService;
