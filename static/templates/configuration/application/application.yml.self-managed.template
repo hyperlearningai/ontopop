@@ -225,27 +225,27 @@ storage:
     graph:
         service: janusgraph-http
         engine:
-            supportsUserDefinedIds: false
-            supportsNonStringIds: true
-            supportsSchema: true
-            supportsTransactions: true
-            supportsGeoshape: true
+            supportsUserDefinedIds: 
+            supportsNonStringIds: 
+            supportsSchema: 
+            supportsTransactions: 
+            supportsGeoshape: 
             supportsTraversals:
-                by: true
+                by: 
         gremlin-graph:
             configuration-filename: 
         gremlin-server:
-            url: 
-            host: ${gremlin-server-host}
-            port: ${gremlin-server-port}
-            username: ${gremlin-server-username}
-            password: ${gremlin-server-password}
+            url: ${gremlin-server-url}
+            host: 
+            port: 
+            username: 
+            password: 
             enableSsl: false
             remoteTraversalSourceName: g
             serializer:
-                className: org.apache.tinkerpop.gremlin.driver.ser.GraphBinaryMessageSerializerV1
-                ioRegistries: org.janusgraph.graphdb.tinkerpop.JanusGraphIoRegistry
-                serializeResultToString: false
+                className: 
+                ioRegistries: 
+                serializeResultToString: 
             bulkExecutor:
                 rateLimiter:
                     enabled: false
@@ -256,9 +256,9 @@ storage:
         indexNamePrefix: ontopop
         elasticsearch:
             url: ${elasticsearch-url}
-            username: ${elasticsearch-username}
-            password: ${elasticsearch-password}
-            ssl: true
+            username: 
+            password: 
+            ssl: false
             shards: 1
             replicas: 0
         azure-search:
