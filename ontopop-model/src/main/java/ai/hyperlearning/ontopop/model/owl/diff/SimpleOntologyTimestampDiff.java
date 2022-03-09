@@ -41,8 +41,8 @@ public class SimpleOntologyTimestampDiff implements Serializable {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime latestGitWebhookTimestampAfterRequestedTimestamp;
     
-    // Whether updates to this ontology exist
-    private boolean updatesExist = false;
+    // Whether changes to this ontology exist
+    private boolean changesExist = false;
     
     // Diff
     private SimpleOntologyDiff simpleOntologyDiff;
@@ -108,16 +108,16 @@ public class SimpleOntologyTimestampDiff implements Serializable {
                 latestGitWebhookTimestampAfterRequestedTimestamp;
     }
 
-    public boolean isUpdatesExist() {
-        return updatesExist;
+    public boolean isChangesExist() {
+        return changesExist;
     }
     
-    public boolean doUpdatesExist() {
-        return updatesExist;
+    public boolean doChangesExist() {
+        return changesExist;
     }
 
-    public void setUpdatesExist(boolean updatesExist) {
-        this.updatesExist = updatesExist;
+    public void setChangesExist(boolean changesExist) {
+        this.changesExist = changesExist;
     }
 
     @JsonProperty("diff")
@@ -160,7 +160,7 @@ public class SimpleOntologyTimestampDiff implements Serializable {
                 + "latestGitWebhookTimestampBeforeRequestedTimestamp=" + latestGitWebhookTimestampBeforeRequestedTimestamp + ", "
                 + "latestGitWebhookIdAfterRequestedTimestamp=" + latestGitWebhookIdAfterRequestedTimestamp + ", "
                 + "latestGitWebhookTimestampAfterRequestedTimestamp=" + latestGitWebhookTimestampAfterRequestedTimestamp + ", "
-                + "updatesExist=" + updatesExist + ", "
+                + "changesExist=" + changesExist + ", "
                 + "simpleOntologyDiff=" + simpleOntologyDiff 
                 + "]";
     }

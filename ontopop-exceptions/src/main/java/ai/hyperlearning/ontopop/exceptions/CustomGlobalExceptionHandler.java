@@ -14,6 +14,7 @@ import ai.hyperlearning.ontopop.exceptions.graph.InvalidGremlinQueryException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreationAlreadyExistsException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreationException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDeletionException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffInvalidRequestParametersException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffInvalidTimestampException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffProcessingException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDownloadException;
@@ -59,7 +60,8 @@ public class CustomGlobalExceptionHandler
     
     @ExceptionHandler({InvalidSparqlQueryException.class, 
         InvalidGremlinQueryException.class, 
-        OntologyDiffInvalidTimestampException.class})
+        OntologyDiffInvalidTimestampException.class, 
+        OntologyDiffInvalidRequestParametersException.class})
     public void springHandleBadRequest(HttpServletResponse response) 
             throws IOException {
         response.sendError(HttpStatus.BAD_REQUEST.value());

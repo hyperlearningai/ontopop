@@ -34,6 +34,7 @@ import ai.hyperlearning.ontopop.data.ontology.diff.OntologyDiffService;
 import ai.hyperlearning.ontopop.data.ontology.downloader.OntologyDownloaderService;
 import ai.hyperlearning.ontopop.data.ontology.management.OntologyManagementService;
 import ai.hyperlearning.ontopop.exceptions.git.GitWebhookNotFoundException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffInvalidRequestParametersException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffInvalidTimestampException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDownloadException;
 import ai.hyperlearning.ontopop.exceptions.triplestore.InvalidSparqlQueryException;
@@ -420,20 +421,41 @@ public class OntologyTriplestoreController {
             @Parameter(
                     description = "Timestamp (UTC) to use for processing the temporal "
                             + "ontological diff.", 
-                    required = true)
-            @RequestParam(name = "timestamp", required = true) String timestamp) {
+                    required = false)
+            @RequestParam(name = "timestamp", required = false) String timestamp, 
+            @Parameter(
+                    description = "Git webhook ID to use for processing the temporal "
+                            + "ontological diff.", 
+                    required = false)
+            @RequestParam(name = "gitWebhookId", required = false) Long gitWebhookId) {
         
-        LOGGER.debug("New HTTP GET request - Temporal DIFF for "
-                + "ontology ID {} given timestamp {}.", id, timestamp);
-        try {
-            LocalDateTime requestedTimestamp = LocalDateTime.parse(
-                    timestamp, DIFF_TIMESTAMP_DATE_TIME_FORMATTER);
-            return ontologyDiffService.run(id, requestedTimestamp);
-        } catch (DateTimeParseException e) {
-            throw new OntologyDiffInvalidTimestampException(
-                    "Invalid timestamp. Timestamp should be of the format "
-                    + "yyyy-MM-dd HH:mm:ss.");
-        }
+        // Timestamp
+        if ( timestamp != null ) {
+            LOGGER.debug("New HTTP GET request - Temporal DIFF for "
+                    + "ontology ID {} given timestamp {}.", id, timestamp);
+            try {
+                LocalDateTime requestedTimestamp = LocalDateTime.parse(
+                        timestamp, DIFF_TIMESTAMP_DATE_TIME_FORMATTER);
+                return ontologyDiffService.run(id, requestedTimestamp);
+            } catch (DateTimeParseException e) {
+                throw new OntologyDiffInvalidTimestampException(
+                        "Invalid timestamp. Timestamp should be of the format "
+                        + "yyyy-MM-dd HH:mm:ss.");
+            }
+        } 
+        
+        // Git webhook ID
+        else if ( gitWebhookId != null ) {
+            LOGGER.debug("New HTTP GET request - Temporal DIFF for "
+                    + "ontology ID {} given Git webhhok ID {}.", id, gitWebhookId);
+            return ontologyDiffService.run(id, gitWebhookId);
+        } 
+        
+        // Invalid request parameters
+        else
+            throw new OntologyDiffInvalidRequestParametersException(
+                    "Invalid request parameters. Please provide either a "
+                    + "timestamp or a Git webhook ID.");
         
     }
     

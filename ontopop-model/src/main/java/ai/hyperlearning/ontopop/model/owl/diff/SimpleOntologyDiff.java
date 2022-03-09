@@ -151,7 +151,7 @@ public class SimpleOntologyDiff implements Serializable {
     }
     
     @JsonIgnore
-    public boolean doUpdatesExist() {
+    public boolean doChangesExist() {
         return this.createdSimpleAnnotationProperties.isEmpty() && 
                 this.updatedSimpleAnnotationProperties.isEmpty() && 
                 this.deletedSimpleAnnotationProperties.isEmpty() && 

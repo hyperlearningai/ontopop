@@ -78,7 +78,7 @@ public class OntologyDiffService {
             new SimpleOntologyLeftRightDiff();
     
     /**
-     * Ontological diff given an ontology ID and timestamp
+     * Ontological temproal diff given an ontology ID and timestamp
      * @param ontologyId
      * @param requestedTimestamp
      * @return
@@ -103,7 +103,7 @@ public class OntologyDiffService {
             setup(true);
             
             // 2. Resolve the latest Git webhooks
-            resolve();
+            resolve(false);
             
             // 3. Download the relevant ontology OWL files from object storage
             download(true);
@@ -117,6 +117,56 @@ public class OntologyDiffService {
         } catch (OntologyNotFoundException e) {
             LOGGER.error("Ontology Diff Service encountered an error.", e);
             throw new OntologyNotFoundException(ontologyId);
+        } catch (Exception e) {
+            LOGGER.error("Ontology Diff Service encountered an error.", e);
+            throw new OntologyDiffProcessingException(
+                    "Ontology Diff Service encountered an error: " + e);
+        }
+        
+    }
+    
+    /**
+     * Ontological temporal diff given an ontology ID and Git webhook ID
+     * @param ontologyId
+     * @param gitWebhookId
+     * @return
+     */
+    
+    public SimpleOntologyTimestampDiff run(int ontologyId, long gitWebhookId) {
+        
+        LOGGER.info("Ontology Diff Service started.");
+        LOGGER.info("Ontology Diff Service - Ontology ID: {}", 
+                ontologyId);
+        LOGGER.info("Ontology Diff Service - Git Webhook ID: {}", 
+                gitWebhookId);
+        simpleOntologyTimestampDiff = new SimpleOntologyTimestampDiff();
+        simpleOntologyTimestampDiff.setId(ontologyId);
+        simpleOntologyTimestampDiff
+            .setLatestGitWebhookIdBeforeRequestedTimestamp(gitWebhookId);
+        
+        try {
+            
+            // 1. Environment setup
+            setup(true);
+            
+            // 2. Resolve the latest Git webhooks
+            resolve(true);
+            
+            // 3. Download the relevant ontology OWL files from object storage
+            download(true);
+            
+            // 4. Process the ontological diff
+            diff(true);
+            
+            // 5. Return the ontological diff
+            return simpleOntologyTimestampDiff;
+            
+        } catch (OntologyNotFoundException e) {
+            LOGGER.error("Ontology Diff Service encountered an error.", e);
+            throw new OntologyNotFoundException(ontologyId);
+        } catch (GitWebhookNotFoundException e) {
+            LOGGER.error("Ontology Diff Service encountered an error.", e);
+            throw new GitWebhookNotFoundException();
         } catch (Exception e) {
             LOGGER.error("Ontology Diff Service encountered an error.", e);
             throw new OntologyDiffProcessingException(
@@ -207,7 +257,6 @@ public class OntologyDiffService {
                 .findById(ontologyId)
                 .orElseThrow(() -> new OntologyNotFoundException(ontologyId));
         
-        // Get the requested Git webhooks IDs
         if ( !timestampDiff ) {
             gitWebhookRepository.findByOntologyIdAndGitWebhookId(
                     ontologyId, 
@@ -229,7 +278,7 @@ public class OntologyDiffService {
      * @throws OntologyNotFoundException
      */
     
-    private void resolve() {
+    private void resolve(boolean timestampDiffWithGitWebhookId) {
         
         // Get the latest Git webhook associated with this ontology
         Set<GitWebhook> gitWebhooks = ontology.getGitWebhooks();
@@ -237,7 +286,31 @@ public class OntologyDiffService {
             
             // If only one Git webhook has been consumed
             if ( gitWebhooks.size() == 1 ) {
+                
+                // Get the only Git webhook
                 GitWebhook latestGitWebhook = gitWebhooks.iterator().next();
+                
+                // Timestamp diff with Git webhook ID
+                if ( timestampDiffWithGitWebhookId ) {
+                    
+                    // Get the requested Git webhooks ID(s)
+                    GitWebhook requestedGitWebhook = gitWebhookRepository
+                        .findByOntologyIdAndGitWebhookId(
+                            simpleOntologyTimestampDiff.getId(), 
+                            simpleOntologyTimestampDiff
+                                .getLatestGitWebhookIdBeforeRequestedTimestamp())
+                    .orElseThrow(() -> new GitWebhookNotFoundException(
+                            simpleOntologyTimestampDiff
+                                .getLatestGitWebhookIdBeforeRequestedTimestamp()));
+                    if ( latestGitWebhook.getId() != requestedGitWebhook.getId() )
+                        throw new GitWebhookNotFoundException();
+                    else
+                        simpleOntologyTimestampDiff.setRequestedTimestamp(
+                                requestedGitWebhook.getDateCreated());
+                    
+                }
+                
+                // Update the diff object
                 simpleOntologyTimestampDiff
                     .setLatestGitWebhookIdAfterRequestedTimestamp(
                         latestGitWebhook.getId());
@@ -250,9 +323,10 @@ public class OntologyDiffService {
                 simpleOntologyTimestampDiff
                     .setLatestGitWebhookTimestampBeforeRequestedTimestamp(
                         latestGitWebhook.getDateCreated());
-                simpleOntologyTimestampDiff.setUpdatesExist(false);
+                simpleOntologyTimestampDiff.setChangesExist(false);
                 LOGGER.info("Ontology Diff Service - Only one Git Webhook "
                         + "has been consumed for this ontology.");
+                
             }
             
             // If more than one Git webhook has been consumed
@@ -268,52 +342,94 @@ public class OntologyDiffService {
                     .setLatestGitWebhookTimestampAfterRequestedTimestamp(
                         latestGitWebhook.getDateCreated());
                 
-                // Get the latest Git webhook object BEFORE the requested timestamp
-                GitWebhook latestGitWebhookBeforeRequestedTimestamp = null;
-                int counter = 0;
-                for ( GitWebhook gitWebhook : gitWebhooks ) {
-                    if (counter == 0)
-                        latestGitWebhookBeforeRequestedTimestamp = gitWebhook;
-                    if ( gitWebhook.getDateCreated().isBefore(
-                            simpleOntologyTimestampDiff.getRequestedTimestamp()) && 
-                            gitWebhook.getDateCreated().isAfter(
-                                    latestGitWebhookBeforeRequestedTimestamp
-                                        .getDateCreated()))
-                        latestGitWebhookBeforeRequestedTimestamp = gitWebhook;
-                    counter++;
+                // Timestamp diff with Git webhook ID
+                if ( timestampDiffWithGitWebhookId ) {
+                    
+                    // Get the requested Git webhooks ID(s)
+                    GitWebhook requestedGitWebhook = gitWebhookRepository
+                        .findByOntologyIdAndGitWebhookId(
+                            simpleOntologyTimestampDiff.getId(), 
+                            simpleOntologyTimestampDiff
+                                .getLatestGitWebhookIdBeforeRequestedTimestamp())
+                    .orElseThrow(() -> new GitWebhookNotFoundException(
+                            simpleOntologyTimestampDiff
+                                .getLatestGitWebhookIdBeforeRequestedTimestamp()));
+                    
+                    // Update the diff object
+                    simpleOntologyTimestampDiff
+                        .setLatestGitWebhookIdBeforeRequestedTimestamp(
+                                requestedGitWebhook.getId());
+                    simpleOntologyTimestampDiff
+                        .setLatestGitWebhookTimestampBeforeRequestedTimestamp(
+                                requestedGitWebhook.getDateCreated());
+                    simpleOntologyTimestampDiff.setRequestedTimestamp(
+                            requestedGitWebhook.getDateCreated());
+                    simpleOntologyTimestampDiff.setChangesExist(
+                            latestGitWebhook.getId() > 
+                                requestedGitWebhook.getId());
+                    
+                    // Logging
+                    LOGGER.info("Ontology Diff Service - {} Git Webhooks "
+                            + "have been consumed for this ontology.", 
+                            gitWebhooks.size());
+                    LOGGER.info("Ontology Diff Service - Requested Git "
+                            + "webhook ID: {}", requestedGitWebhook.getId());
+                    LOGGER.info("Ontology Diff Service - Latest Git "
+                            + "webhook ID: {}", latestGitWebhook.getId());
+                    
                 }
                 
-                // Update the diff object
-                simpleOntologyTimestampDiff
-                    .setLatestGitWebhookIdBeforeRequestedTimestamp(
-                        latestGitWebhookBeforeRequestedTimestamp.getId());
-                simpleOntologyTimestampDiff
-                    .setLatestGitWebhookTimestampBeforeRequestedTimestamp(
-                        latestGitWebhookBeforeRequestedTimestamp.getDateCreated());
-                simpleOntologyTimestampDiff
-                    .setUpdatesExist(latestGitWebhook.getId() != 
-                        latestGitWebhookBeforeRequestedTimestamp.getId());
-                
-                // Logging
-                LOGGER.info("Ontology Diff Service - {} Git Webhooks "
-                        + "have been consumed for this ontology.", gitWebhooks.size());
-                LOGGER.info("Ontology Diff Service - "
-                        + "Latest Git Webhook ID BEFORE requested timestamp: {} at {}.", 
-                        simpleOntologyTimestampDiff
-                            .getLatestGitWebhookIdBeforeRequestedTimestamp(), 
-                        simpleOntologyTimestampDiff
-                            .getLatestGitWebhookTimestampBeforeRequestedTimestamp());
-                LOGGER.info("Ontology Diff Service - "
-                        + "Latest Git Webhook ID AFTER requested timestamp: {} at {}.", 
-                        simpleOntologyTimestampDiff
-                            .getLatestGitWebhookIdAfterRequestedTimestamp(), 
-                        simpleOntologyTimestampDiff
-                            .getLatestGitWebhookTimestampAfterRequestedTimestamp());
+                // Timestamp diff with timestamp
+                else {
+                    
+                    // Get the latest Git webhook object BEFORE the requested timestamp
+                    GitWebhook latestGitWebhookBeforeRequestedTimestamp = null;
+                    int counter = 0;
+                    for ( GitWebhook gitWebhook : gitWebhooks ) {
+                        if (counter == 0)
+                            latestGitWebhookBeforeRequestedTimestamp = gitWebhook;
+                        if ( gitWebhook.getDateCreated().isBefore(
+                                simpleOntologyTimestampDiff.getRequestedTimestamp()) && 
+                                gitWebhook.getDateCreated().isAfter(
+                                        latestGitWebhookBeforeRequestedTimestamp
+                                            .getDateCreated()))
+                            latestGitWebhookBeforeRequestedTimestamp = gitWebhook;
+                        counter++;
+                    }
+                    
+                    // Update the diff object
+                    simpleOntologyTimestampDiff
+                        .setLatestGitWebhookIdBeforeRequestedTimestamp(
+                            latestGitWebhookBeforeRequestedTimestamp.getId());
+                    simpleOntologyTimestampDiff
+                        .setLatestGitWebhookTimestampBeforeRequestedTimestamp(
+                            latestGitWebhookBeforeRequestedTimestamp.getDateCreated());
+                    simpleOntologyTimestampDiff
+                        .setChangesExist(latestGitWebhook.getId() != 
+                            latestGitWebhookBeforeRequestedTimestamp.getId());
+                    
+                    // Logging
+                    LOGGER.info("Ontology Diff Service - {} Git Webhooks "
+                            + "have been consumed for this ontology.", gitWebhooks.size());
+                    LOGGER.info("Ontology Diff Service - "
+                            + "Latest Git Webhook ID BEFORE requested timestamp: {} at {}.", 
+                            simpleOntologyTimestampDiff
+                                .getLatestGitWebhookIdBeforeRequestedTimestamp(), 
+                            simpleOntologyTimestampDiff
+                                .getLatestGitWebhookTimestampBeforeRequestedTimestamp());
+                    LOGGER.info("Ontology Diff Service - "
+                            + "Latest Git Webhook ID AFTER requested timestamp: {} at {}.", 
+                            simpleOntologyTimestampDiff
+                                .getLatestGitWebhookIdAfterRequestedTimestamp(), 
+                            simpleOntologyTimestampDiff
+                                .getLatestGitWebhookTimestampAfterRequestedTimestamp());
+                    
+                }
                 
             }
             
         } else {
-            simpleOntologyTimestampDiff.setUpdatesExist(false);
+            simpleOntologyTimestampDiff.setChangesExist(false);
             LOGGER.info("Ontology Diff Service - Zero Git Webhooks "
                     + "have been consumed for this ontology.");
         }
@@ -329,7 +445,7 @@ public class OntologyDiffService {
         
         // Timestamp diff
         if ( timestampDiff ) {
-            if ( simpleOntologyTimestampDiff.doUpdatesExist() ) {
+            if ( simpleOntologyTimestampDiff.doChangesExist() ) {
                 String beforeFilename = ontology.generateFilenameForPersistence(
                         simpleOntologyTimestampDiff
                             .getLatestGitWebhookIdBeforeRequestedTimestamp());
@@ -405,11 +521,11 @@ public class OntologyDiffService {
     private void diff(boolean timestampDiff) 
             throws OWLOntologyCreationException, IOException {
         if ( timestampDiff ) {
-            if ( simpleOntologyTimestampDiff.doUpdatesExist() ) {
+            if ( simpleOntologyTimestampDiff.doChangesExist() ) {
                 SimpleOntologyDiff diff = OWLAPI.diff(beforeDownloadedFileUri, 
                         afterDownloadedFileUri);
                 simpleOntologyTimestampDiff.setSimpleOntologyDiff(diff);
-                simpleOntologyTimestampDiff.setUpdatesExist(diff.doUpdatesExist());
+                simpleOntologyTimestampDiff.setChangesExist(diff.doChangesExist());
             }
         } else {
             if ( simpleOntologyLeftRightDiff.getLeftGitWebhookId() != 
@@ -417,7 +533,7 @@ public class OntologyDiffService {
                 SimpleOntologyDiff diff = OWLAPI.diff(beforeDownloadedFileUri, 
                         afterDownloadedFileUri);
                 simpleOntologyLeftRightDiff.setSimpleOntologyDiff(diff);
-                simpleOntologyLeftRightDiff.setChangesExist(diff.doUpdatesExist());
+                simpleOntologyLeftRightDiff.setChangesExist(diff.doChangesExist());
             }
         }
     }
