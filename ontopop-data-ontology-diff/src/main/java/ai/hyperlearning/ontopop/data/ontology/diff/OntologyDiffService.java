@@ -2,8 +2,13 @@ package ai.hyperlearning.ontopop.data.ontology.diff;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
@@ -63,6 +68,7 @@ public class OntologyDiffService {
     
     private ObjectStorageService objectStorageService;
     private String readContainerUri;
+    private Map<String, String> downloadedFilesMap = new HashMap<>();
     private String beforeDownloadedFileUri;
     private String afterDownloadedFileUri;
     private Ontology ontology;
@@ -80,14 +86,14 @@ public class OntologyDiffService {
      */
     
     public SimpleOntologyTimestampDiff run(
-            int ontologyId, LocalDateTime requestedTimestamp) 
-            throws OntologyDiffProcessingException {
+            int ontologyId, LocalDateTime requestedTimestamp) {
         
         LOGGER.info("Ontology Diff Service started.");
         LOGGER.info("Ontology Diff Service - Ontology ID: {}", 
                 ontologyId);
         LOGGER.info("Ontology Diff Service - Requested Timestamp: {}", 
                 requestedTimestamp);
+        simpleOntologyTimestampDiff = new SimpleOntologyTimestampDiff();
         simpleOntologyTimestampDiff.setId(ontologyId);
         simpleOntologyTimestampDiff.setRequestedTimestamp(requestedTimestamp);
         
@@ -108,6 +114,9 @@ public class OntologyDiffService {
             // 5. Return the ontological diff
             return simpleOntologyTimestampDiff;
             
+        } catch (OntologyNotFoundException e) {
+            LOGGER.error("Ontology Diff Service encountered an error.", e);
+            throw new OntologyNotFoundException(ontologyId);
         } catch (Exception e) {
             LOGGER.error("Ontology Diff Service encountered an error.", e);
             throw new OntologyDiffProcessingException(
@@ -134,6 +143,7 @@ public class OntologyDiffService {
                 leftGitWebhookId);
         LOGGER.info("Ontology Diff Service - Right Git Webhook ID: {}", 
                 rightGitWebhookId);
+        simpleOntologyLeftRightDiff = new SimpleOntologyLeftRightDiff();
         simpleOntologyLeftRightDiff.setId(ontologyId);
         simpleOntologyLeftRightDiff.setLeftGitWebhookId(leftGitWebhookId);
         simpleOntologyLeftRightDiff.setRightGitWebhookId(rightGitWebhookId);
@@ -152,6 +162,12 @@ public class OntologyDiffService {
             // 4. Return the ontological diff
             return simpleOntologyLeftRightDiff;
             
+        } catch (OntologyNotFoundException e) {
+            LOGGER.error("Ontology Diff Service encountered an error.", e);
+            throw new OntologyNotFoundException(ontologyId);
+        } catch (GitWebhookNotFoundException e) {
+            LOGGER.error("Ontology Diff Service encountered an error.", e);
+            throw new GitWebhookNotFoundException();
         } catch (Exception e) {
             LOGGER.error("Ontology Diff Service encountered an error.", e);
             throw new OntologyDiffProcessingException(
@@ -317,13 +333,13 @@ public class OntologyDiffService {
                 String beforeFilename = ontology.generateFilenameForPersistence(
                         simpleOntologyTimestampDiff
                             .getLatestGitWebhookIdBeforeRequestedTimestamp());
-                beforeDownloadedFileUri = objectStorageService.downloadObject(
-                        readContainerUri + beforeFilename, "_" + beforeFilename);
+                beforeDownloadedFileUri = 
+                        checkExistenceBeforeDownload(beforeFilename);
                 String afterFilename = ontology.generateFilenameForPersistence(
                         simpleOntologyTimestampDiff
                             .getLatestGitWebhookIdAfterRequestedTimestamp());
-                afterDownloadedFileUri = objectStorageService.downloadObject(
-                        readContainerUri + afterFilename, "_" + afterFilename);
+                afterDownloadedFileUri = 
+                        checkExistenceBeforeDownload(afterFilename);
             }
         }
         
@@ -333,14 +349,50 @@ public class OntologyDiffService {
                     simpleOntologyLeftRightDiff.getRightGitWebhookId()) {
                 String beforeFilename = ontology.generateFilenameForPersistence(
                         simpleOntologyLeftRightDiff.getLeftGitWebhookId());
-                beforeDownloadedFileUri = objectStorageService.downloadObject(
-                        readContainerUri + beforeFilename, "_" + beforeFilename);
+                beforeDownloadedFileUri = 
+                        checkExistenceBeforeDownload(beforeFilename);
                 String afterFilename = ontology.generateFilenameForPersistence(
                         simpleOntologyLeftRightDiff.getRightGitWebhookId());
-                afterDownloadedFileUri = objectStorageService.downloadObject(
-                        readContainerUri + afterFilename, "_" + afterFilename);
+                afterDownloadedFileUri = 
+                        checkExistenceBeforeDownload(afterFilename);
             }
         }
+        
+    }
+    
+    /**
+     * Check for the existence of a file before downloading it again
+     * from object storage
+     * @param gitWebhookId
+     * @param filename
+     * @return
+     * @throws IOException
+     */
+    
+    private String checkExistenceBeforeDownload(String filename) 
+            throws IOException {
+        
+        // Check if the OWL file has already been downloaded and exists. 
+        // If so, return the path to the downloaded OWL file.
+        if ( downloadedFilesMap != null ) {
+            if ( downloadedFilesMap.containsKey(filename) ) {
+                String previouslyDownloadedFilePath = 
+                        downloadedFilesMap.get(filename);
+                Path path = Paths.get(previouslyDownloadedFilePath);
+                if ( Files.exists(path) )
+                    return previouslyDownloadedFilePath;
+                else
+                    downloadedFilesMap.remove(filename);
+            }
+        } else {
+            downloadedFilesMap = new HashMap<>();
+        }
+        
+        // If not, download the OWL file
+        String downloadedFilePath = objectStorageService.downloadObject(
+                readContainerUri + filename, "_" + filename);
+        downloadedFilesMap.put(filename, downloadedFilePath);
+        return downloadedFilePath;
         
     }
     
