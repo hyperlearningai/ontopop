@@ -36,6 +36,7 @@ import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffInvalidTimestamp
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDownloadException;
 import ai.hyperlearning.ontopop.exceptions.triplestore.InvalidSparqlQueryException;
 import ai.hyperlearning.ontopop.model.git.GitWebhook;
+import ai.hyperlearning.ontopop.model.owl.diff.SimpleOntologyLeftRightDiff;
 import ai.hyperlearning.ontopop.model.owl.diff.SimpleOntologyTimestampDiff;
 import ai.hyperlearning.ontopop.model.triplestore.OntologyTriplestoreSparqlQuery;
 import ai.hyperlearning.ontopop.triplestore.TriplestoreService;
@@ -356,7 +357,7 @@ public class OntologyTriplestoreController {
      *************************************************************************/
     
     @Operation(
-            summary = "Temporal ontological diff",
+            summary = "Get temporal ontological diff",
             description = "Perform a temporal ontological diff given an "
                     + "ontology ID and a timestamp.",
             tags = {"ontology", "diff"})
@@ -386,9 +387,9 @@ public class OntologyTriplestoreController {
                             content = @Content)})
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(
-            value = "/{id}/diff", 
+            value = "/{id}/diff/temporal", 
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public SimpleOntologyTimestampDiff getTemporaldiff(
+    public SimpleOntologyTimestampDiff getTemporalDiff(
             @Parameter(
                     description = "ID of the ontology on which to perform the diff.", 
                     required = true)
@@ -410,6 +411,63 @@ public class OntologyTriplestoreController {
                     "Invalid timestamp. Timestamp should be of the format "
                     + "yyyy-MM-dd HH:mm:ss.");
         }
+        
+    }
+    
+    /**************************************************************************
+     * 2.4. GET - Get LEFT-RIGHT DIFF
+     *************************************************************************/
+    
+    @Operation(
+            summary = "Get left-right ontological diff",
+            description = "Perform a side-by-side ontological diff given an "
+                    + "ontology ID and two Git webhook IDs.",
+            tags = {"ontology", "diff"})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Ontological left-right diff successfully processed.", 
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE, 
+                                    schema = @Schema(implementation = SimpleOntologyLeftRightDiff.class))),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Ontological left-right diff operation unauthorized.", 
+                            content = @Content),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Ontology and/or Git webhooks not found.", 
+                            content = @Content), 
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Internal server error.", 
+                            content = @Content)})
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(
+            value = "/{id}/diff/compare", 
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public SimpleOntologyLeftRightDiff getLeftRightDiff(
+            @Parameter(
+                    description = "ID of the ontology on which to perform the diff.", 
+                    required = true)
+            @PathVariable(required = true) int id, 
+            @Parameter(
+                    description = "Left Git webhook ID for processing the "
+                            + "left-right ontological diff.", 
+                    required = true)
+            @RequestParam(name = "leftGitWebhookId", required = true) long leftGitWebhookId, 
+            @Parameter(
+                    description = "Right Git webhook ID for processing the "
+                            + "left-right ontological diff.", 
+                    required = true)
+            @RequestParam(name = "rightGitWebhookId", required = true) long rightGitWebhookId) {
+        
+        LOGGER.debug("New HTTP GET request - Left-Right DIFF for "
+                + "ontology ID {} given left Git webhook ID {} and "
+                + "right Git webhook ID {}.", id, 
+                leftGitWebhookId, rightGitWebhookId);
+        return ontologyDiffService.run(id, leftGitWebhookId, rightGitWebhookId); 
         
     }
     
