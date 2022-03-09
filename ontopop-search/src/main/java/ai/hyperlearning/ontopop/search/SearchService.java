@@ -43,6 +43,14 @@ public interface SearchService {
 
     public void deleteAllDocuments(String indexName);
     
+    public void deleteAllDocuments(String indexName, Class<?> cls);
+    
+    public void deleteDocumentsByPropertyKeyValue(String indexName, 
+            String propertyKey, Object propertyValue);
+    
+    public void deleteDocumentsByPropertyKeyValue(String indexName, 
+            String propertyKey, Object propertyValue, Class<?> cls);
+    
     /**************************************************************************
      * SEARCH
      *************************************************************************/

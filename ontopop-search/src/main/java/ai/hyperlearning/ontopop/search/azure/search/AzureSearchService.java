@@ -228,6 +228,26 @@ public class AzureSearchService implements SearchService {
         // createIndex(indexName);
     }
     
+    @Override
+    public void deleteAllDocuments(String indexName, Class<?> cls) {
+        // deleteIndex(indexName);
+        // createIndex(indexName);
+    }
+    
+    @Override
+    public void deleteDocumentsByPropertyKeyValue(String indexName, 
+            String propertyKey, Object propertyValue) {
+        // deleteIndex(indexName);
+        // createIndex(indexName);
+    }
+    
+    @Override
+    public void deleteDocumentsByPropertyKeyValue(String indexName, 
+            String propertyKey, Object propertyValue, Class<?> cls) {
+        // deleteIndex(indexName);
+        // createIndex(indexName);
+    }
+    
     /**************************************************************************
      * SEARCH
      *************************************************************************/

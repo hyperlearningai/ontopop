@@ -131,6 +131,63 @@ public class ElasticsearchService implements SearchService {
                     IndexCoordinates.of(indexName));
     }
     
+    @Override
+    public void deleteAllDocuments(String indexName, Class<?> cls) {
+        final Query deleteQuery = new NativeSearchQueryBuilder()
+                .withQuery(matchAllQuery()).build();
+        long documentCount = elasticsearchTemplate.count(deleteQuery, 
+                IndexCoordinates.of(indexName));
+        if ( documentCount > 0 )
+            elasticsearchTemplate.delete(deleteQuery, cls, 
+                    IndexCoordinates.of(indexName));
+    }
+    
+    @Override
+    public void deleteDocumentsByPropertyKeyValue(String indexName, 
+            String propertyKey, Object propertyValue) {
+        final Query searchQuery = new NativeSearchQueryBuilder()
+                .withQuery(matchQuery(propertyKey, propertyValue))
+                .build();
+        long documentCount = elasticsearchTemplate.count(searchQuery, 
+                IndexCoordinates.of(indexName));
+        if ( documentCount > 0 )
+            elasticsearchTemplate.delete(searchQuery,
+                    IndexCoordinates.of(indexName));
+        else {
+            final Query searchQueryAttempt2 = new NativeSearchQueryBuilder()
+                    .withQuery(matchQuery("properties." + propertyKey, propertyValue))
+                    .build();
+            long documentCountAttempt2 = elasticsearchTemplate.count(
+                    searchQueryAttempt2, IndexCoordinates.of(indexName));
+            if ( documentCountAttempt2 > 0 )
+                elasticsearchTemplate.delete(searchQueryAttempt2,
+                        IndexCoordinates.of(indexName));
+        }
+    }
+    
+    @Override
+    public void deleteDocumentsByPropertyKeyValue(String indexName, 
+            String propertyKey, Object propertyValue, Class<?> cls) {
+        final Query searchQuery = new NativeSearchQueryBuilder()
+                .withQuery(matchQuery(propertyKey, propertyValue))
+                .build();
+        long documentCount = elasticsearchTemplate.count(searchQuery, 
+                IndexCoordinates.of(indexName));
+        if ( documentCount > 0 )
+            elasticsearchTemplate.delete(searchQuery, cls, 
+                    IndexCoordinates.of(indexName));
+        else {
+            final Query searchQueryAttempt2 = new NativeSearchQueryBuilder()
+                    .withQuery(matchQuery("properties." + propertyKey, propertyValue))
+                    .build();
+            long documentCountAttempt2 = elasticsearchTemplate.count(
+                    searchQueryAttempt2, IndexCoordinates.of(indexName));
+            if ( documentCountAttempt2 > 0 )
+                elasticsearchTemplate.delete(searchQueryAttempt2, cls, 
+                        IndexCoordinates.of(indexName));
+        }
+    }
+    
     /**************************************************************************
      * SEARCH
      *************************************************************************/
