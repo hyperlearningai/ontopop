@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -147,6 +148,19 @@ public class SimpleOntologyDiff implements Serializable {
     public void setDeletedSimpleClasses(
             List<SimpleClassDiff> deletedSimpleClasses) {
         this.deletedSimpleClasses = deletedSimpleClasses;
+    }
+    
+    @JsonIgnore
+    public boolean doUpdatesExist() {
+        return this.createdSimpleAnnotationProperties.isEmpty() && 
+                this.updatedSimpleAnnotationProperties.isEmpty() && 
+                this.deletedSimpleAnnotationProperties.isEmpty() && 
+                this.createdSimpleObjectProperties.isEmpty() && 
+                this.updatedSimpleObjectProperties.isEmpty() && 
+                this.deletedSimpleObjectProperties.isEmpty() && 
+                this.createdSimpleClasses.isEmpty() && 
+                this.updatedSimpleClasses.isEmpty() && 
+                this.deletedSimpleClasses.isEmpty() ? false : true;
     }
 
     @Override

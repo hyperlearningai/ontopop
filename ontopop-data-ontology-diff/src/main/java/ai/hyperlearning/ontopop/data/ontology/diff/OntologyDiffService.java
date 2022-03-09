@@ -21,6 +21,7 @@ import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffProcessingExcept
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyNotFoundException;
 import ai.hyperlearning.ontopop.model.git.GitWebhook;
 import ai.hyperlearning.ontopop.model.ontology.Ontology;
+import ai.hyperlearning.ontopop.model.owl.diff.SimpleOntologyDiff;
 import ai.hyperlearning.ontopop.model.owl.diff.SimpleOntologyLeftRightDiff;
 import ai.hyperlearning.ontopop.model.owl.diff.SimpleOntologyTimestampDiff;
 import ai.hyperlearning.ontopop.owl.OWLAPI;
@@ -353,16 +354,18 @@ public class OntologyDiffService {
             throws OWLOntologyCreationException, IOException {
         if ( timestampDiff ) {
             if ( simpleOntologyTimestampDiff.doUpdatesExist() ) {
-                simpleOntologyTimestampDiff.setSimpleOntologyDiff(
-                        OWLAPI.diff(beforeDownloadedFileUri, 
-                                afterDownloadedFileUri));
+                SimpleOntologyDiff diff = OWLAPI.diff(beforeDownloadedFileUri, 
+                        afterDownloadedFileUri);
+                simpleOntologyTimestampDiff.setSimpleOntologyDiff(diff);
+                simpleOntologyTimestampDiff.setUpdatesExist(diff.doUpdatesExist());
             }
         } else {
             if ( simpleOntologyLeftRightDiff.getLeftGitWebhookId() != 
                     simpleOntologyLeftRightDiff.getRightGitWebhookId()) {
-                simpleOntologyLeftRightDiff.setSimpleOntologyDiff(
-                        OWLAPI.diff(beforeDownloadedFileUri, 
-                                afterDownloadedFileUri));
+                SimpleOntologyDiff diff = OWLAPI.diff(beforeDownloadedFileUri, 
+                        afterDownloadedFileUri);
+                simpleOntologyLeftRightDiff.setSimpleOntologyDiff(diff);
+                simpleOntologyLeftRightDiff.setChangesExist(diff.doUpdatesExist());
             }
         }
     }

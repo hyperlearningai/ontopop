@@ -23,6 +23,8 @@ public class SimpleOntologyLeftRightDiff implements Serializable {
     
     private long rightGitWebhookId;
     
+    private boolean changesExist = false;
+    
     // Diff
     private SimpleOntologyDiff simpleOntologyDiff;
     
@@ -63,6 +65,18 @@ public class SimpleOntologyLeftRightDiff implements Serializable {
         this.rightGitWebhookId = rightGitWebhookId;
     }
 
+    public boolean isChangesExist() {
+        return changesExist;
+    }
+    
+    public boolean doChangesExist() {
+        return changesExist;
+    }
+
+    public void setChangesExist(boolean changesExist) {
+        this.changesExist = changesExist;
+    }
+
     @JsonProperty("diff")
     public SimpleOntologyDiff getSimpleOntologyDiff() {
         return simpleOntologyDiff;
@@ -100,6 +114,7 @@ public class SimpleOntologyLeftRightDiff implements Serializable {
                 + "id=" + id + ", "
                 + "leftGitWebhookId=" + leftGitWebhookId + ", "
                 + "rightGitWebhookId=" + rightGitWebhookId + ", "
+                + "changesExist=" + changesExist + ", "
                 + "simpleOntologyDiff=" + simpleOntologyDiff 
                 + "]";
     }
