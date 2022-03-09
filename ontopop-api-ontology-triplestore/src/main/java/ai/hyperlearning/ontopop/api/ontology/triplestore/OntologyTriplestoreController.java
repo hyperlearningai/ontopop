@@ -4,6 +4,7 @@ import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
@@ -31,6 +32,7 @@ import ai.hyperlearning.ontopop.data.jpa.repositories.GitWebhookRepository;
 import ai.hyperlearning.ontopop.data.ontology.diff.OntologyDiffService;
 import ai.hyperlearning.ontopop.data.ontology.downloader.OntologyDownloaderService;
 import ai.hyperlearning.ontopop.exceptions.git.GitWebhookNotFoundException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffInvalidTimestampException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDownloadException;
 import ai.hyperlearning.ontopop.exceptions.triplestore.InvalidSparqlQueryException;
 import ai.hyperlearning.ontopop.model.git.GitWebhook;
@@ -367,6 +369,10 @@ public class OntologyTriplestoreController {
                                     mediaType = MediaType.APPLICATION_JSON_VALUE, 
                                     schema = @Schema(implementation = SimpleOntologyTimestampDiff.class))),
                     @ApiResponse(
+                            responseCode = "400",
+                            description = "Invalid timestamp.", 
+                            content = @Content),
+                    @ApiResponse(
                             responseCode = "401",
                             description = "Ontological temporal diff operation unauthorized.", 
                             content = @Content),
@@ -392,9 +398,19 @@ public class OntologyTriplestoreController {
                             + "ontological diff.", 
                     required = true)
             @RequestParam(name = "timestamp", required = true) String timestamp) {
-        LocalDateTime requestedTimestamp = LocalDateTime.parse(
-                timestamp, DIFF_TIMESTAMP_DATE_TIME_FORMATTER);
-        return ontologyDiffService.run(id, requestedTimestamp);
+        
+        LOGGER.debug("New HTTP GET request - Temporal DIFF for "
+                + "ontology ID {} given timestamp {}.", id, timestamp);
+        try {
+            LocalDateTime requestedTimestamp = LocalDateTime.parse(
+                    timestamp, DIFF_TIMESTAMP_DATE_TIME_FORMATTER);
+            return ontologyDiffService.run(id, requestedTimestamp);
+        } catch (DateTimeParseException e) {
+            throw new OntologyDiffInvalidTimestampException(
+                    "Invalid timestamp. Timestamp should be of the format "
+                    + "yyyy-MM-dd HH:mm:ss.");
+        }
+        
     }
     
 }
