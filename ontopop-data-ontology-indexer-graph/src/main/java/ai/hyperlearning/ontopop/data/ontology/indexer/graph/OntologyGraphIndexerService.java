@@ -232,8 +232,8 @@ public class OntologyGraphIndexerService {
 
         // Delete all documents in this index
         LOGGER.debug("Deleting all documents in index: {}", indexName);
-        searchService.deleteAllDocuments(indexName);
-
+        searchService.deleteAllDocuments(indexName, SimpleIndexVertex.class);
+        
         // Generate a set of SimpleIndexVertex objects
         Set<SimpleIndexVertex> vertices = new LinkedHashSet<>();
         for (var entry : simpleOntologyPropertyGraph.getVertices().entrySet()) {
