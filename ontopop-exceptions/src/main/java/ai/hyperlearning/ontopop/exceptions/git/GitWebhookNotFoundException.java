@@ -14,5 +14,9 @@ public class GitWebhookNotFoundException extends RuntimeException {
     public GitWebhookNotFoundException(long id) {
         super("Git Webhook with ID " + id + " not found.");
     }
+    
+    public GitWebhookNotFoundException() {
+        super("Git Webhook not found.");
+    }
 
 }
