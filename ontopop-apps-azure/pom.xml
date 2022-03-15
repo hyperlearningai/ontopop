@@ -62,6 +62,7 @@
         <module>ontopop-azure-function-app-data-ontology-webprotege-exporter</module>
         <module>ontopop-azure-app-api-ontology-management</module>
         <module>ontopop-azure-app-api-ontology-triplestore</module>
+        <module>ontopop-azure-app-api-ontology-graph</module>
         <module>ontopop-azure-app-api-ontology-search</module>
     </modules>
 
