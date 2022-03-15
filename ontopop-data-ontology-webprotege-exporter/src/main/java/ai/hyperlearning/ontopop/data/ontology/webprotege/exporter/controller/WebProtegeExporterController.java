@@ -33,7 +33,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  */
 
 @RestController
-@RequestMapping("/api/connectors/webprotege")
+@RequestMapping("/connectors/webprotege")
 @Tag(name = "webprotege", description = "Webprotege Connector API")
 @ConditionalOnExpression("'${plugins.webprotege.exporter.enabled}'.equals('true') and "
         + "'${plugins.webprotege.exporter.http.enabled}'.equals('true')")
