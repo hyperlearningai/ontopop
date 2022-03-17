@@ -24,6 +24,7 @@ management = graph.openManagement()
 // Create property keys - common vertex property keys
 management.makePropertyKey("iri").dataType(String.class).make()
 management.makePropertyKey("ontologyId").dataType(Integer.class).make()
+management.makePropertyKey("rdfsLabel").dataType(String.class).make()
 management.makePropertyKey("latestGitWebhookId").dataType(Long.class).make()
 management.makePropertyKey("vertexKey").dataType(String.class).make()
 management.makePropertyKey("vertexId").dataType(Long.class).make()
