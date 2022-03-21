@@ -656,6 +656,17 @@
                 <module>ontopop-apps-aws</module>
             </modules>
         </profile>
+        
+        <!-- Build Profile - Core Services Only -->
+        <profile>
+            <id>services</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                
+            </modules>
+        </profile>
     
     </profiles>
 
