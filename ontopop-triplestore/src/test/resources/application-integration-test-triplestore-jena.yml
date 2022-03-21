@@ -1,0 +1,15 @@
+spring:
+    application:
+        name: ontopop
+storage:
+    triplestore:
+        service: apache-jena
+        apache-jena:
+            fuseki:
+                url: http://localhost:3030
+                username: 
+                password: 
+web:
+    client:
+        codecs:
+            maxInMemorySize: 10
