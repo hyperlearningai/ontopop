@@ -1,6 +1,7 @@
 package ai.hyperlearning.ontopop.model.owl;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -103,17 +104,45 @@ public class SimpleOntology implements Serializable {
 	}
 	
 	@JsonIgnore
+	public Map<String, SimpleAnnotationProperty> getUniqueSimpleAnnotationPropertyLabelsMap() {
+	    Map<String, SimpleAnnotationProperty> uniqueSimpleAnnotationPropertyLabelsMap = 
+	            new HashMap<>();
+	    for (SimpleAnnotationProperty simpleAnnotationProperty : 
+            this.simpleAnnotationPropertyMap.values()) {
+	        if ( simpleAnnotationProperty.getLabel() != null )
+	            uniqueSimpleAnnotationPropertyLabelsMap.put(
+	                    simpleAnnotationProperty.getLabel().strip().toUpperCase(), 
+	                    simpleAnnotationProperty);
+	    }
+	    return uniqueSimpleAnnotationPropertyLabelsMap;
+	}
+	
+	@JsonIgnore
 	public Set<String> getUniqueSimpleObjectPropertyLabels() {
 	    Set<String> uniqueSimpleObjectPropertyLabels = new HashSet<>();
 	    for (SimpleObjectProperty simpleObjectProperty : 
             this.simpleObjectPropertyMap.values()) {
-	        if ( simpleObjectProperty.getLabel() != null ) {
+	        if ( simpleObjectProperty.getLabel() != null )
 	            uniqueSimpleObjectPropertyLabels.add(
 	                    simpleObjectProperty.getLabel().strip().toUpperCase()
 	                    .replaceAll(" +", " "));
-	        }
 	    }
 	    return uniqueSimpleObjectPropertyLabels;
+	}
+	
+	@JsonIgnore
+	public Map<String, SimpleObjectProperty> getUniqueSimpleObjectPropertyLabelsMap() {
+	    Map<String, SimpleObjectProperty> uniqueSimpleObjectPropertyLabelsMap = 
+                new HashMap<>();
+	    for (SimpleObjectProperty simpleObjectProperty : 
+            this.simpleObjectPropertyMap.values()) {
+	        if ( simpleObjectProperty.getLabel() != null )
+	            uniqueSimpleObjectPropertyLabelsMap.put(
+	                    simpleObjectProperty.getLabel().strip().toUpperCase()
+                        .replaceAll(" +", " "), 
+                        simpleObjectProperty);
+	    }
+	    return uniqueSimpleObjectPropertyLabelsMap;
 	}
 
 	@Override
