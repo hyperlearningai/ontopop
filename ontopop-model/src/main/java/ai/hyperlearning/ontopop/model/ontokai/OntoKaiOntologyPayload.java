@@ -2,8 +2,11 @@ package ai.hyperlearning.ontopop.model.ontokai;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -66,6 +69,15 @@ public class OntoKaiOntologyPayload implements Serializable {
 
     public void setNodes(List<OntoKaiOntologyNode> nodes) {
         this.nodes = nodes;
+    }
+    
+    @JsonIgnore
+    public Map<Integer, String> generateOntoKaiNodeIdIriMap() {
+        Map<Integer, String> ontoKaiNodeIdIriMap = new HashMap<>();
+        for ( OntoKaiOntologyNode node : this.nodes ) {
+            ontoKaiNodeIdIriMap.put(node.getId(), node.getUrl());
+        }
+        return ontoKaiNodeIdIriMap;
     }
 
     @Override
