@@ -101,6 +101,20 @@ public class SimpleOntology implements Serializable {
 	    }
 	    return uniqueSimpleAnnotationPropertyLabels;
 	}
+	
+	@JsonIgnore
+	public Set<String> getUniqueSimpleObjectPropertyLabels() {
+	    Set<String> uniqueSimpleObjectPropertyLabels = new HashSet<>();
+	    for (SimpleObjectProperty simpleObjectProperty : 
+            this.simpleObjectPropertyMap.values()) {
+	        if ( simpleObjectProperty.getLabel() != null ) {
+	            uniqueSimpleObjectPropertyLabels.add(
+	                    simpleObjectProperty.getLabel().strip().toUpperCase()
+	                    .replaceAll(" +", " "));
+	        }
+	    }
+	    return uniqueSimpleObjectPropertyLabels;
+	}
 
 	@Override
 	public int hashCode() {
