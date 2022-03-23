@@ -2,6 +2,8 @@ package ai.hyperlearning.ontopop.model.ontokai;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * OntoKai Ontology Node Relationship Schema
  *
@@ -9,6 +11,7 @@ import java.io.Serializable;
  * @since 2.0.0
  */
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OntoKaiOntologyNodeRelationship implements Serializable {
 
     private static final long serialVersionUID = 2993824496772491694L;

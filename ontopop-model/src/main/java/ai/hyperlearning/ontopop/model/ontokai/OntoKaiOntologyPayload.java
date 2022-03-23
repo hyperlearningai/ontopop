@@ -1,7 +1,10 @@
 package ai.hyperlearning.ontopop.model.ontokai;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * OntoKai Ontology Payload Model
@@ -10,6 +13,7 @@ import java.util.List;
  * @since 2.0.0
  */
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OntoKaiOntologyPayload implements Serializable {
 
     private static final long serialVersionUID = -7870117418972283488L;
@@ -17,7 +21,7 @@ public class OntoKaiOntologyPayload implements Serializable {
     private String iaName;
     private boolean selection;
     private int version;
-    private List<OntoKaiOntologyNode> nodes;
+    private List<OntoKaiOntologyNode> nodes = new ArrayList<>();
     
     public OntoKaiOntologyPayload() {
         
