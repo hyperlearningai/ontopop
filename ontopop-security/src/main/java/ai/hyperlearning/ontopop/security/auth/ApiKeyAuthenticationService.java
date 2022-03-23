@@ -21,6 +21,8 @@ public interface ApiKeyAuthenticationService {
     
     public void create(String client, Set<String> roles) throws Exception;
     
+    public void create(String client, Set<String> roles, int durationDays) throws Exception;
+    
     public void delete(String key) throws Exception;
     
     public boolean authenticate(String key) throws Exception;

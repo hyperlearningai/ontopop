@@ -40,7 +40,7 @@ public class SecretsEngineApiKeyAuthenticationService
     private static final DateTimeFormatter API_KEY_DEFAULT_DATE_TIME_FORMATTER = 
             DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
     private static final int API_KEY_DEFAULT_LENGTH = 24;
-    private static final int API_KEY_DEAFULT_DURATION_DAYS = 90;
+    private static final int API_KEY_DEFAULT_DURATION_DAYS = 90;
     private static final String API_KEY_DEFAULT_ISSUER = "HyperLearning AI";
     private static final String API_KEY_PREFIX = "APIKEY_";
     
@@ -110,7 +110,7 @@ public class SecretsEngineApiKeyAuthenticationService
         apiKey.setIssueDate(LocalDateTime.now(ZoneOffset.UTC)
                 .format(API_KEY_DEFAULT_DATE_TIME_FORMATTER));
         apiKey.setExpirationDate(LocalDateTime.now(ZoneOffset.UTC)
-                .plusDays(API_KEY_DEAFULT_DURATION_DAYS)
+                .plusDays(API_KEY_DEFAULT_DURATION_DAYS)
                 .format(API_KEY_DEFAULT_DATE_TIME_FORMATTER));
         apiKey.setIssuer(API_KEY_DEFAULT_ISSUER);
         apiKey.setClient(client);
@@ -126,7 +126,25 @@ public class SecretsEngineApiKeyAuthenticationService
         apiKey.setIssueDate(LocalDateTime.now(ZoneOffset.UTC)
                 .format(API_KEY_DEFAULT_DATE_TIME_FORMATTER));
         apiKey.setExpirationDate(LocalDateTime.now(ZoneOffset.UTC)
-                .plusDays(API_KEY_DEAFULT_DURATION_DAYS)
+                .plusDays(API_KEY_DEFAULT_DURATION_DAYS)
+                .format(API_KEY_DEFAULT_DATE_TIME_FORMATTER));
+        apiKey.setIssuer(API_KEY_DEFAULT_ISSUER);
+        apiKey.setClient(client);
+        apiKey.setEnabled(true);
+        apiKey.setRoles(roles);
+        create(apiKey);
+    }
+    
+    @Override
+    public void create(String client, Set<String> roles, int durationDays) 
+            throws Exception {
+        ApiKey apiKey = new ApiKey();
+        apiKey.setKey(RandomStringUtils.random(
+                API_KEY_DEFAULT_LENGTH, true, true).toUpperCase());
+        apiKey.setIssueDate(LocalDateTime.now(ZoneOffset.UTC)
+                .format(API_KEY_DEFAULT_DATE_TIME_FORMATTER));
+        apiKey.setExpirationDate(LocalDateTime.now(ZoneOffset.UTC)
+                .plusDays(durationDays)
                 .format(API_KEY_DEFAULT_DATE_TIME_FORMATTER));
         apiKey.setIssuer(API_KEY_DEFAULT_ISSUER);
         apiKey.setClient(client);
