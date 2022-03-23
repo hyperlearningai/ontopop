@@ -1,8 +1,12 @@
 package ai.hyperlearning.ontopop.model.owl;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Simple OWL Model - Ontology
@@ -83,6 +87,19 @@ public class SimpleOntology implements Serializable {
 
 	public void setSimpleClassMap(Map<String, SimpleClass> simpleClassMap) {
 		this.simpleClassMap = simpleClassMap;
+	}
+	
+	@JsonIgnore
+	public Set<String> getUniqueSimpleAnnotationPropertyLabels() {
+	    Set<String> uniqueSimpleAnnotationPropertyLabels = new HashSet<>();
+	    for (SimpleAnnotationProperty simpleAnnotationProperty : 
+	        this.simpleAnnotationPropertyMap.values()) {
+	        if ( simpleAnnotationProperty.getLabel() != null )
+    	        uniqueSimpleAnnotationPropertyLabels.add(
+    	                simpleAnnotationProperty.getLabel()
+    	                    .strip().toUpperCase());
+	    }
+	    return uniqueSimpleAnnotationPropertyLabels;
 	}
 
 	@Override
