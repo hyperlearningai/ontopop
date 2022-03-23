@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.owl.clients.ontokai;
+package ai.hyperlearning.ontopop.owl.mappers.ontokai;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,13 +32,13 @@ import ai.hyperlearning.ontopop.owl.OWLRDFXMLAPI;
 import ai.hyperlearning.ontopop.rdf.StandardRDFSchema;
 
 /**
- * OntoKai-specific OWL Helper Methods
+ * OntoKai to OWL mapper helper methods
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
-public class OntoKaiOWLAPI {
+public class OntoKaiOntologyMapper {
     
     private static final String DEFAULT_IRI_PREFIX = 
             "http://webprotege.stanford.edu/R";
@@ -54,9 +54,9 @@ public class OntoKaiOWLAPI {
     private static final String ONTOKAI_RESTRICTION_BUNDLE_TYPE_VALUE = 
             "SOME";
     
-    private OntoKaiOWLAPI() {
-        throw new IllegalStateException("The OntoKaiOWLAPI utility class "
-                + "cannot be instantiated.");
+    private OntoKaiOntologyMapper() {
+        throw new IllegalStateException("The OntoKaiOntologyMapper "
+                + "utility class cannot be instantiated.");
     }
     
     /**
