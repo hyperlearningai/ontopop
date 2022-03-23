@@ -8,6 +8,9 @@ import java.nio.file.Paths;
 import java.util.AbstractMap;
 import java.util.Map;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
 /**
  * RDF/XML Helper Methods
  *
@@ -18,6 +21,11 @@ import java.util.Map;
 public class OWLRDFXMLAPI {
     
     private static final String IRI_PLACEHOLDER = "{IRI}";
+    private static final String RDFS_LABEL_PLACEHOLDER = "{RDFS_LABEL}";
+    private static final String RDFS_LABEL_NODE = 
+            "<rdfs:label>" + RDFS_LABEL_PLACEHOLDER + "</rdfs:label>";
+    private static final String RDFS_SUBPROPERTYOF_NODE = 
+            "<rdfs:subPropertyOf rdf:resource=\"http://www.w3.org/2002/07/owl#topObjectProperty\"/>";
     private static final Map<OWLSchemaVocabulary, String> NODE_START = Map.ofEntries(
             new AbstractMap.SimpleEntry<OWLSchemaVocabulary, String>(
                     OWLSchemaVocabulary.ANNOTATION_PROPERTY, 
@@ -69,6 +77,49 @@ public class OWLRDFXMLAPI {
         int startIndex = xml.indexOf(nodeStart.replace(IRI_PLACEHOLDER, iri));
         int endIndex = xml.indexOf(nodeEnd, startIndex);
         return xml.substring(startIndex, endIndex + nodeEnd.length());
+    }
+    
+    /**
+     * Generate an XML string representing a new OWL Annotation Property
+     * given its IRI and RDFS label
+     * @param iri
+     * @param label
+     * @return
+     * @throws ParserConfigurationException 
+     * @throws TransformerException 
+     */
+    
+    public static String generateNewOwlAnnotationPropertyXml(
+            String iri, String label)  {
+        StringBuilder xmlBuilder = new StringBuilder(NODE_START.get(
+                OWLSchemaVocabulary.ANNOTATION_PROPERTY)
+                    .replace(IRI_PLACEHOLDER, iri));
+        xmlBuilder.append(RDFS_LABEL_NODE
+                .replace(RDFS_LABEL_PLACEHOLDER, label));
+        xmlBuilder.append(NODE_END.get(
+                OWLSchemaVocabulary.ANNOTATION_PROPERTY));
+        return xmlBuilder.toString();
+    }
+    
+    /**
+     * Generate an XML string representing a new OWL Object Property
+     * given its IRI and RDFS label
+     * @param iri
+     * @param label
+     * @return
+     */
+    
+    public static String generateNewOwlObjectPropertyXml(
+            String iri, String label) {
+        StringBuilder xmlBuilder = new StringBuilder(NODE_START.get(
+                OWLSchemaVocabulary.OBJECT_PROPERTY)
+                    .replace(IRI_PLACEHOLDER, iri));
+        xmlBuilder.append(RDFS_SUBPROPERTYOF_NODE);
+        xmlBuilder.append(RDFS_LABEL_NODE
+                .replace(RDFS_LABEL_PLACEHOLDER, label));
+        xmlBuilder.append(NODE_END.get(
+                OWLSchemaVocabulary.OBJECT_PROPERTY));
+        return xmlBuilder.toString();
     }
 
 }
