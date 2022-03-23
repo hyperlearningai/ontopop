@@ -2,6 +2,7 @@ package ai.hyperlearning.ontopop.owl.clients.ontokai;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -20,9 +21,11 @@ import ai.hyperlearning.ontopop.model.ontokai.OntoKaiOntologyNodeAttribute;
 import ai.hyperlearning.ontopop.model.ontokai.OntoKaiOntologyNodeRelationship;
 import ai.hyperlearning.ontopop.model.ontokai.OntoKaiOntologyPayload;
 import ai.hyperlearning.ontopop.model.owl.SimpleAnnotationProperty;
+import ai.hyperlearning.ontopop.model.owl.SimpleClass;
 import ai.hyperlearning.ontopop.model.owl.SimpleObjectProperty;
 import ai.hyperlearning.ontopop.model.owl.SimpleOntology;
 import ai.hyperlearning.ontopop.model.owl.diff.SimpleAnnotationPropertyDiff;
+import ai.hyperlearning.ontopop.model.owl.diff.SimpleClassDiff;
 import ai.hyperlearning.ontopop.model.owl.diff.SimpleObjectPropertyDiff;
 import ai.hyperlearning.ontopop.model.owl.diff.SimpleOntologyDiff;
 import ai.hyperlearning.ontopop.owl.OWLRDFXMLAPI;
@@ -44,6 +47,12 @@ public class OntoKaiOWLAPI {
             "http://www.w3.org/2000/01/rdf-schema#label";
     private static final String SUBCLASS_OF_OBJECT_PROPERTY_RDFS_LABEL = 
             "SUBCLASS OF";
+    private static final String ONTOKAI_NODE_CLASS_CATEGORY_VALUE = 
+            "CLASS";
+    private static final String ONTOKAI_SUBCLASS_OF_TYPE_VALUE = 
+            "SUBCLASS_OF";
+    private static final String ONTOKAI_RESTRICTION_BUNDLE_TYPE_VALUE = 
+            "SOME";
     
     private OntoKaiOWLAPI() {
         throw new IllegalStateException("The OntoKaiOWLAPI utility class "
@@ -72,9 +81,11 @@ public class OntoKaiOWLAPI {
         // Identify new annotation properties
         List<SimpleAnnotationPropertyDiff> createdSimpleAnnotationProperties = 
                 new ArrayList<>();
+        Map<String, SimpleAnnotationProperty> newAnnotationProperties = 
+                identifyNewAnnotationProperties(
+                        ontoKaiOntologyPayload, simpleOntology);
         for ( SimpleAnnotationProperty simpleAnnotationProperty : 
-            identifyNewAnnotationProperties(
-                    ontoKaiOntologyPayload, simpleOntology).values()) {
+                newAnnotationProperties.values()) {
             SimpleAnnotationPropertyDiff simpleAnnotationPropertyDiff = 
                     new SimpleAnnotationPropertyDiff();
             simpleAnnotationPropertyDiff.setAfter(simpleAnnotationProperty);
@@ -88,9 +99,11 @@ public class OntoKaiOWLAPI {
         // Identify new object properties
         List<SimpleObjectPropertyDiff> createdSimpleObjectProperties = 
                 new ArrayList<>();
+        Map<String, SimpleObjectProperty> newObjectProperties = 
+                identifyNewObjectProperties(
+                        ontoKaiOntologyPayload, simpleOntology);
         for ( SimpleObjectProperty simpleObjectProperty : 
-            identifyNewObjectProperties(
-                    ontoKaiOntologyPayload, simpleOntology).values()) {
+                newObjectProperties.values()) {
             SimpleObjectPropertyDiff simpleObjectPropertyDiff = 
                     new SimpleObjectPropertyDiff();
             simpleObjectPropertyDiff.setAfter(simpleObjectProperty);
@@ -101,6 +114,18 @@ public class OntoKaiOWLAPI {
             createdSimpleObjectProperties.add(simpleObjectPropertyDiff);
         }
         
+        // Identify new classes
+        List<SimpleClassDiff> createdSimpleClasses = new ArrayList<>();
+        List<Map<String, SimpleClass>> classDiffs = identifyClassDiffs(
+                ontoKaiOntologyPayload, simpleOntology, 
+                newAnnotationProperties, newObjectProperties);
+        Map<String, SimpleClass> newClasses = classDiffs.get(0);
+        for ( SimpleClass simpleClass : newClasses.values()) {
+            SimpleClassDiff simpleClassDiff = new SimpleClassDiff();
+            simpleClassDiff.setAfter(simpleClass);
+            createdSimpleClasses.add(simpleClassDiff);
+        }
+        
         
         // Generate the SimpleOntologyDiff object
         SimpleOntologyDiff simpleOntologyDiff = new SimpleOntologyDiff();
@@ -108,6 +133,7 @@ public class OntoKaiOWLAPI {
                 createdSimpleAnnotationProperties);
         simpleOntologyDiff.setCreatedSimpleObjectProperties(
                 createdSimpleObjectProperties);
+        simpleOntologyDiff.setCreatedSimpleClasses(createdSimpleClasses);
         
         return simpleOntologyDiff;
         
@@ -130,7 +156,7 @@ public class OntoKaiOWLAPI {
      * Identify any new annotation properties in the OntoKai ontology
      * payload object. If new annotation properties are found,
      * create SimpleAnnotationProperty object representations of them and 
-     * return a mapping between generated IRI and the SimpleAnnotationProperty.
+     * return a mapping between the label and the SimpleAnnotationProperty.
      * @param ontoKaiOntologyPayload
      * @param latestExistingOntology
      * @return
@@ -162,7 +188,7 @@ public class OntoKaiOWLAPI {
             // Iterate over all the attributes for this node
             for ( OntoKaiOntologyNodeAttribute attribute : node.getAttributes() ) {
                 
-                // Check whether the attribute key already exists
+                // Check whether the attribute name already exists
                 // as an annotation property in the given SimpleOntology
                 String attributeName = attribute.getName().strip();
                 if ( !standardSchemaAnnotationPropertyLabels.contains(
@@ -183,7 +209,7 @@ public class OntoKaiOWLAPI {
                     newSimpleAnnotationProperty.setAnnotations(annotations);
                     newSimpleAnnotationPropertyLabels.add(attributeName.toUpperCase());
                     newSimpleAnnotationProperties.put(
-                            newSimpleAnnotationProperty.getIri(), 
+                            attributeName.toUpperCase(), 
                             newSimpleAnnotationProperty);
                     
                 }
@@ -199,7 +225,7 @@ public class OntoKaiOWLAPI {
     /**
      * Identify new object properties in the OntoKai ontology payload object. 
      * If new object properties are found, create SimpleObjectProperty object
-     * representations of them and return a mapping between generated IRI and
+     * representations of them and return a mapping between the label and
      * the SimpleObjectProperty.
      * @param ontoKaiOntologyPayload
      * @param simpleOntology
@@ -226,7 +252,7 @@ public class OntoKaiOWLAPI {
             for ( OntoKaiOntologyNodeRelationship relationship : 
                 node.getRelationships() ) {
                 
-                // Check whether the type key already exists
+                // Check whether the type value already exists
                 // as an object property in the given SimpleOntology
                 String typeTransformed = relationship.getType().strip()
                         .toUpperCase().replace("_", " ");
@@ -248,7 +274,7 @@ public class OntoKaiOWLAPI {
                     newSimpleObjectProperty.setAnnotations(annotations);
                     newSimpleObjectPropertyLabels.add(typeTransformed);
                     newSimpleObjectProperties.put(
-                            newSimpleObjectProperty.getIri(), 
+                            typeTransformed, 
                             newSimpleObjectProperty);
                     
                 }
@@ -258,6 +284,211 @@ public class OntoKaiOWLAPI {
         }
         
         return newSimpleObjectProperties;
+        
+    }
+    
+    /**
+     * Identify classes that have been created, updated and deleted by 
+     * comparing the OntoKai ontology payload object with the latest
+     * existing SimpleOntology object. The first map in the list returned 
+     * contains created classes, the second map contains updated classes, 
+     * and the third map contains deleted classes.
+     * @param ontoKaiOntologyPayload
+     * @param simpleOntology
+     * @param newAnnotationProperties
+     * @param newObjectProperties
+     * @return
+     */
+    
+    public static List<Map<String, SimpleClass>> identifyClassDiffs(
+            OntoKaiOntologyPayload ontoKaiOntologyPayload, 
+            SimpleOntology simpleOntology, 
+            Map<String, SimpleAnnotationProperty> newAnnotationProperties, 
+            Map<String, SimpleObjectProperty> newObjectProperties) {
+        
+        // Instantiate maps that will contain created, updated and deleted classes
+        Map<String, SimpleClass> createdClasses = new HashMap<>();
+        Map<String, SimpleClass> updatedClasses = new HashMap<>();
+        Map<String, SimpleClass> deletedClasses = new HashMap<>();
+        
+        /**********************************************************************
+         * DELETED CLASSES
+         *********************************************************************/
+        
+        // Iterate over all existing classes
+        for (String existingClassIri : 
+            simpleOntology.getSimpleClassMap().keySet()) {
+            
+            // Iterate over all nodes in the OntoKai ontology payload object
+            boolean existingClassIriFound = false;
+            for ( OntoKaiOntologyNode node : ontoKaiOntologyPayload.getNodes() ) {
+                if ( node.getUrl().equalsIgnoreCase(existingClassIri) ) {
+                    existingClassIriFound = true;
+                    break;
+                }
+            }
+            
+            // If the existing class IRI has not been found in the 
+            // OntoKai ontology payload object, then we assume that it 
+            // has been deleted.
+            if ( !existingClassIriFound )
+                deletedClasses.put(existingClassIri, 
+                        simpleOntology.getSimpleClassMap()
+                            .get(existingClassIri));
+            
+        }
+        
+        /**********************************************************************
+         * CREATED AND UPDATED CLASSES
+         *********************************************************************/
+        
+        // Iterate over all nodes in the OntoKai ontology payload object
+        for ( OntoKaiOntologyNode node : ontoKaiOntologyPayload.getNodes() ) {
+            if ( node.getCategory() != null && node.getCategory()
+                    .equalsIgnoreCase(ONTOKAI_NODE_CLASS_CATEGORY_VALUE) ) {
+            
+                // Iterate over all existing classes
+                boolean ontoKaiNodeFound = false;
+                for (Map.Entry<String, SimpleClass> entry : 
+                    simpleOntology.getSimpleClassMap().entrySet()) {
+                    if ( entry.getKey().equalsIgnoreCase(node.getUrl()) ) {
+                        ontoKaiNodeFound = true;
+                        break;
+                    }
+                }
+                
+                // Created classes
+                if ( !ontoKaiNodeFound )
+                    createdClasses.put(node.getUrl(), toSimpleClass(node, 
+                            ontoKaiOntologyPayload, simpleOntology, 
+                            newAnnotationProperties, newObjectProperties));
+                
+                // Check whether the class has been updated
+                else {
+                    
+                    
+                    
+                    
+                }
+                
+            }
+            
+        }
+        
+        // Return the list of maps
+        return Arrays.asList(createdClasses, updatedClasses, deletedClasses);
+        
+    }
+    
+    /**
+     * Parse and convert an OntoKaiOntologyNode object into a 
+     * SimpleClass object.
+     * @param node
+     * @return
+     */
+    
+    public static SimpleClass toSimpleClass(OntoKaiOntologyNode node, 
+            OntoKaiOntologyPayload ontoKaiOntologyPayload, 
+            SimpleOntology simpleOntology, 
+            Map<String, SimpleAnnotationProperty> newAnnotationProperties, 
+            Map<String, SimpleObjectProperty> newObjectProperties) {
+        
+        // Set the IRI and RDFS label
+        SimpleClass simpleClass = new SimpleClass();
+        simpleClass.setIri(node.getUrl());
+        simpleClass.setLabel(node.getLabel());
+        
+        /**********************************************************************
+         * ATTRIBUTES
+         *********************************************************************/
+        
+        // Join the existing and new annotation property maps
+        Map<String, SimpleAnnotationProperty> allSimpleAnnotationProperties = 
+                new HashMap<>(simpleOntology.getUniqueSimpleAnnotationPropertyLabelsMap());
+        allSimpleAnnotationProperties.putAll(newAnnotationProperties);
+        
+        // Iterate over all the node attributes
+        Map<String, String> annotations = new LinkedHashMap<>();
+        for ( OntoKaiOntologyNodeAttribute attribute : node.getAttributes() ) {
+            
+            // Create a new annotation mapping
+            String attributeName = attribute.getName().strip();
+            String annotationPropertyIri = allSimpleAnnotationProperties
+                    .containsKey(attributeName.toUpperCase()) ? 
+                            allSimpleAnnotationProperties
+                                .get(attributeName.toUpperCase()).getIri() : 
+                                    null;
+            if ( annotationPropertyIri != null )
+                annotations.put(annotationPropertyIri, attribute.getValue());
+            
+        }
+        
+        // Set the annotations
+        simpleClass.setAnnotations(annotations);
+        
+        /**********************************************************************
+         * RELATIONSHIPS
+         *********************************************************************/
+        
+        // Join the existing and new object property maps
+        Map<String, SimpleObjectProperty> allSimpleObjectProperties = 
+                new HashMap<>(simpleOntology.getUniqueSimpleObjectPropertyLabelsMap());
+        allSimpleObjectProperties.putAll(newObjectProperties);
+        
+        // Generate a mapping between OntoKai node ID and class IRI
+        Map<Integer, String> ontoKaiNodeIdIriMap = ontoKaiOntologyPayload
+                .generateOntoKaiNodeIdIriMap();
+        
+        // Iterate over all the node relationships
+        Map<String, String> parentClasses = new LinkedHashMap<>();
+        for ( OntoKaiOntologyNodeRelationship relationship : 
+            node.getRelationships() ) {
+            
+            // Create a new parent class mapping
+            String parentClassIri = ontoKaiNodeIdIriMap.containsKey(
+                    relationship.getParentId()) ? 
+                            ontoKaiNodeIdIriMap.get(relationship.getParentId()) : 
+                                null;
+            if ( parentClassIri != null ) {
+                
+                // If there is NO object property restriction
+                if ( relationship.getType().equalsIgnoreCase(
+                        ONTOKAI_SUBCLASS_OF_TYPE_VALUE) )
+                    parentClasses.put(parentClassIri, null);
+                
+                // If there IS an object property restriction
+                else {
+                    if ( relationship.getBundleType() != null && 
+                            relationship.getBundleType().equalsIgnoreCase(
+                                    ONTOKAI_RESTRICTION_BUNDLE_TYPE_VALUE)) {
+                        parentClassIri = relationship.getBundleValue();
+                        if ( parentClassIri != null ) {
+                            
+                            // Get the object property IRI
+                            String typeTransformed = relationship.getType()
+                                    .strip().toUpperCase().replace("_", " ");
+                            String objectPropertyIri = allSimpleObjectProperties
+                                    .containsKey(typeTransformed) ? 
+                                            allSimpleObjectProperties
+                                                .get(typeTransformed).getIri() : 
+                                                    null;
+                            if ( objectPropertyIri != null )
+                                parentClasses.put(parentClassIri, 
+                                        objectPropertyIri);
+                            
+                        }
+                    }
+                }
+                
+            }
+            
+        }
+        
+        // Set the parent classes
+        simpleClass.setParentClasses(parentClasses);
+        
+        // Return the final simple class object
+        return simpleClass;
         
     }
     
