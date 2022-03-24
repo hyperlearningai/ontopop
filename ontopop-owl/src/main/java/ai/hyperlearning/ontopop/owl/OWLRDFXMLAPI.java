@@ -80,6 +80,21 @@ public class OWLRDFXMLAPI {
                     "</owl:Class>")
     );
     
+    private static final String RDF_XML_DECLARATION_START = 
+            "<?xml version=\"1.0\"?>\n"
+            + "<rdf:RDF xmlns=\"{IRI}#\"" + System.lineSeparator()
+            + "     xml:base=\"{IRI}\"" + System.lineSeparator()
+            + "     xmlns:dc=\"http://purl.org/dc/elements/1.1/\"" + System.lineSeparator()
+            + "     xmlns:owl=\"http://www.w3.org/2002/07/owl#\"" + System.lineSeparator()
+            + "     xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"" + System.lineSeparator()
+            + "     xmlns:xml=\"http://www.w3.org/XML/1998/namespace\"" + System.lineSeparator()
+            + "     xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\"" + System.lineSeparator()
+            + "     xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"" + System.lineSeparator()
+            + "     xmlns:skos=\"http://www.w3.org/2004/02/skos/core#\"" + System.lineSeparator()
+            + "     xmlns:webprotege=\"http://webprotege.stanford.edu/\">" + System.lineSeparator()
+            + "    <owl:Ontology rdf:about=\"{IRI}\"/>";
+    private static final String RDF_XML_DECLARATION_END = "</rdf:RDF>";
+    
     private OWLRDFXMLAPI() {
         throw new IllegalStateException("The OWLRDFXMLAPI "
                 + "utility class cannot be instantiated.");
@@ -259,6 +274,130 @@ public class OWLRDFXMLAPI {
                 OWLSchemaVocabulary.CLASS));
         return xmlBuilder.toString();
         
+    }
+    
+    /**
+     * Delete an OWL Annotation Property XML node from a given
+     * RDF/XML OWL string given a SimpleAnnotationProperty object
+     * @param simpleAnnotationProperty
+     * @return
+     */
+    
+    public static String deleteOwlAnnotationPropertyFromOwlXmlString(
+            String owlXml, SimpleAnnotationProperty simpleAnnotationProperty, 
+            String comment) {
+        return deleteOwlNodeFromXmlString(owlXml, 
+                OWLSchemaVocabulary.ANNOTATION_PROPERTY, 
+                simpleAnnotationProperty.getIri(), 
+                comment);
+    }
+    
+    /**
+     * Delete an OWL Object Property XML node from a given
+     * RDF/XML OWL string given a SimpleObjectProperty object
+     * @param simpleObjectProperty
+     * @return
+     */
+    
+    public static String deleteOwlObjectPropertyFromOwlXmlString(
+            String owlXml, SimpleObjectProperty simpleObjectProperty, 
+            String comment) {
+        return deleteOwlNodeFromXmlString(owlXml, 
+                OWLSchemaVocabulary.OBJECT_PROPERTY, 
+                simpleObjectProperty.getIri(), 
+                comment);
+    }
+    
+    /**
+     * Delete an OWL Class XML node from a given
+     * RDF/XML OWL string given a SimpleClass object
+     * @param simpleClass
+     * @return
+     */
+    
+    public static String deleteOwlClassFromOwlXmlString(
+            String owlXml, SimpleClass simpleClass, String comment) {
+        return deleteOwlNodeFromXmlString(owlXml, 
+                OWLSchemaVocabulary.CLASS, 
+                simpleClass.getIri(), 
+                comment);
+    }
+    
+    /**
+     * Delete a general OWL XML node from a given RDF/XML OWL
+     * string given the OWL object type and IRI
+     * @param owlSchemaVocabulary
+     * @param iri
+     * @return
+     */
+    
+    public static String deleteOwlNodeFromXmlString(String owlXml, 
+            OWLSchemaVocabulary owlSchemaVocabulary, String iri, 
+            String comment) {
+        String owlXmlNodeStart = NODE_START.get(owlSchemaVocabulary)
+                .replace(IRI_PLACEHOLDER, iri);
+        String owlXmlNodeEnd = NODE_END.get(owlSchemaVocabulary);
+        int owlXmlNodeStartIndex = owlXml.indexOf(owlXmlNodeStart);
+        if ( owlXmlNodeStartIndex > -1 ) {
+            int owlXmlNodeEndIndex = owlXml.indexOf(
+                    owlXmlNodeEnd, owlXmlNodeStartIndex);
+            if ( owlXmlNodeEndIndex > -1 ) {
+                StringBuilder buffer = new StringBuilder(owlXml);
+                buffer.replace(owlXmlNodeStartIndex, 
+                        owlXmlNodeEndIndex + owlXmlNodeEnd.length(), 
+                        comment != null ? "<!-- " + comment + " -->" : "");
+                return buffer.toString();
+            }
+        }
+        return owlXml;
+    }
+    
+    /**
+     * Delete a general string from a given RDF/XML OWL string
+     * @param owlXml
+     * @param stringToRemove
+     * @return
+     */
+    
+    public static String deleteStringFromXmlString(
+            String owlXml, String stringToRemove) {
+        return owlXml.replace(stringToRemove, "");
+    }
+    
+    /**
+     * Append a general string to a given RDF/XML OWL string
+     * @param owlXml
+     * @param owlXmlToAdd
+     * @param comment
+     * @return
+     */
+    
+    public static String addStringToXmlString(
+            String owlXml, String stringToAdd, String comment) {
+        StringBuilder xml = new StringBuilder(owlXml);
+        xml.append(System.lineSeparator());
+        if ( comment != null ) {
+            xml.append("<!-- " + comment + " -->");
+            xml.append(System.lineSeparator());
+        }
+        xml.append(stringToAdd);
+        return xml.toString();
+    }
+    
+    /**
+     * Add the RDF/XML declaration to a given RDF/XML OWL string
+     * @param ontologyIri
+     * @param owlXml
+     * @return
+     */
+    
+    public static String addDeclarationToXmlString(
+            String ontologyIri, String owlXml) {
+        StringBuilder xml = new StringBuilder(RDF_XML_DECLARATION_START
+                .replace(IRI_PLACEHOLDER, ontologyIri));
+        xml.append(owlXml);
+        xml.append(RDF_XML_DECLARATION_END);
+        return xml.toString();
     }
 
 }

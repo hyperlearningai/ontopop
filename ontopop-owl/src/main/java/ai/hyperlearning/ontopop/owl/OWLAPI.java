@@ -58,6 +58,11 @@ public class OWLAPI {
     private static final OWLDataFactory SHARED_OWL_DATA_FACTORY =
             SHARED_OWL_ONTOLOGY_MANAGER.getOWLDataFactory();
     private static final String DELIMITER = "|";
+    
+    private OWLAPI() {
+        throw new IllegalStateException("The OWLAPI "
+                + "utility class cannot be instantiated.");
+    }
 
     /**************************************************************************
      * Loaders
