@@ -79,61 +79,46 @@ public class OntoKaiOntologyMapper {
                     throws OWLOntologyCreationException, IOException {
         
         // Identify new annotation properties
-        List<SimpleAnnotationPropertyDiff> createdSimpleAnnotationProperties = 
-                new ArrayList<>();
         Map<String, SimpleAnnotationProperty> newAnnotationProperties = 
                 identifyNewAnnotationProperties(
                         ontoKaiOntologyPayload, simpleOntology);
-        for ( SimpleAnnotationProperty simpleAnnotationProperty : 
-                newAnnotationProperties.values()) {
-            SimpleAnnotationPropertyDiff simpleAnnotationPropertyDiff = 
-                    new SimpleAnnotationPropertyDiff();
-            simpleAnnotationPropertyDiff.setAfter(simpleAnnotationProperty);
-            simpleAnnotationPropertyDiff.setAfterXml(
-                    OWLRDFXMLAPI.generateNewOwlAnnotationPropertyXml(
-                            simpleAnnotationProperty.getIri(), 
-                            simpleAnnotationProperty.getLabel()));
-            createdSimpleAnnotationProperties.add(simpleAnnotationPropertyDiff);
-        }
+        List<SimpleAnnotationPropertyDiff> createdSimpleAnnotationPropertyDiffs = 
+                toSimpleAnnotationPropertyDiffs(newAnnotationProperties);
         
         // Identify new object properties
-        List<SimpleObjectPropertyDiff> createdSimpleObjectProperties = 
-                new ArrayList<>();
         Map<String, SimpleObjectProperty> newObjectProperties = 
                 identifyNewObjectProperties(
                         ontoKaiOntologyPayload, simpleOntology);
-        for ( SimpleObjectProperty simpleObjectProperty : 
-                newObjectProperties.values()) {
-            SimpleObjectPropertyDiff simpleObjectPropertyDiff = 
-                    new SimpleObjectPropertyDiff();
-            simpleObjectPropertyDiff.setAfter(simpleObjectProperty);
-            simpleObjectPropertyDiff.setAfterXml(
-                    OWLRDFXMLAPI.generateNewOwlObjectPropertyXml(
-                            simpleObjectProperty.getIri(), 
-                            simpleObjectProperty.getLabel()));
-            createdSimpleObjectProperties.add(simpleObjectPropertyDiff);
-        }
+        List<SimpleObjectPropertyDiff> createdSimpleObjectPropertyDiffs = 
+                toSimpleObjectPropertyDiffs(newObjectProperties);
         
         // Identify new classes
-        List<SimpleClassDiff> createdSimpleClasses = new ArrayList<>();
         List<Map<String, SimpleClass>> classDiffs = identifyClassDiffs(
                 ontoKaiOntologyPayload, simpleOntology, 
                 newAnnotationProperties, newObjectProperties);
         Map<String, SimpleClass> newClasses = classDiffs.get(0);
-        for ( SimpleClass simpleClass : newClasses.values()) {
-            SimpleClassDiff simpleClassDiff = new SimpleClassDiff();
-            simpleClassDiff.setAfter(simpleClass);
-            createdSimpleClasses.add(simpleClassDiff);
-        }
+        List<SimpleClassDiff> createdSimpleClassDiffs = 
+                toCreatedSimpleClassDiffs(newClasses);
         
+        // Identify updated classes
+        Map<String, SimpleClass> updatedClasses = classDiffs.get(1);
+        List<SimpleClassDiff> updatedSimpleClassDiffs = 
+                toUpdatedSimpleClassDiffs(updatedClasses);
+        
+        // Identify deleted classes
+        Map<String, SimpleClass> deletedClasses = classDiffs.get(2);
+        List<SimpleClassDiff> deletedSimpleClassDiffs = 
+                toDeletedSimpleClassDiffs(deletedClasses);
         
         // Generate the SimpleOntologyDiff object
         SimpleOntologyDiff simpleOntologyDiff = new SimpleOntologyDiff();
         simpleOntologyDiff.setCreatedSimpleAnnotationProperties(
-                createdSimpleAnnotationProperties);
+                createdSimpleAnnotationPropertyDiffs);
         simpleOntologyDiff.setCreatedSimpleObjectProperties(
-                createdSimpleObjectProperties);
-        simpleOntologyDiff.setCreatedSimpleClasses(createdSimpleClasses);
+                createdSimpleObjectPropertyDiffs);
+        simpleOntologyDiff.setCreatedSimpleClasses(createdSimpleClassDiffs);
+        simpleOntologyDiff.setUpdatedSimpleClasses(updatedSimpleClassDiffs);
+        // simpleOntologyDiff.setDeletedSimpleClasses(deletedSimpleClassDiffs);
         
         return simpleOntologyDiff;
         
@@ -223,6 +208,29 @@ public class OntoKaiOntologyMapper {
     }
     
     /**
+     * Convert a given map of identified new annotation properties into
+     * a list of SimpleAnnotationPropertyDiff objects
+     * @param newAnnotationProperties
+     * @return
+     */
+    
+    public static List<SimpleAnnotationPropertyDiff> toSimpleAnnotationPropertyDiffs(
+            Map<String, SimpleAnnotationProperty> newAnnotationProperties) {
+        List<SimpleAnnotationPropertyDiff> createdSimpleAnnotationPropertyDiffs = 
+                new ArrayList<>();
+        for ( SimpleAnnotationProperty simpleAnnotationProperty : 
+                newAnnotationProperties.values()) {
+            SimpleAnnotationPropertyDiff simpleAnnotationPropertyDiff = 
+                    new SimpleAnnotationPropertyDiff();
+            simpleAnnotationPropertyDiff.setAfter(simpleAnnotationProperty);
+            simpleAnnotationPropertyDiff.setAfterXml(OWLRDFXMLAPI
+                    .generateNewOwlAnnotationPropertyXml(simpleAnnotationProperty));
+            createdSimpleAnnotationPropertyDiffs.add(simpleAnnotationPropertyDiff);
+        }
+        return createdSimpleAnnotationPropertyDiffs;
+    }
+    
+    /**
      * Identify new object properties in the OntoKai ontology payload object. 
      * If new object properties are found, create SimpleObjectProperty object
      * representations of them and return a mapping between the label and
@@ -285,6 +293,29 @@ public class OntoKaiOntologyMapper {
         
         return newSimpleObjectProperties;
         
+    }
+    
+    /**
+     * Convert a given map of identified new object properties into
+     * a list of SimpleObjectPropertyDiff objects
+     * @param newObjectProperties
+     * @return
+     */
+    
+    public static List<SimpleObjectPropertyDiff> toSimpleObjectPropertyDiffs(
+            Map<String, SimpleObjectProperty> newObjectProperties) {
+        List<SimpleObjectPropertyDiff> createdSimpleObjectPropertyDiffs = 
+                new ArrayList<>();
+        for ( SimpleObjectProperty simpleObjectProperty : 
+            newObjectProperties.values()) {
+            SimpleObjectPropertyDiff simpleObjectPropertyDiff = 
+                    new SimpleObjectPropertyDiff();
+            simpleObjectPropertyDiff.setAfter(simpleObjectProperty);
+            simpleObjectPropertyDiff.setAfterXml(OWLRDFXMLAPI
+                    .generateNewOwlObjectPropertyXml(simpleObjectProperty));
+            createdSimpleObjectPropertyDiffs.add(simpleObjectPropertyDiff);
+        }
+        return createdSimpleObjectPropertyDiffs;
     }
     
     /**
@@ -501,6 +532,65 @@ public class OntoKaiOntologyMapper {
         // Return the final simple class object
         return simpleClass;
         
+    }
+    
+    /**
+     * Convert a given map of identified new classes into
+     * a list of SimpleClassDiff objects
+     * @param newClasses
+     * @return
+     */
+    
+    public static List<SimpleClassDiff> toCreatedSimpleClassDiffs(
+            Map<String, SimpleClass> newClasses) {
+        List<SimpleClassDiff> createdSimpleClassDiffs = new ArrayList<>();
+        for ( SimpleClass simpleClass : newClasses.values()) {
+            SimpleClassDiff simpleClassDiff = new SimpleClassDiff();
+            simpleClassDiff.setAfter(simpleClass);
+            simpleClassDiff.setAfterXml(OWLRDFXMLAPI
+                    .generateOwlClassXml(simpleClass));
+            createdSimpleClassDiffs.add(simpleClassDiff);
+        }
+        return createdSimpleClassDiffs;
+    }
+    
+    /**
+     * Convert a given map of identified updated classes into
+     * a list of SimpleClassDiff objects
+     * @param updatedClasses
+     * @return
+     */
+    
+    public static List<SimpleClassDiff> toUpdatedSimpleClassDiffs(
+            Map<String, SimpleClass> updatedClasses) {
+        List<SimpleClassDiff> updatedSimpleClassDiffs = new ArrayList<>();
+        for ( SimpleClass simpleClass : updatedClasses.values()) {
+            SimpleClassDiff simpleClassDiff = new SimpleClassDiff();
+            simpleClassDiff.setBefore(simpleClass);
+            simpleClassDiff.setAfter(simpleClass);
+            simpleClassDiff.setAfterXml(OWLRDFXMLAPI
+                    .generateOwlClassXml(simpleClass));
+            updatedSimpleClassDiffs.add(simpleClassDiff);
+        }
+        return updatedSimpleClassDiffs;
+    }
+    
+    /**
+     * Convert a given map of identified deleted classes into 
+     * a list of SimpleClassDiff objects
+     * @param deletedClasses
+     * @return
+     */
+    
+    public static List<SimpleClassDiff> toDeletedSimpleClassDiffs(
+            Map<String, SimpleClass> deletedClasses) {
+        List<SimpleClassDiff> deletedSimpleClassDiffs = new ArrayList<>();
+        for ( SimpleClass simpleClass : deletedClasses.values()) {
+            SimpleClassDiff simpleClassDiff = new SimpleClassDiff();
+            simpleClassDiff.setBefore(simpleClass);
+            deletedSimpleClassDiffs.add(simpleClassDiff);
+        }
+        return deletedSimpleClassDiffs;
     }
     
     /**
