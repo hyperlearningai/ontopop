@@ -118,7 +118,7 @@ public class OntoKaiOntologyMapper {
                 createdSimpleObjectPropertyDiffs);
         simpleOntologyDiff.setCreatedSimpleClasses(createdSimpleClassDiffs);
         simpleOntologyDiff.setUpdatedSimpleClasses(updatedSimpleClassDiffs);
-        // simpleOntologyDiff.setDeletedSimpleClasses(deletedSimpleClassDiffs);
+        simpleOntologyDiff.setDeletedSimpleClasses(deletedSimpleClassDiffs);
         
         return simpleOntologyDiff;
         
@@ -345,6 +345,23 @@ public class OntoKaiOntologyMapper {
         Map<String, SimpleClass> updatedClasses = new HashMap<>();
         Map<String, SimpleClass> deletedClasses = new HashMap<>();
         
+        // Join the existing and new annotation property maps
+        Map<String, SimpleAnnotationProperty> allSimpleAnnotationProperties = 
+                new HashMap<>(simpleOntology
+                        .getUniqueSimpleAnnotationPropertyLabelsMap());
+        allSimpleAnnotationProperties.putAll(newAnnotationProperties);
+        allSimpleAnnotationProperties.putAll(StandardRDFSchema
+                .getLabelStandardSchemaAnnotationPropertyMap());
+        
+        // Join the existing and new object property maps
+        Map<String, SimpleObjectProperty> allSimpleObjectProperties = 
+                new HashMap<>(simpleOntology.getUniqueSimpleObjectPropertyLabelsMap());
+        allSimpleObjectProperties.putAll(newObjectProperties);
+        
+        // Generate a mapping between OntoKai node ID and class IRI
+        Map<Integer, String> ontoKaiNodeIdIriMap = ontoKaiOntologyPayload
+                .generateNodeIdIriMap();
+        
         /**********************************************************************
          * DELETED CLASSES
          *********************************************************************/
@@ -400,8 +417,148 @@ public class OntoKaiOntologyMapper {
                 // Check whether the class has been updated
                 else {
                     
+                    // Get the existing class
+                    SimpleClass existingClass = simpleOntology
+                            .getSimpleClassMap().get(node.getUrl());
                     
+                    /**********************************************************
+                     * ATTRIBUTES
+                     *********************************************************/
                     
+                    boolean deletedAttributeExists = false;
+                    boolean createdAttributeExists = false;
+                    boolean updateAttributeExists = false;
+                    
+                    // Generate a map of annotation property IRI to annotation
+                    // literal value for the current OntoKai node
+                    Map<String, String> currentNodeAnnotationIriValueMap = 
+                            node.generateAttributeIriValueMap(
+                                    allSimpleAnnotationProperties);
+                    
+                    // Check for deleted attributes
+                    for ( String existingAnnotationIri : 
+                        existingClass.getAnnotations().keySet() ) {
+                        if ( !currentNodeAnnotationIriValueMap.containsKey(
+                                existingAnnotationIri) ) {
+                            deletedAttributeExists = true;
+                            break;
+                        }
+                    }
+                    
+                    // Check for created or updated attributes
+                    if ( !deletedAttributeExists ) {
+                        
+                        for (Map.Entry<String, String> entry : 
+                            currentNodeAnnotationIriValueMap.entrySet()) {
+                            
+                            // Check for created attributes
+                            if ( !existingClass.getAnnotations().containsKey(
+                                    entry.getKey()) ) {
+                                createdAttributeExists = true;
+                                break;
+                            }
+                            
+                            // Check for updated attributes
+                            else {
+                                
+                                String currentNodeAnnotationValue = entry.getValue();
+                                String existingClassAnnotationValue = 
+                                        existingClass.getAnnotations().get(entry.getKey());
+                                if ( !currentNodeAnnotationValue.equalsIgnoreCase(
+                                        existingClassAnnotationValue) ) {
+                                    updateAttributeExists = true;
+                                    break;
+                                }
+                                
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                    // Attribute changes found
+                    if ( deletedAttributeExists || createdAttributeExists 
+                            || updateAttributeExists )
+                        updatedClasses.put(node.getUrl(), toSimpleClass(node, 
+                                ontoKaiOntologyPayload, simpleOntology, 
+                                newAnnotationProperties, newObjectProperties));
+                    
+                    else {
+                        
+                        /******************************************************
+                         * RELATIONSHIPS
+                         *****************************************************/
+                        
+                        boolean deletedRelationshipExists = false;
+                        boolean createdRelationshipExists = false;
+                        boolean updateRelationshipExists = false;
+                        
+                        // Generate a map of parent class IRI to object property
+                        // IRI for the current OntoKai node relationships
+                        Map<String, String> currentNodeRelationshipsMap = 
+                                node.generateParentClassIriPropertyRestrictionIriMap(
+                                        ontoKaiNodeIdIriMap, 
+                                        allSimpleObjectProperties);
+                        
+                        // Check for deleted relationships
+                        for ( String existingClassParentClassIri : 
+                            existingClass.getParentClasses().keySet() ) {
+                            if ( !currentNodeRelationshipsMap.containsKey(
+                                    existingClassParentClassIri) ) {
+                                deletedRelationshipExists = true;
+                                break;
+                            }
+                        }
+                        
+                        // Check for created or updated relationships
+                        if ( !deletedRelationshipExists ) {
+                            
+                            for (Map.Entry<String, String> entry : 
+                                currentNodeRelationshipsMap.entrySet()) {
+                                
+                                // Check for created relationships
+                                if ( !existingClass.getParentClasses()
+                                        .containsKey(entry.getKey()) ) {
+                                    createdRelationshipExists = true;
+                                    break;
+                                }
+                                
+                                // Check for updated relationships
+                                else {
+                                    
+                                    String currentNodeRelationshipRestrictionIri = 
+                                            entry.getValue();
+                                    String existingClassRelationshipRestrictionIri = 
+                                            existingClass.getParentClasses()
+                                                .get(entry.getKey());
+                                    if ( (currentNodeRelationshipRestrictionIri == null 
+                                            && existingClassRelationshipRestrictionIri != null) ||
+                                         (currentNodeRelationshipRestrictionIri != null 
+                                            && existingClassRelationshipRestrictionIri == null) ||
+                                         (currentNodeRelationshipRestrictionIri != null
+                                                 && existingClassRelationshipRestrictionIri != null 
+                                                 && !currentNodeRelationshipRestrictionIri
+                                                     .equalsIgnoreCase(
+                                                             existingClassRelationshipRestrictionIri)) ) {
+                                        updateRelationshipExists = true;
+                                        break;
+                                    }  
+                                    
+                                }
+                                
+                                
+                            }
+                            
+                        }
+                        
+                        // Relationship changes found
+                        if ( deletedRelationshipExists || createdRelationshipExists 
+                                || updateRelationshipExists )
+                            updatedClasses.put(node.getUrl(), toSimpleClass(node, 
+                                    ontoKaiOntologyPayload, simpleOntology, 
+                                    newAnnotationProperties, newObjectProperties));
+                        
+                    }
                     
                 }
                 
@@ -476,7 +633,7 @@ public class OntoKaiOntologyMapper {
         
         // Generate a mapping between OntoKai node ID and class IRI
         Map<Integer, String> ontoKaiNodeIdIriMap = ontoKaiOntologyPayload
-                .generateOntoKaiNodeIdIriMap();
+                .generateNodeIdIriMap();
         
         // Iterate over all the node relationships
         Map<String, String> parentClasses = new LinkedHashMap<>();

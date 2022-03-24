@@ -72,12 +72,12 @@ public class OntoKaiOntologyPayload implements Serializable {
     }
     
     @JsonIgnore
-    public Map<Integer, String> generateOntoKaiNodeIdIriMap() {
-        Map<Integer, String> ontoKaiNodeIdIriMap = new HashMap<>();
+    public Map<Integer, String> generateNodeIdIriMap() {
+        Map<Integer, String> nodeIdIriMap = new HashMap<>();
         for ( OntoKaiOntologyNode node : this.nodes ) {
-            ontoKaiNodeIdIriMap.put(node.getId(), node.getUrl());
+            nodeIdIriMap.put(node.getId(), node.getUrl());
         }
-        return ontoKaiNodeIdIriMap;
+        return nodeIdIriMap;
     }
 
     @Override
