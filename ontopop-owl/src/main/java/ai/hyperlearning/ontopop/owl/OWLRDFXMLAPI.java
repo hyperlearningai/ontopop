@@ -1,19 +1,41 @@
 package ai.hyperlearning.ontopop.owl;
 
 import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.AbstractMap;
 import java.util.Map;
 
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import ai.hyperlearning.ontopop.model.owl.SimpleAnnotationProperty;
 import ai.hyperlearning.ontopop.model.owl.SimpleClass;
 import ai.hyperlearning.ontopop.model.owl.SimpleObjectProperty;
+import ai.hyperlearning.ontopop.model.owl.diff.SimpleAnnotationPropertyDiff;
+import ai.hyperlearning.ontopop.model.owl.diff.SimpleClassDiff;
+import ai.hyperlearning.ontopop.model.owl.diff.SimpleObjectPropertyDiff;
+import ai.hyperlearning.ontopop.model.owl.diff.SimpleOntologyDiff;
 
 /**
  * RDF/XML Helper Methods
@@ -24,6 +46,9 @@ import ai.hyperlearning.ontopop.model.owl.SimpleObjectProperty;
 
 public class OWLRDFXMLAPI {
     
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = 
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final String ACTION_PLACEHOLDER = "{ACTION}";
     private static final String IRI_PLACEHOLDER = "{IRI}";
     private static final String RDFS_LABEL_PLACEHOLDER = "{RDFS_LABEL}";
     private static final String RDFS_LABEL_NODE = 
@@ -377,6 +402,7 @@ public class OWLRDFXMLAPI {
         StringBuilder xml = new StringBuilder(owlXml);
         xml.append(System.lineSeparator());
         if ( comment != null ) {
+            xml.append(System.lineSeparator());
             xml.append("<!-- " + comment + " -->");
             xml.append(System.lineSeparator());
         }
@@ -398,6 +424,218 @@ public class OWLRDFXMLAPI {
         xml.append(owlXml);
         xml.append(RDF_XML_DECLARATION_END);
         return xml.toString();
+    }
+    
+    /**
+     * Generate a complete RDF/XML OWL string given an existing
+     * RDF/XML OWL string and a SimpleOntologyDiff object
+     * @param existingOwlXml
+     * @param simpleOntologyDiff
+     * @return
+     */
+    
+    public static String generateRdfXmlOwlString(String existingOwlXml, 
+            SimpleOntologyDiff simpleOntologyDiff, String editorName) {
+        
+        // Generate the default comment if applicable
+        String currentDateTime = editorName != null ? 
+                LocalDateTime.now(ZoneOffset.UTC).format(DATE_TIME_FORMATTER) : 
+                    null;
+        String defaultComment = editorName != null ? "{ACTION} by " 
+                    + editorName + " on " + currentDateTime : null;
+        
+        // Remove the closing RDF declaration
+        String owlXml = deleteStringFromXmlString(existingOwlXml, 
+                RDF_XML_DECLARATION_END);
+        
+        /**********************************************************************
+         * REMOVE ALL DELETES
+         *********************************************************************/
+        
+        // Deleted annotation properties
+        for (SimpleAnnotationPropertyDiff simpleAnnotationPropertyDiff : 
+            simpleOntologyDiff.getDeletedSimpleAnnotationProperties()) {
+            SimpleAnnotationProperty simpleAnnotationProperty = 
+                    simpleAnnotationPropertyDiff.getBefore();
+            owlXml = deleteOwlAnnotationPropertyFromOwlXmlString(owlXml, 
+                    simpleAnnotationProperty, editorName != null ? defaultComment
+                            .replace(ACTION_PLACEHOLDER, "Annotation property deleted") : null);
+        }
+        
+        // Deleted object properties
+        for (SimpleObjectPropertyDiff simpleObjectPropertyDiff : 
+            simpleOntologyDiff.getDeletedSimpleObjectProperties()) {
+            SimpleObjectProperty simpleObjectProperty = 
+                    simpleObjectPropertyDiff.getBefore();
+            owlXml = deleteOwlObjectPropertyFromOwlXmlString(owlXml, 
+                    simpleObjectProperty, editorName != null ? defaultComment
+                            .replace(ACTION_PLACEHOLDER, "Object property deleted") : null);
+        }
+        
+        // Deleted classes
+        for (SimpleClassDiff simpleClassDiff : 
+            simpleOntologyDiff.getDeletedSimpleClasses()) {
+            SimpleClass simpleClass = simpleClassDiff.getBefore();
+            owlXml = deleteOwlClassFromOwlXmlString(owlXml, 
+                    simpleClass, editorName != null ? defaultComment
+                            .replace(ACTION_PLACEHOLDER, "Class deleted") : null);
+        }
+        
+        /**********************************************************************
+         * INSERT ALL UPDATES
+         *********************************************************************/
+        
+        // Annotation properties
+        for (SimpleAnnotationPropertyDiff simpleAnnotationPropertyDiff : 
+            simpleOntologyDiff.getUpdatedSimpleAnnotationProperties()) {
+            SimpleAnnotationProperty simpleAnnotationProperty = 
+                    simpleAnnotationPropertyDiff.getBefore();
+            owlXml = deleteOwlAnnotationPropertyFromOwlXmlString(owlXml, 
+                    simpleAnnotationProperty, null);
+            if ( simpleAnnotationPropertyDiff.getAfterXml() != null )
+                owlXml = addStringToXmlString(owlXml, 
+                        simpleAnnotationPropertyDiff.getAfterXml(), 
+                        editorName != null ? defaultComment
+                                .replace(ACTION_PLACEHOLDER, "Annotation property updated") : null);
+        }
+        
+        // Object properties
+        for (SimpleObjectPropertyDiff simpleObjectPropertyDiff : 
+            simpleOntologyDiff.getUpdatedSimpleObjectProperties()) {
+            SimpleObjectProperty simpleObjectProperty = 
+                    simpleObjectPropertyDiff.getBefore();
+            owlXml = deleteOwlObjectPropertyFromOwlXmlString(owlXml, 
+                    simpleObjectProperty, null);
+            if ( simpleObjectPropertyDiff.getAfterXml() != null )
+                owlXml = addStringToXmlString(owlXml, 
+                        simpleObjectPropertyDiff.getAfterXml(), 
+                        editorName != null ? defaultComment
+                                .replace(ACTION_PLACEHOLDER, "Object property updated") : null);
+        }
+        
+        // Classes
+        for (SimpleClassDiff simpleClassDiff : 
+            simpleOntologyDiff.getUpdatedSimpleClasses()) {
+            SimpleClass simpleClass = simpleClassDiff.getBefore();
+            owlXml = deleteOwlClassFromOwlXmlString(owlXml, simpleClass, null);
+            if ( simpleClassDiff.getAfterXml() != null )
+                owlXml = addStringToXmlString(owlXml, 
+                        simpleClassDiff.getAfterXml(), 
+                        editorName != null ? defaultComment
+                                .replace(ACTION_PLACEHOLDER, "Class updated") : null);
+        }
+        
+        /**********************************************************************
+         * INSERT ALL CREATES
+         *********************************************************************/
+        
+        // Annotation properties
+        for (SimpleAnnotationPropertyDiff simpleAnnotationPropertyDiff : 
+            simpleOntologyDiff.getCreatedSimpleAnnotationProperties()) {
+            if ( simpleAnnotationPropertyDiff.getAfterXml() != null )
+                owlXml = addStringToXmlString(owlXml, 
+                        simpleAnnotationPropertyDiff.getAfterXml(), 
+                        editorName != null ? defaultComment
+                                .replace(ACTION_PLACEHOLDER, "Annotation property created") : null);
+        }
+        
+        // Object properties
+        for (SimpleObjectPropertyDiff simpleObjectPropertyDiff : 
+            simpleOntologyDiff.getCreatedSimpleObjectProperties()) {
+            if ( simpleObjectPropertyDiff.getAfterXml() != null )
+                owlXml = addStringToXmlString(owlXml, 
+                        simpleObjectPropertyDiff.getAfterXml(), 
+                        editorName != null ? defaultComment
+                                .replace(ACTION_PLACEHOLDER, "Object property created") : null);
+        }
+        
+        // Classes
+        for (SimpleClassDiff simpleClassDiff : 
+            simpleOntologyDiff.getCreatedSimpleClasses()) {
+            SimpleClass simpleClass = simpleClassDiff.getAfter();
+            if ( simpleClassDiff.getAfterXml() != null )
+                owlXml = addStringToXmlString(owlXml, 
+                        simpleClassDiff.getAfterXml(), 
+                        editorName != null ? defaultComment
+                                .replace(IRI_PLACEHOLDER, simpleClass.getIri())
+                                .replace(ACTION_PLACEHOLDER, "Class created") : null);
+        }
+        
+        // Add the closing RDF declaration
+        owlXml = addStringToXmlString(owlXml, RDF_XML_DECLARATION_END, null);
+
+        return owlXml;
+        
+    }
+    
+    /**
+     * Generate a complete RDF/XML OWL string given only a 
+     * SimpleOntologyDiff object only. We can therefore assume that
+     * there does not exist an existing RDF/XML OWL string in which
+     * case we only need to process the creates.
+     * @param simpleOntologyDiff
+     * @return
+     */
+    
+    public static String createRdfXmlOwlString(String ontologyIri, 
+            SimpleOntologyDiff simpleOntologyDiff, String editorName) {
+        
+        // Add the RDF declaration
+        String owlXml = RDF_XML_DECLARATION_START
+                .replace(IRI_PLACEHOLDER, ontologyIri);
+        
+        // Generate the remaining OWL RDF/XML
+        return generateRdfXmlOwlString(owlXml, simpleOntologyDiff, editorName);
+        
+    }
+    
+    /**
+     * Convert an XML string into a XML DOM document object
+     * @param xmlString
+     * @return
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
+     */
+    
+    public static Document toDocument(String xmlString) 
+            throws ParserConfigurationException, SAXException, IOException {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+        factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+        DocumentBuilder documentBuilder = factory.newDocumentBuilder();
+        return documentBuilder.parse(new InputSource(
+                new StringReader(xmlString)));
+    }
+    
+    /**
+     * Pretty print a given XML string
+     * @param xmlString
+     * @return
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
+     * @throws TransformerFactoryConfigurationError
+     * @throws TransformerException
+     */
+    
+    public static String prettyPrint(String xmlString) 
+            throws ParserConfigurationException, SAXException, IOException, 
+            TransformerFactoryConfigurationError, TransformerException {
+        Document document = toDocument(xmlString);
+        TransformerFactory factory = TransformerFactory.newInstance();
+        factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+        factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+        Transformer transformer = factory.newTransformer();
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty(
+                "{http://xml.apache.org/xslt}indent-amount", "4");
+        transformer.setOutputProperty(OutputKeys.ENCODING, "utf-8");
+        DOMSource source = new DOMSource(document);
+        StringWriter writer = new StringWriter();
+        StreamResult result = new StreamResult(writer);
+        transformer.transform(source, result);
+        return writer.getBuffer().toString();
     }
 
 }
