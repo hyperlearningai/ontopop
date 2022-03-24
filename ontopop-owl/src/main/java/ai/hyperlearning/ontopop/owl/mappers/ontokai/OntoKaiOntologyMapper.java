@@ -298,13 +298,16 @@ public class OntoKaiOntologyMapper {
      * @param newAnnotationProperties
      * @param newObjectProperties
      * @return
+     * @throws IOException 
+     * @throws OWLOntologyCreationException 
      */
     
     public static List<Map<String, SimpleClass>> identifyClassDiffs(
             OntoKaiOntologyPayload ontoKaiOntologyPayload, 
             SimpleOntology simpleOntology, 
             Map<String, SimpleAnnotationProperty> newAnnotationProperties, 
-            Map<String, SimpleObjectProperty> newObjectProperties) {
+            Map<String, SimpleObjectProperty> newObjectProperties) 
+                    throws OWLOntologyCreationException, IOException {
         
         // Instantiate maps that will contain created, updated and deleted classes
         Map<String, SimpleClass> createdClasses = new HashMap<>();
@@ -385,13 +388,16 @@ public class OntoKaiOntologyMapper {
      * SimpleClass object.
      * @param node
      * @return
+     * @throws IOException 
+     * @throws OWLOntologyCreationException 
      */
     
     public static SimpleClass toSimpleClass(OntoKaiOntologyNode node, 
             OntoKaiOntologyPayload ontoKaiOntologyPayload, 
             SimpleOntology simpleOntology, 
             Map<String, SimpleAnnotationProperty> newAnnotationProperties, 
-            Map<String, SimpleObjectProperty> newObjectProperties) {
+            Map<String, SimpleObjectProperty> newObjectProperties) 
+                    throws OWLOntologyCreationException, IOException {
         
         // Set the IRI and RDFS label
         SimpleClass simpleClass = new SimpleClass();
@@ -406,6 +412,8 @@ public class OntoKaiOntologyMapper {
         Map<String, SimpleAnnotationProperty> allSimpleAnnotationProperties = 
                 new HashMap<>(simpleOntology.getUniqueSimpleAnnotationPropertyLabelsMap());
         allSimpleAnnotationProperties.putAll(newAnnotationProperties);
+        allSimpleAnnotationProperties.putAll(StandardRDFSchema
+                .getLabelStandardSchemaAnnotationPropertyMap());
         
         // Iterate over all the node attributes
         Map<String, String> annotations = new LinkedHashMap<>();
@@ -449,18 +457,21 @@ public class OntoKaiOntologyMapper {
                     relationship.getParentId()) ? 
                             ontoKaiNodeIdIriMap.get(relationship.getParentId()) : 
                                 null;
-            if ( parentClassIri != null ) {
+            if ( parentClassIri != null || ( relationship.getBundleType() != null && 
+                    relationship.getBundleType().equalsIgnoreCase(
+                            ONTOKAI_RESTRICTION_BUNDLE_TYPE_VALUE) ) ) {
                 
                 // If there is NO object property restriction
-                if ( relationship.getType().equalsIgnoreCase(
-                        ONTOKAI_SUBCLASS_OF_TYPE_VALUE) )
+                if ( parentClassIri != null && 
+                        relationship.getType().equalsIgnoreCase(
+                                ONTOKAI_SUBCLASS_OF_TYPE_VALUE) )
                     parentClasses.put(parentClassIri, null);
                 
                 // If there IS an object property restriction
                 else {
                     if ( relationship.getBundleType() != null && 
                             relationship.getBundleType().equalsIgnoreCase(
-                                    ONTOKAI_RESTRICTION_BUNDLE_TYPE_VALUE)) {
+                                    ONTOKAI_RESTRICTION_BUNDLE_TYPE_VALUE) ) {
                         parentClassIri = relationship.getBundleValue();
                         if ( parentClassIri != null ) {
                             

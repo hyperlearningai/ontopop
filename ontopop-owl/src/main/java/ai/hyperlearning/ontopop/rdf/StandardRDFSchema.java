@@ -1,6 +1,7 @@
 package ai.hyperlearning.ontopop.rdf;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -53,6 +54,31 @@ public class StandardRDFSchema {
                 .putAll(dcmiSchemaAnnotationProperties);
         return standardSchemaAnnotationProperties;
         
+    }
+    
+    /**
+     * Transform the standard schema map and generate a map between
+     * label and SimpleAnnotationProperty.
+     * @return
+     * @throws OWLOntologyCreationException
+     * @throws IOException
+     */
+    
+    public static Map<String, SimpleAnnotationProperty> 
+            getLabelStandardSchemaAnnotationPropertyMap() 
+                    throws OWLOntologyCreationException, IOException {
+        Map<String, SimpleAnnotationProperty> labelStandardSchemaAnnotationPropertyMap = 
+                new HashMap<>();
+        Map<String, SimpleAnnotationProperty> standardSchema = 
+                loadStandardSchema();
+        for ( SimpleAnnotationProperty simpleAnnotationProperty : 
+            standardSchema.values() ) {
+            if ( simpleAnnotationProperty.getLabel() != null )
+                labelStandardSchemaAnnotationPropertyMap.put(
+                        simpleAnnotationProperty.getLabel().strip().toUpperCase(), 
+                        simpleAnnotationProperty);
+        }
+        return labelStandardSchemaAnnotationPropertyMap;
     }
     
     /**
