@@ -1,0 +1,2666 @@
+{
+ "iaName": "Merge4",
+ "iaMeta": {
+  "type": "TARGET",
+  "key": "Merge4",
+  "name": "Merge4",
+  "longName": "Ont+Classifications",
+  "abbreviation": "M4",
+  "targetMetadata": {
+   "timestamp": "2022-02-28T14:44:55.786953",
+   "useTriage": [
+    1,
+    2
+   ],
+   "base": "Corporate Ontology",
+   "graft": [
+    "ADMM v13",
+    "CBS v4.5",
+    "PCF",
+    "RBS",
+    "WBS v5.4"
+   ],
+   "iaName": "Merge4",
+   "longName": "Ont+Classifications",
+   "abbreviation": "M4"
+  },
+  "creationTime": "2022-02-28T14:44:55.787951",
+  "countBase": null,
+  "published": 0,
+  "version": [
+   1,
+   0
+  ]
+ },
+ "metadata": {
+  "timestamp": "2022-02-28T14:44:55.786953",
+  "useTriage": [
+   1,
+   2
+  ],
+  "base": "Corporate Ontology",
+  "graft": [
+   "ADMM v13",
+   "CBS v4.5",
+   "PCF",
+   "RBS",
+   "WBS v5.4"
+  ],
+  "iaName": "Merge4",
+  "longName": "Ont+Classifications",
+  "abbreviation": "M4"
+ },
+ "selection": false,
+ "version": 2,
+ "nodes": [
+  {
+   "id": 26409,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Immaterial Continuant",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/RTyCIe0sZbCvkp6VVWaYGs",
+   "attributes": [
+    {
+     "name": "definition",
+     "value": "Concepts and ideas that exist in the real world.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26409,
+     "parentId": 26665,
+     "type": "subclass_of"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000002,
+     "analystLabel": "Immaterial Continuant",
+     "parentId": 1000001,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000002,
+     "goalMatchState": "notset",
+     "goalMatchId": 1910,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Immaterial Continuant"
+    }
+   ]
+  },
+  {
+   "id": 26421,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Data Lifecycle",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/R8TAOW3SN06LeB0bwWcfIOM",
+   "attributes": [
+    {
+     "name": "definition",
+     "value": "The commonly observed and accepted series of activities that occur to bring Data into existence, make use of them, and then dispose of them.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26421,
+     "parentId": 26489,
+     "type": "subclass_of"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000091,
+     "analystLabel": "Data Lifecycle",
+     "parentId": 1000090,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 1999,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Data Lifecycle"
+    }
+   ]
+  },
+  {
+   "id": 26428,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Acquisition",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/R3WvW1lERMZ6UCSsaAdkx1",
+   "attributes": [
+    {
+     "name": "Business Area",
+     "value": "Maintain Operate Construct Finance",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Data Source",
+     "value": "Estates",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Subdomain",
+     "value": "Estates Development phase",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "definition",
+     "value": "The action of an Entity becoming the owner of Land, an Asset, or a Vehicle through a Legal Document and/or Transaction.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26428,
+     "parentId": 26407,
+     "type": "performed_by",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/RY4x5rU5jNH9YIcM63gBgJ"
+    },
+    {
+     "childId": 26428,
+     "parentId": 26427,
+     "type": "implemented_through",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/R7aUPF2nCTl0LhxRiIVdzpc"
+    },
+    {
+     "childId": 26428,
+     "parentId": 26429,
+     "type": "subclass_of"
+    },
+    {
+     "childId": 26428,
+     "parentId": 26430,
+     "type": "performed_by",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/R93SkoUnFXM1KEjUDb2Ij3n"
+    },
+    {
+     "childId": 26428,
+     "parentId": 26431,
+     "type": "required_for",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/RDUwHG4VnwQTyDDhhsWSwgS"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000101,
+     "analystLabel": "Acquisition",
+     "parentId": 1000100,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 2009,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Acquisition"
+    }
+   ]
+  },
+  {
+   "id": 26429,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Activity",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/R8N1a0K78gZZbVLw2P1NkTX",
+   "attributes": [
+    {
+     "name": "Business Area",
+     "value": "Maintain Plan",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Data Source",
+     "value": "Confirm HSAW",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Synonym",
+     "value": "Action, Work, Job",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Type",
+     "value": "BAU, Part of a project",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "comment",
+     "value": "An activity is made up of one or more tasks.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "definition",
+     "value": "One or more tasks that are undertaken for a purpose by an actor.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26429,
+     "parentId": 26410,
+     "type": "performed_by",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/R8QQzkUbCD5WRXDQQSl0vX8"
+    },
+    {
+     "childId": 26429,
+     "parentId": 26489,
+     "type": "subclass_of"
+    },
+    {
+     "childId": 26429,
+     "parentId": 26506,
+     "type": "performed_on",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/R8MzvxsWzbT1CeZSELKf1Ku"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000100,
+     "analystLabel": "Activity",
+     "parentId": 1000090,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 2008,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 0,
+     "clientShare": 0,
+     "metricValue": 0,
+     "label": "Activity"
+    }
+   ]
+  },
+  {
+   "id": 26436,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Maintenance",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/O734t4iI6j8MPmpJsIqO2v4",
+   "attributes": [
+    {
+     "name": "Business Area",
+     "value": "Maintain Plan Operate",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Data Source",
+     "value": "Confirm",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Subdomain",
+     "value": "Confirm",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "definition",
+     "value": "The action taken by an Entity to improve the Condition of, and remedy Defects present on, an Asset.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "example",
+     "value": "Road Works",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26436,
+     "parentId": 26410,
+     "type": "performed_by",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/R8QQzkUbCD5WRXDQQSl0vX8"
+    },
+    {
+     "childId": 26436,
+     "parentId": 26429,
+     "type": "subclass_of"
+    },
+    {
+     "childId": 26436,
+     "parentId": 26437,
+     "type": "affected_by",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/R7OG9IJQRmrxb2LhojDfE46"
+    },
+    {
+     "childId": 26436,
+     "parentId": 26438,
+     "type": "triggered_by",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/RBNRwyHYDJAexW4IAn1ebkS"
+    },
+    {
+     "childId": 26436,
+     "parentId": 26439,
+     "type": "performed_on",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/R9H3QGGtwC0XhV4Mfk6Ceep"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000102,
+     "analystLabel": "Maintenance",
+     "parentId": 1000100,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 2010,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Maintenance"
+    }
+   ]
+  },
+  {
+   "id": 26446,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Incident",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/RCuUHUwF8sOhovt9F5cgPYA",
+   "attributes": [
+    {
+     "name": "Business Area",
+     "value": "Maintain Operate",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Data Source",
+     "value": "Confirm CHARM VehicleSensorData TTOC FFC",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Subdomain",
+     "value": "NTIS Confirm CHARM FFC",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Type",
+     "value": "Service Incident",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "comment",
+     "value": "Can either refer to incidents that resulted in or could have resulted in injuries, illnesses, damage to health, or fatalities which may occur at work, office or home.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "definition",
+     "value": " An unplanned time-bound event that occurs on or near Assets that impacts a Person (or persons) or Assets.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26446,
+     "parentId": 26410,
+     "type": "detected_by",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/R8QQzkUbCD5WRXDQQSl0vX8"
+    },
+    {
+     "childId": 26446,
+     "parentId": 26448,
+     "type": "located_at",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/Rj3NXx72nCWC2S8JjoFjon"
+    },
+    {
+     "childId": 26446,
+     "parentId": 26489,
+     "type": "subclass_of"
+    },
+    {
+     "childId": 26446,
+     "parentId": 26496,
+     "type": "located_at",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/R81y0gnn3Ar0DJ8FatMTqK3"
+    },
+    {
+     "childId": 26446,
+     "parentId": 26513,
+     "type": "attended_by",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/R85jgDJqHrr5qX3KrACpk4"
+    },
+    {
+     "childId": 26446,
+     "parentId": 26530,
+     "type": "detected_by",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/RtN2Zu9OP2GsaPU9toX3UM"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000127,
+     "analystLabel": "Incident",
+     "parentId": 1000090,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 2035,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Incident"
+    }
+   ]
+  },
+  {
+   "id": 26450,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Representation",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/R7kFYLBMrwSIReHdO0qWzl1",
+   "attributes": [
+    {
+     "name": "Business Area",
+     "value": "Maintain",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "definition",
+     "value": "An artefact whose purpose is to describe or portray something.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "example",
+     "value": "Signs, Diagrams, Drawings, Maps, Databases",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26450,
+     "parentId": 26489,
+     "type": "subclass_of"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000141,
+     "analystLabel": "Representation",
+     "parentId": 1000090,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 2049,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Representation"
+    }
+   ]
+  },
+  {
+   "id": 26464,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Training",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/R7RDxuQpthew95SauxL9iOL",
+   "attributes": [
+    {
+     "name": "Business Area",
+     "value": "Maintain Operate Construct Plan",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Subdomain",
+     "value": "Handover",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "definition",
+     "value": "Teaching or developing, in oneself or others, any skill and knowledge that relates to specific useful competencies in order to improve one's capability, capacity, productivity and performance.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26464,
+     "parentId": 26429,
+     "type": "subclass_of"
+    },
+    {
+     "childId": 26464,
+     "parentId": 26455,
+     "type": "provided_to",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/RDXfAVuWRwr0N4TV6QEbADY"
+    },
+    {
+     "childId": 26464,
+     "parentId": 26465,
+     "type": "included_in",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/RF3YeWGVEQjj16Hy07lXyU"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000103,
+     "analystLabel": "Training",
+     "parentId": 1000100,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 2011,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Training"
+    }
+   ]
+  },
+  {
+   "id": 26466,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Inspection",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/RDpQmuXpzJOM9XhMdRRxaOJ",
+   "attributes": [
+    {
+     "name": "Business Area",
+     "value": "Maintain Construct",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Data Source",
+     "value": "DDMS Confirm",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Subdomain",
+     "value": "Handover DDMS Confirm",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "definition",
+     "value": "An activity that results in an assessment of the Condition or capability of an Asset.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26466,
+     "parentId": 26410,
+     "type": "performed_by",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/R8QQzkUbCD5WRXDQQSl0vX8"
+    },
+    {
+     "childId": 26466,
+     "parentId": 26429,
+     "type": "subclass_of"
+    },
+    {
+     "childId": 26466,
+     "parentId": 26439,
+     "type": "performed_on",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/R9H3QGGtwC0XhV4Mfk6Ceep"
+    },
+    {
+     "childId": 26466,
+     "parentId": 26465,
+     "type": "included_in",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/RF3YeWGVEQjj16Hy07lXyU"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000104,
+     "analystLabel": "Inspection",
+     "parentId": 1000100,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 2012,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Inspection"
+    }
+   ]
+  },
+  {
+   "id": 26485,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Communication",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/R8wr425oHN1PArxAqrtCGex",
+   "attributes": [
+    {
+     "name": "Data Source",
+     "value": "FFC",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "definition",
+     "value": "A method of presenting information to road users on the Strategic Road Network Assets often in relation to events on the Network.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26485,
+     "parentId": 26489,
+     "type": "subclass_of"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000155,
+     "analystLabel": "Communication",
+     "parentId": 1000090,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 2063,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Communication"
+    }
+   ]
+  },
+  {
+   "id": 26489,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Occurrent",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/R8vPX062NwsvUg0z6NRZerH",
+   "attributes": [
+    {
+     "name": "definition",
+     "value": "An Entity that happens, unfolds or develops in time.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26489,
+     "parentId": 26665,
+     "type": "subclass_of"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000090,
+     "analystLabel": "Occurrent",
+     "parentId": 1000001,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 1998,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Occurrent"
+    }
+   ]
+  },
+  {
+   "id": 26493,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Instruction",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/R9uvMZD48MrRf3iKMKAiNCj",
+   "attributes": [
+    {
+     "name": "Business Area",
+     "value": "Operate",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Data Source",
+     "value": "NEM",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Subdomain",
+     "value": "NTIS",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Synonym",
+     "value": "Impact",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "definition",
+     "value": "Temporary order to be followed that happens at a specific time and place.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26493,
+     "parentId": 26410,
+     "type": "issued_by",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/R8QQzkUbCD5WRXDQQSl0vX8"
+    },
+    {
+     "childId": 26493,
+     "parentId": 26429,
+     "type": "subclass_of"
+    },
+    {
+     "childId": 26493,
+     "parentId": 26448,
+     "type": "located_at",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/Rj3NXx72nCWC2S8JjoFjon"
+    },
+    {
+     "childId": 26493,
+     "parentId": 26465,
+     "type": "managed_within",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/RF3YeWGVEQjj16Hy07lXyU"
+    },
+    {
+     "childId": 26493,
+     "parentId": 26496,
+     "type": "applied_to",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/R81y0gnn3Ar0DJ8FatMTqK3"
+    },
+    {
+     "childId": 26493,
+     "parentId": 26523,
+     "type": "issued_through",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/RCOdkBizz0dWtRTEjZSfqP8"
+    },
+    {
+     "childId": 26493,
+     "parentId": 26530,
+     "type": "issued_by",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/RtN2Zu9OP2GsaPU9toX3UM"
+    },
+    {
+     "childId": 26493,
+     "parentId": 26551,
+     "type": "triggered_by",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/R9GHUOcgMQkTB6YfJoNmQ6N"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000105,
+     "analystLabel": "Instruction",
+     "parentId": 1000100,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 2013,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Instruction"
+    }
+   ]
+  },
+  {
+   "id": 26497,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Land Registration",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/R7tAippJQB4pJXF1MzgDbKi",
+   "attributes": [
+    {
+     "name": "Data Source",
+     "value": "Estates",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Subdomain",
+     "value": "Estates",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Type",
+     "value": "Accelerated",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "definition",
+     "value": "The action of officially recording the ownership, possession or other rights in a land with a government agency or department, to provide evidence of title, facilitate transactions and to prevent unlawful disposal.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26497,
+     "parentId": 26429,
+     "type": "subclass_of"
+    },
+    {
+     "childId": 26497,
+     "parentId": 26430,
+     "type": "performed_by",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/R93SkoUnFXM1KEjUDb2Ij3n"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000110,
+     "analystLabel": "Land Registration",
+     "parentId": 1000100,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 2018,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Land Registration"
+    }
+   ]
+  },
+  {
+   "id": 26524,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Retire",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/R8M5tsloLX3FmQ8zhHm557c",
+   "attributes": [
+    {
+     "name": "Business Area",
+     "value": "Maintain",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Synonym",
+     "value": "Archive",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "definition",
+     "value": "Putting an Asset or Data that is no longer in use into storage.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26524,
+     "parentId": 26429,
+     "type": "subclass_of"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000111,
+     "analystLabel": "Retire",
+     "parentId": 1000100,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 2019,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Retire"
+    }
+   ]
+  },
+  {
+   "id": 26529,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Request",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/R8NOV0AKTyaMD98OEDNFqFF",
+   "attributes": [
+    {
+     "name": "Subdomain",
+     "value": "FFC",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Type",
+     "value": "Service Request, Keeper At Date Of Event Request, Keeper At Date Of Event Response",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "definition",
+     "value": "To politely or formally ask for something.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26529,
+     "parentId": 26419,
+     "type": "managed_by",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/RCnRceKsHZf8Gt9UvDjM6We"
+    },
+    {
+     "childId": 26529,
+     "parentId": 26429,
+     "type": "subclass_of"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000112,
+     "analystLabel": "Request",
+     "parentId": 1000100,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 2020,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Request"
+    }
+   ]
+  },
+  {
+   "id": 26548,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Payment",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/R9Aa1zkD2zAJGZ9wmG8vpne",
+   "attributes": [
+    {
+     "name": "Data Source",
+     "value": "FFC",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "definition",
+     "value": "The act of paying for goods or services.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26548,
+     "parentId": 26429,
+     "type": "subclass_of"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000114,
+     "analystLabel": "Payment",
+     "parentId": 1000100,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 2022,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Payment"
+    }
+   ]
+  },
+  {
+   "id": 26551,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Roadspace booking",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/R9GHUOcgMQkTB6YfJoNmQ6N",
+   "attributes": [
+    {
+     "name": "Business Area",
+     "value": "Operate",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Data Source",
+     "value": "NEM",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "definition",
+     "value": "Period when a piece of road has been reserved for a particular purpose.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26551,
+     "parentId": 26429,
+     "type": "subclass_of"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000115,
+     "analystLabel": "Roadspace booking",
+     "parentId": 1000100,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 2023,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Roadspace booking"
+    }
+   ]
+  },
+  {
+   "id": 26556,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Event",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/R9QL7GzNO6C7vUbpfDfCJk6",
+   "attributes": [
+    {
+     "name": "Business Area",
+     "value": "Maintain Operate Construct",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Synonym",
+     "value": "Commercial Event, Embargo",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "definition",
+     "value": "A planned public or social occasion or gathering of people that happens at a specific time and place.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26556,
+     "parentId": 26410,
+     "type": "managed_by",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/R8QQzkUbCD5WRXDQQSl0vX8"
+    },
+    {
+     "childId": 26556,
+     "parentId": 26448,
+     "type": "located_at",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/Rj3NXx72nCWC2S8JjoFjon"
+    },
+    {
+     "childId": 26556,
+     "parentId": 26489,
+     "type": "subclass_of"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000161,
+     "analystLabel": "Event",
+     "parentId": 1000090,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 2069,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Event"
+    }
+   ]
+  },
+  {
+   "id": 26559,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Service",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/R9ScowFpailTawMeZkRv41f",
+   "attributes": [
+    {
+     "name": "Business Area",
+     "value": "Operate",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Data Source",
+     "value": "TTOC",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "comment",
+     "value": "TTOC Definition: An installation of components (technology and/or civils), which combine to provide the ability to perform a function, such as display a message or measure traffic, at a location.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "definition",
+     "value": "The action of doing work for someone or performing a function, in which no physical goods are transferred.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26559,
+     "parentId": 26489,
+     "type": "subclass_of"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000162,
+     "analystLabel": "Service",
+     "parentId": 1000090,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 2070,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Service"
+    }
+   ]
+  },
+  {
+   "id": 26565,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Change",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/R9XSIJCnvb0ASwaDmwxM6Ri",
+   "attributes": [
+    {
+     "name": "Data Source",
+     "value": "FFC",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Type",
+     "value": "Business Rule",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "definition",
+     "value": "The addition, modification of removal of anything that could have an effect on services.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26565,
+     "parentId": 26419,
+     "type": "managed_by",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/RCnRceKsHZf8Gt9UvDjM6We"
+    },
+    {
+     "childId": 26565,
+     "parentId": 26489,
+     "type": "subclass_of"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000163,
+     "analystLabel": "Change",
+     "parentId": 1000090,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 2071,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Change"
+    }
+   ]
+  },
+  {
+   "id": 26569,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Connection",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/R9iRegn7JlPPgQjx6KMNV76",
+   "attributes": [
+    {
+     "name": "Type",
+     "value": "Database connection, Internet connection",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "definition",
+     "value": "The action of linking one thing with another.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26569,
+     "parentId": 26429,
+     "type": "subclass_of"
+    },
+    {
+     "childId": 26569,
+     "parentId": 26455,
+     "type": "created_by",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/RDXfAVuWRwr0N4TV6QEbADY"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000116,
+     "analystLabel": "Connection",
+     "parentId": 1000100,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 2024,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 0,
+     "clientShare": 0,
+     "metricValue": 0,
+     "label": "Connection"
+    }
+   ]
+  },
+  {
+   "id": 26575,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Material Continuant",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/RDBlPj5mxo9Sheqo9njonK1",
+   "attributes": [
+    {
+     "name": "definition",
+     "value": "Continuants that include some portion of matter as part, where ‘portion of\nmatter’ is understood in the broadest possible sense to include also undetached portions of matter such as your head and scattered portions of matter such as the Buffalo Symphony Orchestra. Every material Entity is localised in space or in a virtual environment. Every material Entity can move in space or in a virtual environment. Every Entity which has a material Entity as a part is a material Entity.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26575,
+     "parentId": 26665,
+     "type": "subclass_of"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000170,
+     "analystLabel": "Material Continuant",
+     "parentId": 1000001,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000170,
+     "goalMatchState": "notset",
+     "goalMatchId": 2078,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Material Continuant"
+    }
+   ]
+  },
+  {
+   "id": 26576,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Patrol",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/RB0lf4hZ1CRIjB3tldwNYlq",
+   "attributes": [
+    {
+     "name": "Business Area",
+     "value": "Operate",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "definition",
+     "value": "One or more Persons physically travelling around the Network for the purposes of Monitoring the Traffic (defined as Vehicles on Strategic Road Network Assets) and reacting to Incidents.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26576,
+     "parentId": 26410,
+     "type": "performed_by",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/R8QQzkUbCD5WRXDQQSl0vX8"
+    },
+    {
+     "childId": 26576,
+     "parentId": 26429,
+     "type": "subclass_of"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000117,
+     "analystLabel": "Patrol",
+     "parentId": 1000100,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 2025,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Patrol"
+    }
+   ]
+  },
+  {
+   "id": 26582,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Demolition",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/RB1hQyhkkb26ULmQUnfG6ZU",
+   "attributes": [
+    {
+     "name": "Business Area",
+     "value": "Maintain",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "definition",
+     "value": "Deliberate destruction of a building, Asset or structure.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26582,
+     "parentId": 26429,
+     "type": "subclass_of"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000118,
+     "analystLabel": "Demolition",
+     "parentId": 1000100,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 2026,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Demolition"
+    }
+   ]
+  },
+  {
+   "id": 26594,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Defect",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/RxMK8BflSk74kqDWT4eHTy",
+   "attributes": [
+    {
+     "name": "Business Area",
+     "value": "Plan Maintain Operate",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Subdomain",
+     "value": "Handover",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "definition",
+     "value": "Failure of an Asset to perform its intended purpose within all expected normal operating parameters.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26594,
+     "parentId": 26416,
+     "type": "input_into",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/RJ4FstTjtD6dNQx4agULMp"
+    },
+    {
+     "childId": 26594,
+     "parentId": 26439,
+     "type": "associated_with",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/R9H3QGGtwC0XhV4Mfk6Ceep"
+    },
+    {
+     "childId": 26594,
+     "parentId": 26442,
+     "type": "presented_in",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/R79918d31mkj7gGPmR00us9"
+    },
+    {
+     "childId": 26594,
+     "parentId": 26489,
+     "type": "subclass_of"
+    },
+    {
+     "childId": 26594,
+     "parentId": 26547,
+     "type": "associated_with",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/R94oKO9u1LgzfqODgcPAc8L"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000164,
+     "analystLabel": "Defect",
+     "parentId": 1000090,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 2072,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Defect"
+    }
+   ]
+  },
+  {
+   "id": 26602,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Survey",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/RBm7cF8aYrHL1CNgkiu5PNb",
+   "attributes": [
+    {
+     "name": "Business Area",
+     "value": "Maintain Plan Communications",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Data Source",
+     "value": "Confirm",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Subdomain",
+     "value": "Confirm",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "definition",
+     "value": "An activity undertaken to visually assess the location and/or properties of one or more Assets.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26602,
+     "parentId": 26405,
+     "type": "performed_by",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/RBJ3sWyEdjzo3HjkcABim8C"
+    },
+    {
+     "childId": 26602,
+     "parentId": 26416,
+     "type": "input_into",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/RJ4FstTjtD6dNQx4agULMp"
+    },
+    {
+     "childId": 26602,
+     "parentId": 26425,
+     "type": "required_for",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/RJVpffoomVWohIDaJCykd9"
+    },
+    {
+     "childId": 26602,
+     "parentId": 26429,
+     "type": "subclass_of"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000120,
+     "analystLabel": "Survey",
+     "parentId": 1000100,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 2028,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Survey"
+    }
+   ]
+  },
+  {
+   "id": 26605,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Alarm",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/RBw4vxu9blGgD2586Vkd7AO",
+   "attributes": [
+    {
+     "name": "Data Source",
+     "value": "FFC",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Type",
+     "value": "Evidential",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "definition",
+     "value": "Indicates a potential fault or situation that has the capacity to affect the correctness of a process or data.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26605,
+     "parentId": 26489,
+     "type": "subclass_of"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000165,
+     "analystLabel": "Alarm",
+     "parentId": 1000090,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 2073,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Alarm"
+    }
+   ]
+  },
+  {
+   "id": 26606,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Dispose",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/RBzF9qwVtyzz358WQ0Iaxjs",
+   "attributes": [
+    {
+     "name": "Business Area",
+     "value": "Operate Maintain",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "comment",
+     "value": "Data specific definition: Part of the data lifecycle wherein data is removed from a system.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "definition",
+     "value": "Destroying, deleting, or getting rid of an Asset or Data that is no longer in use or needed.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26606,
+     "parentId": 26429,
+     "type": "subclass_of"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000121,
+     "analystLabel": "Dispose",
+     "parentId": 1000100,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 2029,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Dispose"
+    }
+   ]
+  },
+  {
+   "id": 26614,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Problem",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/RCMo72B5sMLsCH6rbkpTBAo",
+   "attributes": [
+    {
+     "name": "Data Source",
+     "value": "FFC",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "definition",
+     "value": "The cause of one of more incidents (or service incidents)",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26614,
+     "parentId": 26419,
+     "type": "managed_by",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/RCnRceKsHZf8Gt9UvDjM6We"
+    },
+    {
+     "childId": 26614,
+     "parentId": 26489,
+     "type": "subclass_of"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000166,
+     "analystLabel": "Problem",
+     "parentId": 1000090,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 2074,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Problem"
+    }
+   ]
+  },
+  {
+   "id": 26616,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Research",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/RUcb0VtNgmp5CaG8hCLwNa",
+   "attributes": [
+    {
+     "name": "Business Area",
+     "value": "Plan",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "definition",
+     "value": "The systematic investigation into and study of materials and sources in order to establish facts and reach new conclusions.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26616,
+     "parentId": 26429,
+     "type": "subclass_of"
+    },
+    {
+     "childId": 26616,
+     "parentId": 26470,
+     "type": "informed_by",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/R9Be61LJrP8iSlMxyobFOGy"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000122,
+     "analystLabel": "Research",
+     "parentId": 1000100,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 2030,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Research"
+    }
+   ]
+  },
+  {
+   "id": 26632,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Engagement",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/Rhx4iGF2ITGgrmcS2fHAN5",
+   "attributes": [
+    {
+     "name": "Business Area",
+     "value": "Communications Plan",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Subdomain",
+     "value": "Handover",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Synonym",
+     "value": "Communication",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "comment",
+     "value": "Very close to synonymous with communication. Engagement almost implies 1 or 2 way, and communication 1 or maybe 2 way.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "definition",
+     "value": "A process undertaken by the Licence Holder or their representative to communicate directly with third parties or the public.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26632,
+     "parentId": 26404,
+     "type": "presented_in",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/R0jI731hv09ZcJeji1fbtY"
+    },
+    {
+     "childId": 26632,
+     "parentId": 26405,
+     "type": "performed_by",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/RBJ3sWyEdjzo3HjkcABim8C"
+    },
+    {
+     "childId": 26632,
+     "parentId": 26410,
+     "type": "performed_by",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/R8QQzkUbCD5WRXDQQSl0vX8"
+    },
+    {
+     "childId": 26632,
+     "parentId": 26429,
+     "type": "subclass_of"
+    },
+    {
+     "childId": 26632,
+     "parentId": 26430,
+     "type": "performed_by",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/R93SkoUnFXM1KEjUDb2Ij3n"
+    },
+    {
+     "childId": 26632,
+     "parentId": 26465,
+     "type": "included_in",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/RF3YeWGVEQjj16Hy07lXyU"
+    },
+    {
+     "childId": 26632,
+     "parentId": 26480,
+     "type": "provided_by",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/R9BdIrtS5xNdcAPHLf4JaEE"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000123,
+     "analystLabel": "Engagement",
+     "parentId": 1000100,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 2031,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Engagement"
+    }
+   ]
+  },
+  {
+   "id": 26634,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Enquiry",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/ODnymuekx0Xpjr4eDyqL1dI",
+   "attributes": [
+    {
+     "name": "Business Area",
+     "value": "Communications",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Data Source",
+     "value": "Confirm",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "definition",
+     "value": "The act of asking questions to gain information. It can be performed by different profiles like customers, local authorities, Emergency Services, or employees.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26634,
+     "parentId": 26429,
+     "type": "subclass_of"
+    },
+    {
+     "childId": 26634,
+     "parentId": 26446,
+     "type": "associated_with",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/RCuUHUwF8sOhovt9F5cgPYA"
+    },
+    {
+     "childId": 26634,
+     "parentId": 26455,
+     "type": "performed_by",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/RDXfAVuWRwr0N4TV6QEbADY"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000125,
+     "analystLabel": "Enquiry",
+     "parentId": 1000100,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 2033,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Enquiry"
+    }
+   ]
+  },
+  {
+   "id": 26663,
+   "category": "Class",
+   "type": "Merge4",
+   "label": "Clash",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "http://webprotege.stanford.edu/RtWKYonVQQiDIkqP8Tl7Xk",
+   "attributes": [
+    {
+     "name": "Business Area",
+     "value": "Operate",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "Data Source",
+     "value": "NEM",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    },
+    {
+     "name": "definition",
+     "value": "Situation where multiple events or schedules occur at the same time and location.",
+     "dataSource": "Corporate Ontology",
+     "json": 0
+    }
+   ],
+   "relationships": [
+    {
+     "childId": 26663,
+     "parentId": 26489,
+     "type": "subclass_of"
+    },
+    {
+     "childId": 26663,
+     "parentId": 26551,
+     "type": "triggered_by",
+     "bundleType": "SOME",
+     "bundleValue": "http://webprotege.stanford.edu/R9GHUOcgMQkTB6YfJoNmQ6N"
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1000169,
+     "analystLabel": "Clash",
+     "parentId": 1000090,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "clusterId": 1000090,
+     "goalMatchState": "notset",
+     "goalMatchId": 2077,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "Clash"
+    }
+   ]
+  },
+  {
+   "id": 26665,
+   "category": "home",
+   "type": "Merge4",
+   "label": "owl#Thing",
+   "autoCreated": "Corporate Ontology",
+   "state": "Corporate Ontology",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": "root",
+   "url": "http://www.w3.org/2002/07/owl#Thing",
+   "relationships": [],
+   "taxons": [
+    {
+     "id": 1000001,
+     "analystLabel": "owl#Thing",
+     "parentId": 0,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "goalMatchState": "notset",
+     "goalMatchId": 1909,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#e62325",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "owl#Thing"
+    }
+   ]
+  },
+  {
+   "id": 26988,
+   "category": null,
+   "type": "Merge4",
+   "label": "classifications",
+   "autoCreated": "Corporate Ontology",
+   "state": "ADMM v13 CBS v4.5 PCF RBS WBS v5.4",
+   "ordinality": null,
+   "published": 1,
+   "idx": null,
+   "keepState": null,
+   "userLabel": null,
+   "url": "https://kiri.kaiasm.com/kiri/de95e678-4337-4d0f-bca3-75c4b56a9935",
+   "relationships": [
+    {
+     "childId": 26988,
+     "parentId": 26666,
+     "type": "is_a_kind_of"
+    },
+    {
+     "childId": 26988,
+     "parentId": 26665,
+     "type": "grafted_relationship",
+     "makePrimary": 1
+    }
+   ],
+   "taxons": [
+    {
+     "id": 1508,
+     "analystLabel": "classifications",
+     "parentId": 0,
+     "state": "readytodo",
+     "dead": 0,
+     "published": 1,
+     "hidden": 0,
+     "confidence": ":-",
+     "goalMatchState": "notset",
+     "goalMatchId": 1507,
+     "triageState": 1,
+     "metonym": 0,
+     "estimated": 0,
+     "colour": "#7f7f7f",
+     "value": 1000,
+     "clientShare": 0,
+     "metricValue": 1000,
+     "relevance": 0,
+     "label": "classifications"
+    }
+   ]
+  }
+ ],
+ "timestamp": "2022-03-21T20:59:44.285639",
+ "genCount": 7
+}
