@@ -471,6 +471,11 @@
             </dependency>
             <dependency>
                 <groupId>ai.hyperlearning.ontopop</groupId>
+                <artifactId>ontopop-data-ontology-git</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>ai.hyperlearning.ontopop</groupId>
                 <artifactId>ontopop-api-ontology-management</artifactId>
                 <version>${revision}</version>
             </dependency>
@@ -602,6 +607,7 @@
         <module>ontopop-data-ontology-downloader</module>
         <module>ontopop-data-ontology-webprotege-exporter</module>
         <module>ontopop-data-ontology-diff</module>
+        <module>ontopop-data-ontology-git</module>
         <module>ontopop-api-ontology-management</module>
         <module>ontopop-api-ontology-triplestore</module>
         <module>ontopop-api-ontology-search</module>
