@@ -57,6 +57,10 @@
         </dependency>
         <dependency>
             <groupId>ai.hyperlearning.ontopop</groupId>
+            <artifactId>ontopop-exceptions</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ai.hyperlearning.ontopop</groupId>
             <artifactId>ontopop-secrets</artifactId>
         </dependency>
         
