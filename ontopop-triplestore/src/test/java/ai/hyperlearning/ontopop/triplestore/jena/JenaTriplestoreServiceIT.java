@@ -24,7 +24,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import ai.hyperlearning.ontopop.triplestore.TestTriplestoreApp;
+import ai.hyperlearning.ontopop.triplestore.TestTriplestoreAppIT;
 
 /**
  * Integration Tests - Apache Jena Triplestore Service
@@ -34,11 +34,11 @@ import ai.hyperlearning.ontopop.triplestore.TestTriplestoreApp;
  */
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = TestTriplestoreApp.class)
+@SpringBootTest(classes = TestTriplestoreAppIT.class)
 @ActiveProfiles("integration-test-triplestore-jena")
 @TestMethodOrder(OrderAnnotation.class)
 @TestInstance(Lifecycle.PER_CLASS)
-class ITJenaTriplestoreService {
+class JenaTriplestoreServiceIT {
     
     private static final int NON_EXISTENT_REPOSITORY_ID = 99;
     private static final int NEW_REPOSITORY_ID = 0;
@@ -88,7 +88,7 @@ class ITJenaTriplestoreService {
     @Test
     @Order(3)
     void testLoadOntologyOwlRdfXml() throws IOException {
-        ClassLoader classLoader = ITJenaTriplestoreService.class.getClassLoader();
+        ClassLoader classLoader = JenaTriplestoreServiceIT.class.getClassLoader();
         String owlFile = classLoader.getResource(TEST_ONTOLOGY_FILENAME).getPath();
         jenaTriplestoreService.loadOntologyOwlRdfXml(NEW_REPOSITORY_ID, owlFile);
         ResponseEntity<String> countResponse = jenaTriplestoreService.query(
