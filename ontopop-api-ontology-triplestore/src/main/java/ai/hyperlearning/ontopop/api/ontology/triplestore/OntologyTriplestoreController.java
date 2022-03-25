@@ -2,6 +2,7 @@ package ai.hyperlearning.ontopop.api.ontology.triplestore;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -22,6 +23,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,19 +31,31 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import ai.hyperlearning.ontopop.data.jpa.repositories.GitWebhookRepository;
+import ai.hyperlearning.ontopop.data.jpa.repositories.OntologyRepository;
 import ai.hyperlearning.ontopop.data.ontology.diff.OntologyDiffService;
 import ai.hyperlearning.ontopop.data.ontology.downloader.OntologyDownloaderService;
+import ai.hyperlearning.ontopop.data.ontology.git.OntologyGitPushService;
 import ai.hyperlearning.ontopop.data.ontology.management.OntologyManagementService;
 import ai.hyperlearning.ontopop.exceptions.git.GitWebhookNotFoundException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffInvalidRequestParametersException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffInvalidTimestampException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDownloadException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyNotFoundException;
 import ai.hyperlearning.ontopop.exceptions.triplestore.InvalidSparqlQueryException;
 import ai.hyperlearning.ontopop.model.git.GitWebhook;
+import ai.hyperlearning.ontopop.model.ontology.Ontology;
+import ai.hyperlearning.ontopop.model.owl.SimpleOntology;
 import ai.hyperlearning.ontopop.model.owl.diff.SimpleOntologyLeftRightDiff;
 import ai.hyperlearning.ontopop.model.owl.diff.SimpleOntologyTimestampDiff;
 import ai.hyperlearning.ontopop.model.triplestore.OntologyTriplestoreSparqlQuery;
+import ai.hyperlearning.ontopop.owl.mappers.OntologyDataMapper;
+import ai.hyperlearning.ontopop.security.auth.ApiKeyAuthenticationService;
+import ai.hyperlearning.ontopop.security.auth.ApiKeyAuthenticationServiceFactory;
+import ai.hyperlearning.ontopop.security.auth.ApiKeyAuthenticationServiceType;
+import ai.hyperlearning.ontopop.security.auth.ApiKeyUtils;
 import ai.hyperlearning.ontopop.triplestore.TriplestoreService;
 import ai.hyperlearning.ontopop.triplestore.TriplestoreServiceFactory;
 import ai.hyperlearning.ontopop.triplestore.TriplestoreServiceType;
@@ -83,15 +97,32 @@ public class OntologyTriplestoreController {
     private OntologyDownloaderService ontologyDownloaderService;
     
     @Autowired
+    private OntologyRepository ontologyRepository;
+    
+    @Autowired
     private GitWebhookRepository gitWebhookRepository;
     
     @Autowired
     private OntologyDiffService ontologyDiffService;
     
+    @Autowired
+    private ApiKeyAuthenticationServiceFactory apiKeyAuthenticationServiceFactory;
+    
+    @Autowired
+    private OntologyGitPushService ontologyGitPushService;
+    
     @Value("${storage.triplestore.service}")
     private String storageTriplestoreService;
     
+    @Value("${security.authentication.api.enabled:false}")
+    private Boolean apiAuthenticationEnabled;
+    
+    @Value("${security.authentication.api.engine:secrets}")
+    private String apiAuthenticationEngine;
+    
     private TriplestoreService triplestoreService;
+    
+    private ApiKeyAuthenticationService apiKeyAuthenticationService = null;
     
     @PostConstruct
     private void postConstruct() {
@@ -101,8 +132,19 @@ public class OntologyTriplestoreController {
                 .valueOfLabel(storageTriplestoreService.toUpperCase());
         triplestoreService = triplestoreServiceFactory
                 .getTriplestoreService(triplestoreServiceType);
-        LOGGER.debug("Using the {} triplestore service.",
+        LOGGER.info("Using the {} triplestore service.",
                 triplestoreServiceType);
+        
+        // Instantiate the API Key authentication service
+        if ( Boolean.TRUE.equals(apiAuthenticationEnabled) ) {
+            ApiKeyAuthenticationServiceType apiKeyAuthenticationServiceType =
+                    ApiKeyAuthenticationServiceType
+                            .valueOfLabel(apiAuthenticationEngine.toUpperCase());
+            apiKeyAuthenticationService = apiKeyAuthenticationServiceFactory
+                    .getApiKeyAuthenticationService(apiKeyAuthenticationServiceType);
+            LOGGER.info("Using the {} API Key authentication service.",
+                    apiKeyAuthenticationServiceType);
+        }
         
     }
     
@@ -513,6 +555,102 @@ public class OntologyTriplestoreController {
                 + "right Git webhook ID {}.", id, 
                 leftGitWebhookId, rightGitWebhookId);
         return ontologyDiffService.run(id, leftGitWebhookId, rightGitWebhookId); 
+        
+    }
+    
+    /**************************************************************************
+     * 3.1. PUT - Put Ontology Data
+     *************************************************************************/
+    
+    @Operation(
+            summary = "Put ontology data",
+            description = "Overwrite or create the Git-managed ontology data "
+                    + "file for the given ontology ID.",
+            tags = {"ontology", "owl", "rdf", "xml", "data"})
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Ontology data successfully written.", 
+                            content = @Content),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Ontology data operation unauthorized.", 
+                            content = @Content),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Ontology not found.", 
+                            content = @Content), 
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Internal server error.", 
+                            content = @Content)})
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping(
+            value = "/{id}", 
+            consumes = {
+                    MediaType.TEXT_PLAIN_VALUE, 
+                    MediaType.APPLICATION_JSON_VALUE, 
+                    MediaType.APPLICATION_XML_VALUE}, 
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> putOntologyData(
+            Principal principal, 
+            @Parameter(
+                    description = "ID of the ontology to overwrite.", 
+                    required = true)
+            @PathVariable(required = true) int id, 
+            @RequestParam(name = "format", required = true) String format, 
+            @RequestParam(name = "client", required = false) String client, 
+            @RequestParam(name = "author", required = true) String author, 
+            @RequestParam(name = "message", required = false) String message, 
+            @RequestBody(required = true) String data) throws Exception {
+        
+        LOGGER.debug("New HTTP PUT request - Put ontology data for "
+                + "ontology ID {}.", id);
+        
+        // Get the ontology
+        Ontology ontology = ontologyRepository.findById(id)
+                .orElseThrow(() -> new OntologyNotFoundException(id));
+        
+        // Get the client name
+        String clientName = ApiKeyUtils.getClientName(
+                apiAuthenticationEnabled, apiKeyAuthenticationService, 
+                principal.getName(), client);
+            
+        // Get the latest Git webhook object for the given ontology
+        GitWebhook gitWebhook = ontologyDownloaderService
+                .getLatestGitWebhook(id);
+        if ( gitWebhook != null ) {
+            
+            // Download the latest OWL file from persistent storage
+            // and load it as a string object
+            String downloadedOwlFileUri = ontologyDownloaderService
+                    .retrieveOwlFile(gitWebhook);
+            String existingOwlRdfXml = FileUtils.readFileToString(
+                    new File(downloadedOwlFileUri), StandardCharsets.UTF_8);
+            
+            // Download the latest parsed SimpleOntology JSON file from 
+            // persistent storage and load it as a SimpleOntology object
+            String downloadedSimpleOntologyFileUri = ontologyDownloaderService
+                    .retrieveParsedSimpleOntologyFile(gitWebhook);
+            ObjectMapper mapper = new ObjectMapper();
+            SimpleOntology existingSimpleOntology = mapper.readValue(
+                    new File(downloadedSimpleOntologyFileUri), 
+                    SimpleOntology.class);
+            
+            // Generate the RDF/XML string
+            String targetOwlRdfXml = OntologyDataMapper.toOwlRdfXml(
+                    format, data, clientName, 
+                    existingOwlRdfXml, existingSimpleOntology);
+                
+            // Push the RDF/XML string to the Git repository
+            ontologyGitPushService.run(ontology, targetOwlRdfXml,
+                    author, message);
+            return new ResponseEntity<>("Ontology data successfully "
+                    + "written.", HttpStatus.OK);
+            
+        } else 
+            throw new OntologyDownloadException();
         
     }
     
