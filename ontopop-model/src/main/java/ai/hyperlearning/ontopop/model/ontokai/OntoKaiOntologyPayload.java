@@ -22,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class OntoKaiOntologyPayload implements Serializable {
 
     private static final long serialVersionUID = -7870117418972283488L;
+    private static final int ONTOKAI_SCHEMA_VERSION = 2;
     
     @NotNull
     private String iaName;
@@ -91,7 +92,8 @@ public class OntoKaiOntologyPayload implements Serializable {
     
     @JsonIgnore
     public boolean isValid() {
-        return iaName != null && selection != null && version != null 
+        return iaName != null && selection != null 
+                && version != null && version == ONTOKAI_SCHEMA_VERSION
                 && nodes != null && !nodes.isEmpty();
     }
 
