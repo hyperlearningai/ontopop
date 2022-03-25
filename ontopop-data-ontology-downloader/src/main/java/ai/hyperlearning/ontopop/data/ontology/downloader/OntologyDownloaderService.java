@@ -54,12 +54,16 @@ public class OntologyDownloaderService {
     @Value("${storage.object.containers.ingested}")
     private String ingestedDirectoryName;
     
+    @Value("${storage.object.containers.parsed}")
+    private String parsedDirectoryName;
+    
     @Value("${storage.object.containers.loaded.graph}")
     private String loadedDirectoryName;
     
     private ObjectStorageServiceType objectStorageServiceType;
     private ObjectStorageService objectStorageService;
     private Map<String, String> downloadedIngestedOwlFiles = new HashMap<>();
+    private Map<String, String> downloadedParsedSimpleOntologyFiles = new HashMap<>();
     private Map<String, String> downloadedModelledPropetryGraphFiles = new HashMap<>();
     
     @PostConstruct
@@ -157,6 +161,48 @@ public class OntologyDownloaderService {
     }
     
     /**
+     * Retrieve a parsed simple ontology file from the object storage 
+     * parsed container given a Git webhook object, and return the locally 
+     * downloaded absolute file path.
+     * @param gitWebhook
+     * @return
+     * @throws IOException
+     */
+    
+    public String retrieveParsedSimpleOntologyFile(GitWebhook gitWebhook) 
+            throws IOException {
+        
+        String key = generateKey(gitWebhook);
+        String processedFilename = generateProcessedFilename(gitWebhook) 
+                + ".json";
+        String readObjectUri = getReadObjectUri(parsedDirectoryName, 
+                processedFilename);
+        
+        // Check whether the JSON file has been downloaded recently.
+        // If so, and if the file still exists, then return the path to it
+        if ( downloadedParsedSimpleOntologyFiles != null ) {
+            if ( downloadedParsedSimpleOntologyFiles.containsKey(key) ) {
+                String previouslyDownloadedUri = 
+                        downloadedParsedSimpleOntologyFiles.get(key);
+                Path path = Paths.get(previouslyDownloadedUri);
+                if ( Files.exists(path) )
+                    return previouslyDownloadedUri;
+                else
+                    downloadedParsedSimpleOntologyFiles.remove(key);
+            }
+        } else {
+            downloadedParsedSimpleOntologyFiles = new HashMap<>();
+        }
+        
+        // If not, download the JSON file from object storage
+        String downloadedUri = objectStorageService
+                .downloadObject(readObjectUri, processedFilename);
+        downloadedParsedSimpleOntologyFiles.put(key, downloadedUri);
+        return downloadedUri;
+        
+    }
+    
+    /**
      * Retrieve a modelled property graph file from the object storage 
      * loaded container given a Git webhook object, and return the locally 
      * downloaded absolute file path.
@@ -174,7 +220,7 @@ public class OntologyDownloaderService {
         String readObjectUri = getReadObjectUri(loadedDirectoryName, 
                 processedFilename);
         
-        // Check whether the OWL file has been downloaded recently.
+        // Check whether the JSON file has been downloaded recently.
         // If so, and if the file still exists, then return the path to it
         if ( downloadedModelledPropetryGraphFiles != null ) {
             if ( downloadedModelledPropetryGraphFiles.containsKey(key) ) {
@@ -190,7 +236,7 @@ public class OntologyDownloaderService {
             downloadedModelledPropetryGraphFiles = new HashMap<>();
         } 
         
-        // If not, download the OWL file from object storage
+        // If not, download the JSON file from object storage
         String downloadedUri = objectStorageService
                 .downloadObject(readObjectUri, processedFilename);
         downloadedModelledPropetryGraphFiles.put(key, downloadedUri);
