@@ -46,26 +46,32 @@ public class OntologyDataMapper {
      */
     
     public static String toOwlRdfXml(
-            String format, String clientData, String client, 
+            String format, 
+            String ontologyData, String client, 
             String existingOwlRdfXml, 
             SimpleOntology existingSimpleOntology) {
         
         // RDF/XML format
-        if ( format.equalsIgnoreCase("RDFXML") )
-            return clientData;
+        OntologyDataMapperFormat ontologyDataFormat = OntologyDataMapperFormat
+                .valueOfLabel(format.strip().toUpperCase());
+        if ( ontologyDataFormat.equals(OntologyDataMapperFormat.RDF_XML) )
+            return ontologyData;
         
         // JSON format
-        else if ( format.equalsIgnoreCase("JSON") ) {
+        else if ( ontologyDataFormat.equals(OntologyDataMapperFormat.JSON) ) {
             
             // OntoKai client
-            if ( client.equalsIgnoreCase("ONTOKAI") ) {
+            OntologyDataMapperClient ontologyDataClient = 
+                    OntologyDataMapperClient.valueOfLabel(
+                            client.strip().toUpperCase());
+            if ( ontologyDataClient.equals(OntologyDataMapperClient.ONTOKAI) ) {
                 
                 // Map the client data JSON string as an OntoKai ontology
                 // payload object
                 OntoKaiOntologyPayload ontokaiOntologyPayload = null;
                 try {
                     ObjectMapper mapper = new ObjectMapper();
-                    ontokaiOntologyPayload = mapper.readValue(clientData, 
+                    ontokaiOntologyPayload = mapper.readValue(ontologyData, 
                             OntoKaiOntologyPayload.class);
                 } catch (JsonProcessingException e) {
                     throw new OntoKaiInvalidOntologyPayloadException();

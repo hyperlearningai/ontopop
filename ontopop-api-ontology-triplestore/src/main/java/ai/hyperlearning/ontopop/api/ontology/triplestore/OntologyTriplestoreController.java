@@ -603,7 +603,8 @@ public class OntologyTriplestoreController {
             @RequestParam(name = "client", required = false) String client, 
             @RequestParam(name = "author", required = true) String author, 
             @RequestParam(name = "message", required = false) String message, 
-            @RequestBody(required = true) String data) throws Exception {
+            @RequestBody(required = true) String ontologyData) 
+                    throws Exception {
         
         LOGGER.debug("New HTTP PUT request - Put ontology data for "
                 + "ontology ID {}.", id);
@@ -640,7 +641,7 @@ public class OntologyTriplestoreController {
             
             // Generate the RDF/XML string
             String targetOwlRdfXml = OntologyDataMapper.toOwlRdfXml(
-                    format, data, clientName, 
+                    format, ontologyData, clientName, 
                     existingOwlRdfXml, existingSimpleOntology);
                 
             // Push the RDF/XML string to the Git repository
