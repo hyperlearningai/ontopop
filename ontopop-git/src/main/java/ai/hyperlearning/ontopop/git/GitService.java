@@ -120,7 +120,7 @@ public interface GitService {
      */
     
     ResponseEntity<String> putFile(String owner, String repo, String path, 
-            String branch, String token, String localFilePath, 
+            String branch, String token, String data, boolean isFile,  
             GitCommitter gitCommitter, GitAuthor gitAuthor, 
             String commitMessage) throws IOException;
 

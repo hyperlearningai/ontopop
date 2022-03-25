@@ -142,7 +142,7 @@ public class WebProtegeExporterGitPushService {
                 ontology.getRepoResourcePath(), 
                 ontology.getRepoBranch(), 
                 ontologySecretData.getRepoToken(), 
-                extractedOwlAbsolutePath, 
+                extractedOwlAbsolutePath, true, 
                 gitCommitter, gitAuthor, commitMessage);
         
     }

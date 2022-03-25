@@ -289,13 +289,14 @@ public class GitHubGitService implements GitService {
     
     @Override
     public ResponseEntity<String> putFile(String owner, String repo, 
-            String path, String branch, String token, String localFilePath, 
+            String path, String branch, String token, 
+            String data, boolean isFile,  
             GitCommitter gitCommitter, GitAuthor gitAuthor, 
             String commitMessage) throws IOException {
         
         // Get the local file content using Base64 encoding
-        String localFileContents = Files.readString(
-                Paths.get(localFilePath), StandardCharsets.UTF_8);
+        String localFileContents = isFile ? Files.readString(
+                Paths.get(data), StandardCharsets.UTF_8) : data;
         String localFileContentsBase64 = Base64.getEncoder()
                 .encodeToString(localFileContents.getBytes());
         
