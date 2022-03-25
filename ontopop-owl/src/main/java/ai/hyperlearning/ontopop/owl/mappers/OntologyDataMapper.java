@@ -15,6 +15,7 @@ import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataInvalidFormatExc
 import ai.hyperlearning.ontopop.exceptions.security.InvalidClientNameException;
 import ai.hyperlearning.ontopop.exceptions.vendors.OntoKaiInvalidOntologyPayloadException;
 import ai.hyperlearning.ontopop.exceptions.vendors.OntoKaiOntologyPayloadMappingException;
+import ai.hyperlearning.ontopop.model.ontokai.OntoKaiOntologyNode;
 import ai.hyperlearning.ontopop.model.ontokai.OntoKaiOntologyPayload;
 import ai.hyperlearning.ontopop.model.owl.SimpleOntology;
 import ai.hyperlearning.ontopop.model.owl.diff.SimpleOntologyDiff;
@@ -54,17 +55,20 @@ public class OntologyDataMapper {
         // RDF/XML format
         OntologyDataMapperFormat ontologyDataFormat = OntologyDataMapperFormat
                 .valueOfLabel(format.strip().toUpperCase());
-        if ( ontologyDataFormat.equals(OntologyDataMapperFormat.RDF_XML) )
+        if ( ontologyDataFormat != null && 
+                ontologyDataFormat.equals(OntologyDataMapperFormat.RDF_XML) )
             return ontologyData;
         
         // JSON format
-        else if ( ontologyDataFormat.equals(OntologyDataMapperFormat.JSON) ) {
+        else if ( ontologyDataFormat != null && 
+                ontologyDataFormat.equals(OntologyDataMapperFormat.JSON) ) {
             
             // OntoKai client
             OntologyDataMapperClient ontologyDataClient = 
                     OntologyDataMapperClient.valueOfLabel(
                             client.strip().toUpperCase());
-            if ( ontologyDataClient.equals(OntologyDataMapperClient.ONTOKAI) ) {
+            if ( ontologyDataClient != null && 
+                    ontologyDataClient.equals(OntologyDataMapperClient.ONTOKAI) ) {
                 
                 // Map the client data JSON string as an OntoKai ontology
                 // payload object
@@ -73,6 +77,13 @@ public class OntologyDataMapper {
                     ObjectMapper mapper = new ObjectMapper();
                     ontokaiOntologyPayload = mapper.readValue(ontologyData, 
                             OntoKaiOntologyPayload.class);
+                    if ( !ontokaiOntologyPayload.isValid() )
+                        throw new OntoKaiInvalidOntologyPayloadException();
+                    for ( OntoKaiOntologyNode node : 
+                        ontokaiOntologyPayload.getNodes() ) {
+                        if ( !node.isValid() )
+                            throw new OntoKaiInvalidOntologyPayloadException();
+                    }
                 } catch (JsonProcessingException e) {
                     throw new OntoKaiInvalidOntologyPayloadException();
                 }
