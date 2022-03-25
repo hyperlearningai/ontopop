@@ -46,21 +46,20 @@ public class OntologyGitPushService {
     private String committerEmail;
     
     private Ontology ontology;
-    private String ontologyDataFileToPushAbsolutePath;
-    private String clientName;
+    private String ontologyData;
+    private String authorName;
     private String commitMessage;
     private GitService gitService;
     
     public void run(Ontology ontology, 
-            String ontologyDataFileToPushAbsolutePath, 
-            String clientName, String commitMessage) 
+            String ontologyData, 
+            String authorName, String commitMessage) 
             throws Exception {
         
         LOGGER.info("Ontology Git push service started.");
         this.ontology = ontology;
-        this.ontologyDataFileToPushAbsolutePath = 
-                ontologyDataFileToPushAbsolutePath;
-        this.clientName = clientName;
+        this.ontologyData = ontologyData;
+        this.authorName = authorName;
         this.commitMessage = commitMessage;
         
         try {
@@ -90,7 +89,7 @@ public class OntologyGitPushService {
     
     private void setup() {
         
-        // 1. Select the relevant Git service
+        // Select the relevant Git service
         gitService = gitServiceFactory.getGitService(GIT_SERVICE);
         LOGGER.debug("Using the {} object storage service.", GIT_SERVICE);
         
@@ -113,7 +112,7 @@ public class OntologyGitPushService {
         LOGGER.debug("Created a Git Committer: {}.", gitCommitter);
         
         // Create a GitAuthor object
-        String gitAuthorUsername = clientName != null ? clientName : 
+        String gitAuthorUsername = authorName != null ? authorName : 
             committerName;
         GitAuthor gitAuthor = new GitAuthor(gitAuthorUsername, committerEmail);
         LOGGER.debug("Created a Git Author: {}.", gitAuthor);
@@ -124,9 +123,8 @@ public class OntologyGitPushService {
         LOGGER.debug("Created a Git Commit Message: {}.", gitCommitMessage);
         
         // Update the file in the Git repository
-        LOGGER.info("Updating file in the Git Repository with '{}': "
+        LOGGER.info("Updating file in the Git Repository: "
                 + "repos/{}/{}/contents/{}?ref={}", 
-                ontologyDataFileToPushAbsolutePath, 
                 ontology.getRepoOwner(), ontology.getRepoName(), 
                 ontology.getRepoResourcePath(), ontology.getRepoBranch());
         gitService.putFile(
@@ -135,7 +133,7 @@ public class OntologyGitPushService {
                 ontology.getRepoResourcePath(), 
                 ontology.getRepoBranch(), 
                 ontologySecretData.getRepoToken(), 
-                ontologyDataFileToPushAbsolutePath, 
+                ontologyData, false,  
                 gitCommitter, gitAuthor, gitCommitMessage);
         
     }
