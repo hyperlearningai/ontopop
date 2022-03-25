@@ -7,7 +7,6 @@ package ai.hyperlearning.ontopop.exceptions.ontology;
  * @since 2.0.0
  */
 
-
 public class OntologyDownloadException extends RuntimeException {
 
     private static final long serialVersionUID = -1446897825165441187L;
