@@ -38,7 +38,7 @@ import ai.hyperlearning.ontopop.rdf.StandardRDFSchema;
  * @since 2.0.0
  */
 
-public class OntoKaiOntologyMapper {
+public class OntoKaiOntologyDataMapper {
     
     private static final String DEFAULT_IRI_PREFIX = 
             "http://webprotege.stanford.edu/R";
@@ -54,7 +54,7 @@ public class OntoKaiOntologyMapper {
     private static final String ONTOKAI_RESTRICTION_BUNDLE_TYPE_VALUE = 
             "SOME";
     
-    private OntoKaiOntologyMapper() {
+    private OntoKaiOntologyDataMapper() {
         throw new IllegalStateException("The OntoKaiOntologyMapper "
                 + "utility class cannot be instantiated.");
     }
