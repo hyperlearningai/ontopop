@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -30,11 +32,19 @@ public class OntoKaiOntologyNode implements Serializable {
     private static final String ONTOKAI_RESTRICTION_BUNDLE_TYPE_VALUE = 
             "SOME";
     
-    private int id;
+    @NotNull
+    private Integer id;
+    
     private String category;
+    
+    @NotNull
     private String label;
+    
+    @NotNull
     private String url;
+    
     private List<OntoKaiOntologyNodeAttribute> attributes = new ArrayList<>();
+    
     private List<OntoKaiOntologyNodeRelationship> relationships = new ArrayList<>();
     
     public OntoKaiOntologyNode() {
@@ -156,6 +166,11 @@ public class OntoKaiOntologyNode implements Serializable {
         
         return parentClassIriPropertyRestrictionIriMap;
         
+    }
+    
+    @JsonIgnore
+    public boolean isValid() {
+        return id != null && label != null && url != null;
     }
 
     @Override

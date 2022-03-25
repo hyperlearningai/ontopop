@@ -2,6 +2,8 @@ package ai.hyperlearning.ontopop.model.ontokai;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -16,8 +18,12 @@ public class OntoKaiOntologyNodeAttribute implements Serializable {
 
     private static final long serialVersionUID = -7323969363293820359L;
     
+    @NotNull
     private String name;
+    
+    @NotNull
     private String value;
+    
     private String dataSource;
     private int json;
     

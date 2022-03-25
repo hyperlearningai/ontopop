@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -21,9 +23,16 @@ public class OntoKaiOntologyPayload implements Serializable {
 
     private static final long serialVersionUID = -7870117418972283488L;
     
+    @NotNull
     private String iaName;
-    private boolean selection;
-    private int version;
+    
+    @NotNull
+    private Boolean selection;
+    
+    @NotNull
+    private Integer version;
+    
+    @NotNull
     private List<OntoKaiOntologyNode> nodes = new ArrayList<>();
     
     public OntoKaiOntologyPayload() {
@@ -78,6 +87,12 @@ public class OntoKaiOntologyPayload implements Serializable {
             nodeIdIriMap.put(node.getId(), node.getUrl());
         }
         return nodeIdIriMap;
+    }
+    
+    @JsonIgnore
+    public boolean isValid() {
+        return iaName != null && selection != null && version != null 
+                && nodes != null && !nodes.isEmpty();
     }
 
     @Override
