@@ -587,7 +587,7 @@
         <profile>
             <id>apps</id>
             <activation>
-                <activeByDefault>false</activeByDefault>
+                <activeByDefault>true</activeByDefault>
             </activation>
             <modules>
                 <module>ontopop-apps</module>
