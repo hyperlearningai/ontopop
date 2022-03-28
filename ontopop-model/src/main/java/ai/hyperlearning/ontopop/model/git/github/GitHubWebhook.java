@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -163,6 +164,8 @@ public class GitHubWebhook implements Serializable {
 		GitWebhook gitWebhook = new GitWebhook();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(
 				"yyyy-MM-dd'T'HH:mm:ss[XXX]");
+		DateTimeFormatter fallbackFormatter = DateTimeFormatter.ofPattern(
+		        "yyyy-MM-dd'T'HH:mm:ss'Z'");
 		
 		// Set system date created
 		gitWebhook.setDateCreated( LocalDateTime.now(ZoneOffset.UTC) );
@@ -203,14 +206,28 @@ public class GitHubWebhook implements Serializable {
 				for (String modifiedResource: modified) {
 					if ( modifiedResource.equals(resourcePath) ) {
 						
-						// Set the commit ID and timestamp attributes
+						// Set the commit ID and commit message attributes
 					    gitWebhook.setLatestRelevantCommitId( 
 								commit.get("id").toString() );
 					    gitWebhook.setLatestRelevantCommitMessage(
 								commit.get("message").toString() );
-						String timestamp = commit.get("timestamp").toString();
-						gitWebhook.setLatestRelevantCommitTimestamp( 
-								LocalDateTime.parse(timestamp, formatter) );
+						
+					    // Set the commit timestamp taking into 
+					    // account timezone offsets
+					    String timestamp = commit.get("timestamp").toString();
+						try {
+						    gitWebhook.setLatestRelevantCommitTimestamp( 
+	                                LocalDateTime.parse(timestamp, formatter) );
+						} catch (DateTimeParseException e) {
+						    try {
+						        gitWebhook.setLatestRelevantCommitTimestamp( 
+	                                    LocalDateTime.parse(timestamp, 
+	                                            fallbackFormatter) );
+						    } catch (DateTimeParseException e2) {
+						        gitWebhook.setLatestRelevantCommitTimestamp(
+						                LocalDateTime.now());
+						    }
+						}
 						
 						// Set the commit author attributes
 						Map<String, Object> author = 
