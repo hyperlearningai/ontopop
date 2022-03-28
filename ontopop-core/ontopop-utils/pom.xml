@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+    xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Parent Project -->
+    <parent>
+        <groupId>ai.hyperlearning.ontopop</groupId>
+        <artifactId>ontopop-core</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <!-- Module Metadata -->
+    <artifactId>ontopop-utils</artifactId>
+    <name>ontopop-utils</name>
+    <packaging>jar</packaging>
+    <description>OntoPop - Helper Functions and Services</description>
+    <url>https://ontopop.com</url>
+    <organization>
+        <name>HyperLearning AI</name>
+        <url>https://hyperlearning.ai</url>
+    </organization>
+    <developers>
+        <developer>
+            <id>jillurquddus</id>
+            <name>Jillur Quddus</name>
+            <email>contactus@hyperlearning.ai</email>
+            <url>https://hyperlearning.ai/team/jillurquddus</url>
+            <organization>HyperLearning AI</organization>
+            <organizationUrl>https://hyperlearning.ai</organizationUrl>
+            <roles>
+                <role>Chief Data Scientist</role>
+                <role>Principal Polyglot Software Engineer</role>
+            </roles>
+            <timezone>Europe/London</timezone>
+        </developer>
+    </developers>
+
+    <!-- Module Properties -->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <!-- Module Dependencies -->
+    <dependencies>
+
+        <!-- JanusGraph -->
+        <dependency>
+            <groupId>org.janusgraph</groupId>
+            <artifactId>janusgraph-all</artifactId>
+        </dependency>
+
+        <!-- Logback -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+
+        <!-- SLF4J -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+    </dependencies>
+
+</project>

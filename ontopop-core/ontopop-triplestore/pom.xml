@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+    xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Parent Project -->
+    <parent>
+        <groupId>ai.hyperlearning.ontopop</groupId>
+        <artifactId>ontopop-core</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <!-- Module Metadata -->
+    <artifactId>ontopop-triplestore</artifactId>
+    <name>ontopop-triplestore</name>
+    <packaging>jar</packaging>
+    <description>OntoPop - Triplestore Semantic Services</description>
+    <url>https://ontopop.com</url>
+    <organization>
+        <name>HyperLearning AI</name>
+        <url>https://hyperlearning.ai</url>
+    </organization>
+    <developers>
+        <developer>
+            <id>jillurquddus</id>
+            <name>Jillur Quddus</name>
+            <email>contactus@hyperlearning.ai</email>
+            <url>https://hyperlearning.ai/team/jillurquddus</url>
+            <organization>HyperLearning AI</organization>
+            <organizationUrl>https://hyperlearning.ai</organizationUrl>
+            <roles>
+                <role>Chief Data Scientist</role>
+                <role>Principal Polyglot Software Engineer</role>
+            </roles>
+            <timezone>Europe/London</timezone>
+        </developer>
+    </developers>
+
+    <!-- Module Properties -->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <!-- Module Dependencies -->
+    <dependencies>
+
+        <!-- Apache Jena -->
+        <dependency>
+            <groupId>org.apache.jena</groupId>
+            <artifactId>apache-jena-libs</artifactId>
+            <type>pom</type>
+        </dependency>
+
+        <!-- Ontotext GraphDB -->
+        <dependency>
+            <groupId>com.ontotext.graphdb</groupId>
+            <artifactId>graphdb-free-runtime</artifactId>
+        </dependency>
+
+        <!-- Spring Boot AutoConfigure -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+
+        <!-- Spring Context -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+
+        <!-- Spring Test -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+        </dependency>
+
+        <!-- Spring Webflux -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+
+    </dependencies>
+    
+    <!-- Module Build -->
+    <build>
+    
+        <!-- Plugins -->
+        <plugins>
+            
+            <!-- Integration Test Management -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    
+    </build>
+
+</project>

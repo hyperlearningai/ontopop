@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Parent Project -->
+    <parent>
+        <groupId>ai.hyperlearning.ontopop</groupId>
+        <artifactId>ontopop</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <!-- Module Metadata -->
+    <artifactId>ontopop-api</artifactId>
+    <name>ontopop-api</name>
+    <packaging>pom</packaging>
+    <description>OntoPop - API Services POM</description>
+    <url>https://ontopop.com</url>
+    <organization>
+        <name>HyperLearning AI</name>
+        <url>https://hyperlearning.ai</url>
+    </organization>
+    <developers>
+        <developer>
+            <id>jillurquddus</id>
+            <name>Jillur Quddus</name>
+            <email>contactus@hyperlearning.ai</email>
+            <url>https://hyperlearning.ai/team/jillurquddus</url>
+            <organization>HyperLearning AI</organization>
+            <organizationUrl>https://hyperlearning.ai</organizationUrl>
+            <roles>
+                <role>Chief Data Scientist</role>
+                <role>Principal Polyglot Software Engineer</role>
+            </roles>
+            <timezone>Europe/London</timezone>
+        </developer>
+    </developers>
+
+    <!-- Module Properties -->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <!-- Child Modules -->
+    <modules>
+        <module>ontopop-api-ontology-management</module>
+        <module>ontopop-api-ontology-triplestore</module>
+        <module>ontopop-api-ontology-search</module>
+        <module>ontopop-api-ontology-graph</module>
+    </modules>
+
+</project>

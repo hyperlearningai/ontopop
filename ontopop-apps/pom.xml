@@ -13,7 +13,7 @@
     <artifactId>ontopop-apps</artifactId>
     <name>ontopop-apps</name>
     <packaging>pom</packaging>
-    <description>OntoPop - Spring Boot Applications POM</description>
+    <description>OntoPop - Applications POM</description>
     <url>https://ontopop.com</url>
     <organization>
         <name>HyperLearning AI</name>
@@ -40,31 +40,65 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <!-- Module Dependency Management -->
-    <dependencyManagement>
-        <dependencies>
-
-            <!-- OntoPop Apps -->
-
-        </dependencies>
-    </dependencyManagement>
-
     <!-- Child Modules -->
     <modules>
-        <module>ontopop-app-data-ontology-ingestor</module>
-        <module>ontopop-app-data-ontology-validator</module>
-        <module>ontopop-app-data-ontology-loader-triplestore</module>
-        <module>ontopop-app-data-ontology-parser</module>
-        <module>ontopop-app-data-ontology-modeller-graph</module>
-        <module>ontopop-app-data-ontology-loader-graph</module>
-        <module>ontopop-app-data-ontology-indexer-graph</module>
-        <module>ontopop-app-data-ontology-pipeline</module>
-        <module>ontopop-app-data-ontology-webprotege-exporter-messaging</module>
-        <module>ontopop-app-data-ontology-webprotege-exporter-scheduler</module>
-        <module>ontopop-app-api-ontology-management</module>
-        <module>ontopop-app-api-ontology-triplestore</module>
-        <module>ontopop-app-api-ontology-search</module>
-        <module>ontopop-app-api-ontology-graph</module>
+        <module>ontopop-apps-spring</module>
+        <module>ontopop-apps-aws</module>
+        <module>ontopop-apps-azure</module>
     </modules>
+    
+    <!-- Project Profiles -->
+    <profiles>
+    
+        <!-- Build Profile - All apps for all deployment environments -->
+        <profile>
+            <id>multicloud</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>ontopop-apps-spring</module>
+                <module>ontopop-apps-aws</module>
+                <module>ontopop-apps-azure</module>
+            </modules>
+        </profile>
+        
+        <!-- Build Profile - Spring Boot apps for deployment to self-managed 
+        or Spring cloud environments -->
+        <profile>
+            <id>spring</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>ontopop-apps-spring</module>
+            </modules>
+        </profile>
+        
+        <!-- Build Profile - AWS apps for deployment to AWS Lambda instances 
+        and AWS Elastic Beanstalk environments respectively -->
+        <profile>
+            <id>aws</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>ontopop-apps-aws</module>
+            </modules>
+        </profile>
+    
+        <!-- Build Profile - Microsoft Azure apps for deployment to 
+        Azure Function instances and Azure Web Apps respectively -->
+        <profile>
+            <id>azure</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>ontopop-apps-azure</module>
+            </modules>
+        </profile>
+    
+    </profiles>
 
 </project>
