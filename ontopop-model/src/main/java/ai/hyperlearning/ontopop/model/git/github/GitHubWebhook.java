@@ -162,7 +162,7 @@ public class GitHubWebhook implements Serializable {
 		
 		GitWebhook gitWebhook = new GitWebhook();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(
-				"yyyy-MM-dd'T'HH:mm:ss'Z'");
+				"yyyy-MM-dd'T'HH:mm:ss[XXX]");
 		
 		// Set system date created
 		gitWebhook.setDateCreated( LocalDateTime.now(ZoneOffset.UTC) );
