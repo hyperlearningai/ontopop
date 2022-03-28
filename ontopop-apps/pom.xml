@@ -52,7 +52,7 @@
     
         <!-- Build Profile - All apps for all deployment environments -->
         <profile>
-            <id>multicloud</id>
+            <id>apps-multicloud</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
@@ -66,7 +66,7 @@
         <!-- Build Profile - Spring Boot apps for deployment to self-managed 
         or Spring cloud environments -->
         <profile>
-            <id>spring</id>
+            <id>apps-spring</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
             </activation>
@@ -78,7 +78,7 @@
         <!-- Build Profile - AWS apps for deployment to AWS Lambda instances 
         and AWS Elastic Beanstalk environments respectively -->
         <profile>
-            <id>aws</id>
+            <id>apps-aws</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
             </activation>
@@ -90,7 +90,7 @@
         <!-- Build Profile - Microsoft Azure apps for deployment to 
         Azure Function instances and Azure Web Apps respectively -->
         <profile>
-            <id>azure</id>
+            <id>apps-azure</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
             </activation>
