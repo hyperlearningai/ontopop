@@ -187,14 +187,24 @@ $ cd ontopop
 
 #### Maven Profiles
 
+##### Parent Profiles
+
 The following table describes the Maven profiles defined in `$ONTOPOP_BASE/pom.xml`.
 
 Profile Name | Default | Description
 :--- | :--- | --- 
-`multicloud` | Yes | Manages the lifecycle of all OntoPop backend services as well as all OntoPop Spring Boot applications (i.e. serverless function apps and API apps) across all cloud vendors.
-`spring` | No | Manages the lifecycle of all OntoPop backend services but, from an application perspective, manages the lifecycle of only Spring Boot applications designed for development and testing purposes, or for deployment to on-premise, private cloud or Spring Cloud environments.
-`azure` | No | Manages the lifecycle of all OntoPop backend services but, from an application perspective, manages the lifecycle of only Microsoft Azure Spring Boot applications designed for deployment to Azure Function and Azure Web App managed services respectively.
-`aws` | No | Manages the lifecycle of all OntoPop backend services but, from an application perspective, managed the lifecycle of only AWS Spring Boot applications designed for deployment to AWS Lambda and AWS Elastic Beanstalk managed services respectively.
+`apps` | Yes | Manages the lifecycle of all OntoPop's core services as well as all OntoPop Spring Boot applications (i.e. serverless function apps and API applications) across all cloud vendors.
+
+##### Application Profiles
+
+The following table describes the Maven profiles defined in `$ONTOPOP_BASE/ontopop-apps/pom.xml`.
+
+Profile Name | Default | Description
+:--- | :--- | --- 
+`apps-multicloud` | Yes | Manages the lifecycle of all OntoPop Spring Boot applications (i.e. serverless function apps and API applications) across all cloud vendors.
+`apps-spring` | No | Manages the lifecycle of Spring Boot applications designed for development and testing purposes, or for deployment to self-managed or Spring Cloud environments.
+`apps-aws` | No | Manages the lifecycle of AWS Spring Boot applications designed for deployment to AWS Lambda and AWS Beanstalk apps respectively.
+`apps-azure` | No | Manages the lifecycle of Microsoft Azure Spring Boot applications designed for deployment to Azure Function apps and Azure Web Apps respectively.
 
 #### Compile and Build
 
@@ -204,13 +214,32 @@ Please ensure that you have entered the correct configuration into the Spring bo
 # Navigate to $ONTOPOP_BASE
 $ cd $ONTOPOP_BASE
 
-# Clean the project working directory
+# Clean the project working directory.
 $ mvn clean
 
-# Compile, build and package OntoPop
-# Please select your required OntoPop Maven profile name
-# If no profile is provided, the default "multicloud" Maven profile will be used
-$ mvn package -P [OntoPop Maven profile name e.g. azure]
+# Compile, build and package OntoPop.
+# By default this will build all services and applications.
+$ mvn package
+
+# If you wish to build OntoPop's core services only, 
+# then disable the "apps" Maven profile as follows.
+$ mvn package -P \!apps
+
+# If you wish to build OntoPop's core services but only the
+# apps intended for deployment to a self-managed environment
+# or to Spring Cloud, then enable the "apps-spring" Maven 
+# profile as follows.
+$ mvn package -P apps-spring
+
+# If you wish to build OntoPop's core services but only the
+# apps intended for deployment to AWS, then enable the 
+# "apps-aws" Maven profile as follows.
+$ mvn package -P apps-aws
+
+# If you wish to build OntoPop's core services but only the
+# apps intended for deployment to Azure, then enable the 
+# "apps-azure" Maven profile as follows.
+$ mvn package -P apps-azure
 ```
 
 If you are running `mvn package` for the first time, it will take approximately 5 - 10 minutes to complete the build (dependent on the speed of your internet connection) as Maven will download all the required Java dependencies for the first time. Subsequent executions of mvn package should take between 2 - 3 minutes to complete.
@@ -220,8 +249,8 @@ If you are running `mvn package` for the first time, it will take approximately 
 Assuming that `mvn package` completes successfully, you are now ready to deploy OntoPop. Please follow the links below for deployment instructions specific to your target deployment environment.<br/>
 
 * **[Self Managed](https://docs.ontopop.com/deployment-guides/self-managed)** - deploy OntoPop to a self-managed on-premise, public/private cloud or hybrid environment, integrated with entirely open-source self-managed software services such as HashiCorp Vault, RabbitMQ, MySQL, Apache Jena Fuseki, JanusGraph and Elasticsearch.<br/><br/>
-* **[Microsoft Azure](https://docs.ontopop.com/deployment-guides/microsoft-azure)** - deploy OntoPop to the Microsoft Azure cloud computing platform, integrated with Azure managed services including Azure Key Vault, Azure Blob Storage, Azure Service Bus, Azure Functions and Azure Web Apps.<br/><br/>
-* **[Amazon Web Services](https://docs.ontopop.com/deployment-guides/amazon-web-services)** - deploy OntoPop to the Amazon Web Services (AWS) cloud computing platform, integrated with AWS managed services including AWS Secrets Manager, Amazon S3, Amazon MQ, Amazon RDS, AWS Lambda and AWS Elastic Beanstalk.
+* **[Amazon Web Services](https://docs.ontopop.com/deployment-guides/amazon-web-services)** - deploy OntoPop to the Amazon Web Services (AWS) cloud computing platform, integrated with AWS managed services including AWS Secrets Manager, Amazon S3, Amazon MQ, Amazon RDS, AWS Lambda and AWS Elastic Beanstalk.<br/><br/>
+* **[Microsoft Azure](https://docs.ontopop.com/deployment-guides/microsoft-azure)** - deploy OntoPop to the Microsoft Azure cloud computing platform, integrated with Azure managed services including Azure Key Vault, Azure Blob Storage, Azure Service Bus, Azure Functions and Azure Web Apps.
 <br/>
 
 ## <a name="license"></a>4. License
