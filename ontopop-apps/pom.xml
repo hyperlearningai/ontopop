@@ -47,7 +47,7 @@
         <module>ontopop-apps-azure</module>
     </modules>
     
-    <!-- Project Profiles -->
+    <!-- Module Profiles -->
     <profiles>
     
         <!-- Build Profile - All apps for all deployment environments -->

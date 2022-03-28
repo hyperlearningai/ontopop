@@ -578,8 +578,23 @@
         <module>ontopop-security</module>
         <module>ontopop-data</module>
         <module>ontopop-api</module>
-        <module>ontopop-apps</module>
     </modules>
+    
+    <!-- Project Profiles -->
+    <profiles>
+    
+        <!-- Build Profile - Build apps -->
+        <profile>
+            <id>apps</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>ontopop-apps</module>
+            </modules>
+        </profile>
+    
+    </profiles>
 
     <!-- Project Build Configuration -->
     <build>
