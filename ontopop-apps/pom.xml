@@ -39,13 +39,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-    <!-- Child Modules -->
-    <modules>
-        <module>ontopop-apps-spring</module>
-        <module>ontopop-apps-aws</module>
-        <module>ontopop-apps-azure</module>
-    </modules>
     
     <!-- Module Profiles -->
     <profiles>
