@@ -15,12 +15,16 @@ import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreationAlreadyExist
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreationException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataInvalidAuthorException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataInvalidFormatException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataParsingException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPropertyGraphModellingException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPutException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDeletionException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffInvalidRequestParametersException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffInvalidTimestampException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffProcessingException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDownloadException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyModellerInvalidFormatException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyModellerInvalidOntologyDataException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyNotFoundException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyUpdateSecretDataException;
 import ai.hyperlearning.ontopop.exceptions.security.InvalidClientNameException;
@@ -54,7 +58,9 @@ public class CustomGlobalExceptionHandler
             OntologyDownloadException.class, 
             OntologyDiffProcessingException.class, 
             OntologyDataPutException.class, 
-            OntoKaiOntologyPayloadMappingException.class})
+            OntoKaiOntologyPayloadMappingException.class, 
+            OntologyDataParsingException.class, 
+            OntologyDataPropertyGraphModellingException.class})
     public void springHandleCreationException(HttpServletResponse response)
             throws IOException {
         response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -73,7 +79,9 @@ public class CustomGlobalExceptionHandler
         OntologyDataInvalidFormatException.class, 
         OntologyDataInvalidAuthorException.class, 
         InvalidClientNameException.class, 
-        OntoKaiInvalidOntologyPayloadException.class})
+        OntoKaiInvalidOntologyPayloadException.class, 
+        OntologyModellerInvalidFormatException.class, 
+        OntologyModellerInvalidOntologyDataException.class})
     public void springHandleBadRequest(HttpServletResponse response) 
             throws IOException {
         response.sendError(HttpStatus.BAD_REQUEST.value());

@@ -23,7 +23,7 @@ import ai.hyperlearning.ontopop.owl.OWLRDFXMLAPI;
 import ai.hyperlearning.ontopop.owl.mappers.ontokai.OntoKaiOntologyDataMapper;
 
 /**
- * Ontology data mapper
+ * Ontology data to RDF/XML mapper
  *
  * @author jillurquddus
  * @since 2.0.0
