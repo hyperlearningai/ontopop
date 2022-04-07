@@ -117,6 +117,10 @@ public class SimpleOntologyVertex implements Serializable {
 		this.properties.put("vertexId", this.vertexId);
 		this.properties.put("latestGitWebhookId", this.latestGitWebhookId);
 	}
+	
+	public void preparePropertiesForModelling() {
+	    this.properties.put("iri", this.iri);
+	}
 
 	public LocalDateTime getDateLastUpdated() {
 		return dateLastUpdated;

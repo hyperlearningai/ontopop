@@ -41,6 +41,9 @@ import ai.hyperlearning.ontopop.rdf.SKOSVocabulary;
 
 public class RdfXmlModeller {
     
+    private static final int DEFAULT_ONTOLOGY_ID = 1;
+    private static final long DEFAULT_LATEST_GIT_WEBHOOK_ID = 0;
+    
     private RdfXmlModeller() {
         throw new IllegalStateException("The RdfXmlModeller utility "
             + "class cannot be instantiated.");
@@ -145,7 +148,8 @@ public class RdfXmlModeller {
                     OWLAPI.parseObjectProperties(ontology);
             Map<String, SimpleClass> simpleClassMap = 
                     OWLAPI.parseClasses(ontology);
-            return new SimpleOntology(0, 0,
+            return new SimpleOntology(DEFAULT_ONTOLOGY_ID, 
+                    DEFAULT_LATEST_GIT_WEBHOOK_ID,
                     simpleAnnotationPropertyMap, 
                     simpleObjectPropertyMap,
                     simpleClassMap);
@@ -192,7 +196,8 @@ public class RdfXmlModeller {
             
             // Transform the SimpleOntology object into a
             // SimpleOntologyPropertyGraph object
-            return new SimpleOntologyPropertyGraph(0, 0, 
+            return new SimpleOntologyPropertyGraph(DEFAULT_ONTOLOGY_ID, 
+                    DEFAULT_LATEST_GIT_WEBHOOK_ID, 
                     simpleOntology,
                     standardSchemaAnnotationProperties);
             
