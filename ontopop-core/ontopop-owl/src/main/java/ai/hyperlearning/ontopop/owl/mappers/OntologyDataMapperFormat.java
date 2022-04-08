@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Supported Ontology Mapper Data Formats
+ * Supported Ontology Data Mapper Source Formats
  *
  * @author jillurquddus
  * @since 2.0.0

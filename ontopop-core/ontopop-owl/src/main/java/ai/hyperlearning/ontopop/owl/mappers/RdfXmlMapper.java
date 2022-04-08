@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.owl.modellers;
+package ai.hyperlearning.ontopop.owl.mappers;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,33 +18,33 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataParsingException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPropertyGraphModellingException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyModellerInvalidFormatException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyModellerInvalidOntologyDataException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidFormatException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidOntologyDataException;
 import ai.hyperlearning.ontopop.model.graph.SimpleOntologyPropertyGraph;
 import ai.hyperlearning.ontopop.model.owl.SimpleAnnotationProperty;
 import ai.hyperlearning.ontopop.model.owl.SimpleClass;
 import ai.hyperlearning.ontopop.model.owl.SimpleObjectProperty;
 import ai.hyperlearning.ontopop.model.owl.SimpleOntology;
 import ai.hyperlearning.ontopop.owl.OWLAPI;
-import ai.hyperlearning.ontopop.owl.modellers.ontopop.NativeRdfXmlModeller;
+import ai.hyperlearning.ontopop.owl.mappers.graphson.RdfXmlGraphSONMapper;
+import ai.hyperlearning.ontopop.owl.mappers.ontopop.RdfXmlNativeMapper;
 import ai.hyperlearning.ontopop.rdf.DCMI;
-import ai.hyperlearning.ontopop.rdf.GraphSONRdfXmlModeller;
 import ai.hyperlearning.ontopop.rdf.RDFSchema;
 import ai.hyperlearning.ontopop.rdf.SKOSVocabulary;
 
 /**
- * RDF/XML modeller
+ * RDF/XML mapper
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
-public class RdfXmlModeller {
+public class RdfXmlMapper {
     
     private static final int DEFAULT_ONTOLOGY_ID = 1;
     private static final long DEFAULT_LATEST_GIT_WEBHOOK_ID = 0;
     
-    private RdfXmlModeller() {
+    private RdfXmlMapper() {
         throw new IllegalStateException("The RdfXmlModeller utility "
             + "class cannot be instantiated.");
     }
@@ -58,18 +58,21 @@ public class RdfXmlModeller {
      */
     
     public static String model(String owlFile, String format) 
-            throws IOException, OntologyDataParsingException, 
+            throws IOException, 
+            OntologyMapperInvalidOntologyDataException, 
+            OntologyMapperInvalidFormatException, 
+            OntologyDataParsingException, 
             OntologyDataPropertyGraphModellingException{
         
         // Validate the given OWL file and its contents
         if ( !isValid(owlFile) || !isSemanticallyValid(owlFile) )
-            throw new OntologyModellerInvalidOntologyDataException();
+            throw new OntologyMapperInvalidOntologyDataException();
         
         // Get and validate the target format
-        RdfXmlModellerFormat targetFormat = RdfXmlModellerFormat
+        RdfXmlMapperFormat targetFormat = RdfXmlMapperFormat
                 .valueOfLabel(format.strip().toUpperCase());
         if ( targetFormat == null )
-            throw new OntologyModellerInvalidFormatException();
+            throw new OntologyMapperInvalidFormatException();
         
         // Parse the RDF/XML contents of the given OWL file
         // into a SimpleOntology object
@@ -80,17 +83,17 @@ public class RdfXmlModeller {
         SimpleOntologyPropertyGraph simpleOntologyPropertyGraph = 
                 toSimpleOntologyPropertyGraph(simpleOntology);
         
-        // Model the RDF/XML contents of the given OWL file 
+        // Map the RDF/XML contents of the given OWL file 
         // into the given format
         switch (targetFormat) {
             case NATIVE:
-                return NativeRdfXmlModeller
-                        .model(simpleOntologyPropertyGraph);
+                return RdfXmlNativeMapper
+                        .map(simpleOntologyPropertyGraph);
             case GRAPHSON:
-                return GraphSONRdfXmlModeller
-                        .model(simpleOntologyPropertyGraph);
+                return RdfXmlGraphSONMapper
+                        .map(simpleOntologyPropertyGraph);
             default:
-                throw new OntologyModellerInvalidFormatException();
+                throw new OntologyMapperInvalidFormatException();
         }
         
     }

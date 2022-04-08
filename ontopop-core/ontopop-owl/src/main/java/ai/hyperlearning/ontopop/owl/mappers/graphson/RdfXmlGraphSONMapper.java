@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.rdf;
+package ai.hyperlearning.ontopop.owl.mappers.graphson;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,21 +10,21 @@ import ai.hyperlearning.ontopop.model.graph.formats.graphson.GraphSON;
 import ai.hyperlearning.ontopop.model.graph.formats.graphson.GraphSONGraph;
 
 /**
- * RDF/XML to GraphSON format modeller
+ * RDF/XML to GraphSON format mapper
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
-public class GraphSONRdfXmlModeller {
+public class RdfXmlGraphSONMapper {
     
-    private GraphSONRdfXmlModeller() {
+    private RdfXmlGraphSONMapper() {
         throw new IllegalStateException("The GraphSONRdfXmlModeller utility "
             + "class cannot be instantiated.");
     }
     
     /**
-     * Transform a given SimpleOntologyPropertyGraph object
+     * Map a given SimpleOntologyPropertyGraph object
      * into GraphSON format
      * Reference: https://github.com/tinkerpop/blueprints/wiki/GraphSON-Reader-and-Writer-Library
      * @param simpleOntologyPropertyGraph
@@ -32,7 +32,7 @@ public class GraphSONRdfXmlModeller {
      * @throws JsonProcessingException 
      */
     
-    public static String model(
+    public static String map(
             SimpleOntologyPropertyGraph simpleOntologyPropertyGraph) 
                     throws JsonProcessingException {
         

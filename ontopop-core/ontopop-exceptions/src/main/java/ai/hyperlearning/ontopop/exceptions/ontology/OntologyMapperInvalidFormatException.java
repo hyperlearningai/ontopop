@@ -7,15 +7,15 @@ package ai.hyperlearning.ontopop.exceptions.ontology;
  * @since 2.0.0
  */
 
-public class OntologyModellerInvalidFormatException extends RuntimeException {
+public class OntologyMapperInvalidFormatException extends RuntimeException {
 
     private static final long serialVersionUID = -2192403054284782094L;
     
-    public OntologyModellerInvalidFormatException() {
+    public OntologyMapperInvalidFormatException() {
         super("Invalid target format provided.");
     }
     
-    public OntologyModellerInvalidFormatException(String message) {
+    public OntologyMapperInvalidFormatException(String message) {
         super(message);
     }
 

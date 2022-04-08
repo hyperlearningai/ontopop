@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.owl.modellers.ontopop;
+package ai.hyperlearning.ontopop.owl.mappers.ontopop;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -6,28 +6,28 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import ai.hyperlearning.ontopop.model.graph.SimpleOntologyPropertyGraph;
 
 /**
- * RDF/XML to native OntoPop JSON format modeller
+ * RDF/XML to native OntoPop JSON format mapper
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
-public class NativeRdfXmlModeller {
+public class RdfXmlNativeMapper {
     
-    private NativeRdfXmlModeller() {
+    private RdfXmlNativeMapper() {
         throw new IllegalStateException("The NativeRdfXmlModeller utility "
             + "class cannot be instantiated.");
     }
     
     /**
-     * Model the RDF/XML contents of a given OWL file
-     * using OntoPop's native property graph entity model
+     * Map the RDF/XML contents of a given OWL file
+     * to OntoPop's native property graph entity model
      * @param owlFile
      * @return
      * @throws JsonProcessingException 
      */
     
-    public static String model(
+    public static String map(
             SimpleOntologyPropertyGraph simpleOntologyPropertyGraph) 
                     throws JsonProcessingException {
         ObjectWriter writer = new ObjectMapper()
