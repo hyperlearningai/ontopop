@@ -50,14 +50,14 @@ public class RdfXmlMapper {
     }
     
     /**
-     * Model the contents of a given RDF/XML OWL file into a given format
+     * Map the contents of a given RDF/XML OWL file to a given format
      * @param rdfXml
      * @param format
      * @return
      * @throws IOException 
      */
     
-    public static String model(String owlFile, String format) 
+    public static String map(String owlFile, String format) 
             throws IOException, 
             OntologyMapperInvalidOntologyDataException, 
             OntologyMapperInvalidFormatException, 
