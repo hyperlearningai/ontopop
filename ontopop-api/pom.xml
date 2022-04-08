@@ -46,6 +46,7 @@
         <module>ontopop-api-ontology-triplestore</module>
         <module>ontopop-api-ontology-search</module>
         <module>ontopop-api-ontology-graph</module>
+        <module>ontopop-api-ontology-mapping</module>
     </modules>
 
 </project>
