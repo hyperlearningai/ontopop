@@ -6,8 +6,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.semanticweb.HermiT.Configuration;
 import org.semanticweb.HermiT.Reasoner;
@@ -18,8 +21,8 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataParsingException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPropertyGraphModellingException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidFormatException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidOntologyDataException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidTargetFormatException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidSourceOntologyDataException;
 import ai.hyperlearning.ontopop.model.graph.SimpleOntologyPropertyGraph;
 import ai.hyperlearning.ontopop.model.owl.SimpleAnnotationProperty;
 import ai.hyperlearning.ontopop.model.owl.SimpleClass;
@@ -33,7 +36,7 @@ import ai.hyperlearning.ontopop.rdf.RDFSchema;
 import ai.hyperlearning.ontopop.rdf.SKOSVocabulary;
 
 /**
- * RDF/XML mapper
+ * RDF/XML to target format mapper
  *
  * @author jillurquddus
  * @since 2.0.0
@@ -43,6 +46,9 @@ public class RdfXmlMapper {
     
     private static final int DEFAULT_ONTOLOGY_ID = 1;
     private static final long DEFAULT_LATEST_GIT_WEBHOOK_ID = 0;
+    private static final Set<String> VALID_MIME_TYPES = 
+            new HashSet<>(Arrays.asList(
+                    "APPLICATION/RDF+XML", "TEXT/XML"));
     
     private RdfXmlMapper() {
         throw new IllegalStateException("The RdfXmlModeller utility "
@@ -59,20 +65,34 @@ public class RdfXmlMapper {
     
     public static String map(String owlFile, String format) 
             throws IOException, 
-            OntologyMapperInvalidOntologyDataException, 
-            OntologyMapperInvalidFormatException, 
+            OntologyMapperInvalidSourceOntologyDataException, 
+            OntologyMapperInvalidTargetFormatException, 
             OntologyDataParsingException, 
             OntologyDataPropertyGraphModellingException{
         
-        // Validate the given OWL file and its contents
-        if ( !isValid(owlFile) || !isSemanticallyValid(owlFile) )
-            throw new OntologyMapperInvalidOntologyDataException();
+        // Validate the given RDF/XML OWL file is not blank
+        if ( isBlank(owlFile) )
+            throw new OntologyMapperInvalidSourceOntologyDataException(
+                    "Invalid ontology data file provided - "
+                    + "file is empty.");
+        
+        // Validate the MIME type of the given RDF/XML OWL file
+        if ( !isValidMimeType(owlFile) )
+            throw new OntologyMapperInvalidSourceOntologyDataException(
+                    "Invalid ontology data file provided - "
+                    + "invalid MIME type.");
+        
+        // Validate the given RDF/XML OWL file semantically
+        if ( !isSemanticallyValid(owlFile) )
+            throw new OntologyMapperInvalidSourceOntologyDataException(
+                    "Invalid ontology data file provided - "
+                    + "file is semantically invalid.");
         
         // Get and validate the target format
-        RdfXmlMapperFormat targetFormat = RdfXmlMapperFormat
+        RdfXmlMapperTargetFormat targetFormat = RdfXmlMapperTargetFormat
                 .valueOfLabel(format.strip().toUpperCase());
         if ( targetFormat == null )
-            throw new OntologyMapperInvalidFormatException();
+            throw new OntologyMapperInvalidTargetFormatException();
         
         // Parse the RDF/XML contents of the given OWL file
         // into a SimpleOntology object
@@ -93,30 +113,39 @@ public class RdfXmlMapper {
                 return RdfXmlGraphSONMapper
                         .map(simpleOntologyPropertyGraph);
             default:
-                throw new OntologyMapperInvalidFormatException();
+                throw new OntologyMapperInvalidTargetFormatException();
         }
         
     }
     
     /**
-     * Validate that a given OWL file exists and is not empty
+     * Validate that the given RDF/XML OWL file is not blank
      * @param owlFile
      * @return
      * @throws IOException
      */
     
-    public static boolean isValid(String owlFile) throws IOException {
+    public static boolean isBlank(String owlFile) throws IOException {
         Path path = Paths.get(owlFile);
-        if ( Files.exists(path) ) {
-            String rdfXml = Files.readString(path, StandardCharsets.UTF_8);
-            if ( !StringUtils.isBlank(rdfXml) )
-                return true;
-        }
-        return false;
+        String rdfXml = Files.readString(path, StandardCharsets.UTF_8);
+        return StringUtils.isBlank(rdfXml);
     }
     
     /**
-     * Validate that the contents of a given OWL file is semantically valid
+     * Validate the MIME type of the given RDF/XML OWL file
+     * @param owlFile
+     * @return
+     * @throws IOException
+     */
+    
+    public static boolean isValidMimeType(String owlFile) throws IOException {
+        Path path = Paths.get(owlFile);
+        String mimeType = Files.probeContentType(path);
+        return VALID_MIME_TYPES.contains(mimeType.toUpperCase());
+    }
+    
+    /**
+     * Validate that the contents of the given OWL file is semantically valid
      * @param owlFile
      * @return
      * @throws OWLOntologyCreationException

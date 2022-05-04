@@ -4,32 +4,31 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * RDF/XML mapper supported target formats
+ * Ontology data mapper supported source formats
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
-public enum RdfXmlMapperTargetFormat {
-    
-    GRAPHSON("GRAPHSON"),
-    NATIVE("NATIVE");
+public enum MapperSourceFormat {
+
+    RDF_XML("RDF-XML");
     
     private final String label;
-    private static final Map<String, RdfXmlMapperTargetFormat> LABEL_MAP =
+    private static final Map<String, MapperSourceFormat> LABEL_MAP =
             new HashMap<>();
 
     static {
-        for (RdfXmlMapperTargetFormat f : values()) {
+        for (MapperSourceFormat f : values()) {
             LABEL_MAP.put(f.label, f);
         }
     }
 
-    private RdfXmlMapperTargetFormat(final String label) {
+    private MapperSourceFormat(final String label) {
         this.label = label;
     }
 
-    public static RdfXmlMapperTargetFormat valueOfLabel(String label) {
+    public static MapperSourceFormat valueOfLabel(String label) {
         return LABEL_MAP.get(label);
     }
 
@@ -37,5 +36,5 @@ public enum RdfXmlMapperTargetFormat {
     public String toString() {
         return label;
     }
-
+    
 }
