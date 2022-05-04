@@ -46,6 +46,7 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String TRIPLESTORE_API_ROLE_NAME = "ONTOPOP_TRIPLESTORE_API";
     private static final String SEARCH_API_ROLE_NAME = "ONTOPOP_SEARCH_API";
     private static final String GRAPH_API_ROLE_NAME = "ONTOPOP_GRAPH_API";
+    private static final String MAPPING_API_ROLE_NAME = "ONTOPOP_MAPPING_API";
     
     @Autowired
     private ApiKeyAuthenticationServiceFactory apiKeyAuthenticationServiceFactory;
@@ -149,6 +150,8 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
                             ROLE_NAME_PREFIX + SEARCH_API_ROLE_NAME));
                     grantedAuthorities.add(new SimpleGrantedAuthority(
                             ROLE_NAME_PREFIX + GRAPH_API_ROLE_NAME));
+                    grantedAuthorities.add(new SimpleGrantedAuthority(
+                            ROLE_NAME_PREFIX + MAPPING_API_ROLE_NAME));
                     return new UsernamePasswordAuthenticationToken(
                             principal, credentials, grantedAuthorities);
                     
@@ -171,6 +174,7 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/triplestore/**").hasRole(TRIPLESTORE_API_ROLE_NAME)
                 .antMatchers("/search/**").hasRole(SEARCH_API_ROLE_NAME)
                 .antMatchers("/graph/**").hasRole(GRAPH_API_ROLE_NAME)
+                .antMatchers("/mapping/**").hasRole(MAPPING_API_ROLE_NAME)
                 .anyRequest().authenticated()
                 .and()
             .sessionManagement()
