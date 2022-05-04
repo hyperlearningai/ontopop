@@ -13,7 +13,7 @@ public class OntologyDataParsingException extends RuntimeException {
     
     public OntologyDataParsingException() {
         super("An error was encountered when attempting to parse the "
-                + "RDF/XML OWL file.");
+                + "ontology file.");
     }
     
     public OntologyDataParsingException(String message) {

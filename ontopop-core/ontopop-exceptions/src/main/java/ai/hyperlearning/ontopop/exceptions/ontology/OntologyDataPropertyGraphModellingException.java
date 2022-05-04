@@ -13,7 +13,7 @@ public class OntologyDataPropertyGraphModellingException extends RuntimeExceptio
     
     public OntologyDataPropertyGraphModellingException() {
         super("An error was encountered when attempting to model the "
-                + "parsed RDF/XML OWL file as a simple property graph object.");
+                + "parsed ontology file as a simple property graph object.");
     }
     
     public OntologyDataPropertyGraphModellingException(String message) {

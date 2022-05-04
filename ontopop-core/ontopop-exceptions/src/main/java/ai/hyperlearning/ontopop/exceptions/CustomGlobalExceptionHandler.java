@@ -23,8 +23,9 @@ import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffInvalidRequestPa
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffInvalidTimestampException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffProcessingException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDownloadException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidFormatException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidOntologyDataException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidTargetFormatException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidSourceOntologyDataException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidSourceFormatException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyNotFoundException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyUpdateSecretDataException;
 import ai.hyperlearning.ontopop.exceptions.security.InvalidClientNameException;
@@ -80,8 +81,9 @@ public class CustomGlobalExceptionHandler
         OntologyDataInvalidAuthorException.class, 
         InvalidClientNameException.class, 
         OntoKaiInvalidOntologyPayloadException.class, 
-        OntologyMapperInvalidFormatException.class, 
-        OntologyMapperInvalidOntologyDataException.class})
+        OntologyMapperInvalidSourceFormatException.class, 
+        OntologyMapperInvalidTargetFormatException.class, 
+        OntologyMapperInvalidSourceOntologyDataException.class})
     public void springHandleBadRequest(HttpServletResponse response) 
             throws IOException {
         response.sendError(HttpStatus.BAD_REQUEST.value());

@@ -7,15 +7,15 @@ package ai.hyperlearning.ontopop.exceptions.ontology;
  * @since 2.0.0
  */
 
-public class OntologyMapperInvalidOntologyDataException extends RuntimeException {
+public class OntologyMapperInvalidSourceOntologyDataException extends RuntimeException {
 
     private static final long serialVersionUID = -2705361597503590370L;
     
-    public OntologyMapperInvalidOntologyDataException() {
-        super("Invalid OWL file provided.");
+    public OntologyMapperInvalidSourceOntologyDataException() {
+        super("Invalid ontology data file provided.");
     }
     
-    public OntologyMapperInvalidOntologyDataException(String message) {
+    public OntologyMapperInvalidSourceOntologyDataException(String message) {
         super(message);
     }
 
