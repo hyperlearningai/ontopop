@@ -167,6 +167,12 @@ spring:
         show-sql: false
     autoconfigure:
         exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+    servlet:
+        multipart:
+            enabled: true
+            location: ${java.io.tmpdir}
+            max-file-size: 1024KB
+            max-request-size: 1024KB
 security:
     secrets:
         service: hashicorp-vault
