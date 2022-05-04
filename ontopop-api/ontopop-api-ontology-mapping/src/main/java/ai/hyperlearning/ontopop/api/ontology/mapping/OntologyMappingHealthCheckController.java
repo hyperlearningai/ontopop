@@ -1,4 +1,4 @@
-package a.hyperlearning.ontopop.api.ontology.mapping;
+package ai.hyperlearning.ontopop.api.ontology.mapping;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

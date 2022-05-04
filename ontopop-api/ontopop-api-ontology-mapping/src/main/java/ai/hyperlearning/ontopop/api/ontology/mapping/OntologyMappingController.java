@@ -1,4 +1,4 @@
-package a.hyperlearning.ontopop.api.ontology.mapping;
+package ai.hyperlearning.ontopop.api.ontology.mapping;
 
 import java.io.IOException;
 import java.nio.file.Files;

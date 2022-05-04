@@ -1,4 +1,4 @@
-package a.hyperlearning.ontopop.api.ontology.mapping;
+package ai.hyperlearning.ontopop.api.ontology.mapping;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
