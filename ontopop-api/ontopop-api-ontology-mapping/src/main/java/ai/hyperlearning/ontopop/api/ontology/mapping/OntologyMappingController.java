@@ -118,10 +118,8 @@ public class OntologyMappingController {
         }
         
         // If neither a WebProtege project ID or ontology file is provided
-        else return new ResponseEntity<>("Invalid request - neither a "
-                + "WebProtege project ID nor an ontology data file were "
-                + "provided.",
-                HttpStatus.BAD_REQUEST);
+        else return new ResponseEntity<>("Neither a WebProtege project ID nor "
+                + "an ontology data file were provided.", HttpStatus.BAD_REQUEST);
         
     }
 
