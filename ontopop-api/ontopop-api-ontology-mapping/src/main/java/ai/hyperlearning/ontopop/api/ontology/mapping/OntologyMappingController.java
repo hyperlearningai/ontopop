@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -64,14 +65,20 @@ public class OntologyMappingController {
                             responseCode = "500",
                             description = "Internal server error.")})
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping(value = "/map")
+    @PostMapping(
+            value = "/map", 
+            produces = {
+                    MediaType.APPLICATION_JSON_VALUE, 
+                    MediaType.APPLICATION_XML_VALUE, 
+                    MediaType.TEXT_PLAIN_VALUE
+            })
     public ResponseEntity<String> map(
             @Parameter(description = "Source format", required = true)
             @RequestParam(name = "source", required = true) String source, 
             @Parameter(description = "Target format", required = true)
             @RequestParam(name = "target", required = true) String target,
             @Parameter(description = "Source ontology file", required = false)
-            @RequestParam(required = false) MultipartFile sourceOntologyFile, 
+            @RequestParam(required = false) MultipartFile file, 
             @Parameter(description = "WebProtege project ID", required = false)
             @RequestParam(name = "webProtegeId", required = false) String webProtegeId) 
                     throws IOException {
@@ -85,12 +92,12 @@ public class OntologyMappingController {
         }
         
         // Map a given ontology file
-        else if ( !sourceOntologyFile.isEmpty() ) {
+        else if ( file != null && !file.isEmpty() ) {
             
             // Convert the MultipartFile to a File
             Path temporaryFile = Files.createTempFile("", 
-                    sourceOntologyFile.getOriginalFilename());
-            sourceOntologyFile.transferTo(temporaryFile);
+                    file.getOriginalFilename());
+            file.transferTo(temporaryFile);
             
             // Map the ontology file
             try {
@@ -112,7 +119,7 @@ public class OntologyMappingController {
         
         // If neither a WebProtege project ID or ontology file is provided
         else return new ResponseEntity<>("Invalid request - neither a "
-                + "WebProtege project ID or an ontology data file were "
+                + "WebProtege project ID nor an ontology data file were "
                 + "provided.",
                 HttpStatus.BAD_REQUEST);
         
