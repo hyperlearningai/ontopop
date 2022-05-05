@@ -222,11 +222,12 @@ public class Mapper {
                     "Invalid ontology data file provided - "
                     + "file does not exist.");
         
-        // Validate that the given source ontology file is not blank
-        if ( isBlank(ontologyFile) )
+        // Validate the source ontology file extension
+        if ( !isValidFileExtension(ontologyFile, sourceFormat) )
             throw new OntologyMapperInvalidSourceOntologyDataException(
                     "Invalid ontology data file provided - "
-                    + "file is blank.");
+                    + "file extension does not match the specified "
+                    + "source format.");
         
         // Validate the size of the given source ontology file
         if ( !isValidFileSize(ontologyFile) )
@@ -234,17 +235,18 @@ public class Mapper {
                     "Invalid ontology data file provided - "
                     + "file size limit exceeded.");
         
-        // Validate the source ontology file extension
-        if ( !isValidFileExtension(ontologyFile, sourceFormat) )
-            throw new OntologyMapperInvalidSourceOntologyDataException(
-                    "Invalid ontology data file provided - "
-                    + "file extension does not match the source format.");
-        
         // Validate the source file MIME type
         if ( !isValidMimeType(ontologyFile, sourceFormat) )
             throw new OntologyMapperInvalidSourceOntologyDataException(
                     "Invalid ontology data file provided - "
-                    + "MIME type does not match the source format.");
+                    + "MIME type does not match the specified "
+                    + "source format.");
+        
+        // Validate that the given source ontology file is not blank
+        if ( isBlank(ontologyFile) )
+            throw new OntologyMapperInvalidSourceOntologyDataException(
+                    "Invalid ontology data file provided - "
+                    + "file is blank.");
         
         // Source format equals the target format
         if ( source.equalsIgnoreCase(target) )
