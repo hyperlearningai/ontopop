@@ -1,5 +1,6 @@
 package ai.hyperlearning.ontopop.owl;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,6 +14,7 @@ import java.util.Set;
 import org.semanticweb.HermiT.Configuration;
 import org.semanticweb.HermiT.Reasoner;
 import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.io.OWLXMLOntologyFormat;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAnnotation;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
@@ -30,6 +32,7 @@ import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
@@ -51,6 +54,7 @@ import ai.hyperlearning.ontopop.model.owl.diff.SimpleOntologyDiff;
  * @since 2.0.0
  */
 
+@SuppressWarnings("deprecation")
 public class OWLAPI {
 
     private static final OWLOntologyManager SHARED_OWL_ONTOLOGY_MANAGER =
@@ -97,7 +101,38 @@ public class OWLAPI {
                 OWLManager.createOWLOntologyManager();
         return owlOntologyManager.loadOntologyFromOntologyDocument(owlFile);
     }
+    
+    /**************************************************************************
+     * Converters
+     *************************************************************************/
 
+    /**
+     * Convert a given OWL ontology into OWL/XML format
+     * @param ontology
+     * @return
+     * @throws OWLOntologyStorageException
+     */
+    
+    public static String toOwlXml(OWLOntology ontology) 
+            throws OWLOntologyStorageException {
+        OWLOntologyManager owlOntologyManager = 
+                OWLManager.createOWLOntologyManager();
+        OWLXMLOntologyFormat owlXmlFormat = new OWLXMLOntologyFormat();
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        String owlXml = null;
+        try {
+            owlOntologyManager.saveOntology(ontology, owlXmlFormat, output);
+            owlXml = new String(output.toByteArray());
+        } finally {
+            try {
+                output.close();
+            } catch (Exception e) {
+                
+            }
+        }
+        return owlXml;
+    }
+    
     /**************************************************************************
      * Reasoners
      *************************************************************************/
