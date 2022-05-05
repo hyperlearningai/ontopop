@@ -55,17 +55,18 @@ public class Mapper {
     private static final Map<MapperSourceFormat, Set<String>> VALID_MIME_TYPES = 
         Map.ofEntries(
             new AbstractMap.SimpleEntry<MapperSourceFormat, Set<String>>(MapperSourceFormat.N_QUADS, 
-                    new HashSet<>(Arrays.asList("APPLICATION/N-QUADS", "TEXT/PLAIN"))),
+                    new HashSet<>(Arrays.asList("APPLICATION/N-QUADS", "TEXT/X-NQUADS", "TEXT/PLAIN"))),
             new AbstractMap.SimpleEntry<MapperSourceFormat, Set<String>>(MapperSourceFormat.N_TRIPLES, 
                     new HashSet<>(Arrays.asList("APPLICATION/N-TRIPLES", "TEXT/PLAIN"))),
             new AbstractMap.SimpleEntry<MapperSourceFormat, Set<String>>(MapperSourceFormat.OWL_XML, 
-                    new HashSet<>(Arrays.asList("APPLICATION/OWL+XML", "TEXT/XML"))),
+                    new HashSet<>(Arrays.asList("APPLICATION/OWL+XML", "TEXT/XML", "TEXT/PLAIN"))),
             new AbstractMap.SimpleEntry<MapperSourceFormat, Set<String>>(MapperSourceFormat.RDF_XML, 
-                    new HashSet<>(Arrays.asList("APPLICATION/RDF+XML", "TEXT/XML"))),
+                    new HashSet<>(Arrays.asList("APPLICATION/RDF+XML", "TEXT/XML", "TEXT/PLAIN"))),
             new AbstractMap.SimpleEntry<MapperSourceFormat, Set<String>>(MapperSourceFormat.TRIG, 
                     new HashSet<>(Arrays.asList("TEXT/TRIG", "TEXT/PLAIN"))),
             new AbstractMap.SimpleEntry<MapperSourceFormat, Set<String>>(MapperSourceFormat.TURTLE, 
-                    new HashSet<>(Arrays.asList("TEXT/TURTLE", "TEXT/PLAIN")))
+                    new HashSet<>(Arrays.asList("APPLICATION/TURTLE", "APPLICATION/X-TURTLE", "APPLICATION/RDF+N3", 
+                            "TEXT/TURTLE", "TEXT/N3", "TEXT/RDF+N3", "TEXT/PLAIN")))
         );
     
     // Target graph formats
