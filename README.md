@@ -4,7 +4,7 @@
     <img src="static/assets/images/logos/ontopop-logo-small.png" alt="OntoPop" width="500" height="150">
   </a>
   <p align="center">
-    OntoPop is an open-source collection of event-driven microservices and APIs that enable consumer applications to visualize, search, explore and manage version-controlled ontologies.
+    OntoPop is an open-source software project that enables the visualisation, search, exploration and management of version-controlled ontologies, delivered through a collection of event-driven microservices and APIs.
     <br/>
     <br/>
     <a href="https://ontopop.com" target="_blank"">Website</a> · <a href="https://docs.ontopop.com" target="_blank"">Documentation</a>
@@ -36,7 +36,7 @@
 
 ## <a name="introduction"></a>1. Introduction
 
-OntoPop is an open-source collection of event-driven microservices and APIs that enable consumer applications to visualise, search, explore and manage version-controlled ontologies.
+OntoPop is an open-source software project that enables the visualisation, search, exploration and management of version-controlled ontologies, delivered through a collection of event-driven microservices and APIs.
 <br/>
 
 ### <a name="vision"></a>1.1. Vision
@@ -46,7 +46,7 @@ The goal of OntoPop is to make ontologies easier to understand and more accessib
 
 ### <a name="sponsors"></a>1.2. Project Sponsors
 
-[National Highways](https://nationalhighways.co.uk/) (formerly Highways England) are the current primary sponsor of the OntoPop project. OntoPop is deployed at National Highways where it is being used to visualise and manage their ontology-based conceptual data model. Users, IT systems and suppliers alike at National Highways all use OntoPop to better understand what data exists across National Highways' entire data management landscape, where it is, who owns it, how to access it and how it can be linked together, thereby significantly improving data visibility, accessibility and governance.
+The OntoPop project is sponsored by [National Highways](https://nationalhighways.co.uk/) and [HyperLearning AI](https://hyperlearning.ai/). OntoPop is deployed at National Highways where it is being used to visualise and manage their ontology-based conceptual data model. Users, IT systems and suppliers alike at National Highways all use OntoPop to better understand what data exists across National Highways' entire data management landscape, where it is, who owns it, how to access it and how it can be linked together, thereby significantly improving data visibility, accessibility and governance.
 <br/>
 
 ### <a name="frameworks"></a>1.3. Open Frameworks
@@ -264,8 +264,8 @@ Provided below is the list of organisations and individuals who sponsor, and con
 
 ### Organisations
 
-* **[National Highways](https://nationalhighways.co.uk/)** - Primary project sponsor
-* **[HyperLearning AI](https://hyperlearning.ai/)** - Product Owner and Project management
+* **[National Highways](https://nationalhighways.co.uk/)** - Project sponsor
+* **[HyperLearning AI](https://hyperlearning.ai/)** - Project sponsorship, management and maintenance
 
 ### Individuals
 
