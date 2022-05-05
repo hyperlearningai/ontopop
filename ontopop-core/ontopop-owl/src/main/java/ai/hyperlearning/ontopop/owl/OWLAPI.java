@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -11,10 +12,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.riot.RDFDataMgr;
+import org.apache.jena.riot.RDFFormat;
+
 import org.semanticweb.HermiT.Configuration;
 import org.semanticweb.HermiT.Reasoner;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.OWLXMLOntologyFormat;
+import org.semanticweb.owlapi.io.RDFXMLOntologyFormat;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAnnotation;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
@@ -104,10 +110,44 @@ public class OWLAPI {
     
     /**************************************************************************
      * Converters
+     * @throws OWLOntologyStorageException 
      *************************************************************************/
 
     /**
-     * Convert a given OWL ontology into OWL/XML format
+     * Convert a given OWL ontology (e.g. OWL/XML) into RDF/XML format
+     * @param ontology
+     * @return
+     * @throws OWLOntologyStorageException
+     */
+    
+    public static String toRdfXml(OWLOntology ontology) 
+            throws OWLOntologyStorageException {
+        OWLOntologyManager owlOntologyManager = 
+                OWLManager.createOWLOntologyManager();
+        RDFXMLOntologyFormat rdfXmlFormat = new RDFXMLOntologyFormat();
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        String rdfXml = null;
+        try {
+            owlOntologyManager.saveOntology(ontology, rdfXmlFormat, output);
+            rdfXml = new String(output.toByteArray());
+        } finally {
+            try {
+                output.close();
+            } catch (Exception e) {
+                
+            }
+        }
+        return rdfXml;
+    }
+    
+    public static String toRdfXml(String owlFile) 
+            throws OWLOntologyCreationException, OWLOntologyStorageException {
+        OWLOntology owlOntology = loadOntology(new File(owlFile));
+        return toRdfXml(owlOntology); 
+    }
+    
+    /**
+     * Convert a given OWL ontology (e.g. RDF/XML) into OWL/XML format
      * @param ontology
      * @return
      * @throws OWLOntologyStorageException
@@ -131,6 +171,40 @@ public class OWLAPI {
             }
         }
         return owlXml;
+    }
+    
+    public static String toOwlXml(String owlFile) 
+            throws OWLOntologyCreationException, OWLOntologyStorageException {
+        OWLOntology owlOntology = loadOntology(new File(owlFile));
+        return toOwlXml(owlOntology); 
+    }
+    
+    /**
+     * Convert a given OWL ontology into a given RDF format
+     * @param owlFile
+     * @param rdfFormat
+     * @return
+     */
+    
+    public static String toRdfFormat(String owlFile, RDFFormat rdfFormat) {
+        
+        // Use Apache Jena to load the ontology
+        Model model = null;
+        try {
+            model = RDFDataMgr.loadModel(owlFile);
+        } catch (IllegalArgumentException e) {
+            
+        }
+        
+        // If the model loaded successfully
+        if ( model != null ) {
+            StringWriter rdfTurtle = new StringWriter();
+            RDFDataMgr.write(rdfTurtle, model, RDFFormat.TURTLE);
+            return rdfTurtle.toString();
+        }
+        
+        return null;
+        
     }
     
     /**************************************************************************

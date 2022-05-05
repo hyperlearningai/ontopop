@@ -4,15 +4,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Ontology data mapper supported source formats
+ * Mapper supported target formats
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
-public enum MapperSourceFormat {
-
+public enum MapperTargetFormat {
+    
+    GRAPHSON("GRAPHSON"),
     JSON_LD("JSON-LD"), 
+    NATIVE("NATIVE"), 
     N_QUADS("N-QUADS"), 
     N_TRIPLES("N-TRIPLES"), 
     OWL_XML("OWL-XML"), 
@@ -21,20 +23,20 @@ public enum MapperSourceFormat {
     TURTLE("TURTLE");
     
     private final String label;
-    private static final Map<String, MapperSourceFormat> LABEL_MAP =
+    private static final Map<String, MapperTargetFormat> LABEL_MAP =
             new HashMap<>();
 
     static {
-        for (MapperSourceFormat f : values()) {
+        for (MapperTargetFormat f : values()) {
             LABEL_MAP.put(f.label, f);
         }
     }
 
-    private MapperSourceFormat(final String label) {
+    private MapperTargetFormat(final String label) {
         this.label = label;
     }
 
-    public static MapperSourceFormat valueOfLabel(String label) {
+    public static MapperTargetFormat valueOfLabel(String label) {
         return LABEL_MAP.get(label);
     }
 
@@ -42,5 +44,5 @@ public enum MapperSourceFormat {
     public String toString() {
         return label;
     }
-    
+
 }

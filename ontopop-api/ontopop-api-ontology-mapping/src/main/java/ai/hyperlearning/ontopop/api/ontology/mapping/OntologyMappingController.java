@@ -3,6 +3,8 @@ package ai.hyperlearning.ontopop.api.ontology.mapping;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -70,7 +72,14 @@ public class OntologyMappingController {
             produces = {
                     MediaType.APPLICATION_JSON_VALUE, 
                     MediaType.APPLICATION_XML_VALUE, 
-                    MediaType.TEXT_PLAIN_VALUE
+                    MediaType.TEXT_PLAIN_VALUE, 
+                    "application/ld+json", 
+                    "application/n-triples", 
+                    "application/n-quads", 
+                    "application/owl+xml", 
+                    "application/rdf+xml", 
+                    "application/trig", 
+                    "text/turtle"
             })
     public ResponseEntity<String> map(
             @Parameter(description = "Source format", required = true)
@@ -81,7 +90,9 @@ public class OntologyMappingController {
             @RequestParam(required = false) MultipartFile file, 
             @Parameter(description = "WebProtege project ID", required = false)
             @RequestParam(name = "webProtegeId", required = false) String webProtegeId) 
-                    throws IOException {
+                    throws IOException, 
+                    OWLOntologyCreationException, 
+                    OWLOntologyStorageException {
         
         LOGGER.debug("New HTTP POST request - Map ontology data from {} to {}.", 
                 source, target);
@@ -119,7 +130,8 @@ public class OntologyMappingController {
         
         // If neither a WebProtege project ID or ontology file is provided
         else return new ResponseEntity<>("Neither a WebProtege project ID nor "
-                + "an ontology data file were provided.", HttpStatus.BAD_REQUEST);
+                + "an ontology data file were provided.", 
+                HttpStatus.BAD_REQUEST);
         
     }
 
