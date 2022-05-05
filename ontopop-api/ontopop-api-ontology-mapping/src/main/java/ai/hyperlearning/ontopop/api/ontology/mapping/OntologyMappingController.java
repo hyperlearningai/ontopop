@@ -124,6 +124,17 @@ public class OntologyMappingController {
                     OntologyDataPropertyGraphModellingException e) {
                 return new ResponseEntity<>(e.getMessage(), 
                         HttpStatus.INTERNAL_SERVER_ERROR);
+            } finally {
+                
+                // Delete the temporary file
+                if ( Files.exists(temporaryFile) ) {
+                    try {
+                        Files.delete(temporaryFile);
+                    } catch (Exception e) {
+                        
+                    }
+                }
+                
             }
             
         }
