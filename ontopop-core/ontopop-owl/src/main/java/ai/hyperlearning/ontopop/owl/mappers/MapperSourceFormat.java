@@ -12,7 +12,6 @@ import java.util.Map;
 
 public enum MapperSourceFormat {
 
-    JSON_LD("JSON-LD"), 
     N_QUADS("N-QUADS"), 
     N_TRIPLES("N-TRIPLES"), 
     OWL_XML("OWL-XML"), 

@@ -5,9 +5,13 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.jena.riot.RDFFormat;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
@@ -27,7 +31,44 @@ import ai.hyperlearning.ontopop.owl.OWLAPI;
 
 public class Mapper {
     
+    // File size limit
     private static final long MAX_FILE_SIZE_BYTES = 1048576;
+    
+    // Valid source file extensions
+    private static final Map<MapperSourceFormat, Set<String>> VALID_FILE_EXTENSIONS = 
+            Map.ofEntries(
+                    new AbstractMap.SimpleEntry<MapperSourceFormat, Set<String>>(MapperSourceFormat.N_QUADS, 
+                            new HashSet<>(Arrays.asList("NQ"))),
+                    new AbstractMap.SimpleEntry<MapperSourceFormat, Set<String>>(MapperSourceFormat.N_TRIPLES, 
+                            new HashSet<>(Arrays.asList("NT"))),
+                    new AbstractMap.SimpleEntry<MapperSourceFormat, Set<String>>(MapperSourceFormat.OWL_XML, 
+                            new HashSet<>(Arrays.asList("OWL"))),
+                    new AbstractMap.SimpleEntry<MapperSourceFormat, Set<String>>(MapperSourceFormat.RDF_XML, 
+                            new HashSet<>(Arrays.asList("OWL", "RDF"))),
+                    new AbstractMap.SimpleEntry<MapperSourceFormat, Set<String>>(MapperSourceFormat.TRIG, 
+                            new HashSet<>(Arrays.asList("TRIG"))),
+                    new AbstractMap.SimpleEntry<MapperSourceFormat, Set<String>>(MapperSourceFormat.TURTLE, 
+                            new HashSet<>(Arrays.asList("TTL")))
+                );
+    
+    // Valid source file MIME types
+    private static final Map<MapperSourceFormat, Set<String>> VALID_MIME_TYPES = 
+        Map.ofEntries(
+            new AbstractMap.SimpleEntry<MapperSourceFormat, Set<String>>(MapperSourceFormat.N_QUADS, 
+                    new HashSet<>(Arrays.asList("APPLICATION/N-QUADS", "TEXT/PLAIN"))),
+            new AbstractMap.SimpleEntry<MapperSourceFormat, Set<String>>(MapperSourceFormat.N_TRIPLES, 
+                    new HashSet<>(Arrays.asList("APPLICATION/N-TRIPLES", "TEXT/PLAIN"))),
+            new AbstractMap.SimpleEntry<MapperSourceFormat, Set<String>>(MapperSourceFormat.OWL_XML, 
+                    new HashSet<>(Arrays.asList("APPLICATION/OWL+XML", "TEXT/XML"))),
+            new AbstractMap.SimpleEntry<MapperSourceFormat, Set<String>>(MapperSourceFormat.RDF_XML, 
+                    new HashSet<>(Arrays.asList("APPLICATION/RDF+XML", "TEXT/XML"))),
+            new AbstractMap.SimpleEntry<MapperSourceFormat, Set<String>>(MapperSourceFormat.TRIG, 
+                    new HashSet<>(Arrays.asList("TEXT/TRIG", "TEXT/PLAIN"))),
+            new AbstractMap.SimpleEntry<MapperSourceFormat, Set<String>>(MapperSourceFormat.TURTLE, 
+                    new HashSet<>(Arrays.asList("TEXT/TURTLE", "TEXT/PLAIN")))
+        );
+    
+    // Target graph formats
     private static final Set<MapperTargetFormat> TARGET_GRAPH_FORMATS = 
             new HashSet<>(Arrays.asList(
                     MapperTargetFormat.GRAPHSON, 
@@ -66,33 +107,12 @@ public class Mapper {
         OWLOntologyCreationException, 
         OWLOntologyStorageException {
         
-        // Validate the source format
+        // Validate the mapping request
         MapperSourceFormat sourceFormat = MapperSourceFormat
                 .valueOfLabel(source.strip().toUpperCase());
-        if ( sourceFormat == null )
-            throw new OntologyMapperInvalidSourceFormatException();
-        
-        // Validate the target format
         MapperTargetFormat targetFormat = MapperTargetFormat
                 .valueOfLabel(target.strip().toUpperCase());
-        if ( targetFormat == null )
-            throw new OntologyMapperInvalidTargetFormatException();
-        
-        // Validate that the given source ontology file exists
-        if ( !exists(ontologyFile) )
-            throw new OntologyMapperInvalidSourceOntologyDataException(
-                    "Invalid ontology data file provided - "
-                    + "file does not exist.");
-        
-        // Validate the size of the given source ontology file
-        if ( !isValidFileSize(ontologyFile) )
-            throw new OntologyMapperInvalidSourceOntologyDataException(
-                    "Invalid ontology data file provided - "
-                    + "file size limit exceeded.");
-        
-        // Source format equals the target format
-        if ( source.equalsIgnoreCase(target) )
-            throw new OntologyMapperInvalidTargetFormatException();
+        validate(source, target, ontologyFile);
         
         // RDF/XML to OWL/XML
         if ( sourceFormat.equals(MapperSourceFormat.RDF_XML) && 
@@ -163,6 +183,76 @@ public class Mapper {
     }
     
     /**
+     * Validate the Mapping request
+     * @param source
+     * @param target
+     * @param ontologyFile
+     * @throws OntologyMapperInvalidSourceFormatException
+     * @throws OntologyMapperInvalidSourceOntologyDataException
+     * @throws OntologyMapperInvalidTargetFormatException
+     * @throws OntologyDataParsingException
+     * @throws OntologyDataPropertyGraphModellingException
+     * @throws IOException
+     */
+    
+    public static void validate(String source, String target, 
+            String ontologyFile) throws 
+        OntologyMapperInvalidSourceFormatException, 
+        OntologyMapperInvalidSourceOntologyDataException, 
+        OntologyMapperInvalidTargetFormatException, 
+        OntologyDataParsingException, 
+        OntologyDataPropertyGraphModellingException, 
+        IOException {
+        
+        // Validate the source format
+        MapperSourceFormat sourceFormat = MapperSourceFormat
+                .valueOfLabel(source.strip().toUpperCase());
+        if ( sourceFormat == null )
+            throw new OntologyMapperInvalidSourceFormatException();
+        
+        // Validate the target format
+        MapperTargetFormat targetFormat = MapperTargetFormat
+                .valueOfLabel(target.strip().toUpperCase());
+        if ( targetFormat == null )
+            throw new OntologyMapperInvalidTargetFormatException();
+        
+        // Validate that the given source ontology file exists
+        if ( !exists(ontologyFile) )
+            throw new OntologyMapperInvalidSourceOntologyDataException(
+                    "Invalid ontology data file provided - "
+                    + "file does not exist.");
+        
+        // Validate that the given source ontology file is not blank
+        if ( isBlank(ontologyFile) )
+            throw new OntologyMapperInvalidSourceOntologyDataException(
+                    "Invalid ontology data file provided - "
+                    + "file is blank.");
+        
+        // Validate the size of the given source ontology file
+        if ( !isValidFileSize(ontologyFile) )
+            throw new OntologyMapperInvalidSourceOntologyDataException(
+                    "Invalid ontology data file provided - "
+                    + "file size limit exceeded.");
+        
+        // Validate the source ontology file extension
+        if ( !isValidFileExtension(ontologyFile, sourceFormat) )
+            throw new OntologyMapperInvalidSourceOntologyDataException(
+                    "Invalid ontology data file provided - "
+                    + "file extension does not match the source format.");
+        
+        // Validate the source file MIME type
+        if ( !isValidMimeType(ontologyFile, sourceFormat) )
+            throw new OntologyMapperInvalidSourceOntologyDataException(
+                    "Invalid ontology data file provided - "
+                    + "MIME type does not match the source format.");
+        
+        // Source format equals the target format
+        if ( source.equalsIgnoreCase(target) )
+            throw new OntologyMapperInvalidTargetFormatException();
+        
+    }
+    
+    /**
      * Validate that the given ontology file exists
      * @param ontologyFile
      * @return
@@ -173,6 +263,19 @@ public class Mapper {
         return Files.exists(path);
     }
     
+    /**
+     * Validate that the given ontology file is not blank
+     * @param owlFile
+     * @return
+     * @throws IOException
+     */
+    
+    public static boolean isBlank(String ontologyFile) 
+            throws IOException {
+        Path path = Paths.get(ontologyFile);
+        String ontology = Files.readString(path, StandardCharsets.UTF_8);
+        return StringUtils.isBlank(ontology);
+    }
     
     /**
      * Validate that the given ontology file size is less than
@@ -187,6 +290,35 @@ public class Mapper {
         Path path = Paths.get(ontologyFile);
         long fileSizeBytes = Files.size(path);
         return fileSizeBytes <= MAX_FILE_SIZE_BYTES;
+    }
+    
+    /**
+     * Validate the file extension of the given ontology file
+     * @param ontologyFile
+     * @param sourceFormat
+     * @return
+     */
+    
+    public static boolean isValidFileExtension(String ontologyFile, 
+            MapperSourceFormat sourceFormat) {
+        String fileExtension = FilenameUtils.getExtension(ontologyFile);
+        return VALID_FILE_EXTENSIONS.get(sourceFormat).contains(
+                fileExtension.toUpperCase());
+    }
+    
+    /**
+     * Validate the MIME type of the given ontology file
+     * @param owlFile
+     * @return
+     * @throws IOException
+     */
+    
+    public static boolean isValidMimeType(String ontologyFile, 
+            MapperSourceFormat sourceFormat) throws IOException {
+        Path path = Paths.get(ontologyFile);
+        String mimeType = Files.probeContentType(path);
+        return VALID_MIME_TYPES.get(sourceFormat).contains(
+                mimeType.toUpperCase());
     }
 
 }
