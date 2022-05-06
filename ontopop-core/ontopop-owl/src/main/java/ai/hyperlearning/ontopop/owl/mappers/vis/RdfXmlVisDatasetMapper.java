@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.owl.mappers.graphson;
+package ai.hyperlearning.ontopop.owl.mappers.vis;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,39 +7,30 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import ai.hyperlearning.ontopop.model.graph.SimpleOntologyEdge;
 import ai.hyperlearning.ontopop.model.graph.SimpleOntologyPropertyGraph;
 import ai.hyperlearning.ontopop.model.graph.SimpleOntologyVertex;
-import ai.hyperlearning.ontopop.model.graph.formats.graphson.GraphSON;
-import ai.hyperlearning.ontopop.model.graph.formats.graphson.GraphSONGraph;
+import ai.hyperlearning.ontopop.model.graph.formats.vis.VisDataset;
+import ai.hyperlearning.ontopop.model.graph.formats.vis.VisDatasetGraph;
 
 /**
- * RDF/XML to GraphSON format mapper
+ * RDF/XML to vis.js dataset format mapper
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
 @Deprecated
-public class RdfXmlGraphSONMapper {
+public class RdfXmlVisDatasetMapper {
     
-    private RdfXmlGraphSONMapper() {
-        throw new IllegalStateException("The GraphSONRdfXmlModeller utility "
+    private RdfXmlVisDatasetMapper() {
+        throw new IllegalStateException("The RdfXmlVisDatasetMapper utility "
             + "class cannot be instantiated.");
     }
-    
-    /**
-     * Map a given SimpleOntologyPropertyGraph object
-     * into GraphSON format
-     * Reference: https://github.com/tinkerpop/blueprints/wiki/GraphSON-Reader-and-Writer-Library
-     * @param simpleOntologyPropertyGraph
-     * @return
-     * @throws JsonProcessingException 
-     */
     
     public static String map(
             SimpleOntologyPropertyGraph simpleOntologyPropertyGraph) 
                     throws JsonProcessingException {
         
-        // Initialise the GraphSONGraph object
-        GraphSONGraph graph = new GraphSONGraph();
+        // Initialise the Vis.js Dataset Graph object
+        VisDatasetGraph graph = new VisDatasetGraph();
         
         // Generate the vertices
         for (SimpleOntologyVertex simpleOntologyVertex : 
@@ -60,11 +51,11 @@ public class RdfXmlGraphSONMapper {
             edgeId++;
         }
         
-        // Return the GraphSON string
-        GraphSON graphSON = new GraphSON(graph);
+        // Return the Vis.js Dataset string
+        VisDataset visDataset = new VisDataset(graph);
         ObjectWriter writer = new ObjectMapper()
                 .writer().withDefaultPrettyPrinter();
-        return writer.writeValueAsString(graphSON);
+        return writer.writeValueAsString(visDataset);
         
     }
 

@@ -73,7 +73,8 @@ public class Mapper {
     private static final Set<MapperTargetFormat> TARGET_GRAPH_FORMATS = 
             new HashSet<>(Arrays.asList(
                     MapperTargetFormat.GRAPHSON, 
-                    MapperTargetFormat.NATIVE));
+                    MapperTargetFormat.NATIVE, 
+                    MapperTargetFormat.VIS));
     
     private Mapper() {
         throw new IllegalStateException("The Mapper utility class "

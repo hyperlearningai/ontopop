@@ -20,7 +20,8 @@ public enum MapperTargetFormat {
     OWL_XML("OWL-XML"), 
     RDF_XML("RDF-XML"), 
     TRIG("TRIG"), 
-    TURTLE("TURTLE");
+    TURTLE("TURTLE"), 
+    VIS("VIS");
     
     private final String label;
     private static final Map<String, MapperTargetFormat> LABEL_MAP =

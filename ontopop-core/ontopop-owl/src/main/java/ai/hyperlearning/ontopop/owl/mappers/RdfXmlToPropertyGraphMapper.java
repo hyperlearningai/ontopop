@@ -14,17 +14,26 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataParsingException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPropertyGraphModellingException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidTargetFormatException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidSourceOntologyDataException;
+import ai.hyperlearning.ontopop.model.graph.SimpleOntologyEdge;
 import ai.hyperlearning.ontopop.model.graph.SimpleOntologyPropertyGraph;
+import ai.hyperlearning.ontopop.model.graph.SimpleOntologyVertex;
+import ai.hyperlearning.ontopop.model.graph.formats.PropertyGraph;
+import ai.hyperlearning.ontopop.model.graph.formats.PropertyGraphFormat;
+import ai.hyperlearning.ontopop.model.graph.formats.graphson.GraphSONGraph;
+import ai.hyperlearning.ontopop.model.graph.formats.vis.VisDatasetGraph;
 import ai.hyperlearning.ontopop.model.owl.SimpleAnnotationProperty;
 import ai.hyperlearning.ontopop.model.owl.SimpleClass;
 import ai.hyperlearning.ontopop.model.owl.SimpleObjectProperty;
 import ai.hyperlearning.ontopop.model.owl.SimpleOntology;
 import ai.hyperlearning.ontopop.owl.OWLAPI;
-import ai.hyperlearning.ontopop.owl.mappers.graphson.RdfXmlGraphSONMapper;
 import ai.hyperlearning.ontopop.owl.mappers.ontopop.RdfXmlNativeMapper;
 import ai.hyperlearning.ontopop.rdf.DCMI;
 import ai.hyperlearning.ontopop.rdf.RDFSchema;
@@ -85,11 +94,14 @@ public class RdfXmlToPropertyGraphMapper {
                 .valueOfLabel(format.strip().toUpperCase());
         switch (targetFormat) {
             case GRAPHSON:
-                return RdfXmlGraphSONMapper
-                        .map(simpleOntologyPropertyGraph);
+                GraphSONGraph graphSONGraph = new GraphSONGraph();
+                return format(simpleOntologyPropertyGraph, graphSONGraph);
             case NATIVE:
                 return RdfXmlNativeMapper
                         .map(simpleOntologyPropertyGraph);
+            case VIS:
+                VisDatasetGraph visDatasetGraph = new VisDatasetGraph();
+                return format(simpleOntologyPropertyGraph, visDatasetGraph);
             default:
                 throw new OntologyMapperInvalidTargetFormatException();
         }
@@ -188,6 +200,47 @@ public class RdfXmlToPropertyGraphMapper {
         } catch (Exception e) {
             throw new OntologyDataPropertyGraphModellingException();
         }
+        
+    }
+    
+    /**
+     * Format the given SimpleOntologyPropertyGraph object into the given
+     * property graph format.
+     * @param simpleOntologyPropertyGraph
+     * @param propertyGraphFormat
+     * @return
+     * @throws JsonProcessingException
+     */
+    
+    public static String format(
+            SimpleOntologyPropertyGraph simpleOntologyPropertyGraph, 
+            PropertyGraphFormat propertyGraphFormat)
+                    throws JsonProcessingException {
+        
+        // Generate the vertices
+        for (SimpleOntologyVertex simpleOntologyVertex : 
+                simpleOntologyPropertyGraph.getVertices().values()) {
+            simpleOntologyVertex.preparePropertiesForModelling();
+            propertyGraphFormat.addVertex(simpleOntologyVertex.getVertexId(), 
+                    simpleOntologyVertex.getProperties());
+        }
+        
+        // Generate the edges
+        long edgeId = 1;
+        for (SimpleOntologyEdge simpleOntologyEdge : 
+                simpleOntologyPropertyGraph.getEdges()) {
+            propertyGraphFormat.addEdge(edgeId, 
+                    simpleOntologyEdge.getSourceVertexId(), 
+                    simpleOntologyEdge.getTargetVertexId(), 
+                    simpleOntologyEdge.getProperties());
+            edgeId++;
+        }
+        
+        // Return the GraphSON string
+        PropertyGraph graph = new PropertyGraph(propertyGraphFormat);
+        ObjectWriter writer = new ObjectMapper()
+                .writer().withDefaultPrettyPrinter();
+        return writer.writeValueAsString(graph);
         
     }
 
