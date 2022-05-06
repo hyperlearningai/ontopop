@@ -2,6 +2,7 @@ package ai.hyperlearning.ontopop.owl.mappers;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.AbstractMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -51,6 +52,14 @@ public class RdfXmlToPropertyGraphMapper {
     private static final int DEFAULT_ONTOLOGY_ID = 1;
     private static final long DEFAULT_LATEST_GIT_WEBHOOK_ID = 0;
     
+    // Property Graph Formats
+    private static final Map<MapperTargetFormat, PropertyGraphFormat> PROPERTY_GRAPH_FORMATS = 
+            Map.ofEntries(
+                    new AbstractMap.SimpleEntry<MapperTargetFormat, PropertyGraphFormat>(
+                            MapperTargetFormat.GRAPHSON, new GraphSONGraph()), 
+                    new AbstractMap.SimpleEntry<MapperTargetFormat, PropertyGraphFormat>(
+                            MapperTargetFormat.VIS, new VisDatasetGraph()));
+    
     private RdfXmlToPropertyGraphMapper() {
         throw new IllegalStateException("The RdfXmlModeller utility "
             + "class cannot be instantiated.");
@@ -92,19 +101,9 @@ public class RdfXmlToPropertyGraphMapper {
         // into the given format
         MapperTargetFormat targetFormat = MapperTargetFormat
                 .valueOfLabel(format.strip().toUpperCase());
-        switch (targetFormat) {
-            case GRAPHSON:
-                GraphSONGraph graphSONGraph = new GraphSONGraph();
-                return format(simpleOntologyPropertyGraph, graphSONGraph);
-            case NATIVE:
-                return RdfXmlNativeMapper
-                        .map(simpleOntologyPropertyGraph);
-            case VIS:
-                VisDatasetGraph visDatasetGraph = new VisDatasetGraph();
-                return format(simpleOntologyPropertyGraph, visDatasetGraph);
-            default:
-                throw new OntologyMapperInvalidTargetFormatException();
-        }
+        if ( targetFormat == null )
+            throw new OntologyMapperInvalidTargetFormatException();
+        else return format(simpleOntologyPropertyGraph, targetFormat);
         
     }
     
@@ -214,33 +213,46 @@ public class RdfXmlToPropertyGraphMapper {
     
     public static String format(
             SimpleOntologyPropertyGraph simpleOntologyPropertyGraph, 
-            PropertyGraphFormat propertyGraphFormat)
+            MapperTargetFormat targetFormat)
                     throws JsonProcessingException {
         
-        // Generate the vertices
-        for (SimpleOntologyVertex simpleOntologyVertex : 
-                simpleOntologyPropertyGraph.getVertices().values()) {
-            simpleOntologyVertex.preparePropertiesForModelling();
-            propertyGraphFormat.addVertex(simpleOntologyVertex.getVertexId(), 
-                    simpleOntologyVertex.getProperties());
-        }
+        // Native format
+        if ( targetFormat.equals(MapperTargetFormat.NATIVE) )
+            return RdfXmlNativeMapper.map(simpleOntologyPropertyGraph);
         
-        // Generate the edges
-        long edgeId = 1;
-        for (SimpleOntologyEdge simpleOntologyEdge : 
-                simpleOntologyPropertyGraph.getEdges()) {
-            propertyGraphFormat.addEdge(edgeId, 
-                    simpleOntologyEdge.getSourceVertexId(), 
-                    simpleOntologyEdge.getTargetVertexId(), 
-                    simpleOntologyEdge.getProperties());
-            edgeId++;
+        // JSON-based formats
+        else {
+            
+            // Get the property graph format
+            PropertyGraphFormat propertyGraphFormat = PROPERTY_GRAPH_FORMATS
+                    .get(targetFormat);
+            
+            // Generate the vertices
+            for (SimpleOntologyVertex simpleOntologyVertex : 
+                    simpleOntologyPropertyGraph.getVertices().values()) {
+                simpleOntologyVertex.preparePropertiesForModelling();
+                propertyGraphFormat.addVertex(simpleOntologyVertex.getVertexId(), 
+                        simpleOntologyVertex.getProperties());
+            }
+            
+            // Generate the edges
+            long edgeId = 1;
+            for (SimpleOntologyEdge simpleOntologyEdge : 
+                    simpleOntologyPropertyGraph.getEdges()) {
+                propertyGraphFormat.addEdge(edgeId, 
+                        simpleOntologyEdge.getSourceVertexId(), 
+                        simpleOntologyEdge.getTargetVertexId(), 
+                        simpleOntologyEdge.getProperties());
+                edgeId++;
+            }
+            
+            // Return the GraphSON string
+            PropertyGraph graph = new PropertyGraph(propertyGraphFormat);
+            ObjectWriter writer = new ObjectMapper()
+                    .writer().withDefaultPrettyPrinter();
+            return writer.writeValueAsString(graph);
+            
         }
-        
-        // Return the GraphSON string
-        PropertyGraph graph = new PropertyGraph(propertyGraphFormat);
-        ObjectWriter writer = new ObjectMapper()
-                .writer().withDefaultPrettyPrinter();
-        return writer.writeValueAsString(graph);
         
     }
 
