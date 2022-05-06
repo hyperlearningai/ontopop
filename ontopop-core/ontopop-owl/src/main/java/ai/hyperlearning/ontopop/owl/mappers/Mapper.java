@@ -13,6 +13,7 @@ import java.util.Set;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.jena.riot.RDFFormat;
+import org.apache.tika.Tika;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataParsingException;
@@ -319,10 +320,24 @@ public class Mapper {
     
     public static boolean isValidMimeType(String ontologyFile, 
             MapperSourceFormat sourceFormat) throws IOException {
+        
+        // OS-specific implementation
         Path path = Paths.get(ontologyFile);
         String mimeType = Files.probeContentType(path);
-        return VALID_MIME_TYPES.get(sourceFormat).contains(
-                mimeType.toUpperCase());
+        
+        // Apache Tika implementation
+        if ( mimeType == null ) {
+            Tika tika = new Tika();
+            mimeType = tika.detect(path);
+        }
+        
+        // Validate the MIME type
+        if ( mimeType != null )
+            return VALID_MIME_TYPES.get(sourceFormat).contains(
+                    mimeType.toUpperCase());
+        
+        return false;
+        
     }
 
 }

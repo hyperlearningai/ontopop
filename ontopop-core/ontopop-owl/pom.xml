@@ -50,6 +50,12 @@
             <artifactId>apache-jena-libs</artifactId>
             <type>pom</type>
         </dependency>
+        
+        <!-- Apache Tika -->
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-core</artifactId>
+        </dependency>
 
         <!-- HermiT -->
         <dependency>

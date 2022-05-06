@@ -91,6 +91,7 @@
         <spring-cloud-starter-aws-secrets-manager-config.version>2.2.6.RELEASE</spring-cloud-starter-aws-secrets-manager-config.version>
         <springdoc-openapi-ui.version>1.5.12</springdoc-openapi-ui.version>
         <swagger-annotations.version>2.1.11</swagger-annotations.version>
+        <tika-core.version>2.4.0</tika-core.version>
         <tinkergraph-gremlin.version>3.5.1</tinkergraph-gremlin.version>
         <zip4j.version>2.9.1</zip4j.version>
     </properties>
@@ -158,6 +159,13 @@
                 <artifactId>apache-jena-libs</artifactId>
                 <version>${apache-jena-libs.version}</version>
                 <type>pom</type>
+            </dependency>
+            
+            <!-- Apache Tika -->
+            <dependency>
+                <groupId>org.apache.tika</groupId>
+                <artifactId>tika-core</artifactId>
+                <version>${tika-core.version}</version>
             </dependency>
 
             <!-- Apache TinkerPop -->
