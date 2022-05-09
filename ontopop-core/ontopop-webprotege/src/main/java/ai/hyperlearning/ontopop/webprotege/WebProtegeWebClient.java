@@ -21,8 +21,8 @@ public class WebProtegeWebClient {
     @Value("${web.client.codecs.maxInMemorySize}")
     private int webClientMaxInMemorySize;
     
-    @Bean("webProtegeWebClient")
-    public WebClient getWebProtegeWebClient() {
+    @Bean("webProtegeHttpClient")
+    public WebClient getWebProtegeHttpClient() {
         return WebClient.builder()
                 .exchangeStrategies(ExchangeStrategies.builder()
                         .codecs(configurer -> configurer.defaultCodecs()

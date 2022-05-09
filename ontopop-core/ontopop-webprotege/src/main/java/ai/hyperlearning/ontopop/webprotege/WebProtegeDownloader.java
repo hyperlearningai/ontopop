@@ -55,7 +55,7 @@ public class WebProtegeDownloader {
             LoggerFactory.getLogger(WebProtegeDownloader.class);
     
     @Autowired
-    @Qualifier("webProtegeWebClient")
+    @Qualifier("webProtegeHttpClient")
     private WebClient webClient;
     
     // WebProtege credentials
