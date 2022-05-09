@@ -2,12 +2,12 @@ package ai.hyperlearning.ontopop.webprotege;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
@@ -29,7 +29,6 @@ import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeAuthenticationException;
 import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeInvalidProjectId;
@@ -88,7 +87,7 @@ public class WebProtegeDownloader {
     private String extractedOwlAbsolutePath = null;
     
     // Selenium Web Driver
-    private WebDriver webDriver;
+    private WebDriver webDriver = null;
     private static final boolean ENABLE_JAVASCRIPT = true;
     private static final boolean ENABLE_CSS = false;
     private static final boolean DOWNLOAD_IMAGES = false;
@@ -191,22 +190,39 @@ public class WebProtegeDownloader {
     
     private void setup() {
         
-        // Initialize and configure the web driver
+        // Check if an existing web driver instance is available and active
         LOGGER.info("Initializing the HtmlUnit headless web driver.");
-        this.webDriver = new HtmlUnitDriver(ENABLE_JAVASCRIPT) {
-            
-            @Override
-            protected com.gargoylesoftware.htmlunit.WebClient modifyWebClient(
-                    com.gargoylesoftware.htmlunit.WebClient client) {
-                final com.gargoylesoftware.htmlunit.WebClient htmlUnitWebClient = 
-                        super.modifyWebClient(client);
-                htmlUnitWebClient.getOptions().setCssEnabled(ENABLE_CSS);
-                htmlUnitWebClient.getOptions().setDownloadImages(DOWNLOAD_IMAGES);
-                htmlUnitWebClient.getOptions().setDoNotTrackEnabled(ENABLE_DO_NOT_TRACK);
-                return htmlUnitWebClient;
+        boolean isAvailable = false;
+        if ( webDriver != null ) {
+            try {
+                webDriver.get(WEBPROTEGE_LOGIN_URL);
+                isAvailable = true;
+                LOGGER.info("HtmlUnit headless web driver already exists.");
+            } catch (Exception e) {
+                try {
+                    webDriver.quit();
+                } catch (Exception e2) {
+                    
+                }
             }
-            
-        };
+        }
+        
+        // Instantiate and configure a new web driver instance
+        if ( webDriver == null || !isAvailable )
+            webDriver = new HtmlUnitDriver(ENABLE_JAVASCRIPT) {
+                
+                @Override
+                protected com.gargoylesoftware.htmlunit.WebClient modifyWebClient(
+                        com.gargoylesoftware.htmlunit.WebClient client) {
+                    final com.gargoylesoftware.htmlunit.WebClient htmlUnitWebClient = 
+                            super.modifyWebClient(client);
+                    htmlUnitWebClient.getOptions().setCssEnabled(ENABLE_CSS);
+                    htmlUnitWebClient.getOptions().setDownloadImages(DOWNLOAD_IMAGES);
+                    htmlUnitWebClient.getOptions().setDoNotTrackEnabled(ENABLE_DO_NOT_TRACK);
+                    return htmlUnitWebClient;
+                }
+                
+            };
         
     }
     
@@ -222,7 +238,7 @@ public class WebProtegeDownloader {
         
         // Initialize a wait condition implementation
         FluentWait<WebDriver> fluentWait = new FluentWait<>(webDriver)
-                .withTimeout(Duration.ofSeconds(30))
+                .withTimeout(Duration.ofSeconds(15))
                 .pollingEvery(Duration.ofMillis(200))
                 .ignoring(NoSuchElementException.class);
         
@@ -348,22 +364,14 @@ public class WebProtegeDownloader {
     private void download() throws IOException, 
             WebProtegeProjectAccessException {
         
-        // Build the URI
-        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder
-                .newInstance()
-                .path(WEBPROTEGE_DOWNLOAD_URI)
-                .queryParam(WEBPROTEGE_DOWNLOAD_PARAM_PROJECT, 
-                        projectId)
-                .queryParam(WEBPROTEGE_DOWNLOAD_PARAM_FORMAT, 
-                        WEBPROTEGE_DOWNLOAD_FORMAT);
-        if ( revision != null )
-            uriComponentsBuilder.queryParam(
-                    WEBPROTEGE_DOWNLOAD_PARAM_REVISION, revision);
-        URI uri = uriComponentsBuilder.build().toUri();
-        
         // Write the downloaded OWL file into a data buffer
         Mono<DataBuffer> dataBuffer = webClient.get()
-                .uri(uri)
+                .uri(uriBuilder -> uriBuilder
+                        .path(WEBPROTEGE_DOWNLOAD_URI)
+                        .queryParam(WEBPROTEGE_DOWNLOAD_PARAM_PROJECT, projectId)
+                        .queryParamIfPresent(WEBPROTEGE_DOWNLOAD_PARAM_REVISION, Optional.ofNullable(revision))
+                        .queryParam(WEBPROTEGE_DOWNLOAD_PARAM_FORMAT, WEBPROTEGE_DOWNLOAD_FORMAT)
+                        .build())
                 .cookie(JSESSIONID_COOKIE_NAME, jsessionIdCookieValue)
                 .retrieve()
                 .onStatus(status -> status.equals(HttpStatus.UNAUTHORIZED),
@@ -420,9 +428,14 @@ public class WebProtegeDownloader {
     
     private void cleanup() {
         
-        // Dispose of the web driver
-        if ( webDriver != null )
-            webDriver.quit();
+        // Close the current window
+        if ( webDriver != null ) {
+            try {
+                webDriver.close();
+            } catch (Exception e) {
+                
+            }
+        }
         
     }
 
