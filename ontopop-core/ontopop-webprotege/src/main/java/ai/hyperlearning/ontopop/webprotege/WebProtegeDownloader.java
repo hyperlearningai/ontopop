@@ -115,7 +115,7 @@ public class WebProtegeDownloader {
             WebProtegeMissingCredentials, 
             WebProtegeInvalidProjectId, 
             WebProtegeAuthenticationException, 
-            WebProtegeProjectAccessException{
+            WebProtegeProjectAccessException {
         
         // Set the WebProtege project ID and revision number
         LOGGER.info("WebProtege download service started.");
