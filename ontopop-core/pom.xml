@@ -52,9 +52,10 @@
         <module>ontopop-graph</module>
         <module>ontopop-messaging</module>
         <module>ontopop-owl</module>
+        <module>ontopop-webprotege</module>
         <module>ontopop-jpa</module>
         <module>ontopop-search</module>
-        <module>ontopop-utils</module>
+        <module>ontopop-utils</module> 
     </modules>
 
 </project>
