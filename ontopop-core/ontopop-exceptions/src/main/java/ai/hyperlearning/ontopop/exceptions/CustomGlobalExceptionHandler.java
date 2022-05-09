@@ -32,6 +32,10 @@ import ai.hyperlearning.ontopop.exceptions.security.InvalidClientNameException;
 import ai.hyperlearning.ontopop.exceptions.triplestore.InvalidSparqlQueryException;
 import ai.hyperlearning.ontopop.exceptions.vendors.OntoKaiInvalidOntologyPayloadException;
 import ai.hyperlearning.ontopop.exceptions.vendors.OntoKaiOntologyPayloadMappingException;
+import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeAuthenticationException;
+import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeInvalidProjectId;
+import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeMissingCredentials;
+import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeProjectAccessException;
 import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeWebhookNotFoundException;
 
 /**
@@ -52,6 +56,12 @@ public class CustomGlobalExceptionHandler
             throws IOException {
         response.sendError(HttpStatus.NOT_FOUND.value());
     }
+    
+    @ExceptionHandler({WebProtegeProjectAccessException.class})
+    public void springHandleUnauthorized(HttpServletResponse response)
+            throws IOException {
+        response.sendError(HttpStatus.UNAUTHORIZED.value());
+    }
 
     @ExceptionHandler({OntologyCreationException.class,
             OntologyUpdateSecretDataException.class, 
@@ -61,7 +71,9 @@ public class CustomGlobalExceptionHandler
             OntologyDataPutException.class, 
             OntoKaiOntologyPayloadMappingException.class, 
             OntologyDataParsingException.class, 
-            OntologyDataPropertyGraphModellingException.class})
+            OntologyDataPropertyGraphModellingException.class, 
+            WebProtegeMissingCredentials.class, 
+            WebProtegeAuthenticationException.class})
     public void springHandleCreationException(HttpServletResponse response)
             throws IOException {
         response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -83,7 +95,8 @@ public class CustomGlobalExceptionHandler
         OntoKaiInvalidOntologyPayloadException.class, 
         OntologyMapperInvalidSourceFormatException.class, 
         OntologyMapperInvalidTargetFormatException.class, 
-        OntologyMapperInvalidSourceOntologyDataException.class})
+        OntologyMapperInvalidSourceOntologyDataException.class, 
+        WebProtegeInvalidProjectId.class})
     public void springHandleBadRequest(HttpServletResponse response) 
             throws IOException {
         response.sendError(HttpStatus.BAD_REQUEST.value());
