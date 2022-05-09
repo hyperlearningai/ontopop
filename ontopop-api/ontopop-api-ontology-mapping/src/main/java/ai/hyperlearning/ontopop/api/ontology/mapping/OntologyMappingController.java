@@ -3,13 +3,13 @@ package ai.hyperlearning.ontopop.api.ontology.mapping;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
+import java.nio.file.Paths;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,12 @@ import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPropertyGraphMod
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidSourceFormatException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidSourceOntologyDataException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidTargetFormatException;
+import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeAuthenticationException;
+import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeInvalidProjectId;
+import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeMissingCredentials;
+import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeProjectAccessException;
 import ai.hyperlearning.ontopop.owl.mappers.Mapper;
+import ai.hyperlearning.ontopop.webprotege.WebProtegeDownloader;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -47,6 +52,9 @@ public class OntologyMappingController {
     
     private static final Logger LOGGER =
             LoggerFactory.getLogger(OntologyMappingController.class);
+    
+    @Autowired
+    private WebProtegeDownloader webProtegeDownloader;
     
     /**************************************************************************
      * 1. POST - Ontology Data Mapper
@@ -103,23 +111,54 @@ public class OntologyMappingController {
                 source, target);
         
         // Download and map a RDF/XML OWL file exported from WebProtege
+        String webProtegeDownloadedOwlFile = null;
         if ( webProtegeId != null ) {
-            return new ResponseEntity<>("WebProtege", HttpStatus.OK);
+            
+            // Run the WebProtege downloader service
+            try {
+                webProtegeDownloadedOwlFile = webProtegeDownloader.run(
+                        webProtegeId, null);
+            } catch ( WebProtegeMissingCredentials |
+                    WebProtegeAuthenticationException e) {
+                return new ResponseEntity<>(e.getMessage(), 
+                        HttpStatus.INTERNAL_SERVER_ERROR);
+            } catch ( WebProtegeInvalidProjectId e ) {
+                return new ResponseEntity<>(e.getMessage(), 
+                        HttpStatus.BAD_REQUEST);
+            } catch ( WebProtegeProjectAccessException e ) {
+                return new ResponseEntity<>(e.getMessage(), 
+                        HttpStatus.UNAUTHORIZED);
+            }
+            
         }
         
         // Map a given ontology file
-        else if ( file != null && !file.isEmpty() ) {
-            
-            // Convert the MultipartFile to a File
-            Path temporaryFile = Files.createTempFile("", 
-                    file.getOriginalFilename());
-            file.transferTo(temporaryFile);
+        if ( (file != null && !file.isEmpty()) || 
+                (webProtegeDownloadedOwlFile != null) ) {
             
             // Map the ontology file
+            String mapped = null;
+            Path temporaryFile = null;
             try {
-                String mapped = Mapper.map(source, target, 
-                        temporaryFile.toAbsolutePath().toString());
+                
+                // Map the downloaded WebProtege OWL file
+                if ( webProtegeDownloadedOwlFile != null )
+                    mapped = Mapper.map("rdf-xml", target, 
+                            webProtegeDownloadedOwlFile);
+                else {
+                    
+                    // Convert the uploaded MultipartFile to a File and map
+                    temporaryFile = Files.createTempFile("", 
+                            file.getOriginalFilename());
+                    file.transferTo(temporaryFile);
+                    mapped = Mapper.map(source, target, 
+                            temporaryFile.toAbsolutePath().toString());
+                    
+                }
+                
+                // Return the mapping result
                 return new ResponseEntity<>(mapped, HttpStatus.OK);
+            
             } catch (OntologyMapperInvalidSourceFormatException | 
                     OntologyMapperInvalidSourceOntologyDataException | 
                     OntologyMapperInvalidTargetFormatException e) {
@@ -131,13 +170,15 @@ public class OntologyMappingController {
                         HttpStatus.INTERNAL_SERVER_ERROR);
             } finally {
                 
-                // Delete the temporary file
-                if ( Files.exists(temporaryFile) ) {
-                    try {
-                        Files.delete(temporaryFile);
-                    } catch (Exception e) {
-                        
-                    }
+                // Delete the OWL file
+                try {
+                    if ( webProtegeDownloadedOwlFile != null )
+                        Files.deleteIfExists(
+                                Paths.get(webProtegeDownloadedOwlFile));
+                    else
+                        Files.deleteIfExists(temporaryFile);
+                } catch (Exception e) {
+                    
                 }
                 
             }
