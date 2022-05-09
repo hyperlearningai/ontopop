@@ -379,11 +379,18 @@ public class WebProtegeDownloader {
                 .bodyToMono(DataBuffer.class);
         
         // Write the contents of the data buffer to the local filesystem
-        String filename = projectId + "_" + revision + ".zip";
+        String filename = revision != null ? 
+                projectId + "_" + revision + ".zip" : 
+                    projectId + "_" + "LATEST" + ".zip";
         Path downloadFilePath = Files.createTempFile("", filename);
-        DataBufferUtils.write(
-                dataBuffer, downloadFilePath, StandardOpenOption.CREATE)
-            .share().block();
+        DataBufferUtils.write(dataBuffer, 
+                downloadFilePath, StandardOpenOption.CREATE)
+            .share()
+            .doOnError(error -> {
+                if ( error.getMessage().contains("403") )
+                        throw new WebProtegeProjectAccessException();
+                })
+            .block();
         downloadedZipAbsolutePath = downloadFilePath
                 .toAbsolutePath().toString();
         LOGGER.info("Downloaded WebProtege project ID {} (revision number {})"
@@ -406,7 +413,9 @@ public class WebProtegeDownloader {
                         .endsWith("." + WEBPROTEGE_DOWNLOAD_FORMAT) ) {
                     Path tempDir = Files.createTempDirectory(
                             DOWNLOAD_TEMP_DIRECTORY_NAME_PREFIX);
-                    String owlFilename = projectId + "_" + revision + ".owl";
+                    String owlFilename = revision != null ? 
+                            projectId + "_" + revision + ".owl" : 
+                                projectId + "_" + "LATEST" + ".owl";
                     zipFile.extractFile(fileHeader, 
                             tempDir.toAbsolutePath().toString(), 
                             owlFilename);
