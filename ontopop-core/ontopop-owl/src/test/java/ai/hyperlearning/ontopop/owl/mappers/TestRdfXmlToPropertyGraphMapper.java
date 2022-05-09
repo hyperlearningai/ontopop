@@ -85,16 +85,16 @@ class TestRdfXmlToPropertyGraphMapper {
         OntologyDataPropertyGraphModellingException, IOException, JSONException {
         
         // Format and parse the Vis Dataset string
-        String graphSonString = RdfXmlToPropertyGraphMapper.map(
+        String visString = RdfXmlToPropertyGraphMapper.map(
                 testOntologyFilePath, VIS_FORMAT);
-        JSONObject graphSon = new JSONObject(graphSonString);
-        JSONArray vertices = graphSon.getJSONObject(VIS_GRAPH_OBJECT_KEY)
+        JSONObject vis = new JSONObject(visString);
+        JSONArray vertices = vis.getJSONObject(VIS_GRAPH_OBJECT_KEY)
                 .getJSONArray(VIS_VERTICES_ARRAY_KEY);
-        JSONArray edges = graphSon.getJSONObject(VIS_GRAPH_OBJECT_KEY)
+        JSONArray edges = vis.getJSONObject(VIS_GRAPH_OBJECT_KEY)
                 .getJSONArray(VIS_EDGES_ARRAY_KEY);
         
         // Vis Dataset unit tests
-        assertFalse(StringUtils.isAllBlank(graphSonString));
+        assertFalse(StringUtils.isAllBlank(visString));
         assertEquals(TEST_ONTOLOGY_VERTEX_COUNT, vertices.length());
         assertEquals(TEST_ONTOLOGY_EDGE_COUNT, edges.length());
         

@@ -1,0 +1,60 @@
+{
+    "graph": {
+        "vertices": [
+            {
+                "id": "113334688201",
+                "type": "class",
+                "label": "Data Subject Request",
+                "dataSource": "FFC",
+                "definition": "A request made by a Customer or their legal representative for their personal information under data protection legislation.",
+                "iri": "http://webprotege.stanford.edu/R0hGCuAkhsiBUbd7pftEpN"
+            },
+            {
+                "id": "138574800401",
+                "type": "class",
+                "comment": "A communication will typically have the Licence Holder (Highways England) as one of the parties.",
+                "businessArea": "Communications",
+                "definition": "Document storing the information conveyed between two or more parties.",
+                "label": "Communication Document",
+                "iri": "http://webprotege.stanford.edu/R0jI731hv09ZcJeji1fbtY"
+            },
+            {
+                "id": "108265040601",
+                "type": "class",
+                "businessArea": "Maintain Plan",
+                "label": "Programme",
+                "dataSource": "Structures",
+                "definition": "A collection of projects or tasks undertaken to realise a strategic goal.",
+                "comment": "A strategic goal that is achieved through a number of projects.",
+                "example": "Develop connectivity between London and Inverness.",
+                "iri": "http://webprotege.stanford.edu/R0qk59fxFmgNbyUncZoU8M"
+            },
+        ], 
+        "edges": [
+            {
+                "id": "1",
+                "type": "subclassOf",
+                "from": "113334688201",
+                "to": "138574800401",
+                "weight": 1,
+                "relationship": "Subclass of"
+            },
+            {
+                "id": "2",
+                "type": "subclassOf",
+                "from": "113334688201",
+                "to": "60577916701",
+                "weight": 1,
+                "relationship": "Provided by"
+            },
+            {
+                "id": "3",
+                "type": "subclassOf",
+                "from": "138574800401",
+                "to": "193344839801",
+                "weight": 1,
+                "relationship": "Provided to"
+            }
+        ]
+    }
+}
