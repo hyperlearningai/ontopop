@@ -13,7 +13,7 @@ public class WebProtegeMissingCredentials extends RuntimeException {
 
     public WebProtegeMissingCredentials() {
         super("WebProtege credentials have not been set as "
-                + "environmental variables.");
+                + "environment variables.");
     }
     
     public WebProtegeMissingCredentials(String message) {
