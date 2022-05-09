@@ -65,7 +65,7 @@ public class WebProtegeDownloader {
     // WebProtege project ID validation rules
     private static final int WEBPROTEGE_PROJECT_ID_LENGTH = 36;
     
-    // WebProtege Web Elements
+    // WebProtege web elements
     private static final String WEBPROTEGE_LOGIN_URL = "https://webprotege.stanford.edu/";
     private static final String WEBPROTEGE_DOWNLOAD_URI = "/download";
     private static final String WEBPROTEGE_LOGIN_FORM_CLASS_NAME = "wp-login__form";
@@ -74,7 +74,7 @@ public class WebProtegeDownloader {
     private static final String WEBPROTEGE_LOGIN_FORM_SUBMIT_BUTTON_CLASS_NAME = "gwt-Button";
     private static final String WEBPROTEGE_PROJECT_LIST_TOPBAR_CLASS_NAME = "wp-topbar";
     
-    // WebProtege export and download
+    // WebProtege download query parameters
     private static final String WEBPROTEGE_DOWNLOAD_PARAM_PROJECT = "project";
     private static final String WEBPROTEGE_DOWNLOAD_PARAM_REVISION = "revision";
     private static final String WEBPROTEGE_DOWNLOAD_PARAM_FORMAT = "format";
@@ -82,6 +82,8 @@ public class WebProtegeDownloader {
     private static final String DOWNLOAD_TEMP_DIRECTORY_NAME_PREFIX = "webprotege";
     private String projectId = null;
     private Integer revision = null;
+    
+    // WebProtege download local persistence
     private String downloadedZipAbsolutePath = null;
     private String extractedOwlAbsolutePath = null;
     
@@ -91,8 +93,22 @@ public class WebProtegeDownloader {
     private static final boolean ENABLE_CSS = false;
     private static final boolean DOWNLOAD_IMAGES = false;
     private static final boolean ENABLE_DO_NOT_TRACK = true;
+    
+    // WebProtege authentication
     private static final String JSESSIONID_COOKIE_NAME = "JSESSIONID";
     private String jsessionIdCookieValue = null;
+    
+    /**
+     * Run the end-to-end WebProtege downloader service
+     * @param projectId
+     * @param revision
+     * @return
+     * @throws IOException
+     * @throws WebProtegeMissingCredentials
+     * @throws WebProtegeInvalidProjectId
+     * @throws WebProtegeAuthenticationException
+     * @throws WebProtegeProjectAccessException
+     */
     
     public String run(String projectId, Integer revision) 
             throws IOException, 
