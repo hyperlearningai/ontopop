@@ -387,7 +387,9 @@ public class WebProtegeDownloader {
                 downloadFilePath, StandardOpenOption.CREATE)
             .share()
             .doOnError(error -> {
-                if ( error.getMessage().contains("403") )
+                if ( error.getMessage().contains(String.valueOf(HttpStatus.UNAUTHORIZED.value())) ||
+                        error.getMessage().contains(String.valueOf(HttpStatus.FORBIDDEN.value())) || 
+                        error.getMessage().contains(String.valueOf(HttpStatus.NOT_FOUND.value())) )
                         throw new WebProtegeProjectAccessException();
                 })
             .block();
