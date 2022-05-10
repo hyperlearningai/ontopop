@@ -14,7 +14,7 @@ import org.springframework.web.reactive.function.client.WebClient;
  */
 
 @Configuration
-public class WebProtegeWebClient {
+public class WebProtegeWebClientConfig {
     
     private static final String BASE_URL = "https://webprotege.stanford.edu";
     
