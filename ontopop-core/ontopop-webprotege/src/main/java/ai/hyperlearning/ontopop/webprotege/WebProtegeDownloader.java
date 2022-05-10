@@ -58,8 +58,12 @@ public class WebProtegeDownloader {
     private WebClient webClient;
     
     // WebProtege credentials
-    private static final String WEBPROTEGE_USERNAME_ENV_KEY = "WEBPROTEGE_USERNAME";
-    private static final String WEBPROTEGE_PASSWORD_ENV_KEY = "WEBPROTEGE_PASSWORD";
+    private static final String WEBPROTEGE_USERNAME_ENV_KEY = 
+            "WEBPROTEGE_USERNAME";
+    private static final String WEBPROTEGE_PASSWORD_ENV_KEY = 
+            "WEBPROTEGE_PASSWORD";
+    private static final String WEBPROTEGE_WEBDRIVER_TIMEOUT_ENV_KEY = 
+            "WEBPROTEGE_WEBDRIVER_TIMEOUT";
     
     // WebProtege project ID validation rules
     private static final int WEBPROTEGE_PROJECT_ID_LENGTH = 36;
@@ -92,7 +96,8 @@ public class WebProtegeDownloader {
     private static final boolean ENABLE_CSS = false;
     private static final boolean DOWNLOAD_IMAGES = false;
     private static final boolean ENABLE_DO_NOT_TRACK = true;
-    private Integer webDriverTimeout = 30;
+    private static final int TIMEOUT_DEFAULT = 30;
+    private Integer webDriverTimeout = null;
     private Boolean webDriverQuitOnClose = true;
     
     // WebProtege authentication
@@ -196,6 +201,19 @@ public class WebProtegeDownloader {
      */
     
     private void setup() {
+        
+        // Set the WebDriver timeout duration
+        if ( webDriverTimeout == null ) {
+            webDriverTimeout = TIMEOUT_DEFAULT;
+            if (System.getenv(WEBPROTEGE_WEBDRIVER_TIMEOUT_ENV_KEY) != null) {
+                try {
+                    webDriverTimeout = Integer.valueOf(System.getenv(
+                            WEBPROTEGE_WEBDRIVER_TIMEOUT_ENV_KEY));
+                } catch (Exception e) {
+                    
+                }
+            }
+        }
         
         // Check if an existing web driver instance is available and active
         LOGGER.info("Initializing the HtmlUnit headless web driver.");

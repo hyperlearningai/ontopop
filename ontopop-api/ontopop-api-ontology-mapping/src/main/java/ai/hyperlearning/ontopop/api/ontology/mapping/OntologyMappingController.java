@@ -61,7 +61,7 @@ public class OntologyMappingController {
      *************************************************************************/
     
     @Operation(
-            summary = "Ontology Data Mepper",
+            summary = "Ontology Data Mapper",
             description = "Map given ontology data from a given source format "
                     + "(e.g. RDF/XML) to a given target format (e.g. GRAPHSON).",
             tags = {"ontology", "mapping", "rdfxml", "graphson"})
@@ -76,6 +76,9 @@ public class OntologyMappingController {
                     @ApiResponse(
                             responseCode = "401",
                             description = "Ontology data mapping request unauthorized."), 
+                    @ApiResponse(
+                            responseCode = "403",
+                            description = "Ontology data mapping request forbidden."), 
                     @ApiResponse(
                             responseCode = "500",
                             description = "Internal server error.")})
@@ -117,7 +120,7 @@ public class OntologyMappingController {
             // Run the WebProtege downloader service
             try {
                 webProtegeDownloadedOwlFile = webProtegeDownloader.run(
-                        webProtegeId, null, 15, false);
+                        webProtegeId, null, null, false);
             } catch ( WebProtegeMissingCredentials |
                     WebProtegeAuthenticationException e) {
                 return new ResponseEntity<>(e.getMessage(), 
