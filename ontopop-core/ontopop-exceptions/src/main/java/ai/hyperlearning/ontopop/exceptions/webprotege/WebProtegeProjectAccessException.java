@@ -12,7 +12,7 @@ public class WebProtegeProjectAccessException extends RuntimeException {
     private static final long serialVersionUID = -8904849874968126154L;
     
     public WebProtegeProjectAccessException() {
-        super("Access to the specified WebProtege project ID is unauthorized. "
+        super("Access to the specified WebProtege project ID is forbidden. "
                 + "Please share the WebProtege project with "
                 + "service@ontopop.com and try again.");
     }

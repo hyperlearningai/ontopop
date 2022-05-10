@@ -56,12 +56,6 @@ public class CustomGlobalExceptionHandler
             throws IOException {
         response.sendError(HttpStatus.NOT_FOUND.value());
     }
-    
-    @ExceptionHandler({WebProtegeProjectAccessException.class})
-    public void springHandleUnauthorized(HttpServletResponse response)
-            throws IOException {
-        response.sendError(HttpStatus.UNAUTHORIZED.value());
-    }
 
     @ExceptionHandler({OntologyCreationException.class,
             OntologyUpdateSecretDataException.class, 
@@ -100,6 +94,12 @@ public class CustomGlobalExceptionHandler
     public void springHandleBadRequest(HttpServletResponse response) 
             throws IOException {
         response.sendError(HttpStatus.BAD_REQUEST.value());
+    }
+    
+    @ExceptionHandler({WebProtegeProjectAccessException.class})
+    public void springHandleForbidden(HttpServletResponse response)
+            throws IOException {
+        response.sendError(HttpStatus.FORBIDDEN.value());
     }
 
 }

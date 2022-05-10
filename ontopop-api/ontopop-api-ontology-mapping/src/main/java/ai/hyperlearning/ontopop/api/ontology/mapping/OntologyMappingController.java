@@ -127,7 +127,7 @@ public class OntologyMappingController {
                         HttpStatus.BAD_REQUEST);
             } catch ( WebProtegeProjectAccessException e ) {
                 return new ResponseEntity<>(e.getMessage(), 
-                        HttpStatus.UNAUTHORIZED);
+                        HttpStatus.FORBIDDEN);
             }
             
         }
