@@ -54,7 +54,7 @@ public class WebProtegeDownloader {
             LoggerFactory.getLogger(WebProtegeDownloader.class);
     
     @Autowired
-    @Qualifier("webProtegeHttpClient")
+    @Qualifier("webProtegeWebClient")
     private WebClient webClient;
     
     // WebProtege credentials
@@ -92,6 +92,8 @@ public class WebProtegeDownloader {
     private static final boolean ENABLE_CSS = false;
     private static final boolean DOWNLOAD_IMAGES = false;
     private static final boolean ENABLE_DO_NOT_TRACK = true;
+    private Integer webDriverTimeout = 30;
+    private Boolean webDriverQuitOnClose = true;
     
     // WebProtege authentication
     private static final String JSESSIONID_COOKIE_NAME = "JSESSIONID";
@@ -109,7 +111,8 @@ public class WebProtegeDownloader {
      * @throws WebProtegeProjectAccessException
      */
     
-    public String run(String projectId, Integer revision) 
+    public String run(String projectId, Integer revision, 
+            Integer webDriverTimeout, Boolean webDriverQuitOnClose) 
             throws IOException, 
             WebProtegeMissingCredentials, 
             WebProtegeInvalidProjectId, 
@@ -120,6 +123,10 @@ public class WebProtegeDownloader {
         LOGGER.info("WebProtege download service started.");
         this.projectId = projectId;
         this.revision = revision;
+        if ( webDriverTimeout != null )
+            this.webDriverTimeout = webDriverTimeout;
+        if ( webDriverQuitOnClose != null )
+            this.webDriverQuitOnClose = webDriverQuitOnClose;
         
         // Run the download service
         try {
@@ -142,7 +149,7 @@ public class WebProtegeDownloader {
         } finally {
             
             // 6. Close the WebDriver
-            cleanup();
+            cleanup(this.webDriverQuitOnClose);
         
         }
         
@@ -238,7 +245,7 @@ public class WebProtegeDownloader {
         
         // Initialize a wait condition implementation
         FluentWait<WebDriver> fluentWait = new FluentWait<>(webDriver)
-                .withTimeout(Duration.ofSeconds(15))
+                .withTimeout(Duration.ofSeconds(webDriverTimeout))
                 .pollingEvery(Duration.ofMillis(200))
                 .ignoring(NoSuchElementException.class);
         
@@ -437,12 +444,13 @@ public class WebProtegeDownloader {
      * Close all web clients
      */
     
-    private void cleanup() {
+    private void cleanup(boolean quit) {
         
         // Close the current window
         if ( webDriver != null ) {
             try {
-                webDriver.close();
+                if (quit)
+                    webDriver.quit();
             } catch (Exception e) {
                 
             }

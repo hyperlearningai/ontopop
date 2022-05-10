@@ -117,7 +117,7 @@ public class OntologyMappingController {
             // Run the WebProtege downloader service
             try {
                 webProtegeDownloadedOwlFile = webProtegeDownloader.run(
-                        webProtegeId, null);
+                        webProtegeId, null, 15, false);
             } catch ( WebProtegeMissingCredentials |
                     WebProtegeAuthenticationException e) {
                 return new ResponseEntity<>(e.getMessage(), 

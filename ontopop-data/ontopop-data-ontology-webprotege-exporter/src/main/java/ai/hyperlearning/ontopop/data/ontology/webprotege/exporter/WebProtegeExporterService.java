@@ -15,6 +15,7 @@ import ai.hyperlearning.ontopop.data.jpa.repositories.WebProtegeWebhookRepositor
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPipelineProcessingException;
 import ai.hyperlearning.ontopop.model.ontology.Ontology;
 import ai.hyperlearning.ontopop.model.webprotege.WebProtegeWebhook;
+import ai.hyperlearning.ontopop.webprotege.WebProtegeDownloader;
 
 /**
  * WebProtege Exporter Service
@@ -37,7 +38,7 @@ public class WebProtegeExporterService {
     private WebProtegeWebhookRepository webProtegeWebhookRepository;
     
     @Autowired
-    private WebProtegeExporterDownloadService webProtegeExporterDownloadService;
+    private WebProtegeDownloader webProtegeDownloader;
     
     @Autowired
     private WebProtegeExporterUploadService webProtegeExporterUploadService;
@@ -161,9 +162,10 @@ public class WebProtegeExporterService {
                     + "ID {} from WebProtege in RDF/XML OWL format.", 
                     webProtegeWebhook.getRevisionNumber(), 
                     webProtegeWebhook.getProjectId());
-            extractedOwlAbsolutePath = webProtegeExporterDownloadService.run(
+            extractedOwlAbsolutePath = webProtegeDownloader.run(
                     webProtegeWebhook.getProjectId(), 
-                    webProtegeWebhook.getRevisionNumber());
+                    webProtegeWebhook.getRevisionNumber(), 
+                    30, true);
         }
     }
     

@@ -73,21 +73,9 @@
             <groupId>ai.hyperlearning.ontopop</groupId>
             <artifactId>ontopop-secrets</artifactId>
         </dependency>
-        
-        <!-- Selenium -->
         <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-api</artifactId>
-        </dependency>
-        
-        <!-- Selenium HtmlUnit Driver -->
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>htmlunit-driver</artifactId>
+            <groupId>ai.hyperlearning.ontopop</groupId>
+            <artifactId>ontopop-webprotege</artifactId>
         </dependency>
         
         <!-- Springdoc OpenAPI UI -->
@@ -100,12 +88,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
-        </dependency>
-        
-        <!-- Zip4j -->
-        <dependency>
-            <groupId>net.lingala.zip4j</groupId>
-            <artifactId>zip4j</artifactId>
         </dependency>
 
     </dependencies>
