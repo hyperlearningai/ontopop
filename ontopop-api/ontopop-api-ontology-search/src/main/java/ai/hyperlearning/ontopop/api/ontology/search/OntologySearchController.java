@@ -9,13 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
 
 import ai.hyperlearning.ontopop.exceptions.search.InvalidSearchQueryException;
 import ai.hyperlearning.ontopop.model.search.OntologySearchQuery;
@@ -36,7 +36,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  * @since 2.0.0
  */
 
-@RestController
+@Controller
 @RequestMapping("/search/ontologies")
 @Tag(name = "Search API", description = "API for querying the OntoPop Search Index")
 public class OntologySearchController {
