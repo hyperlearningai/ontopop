@@ -29,7 +29,7 @@ import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidTargetF
 class TestRdfXmlToPropertyGraphMapper {
     
     private static final String TEST_ONTOLOGY_FILENAME = 
-            "test-ontology.owl";
+            "test-ontology-property-graph.owl";
     private static final String GRAPHSON_FORMAT = "graphson";
     private static final String GRAPHSON_GRAPH_OBJECT_KEY = "graph";
     private static final String GRAPHSON_VERTICES_ARRAY_KEY = "vertices";
