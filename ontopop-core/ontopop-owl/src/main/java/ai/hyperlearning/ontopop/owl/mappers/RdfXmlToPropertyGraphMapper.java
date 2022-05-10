@@ -2,7 +2,6 @@ package ai.hyperlearning.ontopop.owl.mappers;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.AbstractMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -51,14 +50,6 @@ public class RdfXmlToPropertyGraphMapper {
     
     private static final int DEFAULT_ONTOLOGY_ID = 1;
     private static final long DEFAULT_LATEST_GIT_WEBHOOK_ID = 0;
-    
-    // Property Graph Formats
-    private static final Map<MapperTargetFormat, PropertyGraphFormat> PROPERTY_GRAPH_FORMATS = 
-            Map.ofEntries(
-                    new AbstractMap.SimpleEntry<MapperTargetFormat, PropertyGraphFormat>(
-                            MapperTargetFormat.GRAPHSON, new GraphSONGraph()), 
-                    new AbstractMap.SimpleEntry<MapperTargetFormat, PropertyGraphFormat>(
-                            MapperTargetFormat.VIS, new VisDatasetGraph()));
     
     private RdfXmlToPropertyGraphMapper() {
         throw new IllegalStateException("The RdfXmlModeller utility "
@@ -224,8 +215,18 @@ public class RdfXmlToPropertyGraphMapper {
         else {
             
             // Get the property graph format
-            PropertyGraphFormat propertyGraphFormat = PROPERTY_GRAPH_FORMATS
-                    .get(targetFormat);
+            
+            PropertyGraphFormat propertyGraphFormat = null;
+            switch (targetFormat) {
+                case GRAPHSON:
+                    propertyGraphFormat = new GraphSONGraph();
+                    break;
+                case VIS:
+                    propertyGraphFormat = new VisDatasetGraph();
+                    break;
+                default:
+                    throw new OntologyMapperInvalidTargetFormatException();
+            }
             
             // Generate the vertices
             for (SimpleOntologyVertex simpleOntologyVertex : 
