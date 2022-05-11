@@ -65,7 +65,7 @@ class TestMapper {
     
     @BeforeAll
     public void getTestOntologyFilePaths() {
-        ClassLoader classLoader = TestRdfXmlToPropertyGraphMapper
+        ClassLoader classLoader = TestMapper
                 .class.getClassLoader();
         testOntologyFilePathValid = classLoader.getResource(
                 TEST_ONTOLOGY_FILENAME_VALID).getPath();
