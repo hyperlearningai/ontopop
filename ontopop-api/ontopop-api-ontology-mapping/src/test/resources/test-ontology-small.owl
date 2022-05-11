@@ -1,0 +1,1009 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://webprotege.stanford.edu/project/96Ytr9AQdNv8valtcgFhzp#"
+     xml:base="http://webprotege.stanford.edu/project/96Ytr9AQdNv8valtcgFhzp"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+     xmlns:webprotege="http://webprotege.stanford.edu/">
+    <owl:Ontology rdf:about="http://webprotege.stanford.edu/project/96Ytr9AQdNv8valtcgFhzp"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/description -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/elements/1.1/description"/>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/source -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/elements/1.1/source"/>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R8AWk6f00nQhiAoDl6ujohI -->
+
+    <owl:AnnotationProperty rdf:about="http://webprotege.stanford.edu/R8AWk6f00nQhiAoDl6ujohI">
+        <rdfs:label>Subdomain</rdfs:label>
+        <skos:comment>The list of existing Subdomains can be found in Project/Tags.</skos:comment>
+        <skos:definition>Annotation used to describe the Entities that compose a specific Subdomain.</skos:definition>
+    </owl:AnnotationProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R8OwNoGPHfALLALe5R3rm2H -->
+
+    <owl:AnnotationProperty rdf:about="http://webprotege.stanford.edu/R8OwNoGPHfALLALe5R3rm2H">
+        <rdfs:label>TODO</rdfs:label>
+        <skos:definition>Annotation used to mark pending action to be done in the model.</skos:definition>
+    </owl:AnnotationProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R8Zrr9RnWOq4DeZDzBOW2J4 -->
+
+    <owl:AnnotationProperty rdf:about="http://webprotege.stanford.edu/R8Zrr9RnWOq4DeZDzBOW2J4">
+        <rdfs:label>Synonym</rdfs:label>
+        <skos:comment>The list of existing Synonyms can be found in Project/Tags.</skos:comment>
+        <skos:definition>Annotation used to describe Synonyms of a specific Entity.</skos:definition>
+    </owl:AnnotationProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R9S1rcldeHXCMGJUZEkvaWJ -->
+
+    <owl:AnnotationProperty rdf:about="http://webprotege.stanford.edu/R9S1rcldeHXCMGJUZEkvaWJ">
+        <rdfs:label>Type</rdfs:label>
+        <skos:definition>Annotation used to describe the existing Types of an Entity.</skos:definition>
+    </owl:AnnotationProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RB4qRK0cMJE67o1Bc9MmGDD -->
+
+    <owl:AnnotationProperty rdf:about="http://webprotege.stanford.edu/RB4qRK0cMJE67o1Bc9MmGDD">
+        <rdfs:label>Data Source</rdfs:label>
+        <skos:comment>The list of existing Data Sources can be found in Project/Tags.</skos:comment>
+        <skos:definition>Annotation used to describe the Entities present in a specific Data Source.</skos:definition>
+    </owl:AnnotationProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RkKVruwOD8lCCdsbyX0lwY -->
+
+    <owl:AnnotationProperty rdf:about="http://webprotege.stanford.edu/RkKVruwOD8lCCdsbyX0lwY">
+        <rdfs:label>Business Area</rdfs:label>
+        <skos:comment>The list of existing Business Areas can be found in Project/Tags.</skos:comment>
+        <skos:definition>Annotation used to describe the Business Areas impacted by an Entity.</skos:definition>
+    </owl:AnnotationProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs -->
+
+    <owl:AnnotationProperty rdf:about="http://webprotege.stanford.edu/RtMeQat8p1tL74b64dS2qs">
+        <rdfs:label>Relationship Type</rdfs:label>
+        <skos:comment>The list of existing Relationship Type can be found in Project/Tags.</skos:comment>
+        <skos:definition>Annotation used to describe the type of a Relationship in order to make its use more clear.</skos:definition>
+    </owl:AnnotationProperty>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#comment -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2004/02/skos/core#comment">
+        <skos:definition>Annotation used to add more information about an Entity or Relationship</skos:definition>
+    </owl:AnnotationProperty>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#definition -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2004/02/skos/core#definition">
+        <skos:definition>Annotation used to define the Entity or Relationship</skos:definition>
+    </owl:AnnotationProperty>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#example -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2004/02/skos/core#example">
+        <skos:definition>Annotation used to list examples of the Entity or Relationship</skos:definition>
+    </owl:AnnotationProperty>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#note -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2004/02/skos/core#note"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Datatypes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://webprotege.stanford.edu/R9gQCoIaUSnc4BOBkLNOW0k -->
+
+    <rdfs:Datatype rdf:about="http://webprotege.stanford.edu/R9gQCoIaUSnc4BOBkLNOW0k">
+        <rdfs:label>Options</rdfs:label>
+    </rdfs:Datatype>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://webprotege.stanford.edu/R15RMwxh0pmeZADFPUrcpM -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/R15RMwxh0pmeZADFPUrcpM">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R8zMIKp038MgC2umoxwzWBJ"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Record</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Instantiation of</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R4I2v4Y7su3Adf0Vcj6TWd -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/R4I2v4Y7su3Adf0Vcj6TWd">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Record</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Proposed in</rdfs:label>
+        <skos:definition>Relationship used to specify the stage, document or place where an Entity is offered or suggested for consideration, acceptance, or action.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R5RtyDq66TW7a4WxGVqSku -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/R5RtyDq66TW7a4WxGVqSku">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R8zMIKp038MgC2umoxwzWBJ"/>
+        <rdfs:label>Held by</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R5u6iRwByXm7q6dOcaVRk8 -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/R5u6iRwByXm7q6dOcaVRk8">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Causality</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Selected in</rdfs:label>
+        <skos:definition>Relationship that specifies when or where another Entity has been chosen.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R79SeNap6q11kTo4DsroWaC -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/R79SeNap6q11kTo4DsroWaC">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Responsibility</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Measured by</rdfs:label>
+        <skos:definition>Relationship used to define the Entity that gathers different values and status information about another Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R7I1rNuvyyDwzTcsAAofisu -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/R7I1rNuvyyDwzTcsAAofisu">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Record</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Summarised in</rdfs:label>
+        <skos:definition>Relationship specifying the artifact that contains the main points or short statement of another Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R7IaR9YG9mGzOkseoqQ4Rzi -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/R7IaR9YG9mGzOkseoqQ4Rzi">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Causality Record</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Created for</rdfs:label>
+        <skos:definition>Relationship that specifies the Entity that caused the creation of another Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R7V7p8sdl5TpSs0cd7gZvqr -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/R7V7p8sdl5TpSs0cd7gZvqr">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Responsibility</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Advised by</rdfs:label>
+        <skos:definition>Relationship that specifies the Entity that gives guidance and recommendation to other Entities.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R7cbyWVOLsYCR1NFY11TBjJ -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/R7cbyWVOLsYCR1NFY11TBjJ">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Responsibility</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Performed by</rdfs:label>
+        <skos:definition>Relationship that specifies the Entity (person or system) that carries out an activity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R7dYrsdk1L1bcLR0A9vS5QP -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/R7dYrsdk1L1bcLR0A9vS5QP">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Causality Transfer</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Issued through</rdfs:label>
+        <skos:definition>Relationship that specifies the means used to sent out or put forth an Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R7f3MFJaUN2W4LPV62BVWCH -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/R7f3MFJaUN2W4LPV62BVWCH">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R8zMIKp038MgC2umoxwzWBJ"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Financial</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Itemised by</rdfs:label>
+        <skos:definition>Relationship that explains how an Entity is broken down into a set of smaller Entities.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R7hoT86zDXtTKlGVmxqJRio -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/R7hoT86zDXtTKlGVmxqJRio">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Record</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Represented by</rdfs:label>
+        <skos:definition>Relationship used to specify the Entity that is an expression of another Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R7u5ooQBcC82kgElYnRYvBa -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/R7u5ooQBcC82kgElYnRYvBa">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Causality</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Detected by</rdfs:label>
+        <skos:definition>Relationship that specifies the Entity that discovers or identifies the presence or existence of another Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R7uRVbFaeQ4xCgAEayawrZ3 -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/R7uRVbFaeQ4xCgAEayawrZ3">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Causality Restriction</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Required for</rdfs:label>
+        <skos:definition>Relationship that describes the indispensable and necessary existence of one Entity to accomplish another Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R7xuMweW7v6CbTdPcVpjdp3 -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/R7xuMweW7v6CbTdPcVpjdp3">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Responsibility Participation</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Agreed with</rdfs:label>
+        <skos:definition>Relationship that defines the Entity responsible for negotiating and accepting the terms of another Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R83hFPamR9Qma90o0ltJtC7 -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/R83hFPamR9Qma90o0ltJtC7">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Responsibility</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Reviewed by</rdfs:label>
+        <skos:definition>Relationship that defines the Entity that assesses another Entity formally with the intention of instituting change if necessary.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:label>Affects</rdfs:label>
+        <skos:definition>When the &apos;root&apos; Entity affects, influences, acts upon, advises or has an outgoing Relationship to the &apos;tail&apos; Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R89lHzrBYZLIc1RgkMScjIW -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/R89lHzrBYZLIc1RgkMScjIW">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R8zMIKp038MgC2umoxwzWBJ"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Location</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Measured at</rdfs:label>
+        <skos:definition>Relationship used to identify the location where different values related to an Entity were gathered.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R8EXGHPfSLDiLihUtTOLFsB -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/R8EXGHPfSLDiLihUtTOLFsB">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R8zMIKp038MgC2umoxwzWBJ"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Responsibility</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Employed by</rdfs:label>
+        <skos:comment>&quot;Employ&quot; is a homonym meaning it has more than one meaning. This Relationship does not relate to the alternative definition: &quot;to make use of&quot;.</skos:comment>
+        <skos:definition>Relationship that describes when an Entity gives work to, and pays, another Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R8Fp5FKHZWgNVNiLcHuAtPf -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/R8Fp5FKHZWgNVNiLcHuAtPf">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Responsibility Transfer</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Issued to</rdfs:label>
+        <skos:comment>The difference with &quot;Provided to&quot; is that &quot;Issued to&quot; implies there is a legal or contractural arrangement applied.</skos:comment>
+        <skos:definition>Relationship that specifies the receiver of, and implies a responsibility for, an Entity that has been sent out or put forth.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R8Pp0U9lbiy2Wpdm6YzyV5m -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/R8Pp0U9lbiy2Wpdm6YzyV5m">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Responsibility</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Created by</rdfs:label>
+        <skos:definition>Relationship that specifies the Entity (a role, system or organisation) that brings into existance another Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R8UlzVcWWjnYzxJxqtXIIFd -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/R8UlzVcWWjnYzxJxqtXIIFd">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Participation</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Managed within</rdfs:label>
+        <skos:definition>Relationship used to define the Entity inside which the activities related to other Entities are controlled.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R8XmPwbVWaRiEyUv3kxunaF -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/R8XmPwbVWaRiEyUv3kxunaF">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Responsibility Restriction</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Controlled by</rdfs:label>
+        <skos:definition>Relationship that specifies the Entity that restraints or exercises direction over another Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R8fzvBl85R2Nc2SqsikiKp9 -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/R8fzvBl85R2Nc2SqsikiKp9">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Causality</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Improved through</rdfs:label>
+        <skos:definition>Relationship used to specify the Entity that increases the value of another Entity by bringing it into a better condition.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R8jWMWKWG5xCyyCGXksUAbL -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/R8jWMWKWG5xCyyCGXksUAbL">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Record</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Included in</rdfs:label>
+        <skos:definition>Used to define the activities that are contained within a whole group of activities.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R8zMIKp038MgC2umoxwzWBJ -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/R8zMIKp038MgC2umoxwzWBJ">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:label>Properties</rdfs:label>
+        <skos:comment>These Relationships are likely to become Attributes of Entities in Logical and Physical Models.</skos:comment>
+        <skos:definition>Characteristics intrinsically linked to the Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R9sQaGD5gjjxCrqX8xatj5I -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/R9sQaGD5gjjxCrqX8xatj5I">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Responsibility Transfer</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Updated by</rdfs:label>
+        <skos:definition>Relationship used to specify the system or person modifying the information of an Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RB2lnkvVru2pLbt5iOaISSs -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RB2lnkvVru2pLbt5iOaISSs">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Responsibility Used</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Operated by</rdfs:label>
+        <skos:definition>Relationship that specifies the Entity (it can be a person or system) controlling the functioning of another Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RB9hSN5JimVLMgBjRg72MWG -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RB9hSN5JimVLMgBjRg72MWG">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R8zMIKp038MgC2umoxwzWBJ"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Responsibility</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Owned by</rdfs:label>
+        <skos:definition>Relationship that defines who possesses or manages another Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RBGj27xJbqpVePdpgjXqeVk -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RBGj27xJbqpVePdpgjXqeVk">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Causality Time Restriction</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Completed before</rdfs:label>
+        <skos:definition>Relationship that represents a chronological order that the activities need to follow.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RBXkLIHl4DLxgRus9nf68fU -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RBXkLIHl4DLxgRus9nf68fU">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Responsibility</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Managed by</rdfs:label>
+        <skos:definition>Relationship used to define the Entity that takes charge or care of, or coordinates the activities of another Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RBfzJ6HkijEIMSY3oKjcLay -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RBfzJ6HkijEIMSY3oKjcLay">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Causality</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Affected by</rdfs:label>
+        <skos:definition>Relationship that describes the impact an Entity can have on other Entities.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RBog5Fl0hcK19z2umsYIBzn -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RBog5Fl0hcK19z2umsYIBzn">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R8zMIKp038MgC2umoxwzWBJ"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Responsibility</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Identified by</rdfs:label>
+        <skos:definition>Relationship that describes the Entity used to gather information or understand the current status of another Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RBouRer6kTdZCfCZ4kpk7K3 -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RBouRer6kTdZCfCZ4kpk7K3">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Record Transfer</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Presented in</rdfs:label>
+        <skos:definition>Relationship that specifies the document containing information about an Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RBzR29uCACOGDcXgx1CeMn1 -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RBzR29uCACOGDcXgx1CeMn1">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Responsibility</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Requested by</rdfs:label>
+        <skos:definition>Used to specify the Person or Role asking for some sort of information, artefact, service, or Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RC0fF4cbTcg59fvYtEu1FF0 -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RC0fF4cbTcg59fvYtEu1FF0">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Record Transfer</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Input into</rdfs:label>
+        <skos:definition>Relationship that links the Entities requested in a process for a specific aim and the Entity where they are used.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RC1zYYNqqFSlJxIKg4SdBTB -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RC1zYYNqqFSlJxIKg4SdBTB">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Responsibility Restriction</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Governed by</rdfs:label>
+        <skos:definition>Relationship used to specify the Entity that exercises a directing or restraining influence over another Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RC48Hic1INaQShlkSyb6ZIx -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RC48Hic1INaQShlkSyb6ZIx">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Location</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Performed from</rdfs:label>
+        <skos:definition>Relationship that defines the location from where another Entity takes place.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RC7crbOorzk8T6zjUHU6xNu -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RC7crbOorzk8T6zjUHU6xNu">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF"/>
+        <rdfs:label>Paid by</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RC9oNNab0poBq3VZzEoHIcM -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RC9oNNab0poBq3VZzEoHIcM">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Record</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Recorded in</rdfs:label>
+        <skos:definition>Used to define the activity, system or documentation where an Entity or set of data information is stored.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RCK5ewyfmAkLZWg9Mwb7MY -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RCK5ewyfmAkLZWg9Mwb7MY">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Causality</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Triggered by</rdfs:label>
+        <skos:definition>Relationship that specifies the Entity responsible for making another Entity taking place.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RCO41EY55jxxkXEYAsRnzul -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RCO41EY55jxxkXEYAsRnzul">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Financial Transfer</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Paid through</rdfs:label>
+        <skos:definition>Relationship that specifies the mean used to transfer money for a specific purpose.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RCSHnubpYqLMmQHwcTdreoq -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RCSHnubpYqLMmQHwcTdreoq">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Responsibility</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Issued by</rdfs:label>
+        <skos:definition>Relationship that specifies the Entity (it can be a person or system) that sents out or puts forth in any form another Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RCmUfm0eeBA3SpSDhY4GHOe -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RCmUfm0eeBA3SpSDhY4GHOe">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Responsibility</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Predicted by</rdfs:label>
+        <skos:definition>Relationship that specifies the Entity that says or estimates that another Entity will happen in the future or will be a consequence of something.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RCoyoKN6hsec0RfP3VnLQen -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RCoyoKN6hsec0RfP3VnLQen">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Financial</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Reconciled by</rdfs:label>
+        <skos:definition>Relationship that specifies the Entity used to compare and check financial accounts or amounts.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RCptIcn975cERAVUlJOL7sV -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RCptIcn975cERAVUlJOL7sV">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Responsibility Transfer</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Provided by</rdfs:label>
+        <skos:definition>Relationship that specifies the Entity that makes another Entity available.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RCt16VHlp30eNXujyqS0ik9 -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RCt16VHlp30eNXujyqS0ik9">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Causality</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Applied to</rdfs:label>
+        <skos:definition>Relationship that specifies the Entity that interacts with the current status or value of another Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RD0ZcPXhdHrABadmgWvHPLF -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RD0ZcPXhdHrABadmgWvHPLF">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Causality</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Caused by</rdfs:label>
+        <skos:definition>Relationship used to define the Entity that produces an effect, result, or condition on another Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:label>is Affected by</rdfs:label>
+        <skos:definition>When the &apos;root&apos; Entity is affected by, influenced by, acted upon, advised by or has an incoming Relationship from the &apos;tail&apos; Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RDHyoSHFDLL9G8kmD2B11Go -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RDHyoSHFDLL9G8kmD2B11Go">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Responsibility Participation Used</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Used by</rdfs:label>
+        <skos:definition>Relationship that specifies the Entity that puts another Entity to a particular purpose.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RDKQk63bgl4QNsF9Hoy84CF -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RDKQk63bgl4QNsF9Hoy84CF">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Participation Responsibility</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Attended by</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RDPf9CwQ3tGAm44VWzOmbHv -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RDPf9CwQ3tGAm44VWzOmbHv">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Causality Transfer</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Informed by</rdfs:label>
+        <skos:definition>Relationship that defines the Entity that provides the information or knowledge needed by another Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RDWT4jt5mF3fw4zrooDr58g -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RDWT4jt5mF3fw4zrooDr58g">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Location</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Performed on</rdfs:label>
+        <skos:definition>Used to specify the place or Entity where an activity takes place.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:label>Operation of</rdfs:label>
+        <skos:definition>Relationships required for the Entity to be able to perform its role.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RDgkQlvQbb2skaXpfhIEAp8 -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RDgkQlvQbb2skaXpfhIEAp8">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Causality Transfer</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Obtained through</rdfs:label>
+        <skos:definition>Relationship that specifies the process involved to come into possession of another Entity through an effort or by a request.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RDhasq1hVj3O5iWytoHK065 -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RDhasq1hVj3O5iWytoHK065">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Used</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Used in</rdfs:label>
+        <skos:definition>It defines the Entities that utilizes other Entities for a specific purpose.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RDzbWoYkp7g1ljEL076ahtw -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RDzbWoYkp7g1ljEL076ahtw">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Responsibility Participation</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Conducted for</rdfs:label>
+        <skos:definition>Used to define the person or object to whom/which an action is performed.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RQQNYA2uXsmtpjFJlXycvP -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RQQNYA2uXsmtpjFJlXycvP">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF"/>
+        <rdfs:label>Received by</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RXCmh2J46cqAwwT2c4D7Bx -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RXCmh2J46cqAwwT2c4D7Bx">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R8zMIKp038MgC2umoxwzWBJ"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Location Time</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Bounded by</rdfs:label>
+        <skos:definition>Relationship that describes the limits where an Entity is enclosed.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RXKNigVZSAdET48254gS2w -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RXKNigVZSAdET48254gS2w">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Responsibility</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Monitored by</rdfs:label>
+        <skos:definition>Relationship used to specify the  Entity that observes and checks the progress or quality of another Entity over a period of time.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RXaMAxdkuV5CvgEpovEVvp -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RXaMAxdkuV5CvgEpovEVvp">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Transfer</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Provided to</rdfs:label>
+        <skos:comment>The difference with &quot;Issued to&quot; is that &quot;Issued to&quot; implies there is a legal or contractural arrangement applied.</skos:comment>
+        <skos:definition>Relationship that specifies the receiver of an Entity that has been sent out or put forth.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RYIoLKdwlygMWF57BNuMib -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RYIoLKdwlygMWF57BNuMib">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R8zMIKp038MgC2umoxwzWBJ"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Location</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Located at</rdfs:label>
+        <skos:definition>Relationship used to identify or establish the position of another Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RbjcXDTrplTouTeWRoMMe7 -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RbjcXDTrplTouTeWRoMMe7">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Causality</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Implemented through</rdfs:label>
+        <skos:definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">It specifies the Entity used to put in place or put into effect another Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RcNW56SFgi34icUZNpsOET -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RcNW56SFgi34icUZNpsOET">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R8zMIKp038MgC2umoxwzWBJ"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Record</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Represented within</rdfs:label>
+        <skos:definition>Relationship that describes the way an Entity explicitly names another Entity or its state at a particular level of detail.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/Rcd9CFxzLGHq3FClhtC5f6 -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/Rcd9CFxzLGHq3FClhtC5f6">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R864k4trK0sb0XWCVmIQkLN"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Causality Participation</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Involved In</rdfs:label>
+        <skos:definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Relationship used to represent the entities participating in an activity or situation.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RkJSmQ0b8EYQx19ftdEkGF -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RkJSmQ0b8EYQx19ftdEkGF">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RD3fuHtzxeYkMf46qK7HAsD"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Financial</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Funded by</rdfs:label>
+        <skos:definition>Relationship used to specify the role, organisation or party that will provide resources to finance another Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RoaVc0YAiyET5nKJSYJAoX -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RoaVc0YAiyET5nKJSYJAoX">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R8zMIKp038MgC2umoxwzWBJ"/>
+        <rdfs:label>Associated with</rdfs:label>
+        <skos:definition>Relationship that specifies the Entity that is connected to another Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RqeoNxhIUKNWDOrBxWFusJ -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RqeoNxhIUKNWDOrBxWFusJ">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/R8zMIKp038MgC2umoxwzWBJ"/>
+        <rdfs:label>Composed of</rdfs:label>
+        <skos:definition>Relationship that describes when one Entity is in some way made up or comprised of another Entity or Entities.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RuflVNuPASFn75l7LznQc0 -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RuflVNuPASFn75l7LznQc0">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Participation</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Achieved by</rdfs:label>
+        <skos:definition>Relationship that describes the success in bringing about or reaching an Entity by effort, skill, or courage of another Entity.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/RvMCpTSGsQmEAyy8Mi6fdN -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/RvMCpTSGsQmEAyy8Mi6fdN">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/RDWUwRcLiaC4DTUFG8M99SF"/>
+        <webprotege:RtMeQat8p1tL74b64dS2qs>Location</webprotege:RtMeQat8p1tL74b64dS2qs>
+        <rdfs:label>Operated from</rdfs:label>
+        <skos:definition>Relationship used to specify the place or system from where an Entity is controlled.</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://webprotege.stanford.edu/R0hGCuAkhsiBUbd7pftEpN -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R0hGCuAkhsiBUbd7pftEpN">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/R0jI731hv09ZcJeji1fbtY"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://webprotege.stanford.edu/RCptIcn975cERAVUlJOL7sV"/>
+                <owl:someValuesFrom rdf:resource="http://webprotege.stanford.edu/RBJ3sWyEdjzo3HjkcABim8C"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <webprotege:RB4qRK0cMJE67o1Bc9MmGDD rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FFC</webprotege:RB4qRK0cMJE67o1Bc9MmGDD>
+        <rdfs:label>Data Subject Request</rdfs:label>
+        <skos:definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A request made by a Customer or their legal representative for their personal information under data protection legislation.</skos:definition>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R0jI731hv09ZcJeji1fbtY -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R0jI731hv09ZcJeji1fbtY">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RDLUE0UQz6th3NduA1L3n3u"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://webprotege.stanford.edu/RXaMAxdkuV5CvgEpovEVvp"/>
+                <owl:someValuesFrom rdf:resource="http://webprotege.stanford.edu/RY4x5rU5jNH9YIcM63gBgJ"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <webprotege:RkKVruwOD8lCCdsbyX0lwY>Communications</webprotege:RkKVruwOD8lCCdsbyX0lwY>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Communication Document</rdfs:label>
+        <skos:comment>A communication will typically have the Licence Holder (Highways England) as one of the parties.</skos:comment>
+        <skos:definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Document storing the information conveyed between two or more parties.</skos:definition>
+    </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/R0qk59fxFmgNbyUncZoU8M -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/R0qk59fxFmgNbyUncZoU8M">
+        <rdfs:subClassOf rdf:resource="http://webprotege.stanford.edu/RTyCIe0sZbCvkp6VVWaYGs"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://webprotege.stanford.edu/RBXkLIHl4DLxgRus9nf68fU"/>
+                <owl:someValuesFrom rdf:resource="http://webprotege.stanford.edu/R8QQzkUbCD5WRXDQQSl0vX8"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://webprotege.stanford.edu/RBfzJ6HkijEIMSY3oKjcLay"/>
+                <owl:someValuesFrom rdf:resource="http://webprotege.stanford.edu/R1CEYmOdNWhDr4n2yz9Lzf"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://webprotege.stanford.edu/RC1zYYNqqFSlJxIKg4SdBTB"/>
+                <owl:someValuesFrom rdf:resource="http://webprotege.stanford.edu/RCCNbe0sG8e3ngkdoP9cSl6"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://webprotege.stanford.edu/RC1zYYNqqFSlJxIKg4SdBTB"/>
+                <owl:someValuesFrom rdf:resource="http://webprotege.stanford.edu/RCxwL4b8LCMbVkVPEbOn78g"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <webprotege:RB4qRK0cMJE67o1Bc9MmGDD rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Structures</webprotege:RB4qRK0cMJE67o1Bc9MmGDD>
+        <webprotege:RkKVruwOD8lCCdsbyX0lwY>Maintain Plan</webprotege:RkKVruwOD8lCCdsbyX0lwY>
+        <rdfs:label>Programme</rdfs:label>
+        <skos:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A strategic goal that is achieved through a number of projects.</skos:comment>
+        <skos:definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A collection of projects or tasks undertaken to realise a strategic goal.</skos:definition>
+        <skos:example rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Develop connectivity between London and Inverness.</skos:example>
+    </owl:Class>
+    
+</rdf:RDF>
