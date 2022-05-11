@@ -108,6 +108,7 @@
                     <resourceGroup>${deployment.azure.function.resourceGroup}</resourceGroup>
                     <appName>${deployment.azure.function.appName}</appName>
                     <region>${deployment.azure.function.region}</region>
+                    <skipInstallExtensions>true</skipInstallExtensions>
                     <runtime>
                         <os>linux</os>
                         <javaVersion>${java.version}</javaVersion>
