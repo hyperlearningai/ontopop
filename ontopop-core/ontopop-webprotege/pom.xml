@@ -83,5 +83,29 @@
         </dependency>
 
     </dependencies>
+    
+    <!-- Module Build -->
+    <build>
+    
+        <!-- Plugins -->
+        <plugins>
+            
+            <!-- Integration Test Management -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    
+    </build>
 
 </project>
