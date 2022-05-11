@@ -48,6 +48,33 @@
         <deployment.azure.appServicePlanResourceGroup>${env.ONTOPOP_AZURE_APP_API_ONTOLOGY_GRAPH_APP_SERVICE_PLAN_RESOURCE_GROUP_NAME}</deployment.azure.appServicePlanResourceGroup>
         <main-class>ai.hyperlearning.ontopop.apps.azure.api.ontology.graph.OntologyGraphApiAzureApp</main-class>
     </properties>
+    
+    <!-- Module Profiles -->
+    <profiles>
+    
+        <!-- Default Azure target deployment environment properties 
+        if environment variables are not set, in order to overcome
+        Maven packaging errors during automated workflows such
+        as CodeQL code scanning -->
+        <profile>
+            <id>deployment-azure-env</id>
+            <activation>
+                <property>
+                    <name>!env.ONTOPOP_AZURE_APP_API_ONTOLOGY_GRAPH_SUBSCRIPTION_ID</name>
+                </property>
+            </activation>
+            <properties>
+                <deployment.azure.subscriptionId>abcdefgh-1234-ijkl-5678-mnopqrstuvwx</deployment.azure.subscriptionId>
+                <deployment.azure.resourceGroup>ontopop-rg</deployment.azure.resourceGroup>
+                <deployment.azure.appName>ontopop-api-ontology-graph</deployment.azure.appName>
+                <deployment.azure.pricingTier>b2</deployment.azure.pricingTier>
+                <deployment.azure.region>uksouth</deployment.azure.region>
+                <deployment.azure.appServicePlanName>ontopop-asp</deployment.azure.appServicePlanName>
+                <deployment.azure.appServicePlanResourceGroup>ontopop-rg</deployment.azure.appServicePlanResourceGroup>
+            </properties>
+        </profile>
+        
+    </profiles>
 
     <!-- Module Dependencies -->
     <dependencies>

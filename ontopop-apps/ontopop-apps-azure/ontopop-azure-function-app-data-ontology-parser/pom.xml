@@ -46,6 +46,30 @@
         <deployment.azure.function.extension.version>~4</deployment.azure.function.extension.version>
         <start-class>ai.hyperlearning.ontopop.apps.azure.functions.data.ontology.parser.OntologyParserAzureFunctionApp</start-class>
     </properties>
+    
+    <!-- Module Profiles -->
+    <profiles>
+    
+        <!-- Default Azure target deployment environment properties 
+        if environment variables are not set, in order to overcome
+        Maven packaging errors during automated workflows such
+        as CodeQL code scanning -->
+        <profile>
+            <id>deployment-azure-env</id>
+            <activation>
+                <property>
+                    <name>!env.ONTOPOP_AZURE_FUNCTION_APP_DATA_ONTOLOGY_PARSER_SUBSCRIPTION_ID</name>
+                </property>
+            </activation>
+            <properties>
+                <deployment.azure.function.subscriptionId>abcdefgh-1234-ijkl-5678-mnopqrstuvwx</deployment.azure.function.subscriptionId>
+                <deployment.azure.function.resourceGroup>ontopop-rg</deployment.azure.function.resourceGroup>
+                <deployment.azure.function.appName>ontopop-data-ontology-parser</deployment.azure.function.appName>
+                <deployment.azure.function.region>uksouth</deployment.azure.function.region>
+            </properties>
+        </profile>
+        
+    </profiles>
 
     <!-- Module Dependencies -->
     <dependencies>
