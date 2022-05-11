@@ -1,16 +1,13 @@
 # OntoPop Code Scanner
 
 name: "OntoPop CodeQL"
-
 on:
   push:
     branches: [ develop ]
   pull_request:
-    # The branches below must be a subset of the branches above
     branches: [ develop ]
   schedule:
     - cron: '0 12 * * 0'
-
 jobs:
   analyze:
     name: Analyze
@@ -23,12 +20,16 @@ jobs:
       fail-fast: false
       matrix:
         language: [ 'java', 'javascript' ]
-        # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
-        # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+
+    - name: Maven cache
+      uses: actions/cache@v3.0.2
+      with:
+        path: ~/.m2/repository
+        key: codeql-maven-cache-${{ hashFiles('**/pom.xml') }}
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
