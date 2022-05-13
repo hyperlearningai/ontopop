@@ -1,7 +1,5 @@
 package ai.hyperlearning.ontopop.api.ontology.mapping;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -59,10 +57,7 @@ public class OntologyMappingHealthCheckController {
     @GetMapping(
             value = {"/", "/mapping/"}, 
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public HealthCheck healthCheck(HttpServletResponse response) {
-        response.addHeader("Access-Control-Allow-Headers", "*");
-        response.addHeader("Access-Control-Allow-Origins", "*");
-        response.addHeader("Access-Control-Allow-Methods", "*");
+    public HealthCheck healthCheck() {
         return new HealthCheck(NAME, projectVersion.getVersion());
     }
 
