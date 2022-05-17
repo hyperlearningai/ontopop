@@ -173,7 +173,8 @@ public class WebProtegeDownloader {
             WebProtegeInvalidProjectId {
         
         // Validation rules
-        LOGGER.info("Validating the WebProtege credentials and project ID");
+        LOGGER.info("Validating the WebProtege credentials and "
+                + "given project ID.");
         
         // Validate the WebProtege credentials - username
         if ( System.getenv(WEBPROTEGE_USERNAME_ENV_KEY) == null )
@@ -206,16 +207,19 @@ public class WebProtegeDownloader {
         
         // Attempt to download immediately using an existing 
         // JSESSIONID cookie
-        LOGGER.info("Attempt an immediate download using the existing "
-                + "JSESSIONID cookie.");
+        LOGGER.info("Attempting to immediately download the given WebProtege "
+                + "project using the existing JSESSIONID cookie.");
         if (WebProtegeAuthSession.getJSessionIdCookieValue() != null) {
             try {
                 download();
+                LOGGER.info("Successfully downloaded the given WebProtege "
+                        + "project immediately.");
             } catch (WebProtegeProjectAccessException e) {
                 LOGGER.warn("An error was encountered when attempting an "
                         + "immediate download using the existing "
                         + "JSESSIONID cookie.");
-                LOGGER.info("Proceeding to authenticate instead.");
+                LOGGER.info("Proceeding to authenticate using a headless "
+                        + "WebDriver instead.");
             }
         }
         
@@ -228,6 +232,7 @@ public class WebProtegeDownloader {
     private void setup() {
         
         // Set the WebDriver timeout duration
+        LOGGER.debug("Initialising a headless WebDriver.");
         if ( webDriverTimeout == null ) {
             webDriverTimeout = TIMEOUT_DEFAULT;
             if (System.getenv(WEBPROTEGE_WEBDRIVER_TIMEOUT_ENV_KEY) != null) {
@@ -256,6 +261,11 @@ public class WebProtegeDownloader {
             
         };
         
+        // Logging
+        LOGGER.debug("Initialised a new headless WebDriver.");
+        LOGGER.debug("Set the WebDriver timeout duration to {} seconds", 
+                webDriverTimeout);
+        
     }
     
     /**
@@ -266,6 +276,8 @@ public class WebProtegeDownloader {
             throws WebProtegeAuthenticationException {
         
         // Load the WebProtege login page
+        LOGGER.debug("Authenticating with WebProtege using a "
+                + "headless WebDriver.");
         webDriver.get(WEBPROTEGE_LOGIN_URL);
         
         // Initialize a wait condition implementation
@@ -320,7 +332,7 @@ public class WebProtegeDownloader {
             
             // Wait until the page had fully loaded by waiting until the
             // visibility of the login form
-            LOGGER.info("Authenticated session does NOT already exist. "
+            LOGGER.info("An authenticated session does NOT already exist. "
                     + "Proceeding to authenticate.");
             fluentWait.until(
                     ExpectedConditions.visibilityOfAllElementsLocatedBy(
@@ -404,6 +416,7 @@ public class WebProtegeDownloader {
             WebProtegeProjectAccessException {
         
         // Write the downloaded OWL file into a data buffer
+        LOGGER.debug("Downloading WebProtege project ID {}.", projectId);
         Mono<DataBuffer> dataBuffer = webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path(WEBPROTEGE_DOWNLOAD_URI)
@@ -452,6 +465,7 @@ public class WebProtegeDownloader {
     private void unzip() throws IOException {
         
         // Extract the OWL file without the subfolder
+        LOGGER.debug("Extracting WebProtege project ID {}.", projectId);
         try (ZipFile zipFile = new ZipFile(downloadedZipAbsolutePath)) {
             List<FileHeader> fileHeaders = zipFile.getFileHeaders();
             for (FileHeader fileHeader : fileHeaders) {
@@ -486,6 +500,7 @@ public class WebProtegeDownloader {
         // Close the current window
         if ( webDriver != null ) {
             try {
+                LOGGER.debug("Closing the headless WebDriver.");
                 webDriver.quit();
             } catch (Exception e) {
                 
