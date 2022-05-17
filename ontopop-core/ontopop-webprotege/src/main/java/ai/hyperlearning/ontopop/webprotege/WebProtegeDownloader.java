@@ -468,26 +468,28 @@ public class WebProtegeDownloader {
     private void unzip() throws IOException {
         
         // Extract the OWL file without the subfolder
-        LOGGER.debug("Extracting WebProtege project ID {}.", projectId);
-        try (ZipFile zipFile = new ZipFile(downloadedZipAbsolutePath)) {
-            List<FileHeader> fileHeaders = zipFile.getFileHeaders();
-            for (FileHeader fileHeader : fileHeaders) {
-                if ( fileHeader.getFileName()
-                        .endsWith("." + WEBPROTEGE_DOWNLOAD_FORMAT) ) {
-                    Path tempDir = Files.createTempDirectory(
-                            DOWNLOAD_TEMP_DIRECTORY_NAME_PREFIX);
-                    String owlFilename = revision != null ? 
-                            projectId + "_" + revision + ".owl" : 
-                                projectId + "_" + "LATEST" + ".owl";
-                    zipFile.extractFile(fileHeader, 
-                            tempDir.toAbsolutePath().toString(), 
-                            owlFilename);
-                    extractedOwlAbsolutePath = tempDir.toAbsolutePath()
-                            .toString() + File.separator + owlFilename;
-                    LOGGER.info("Extracted WebProtege project ID {} "
-                            + "(revision number {}) to: {}", projectId, 
-                            revision, extractedOwlAbsolutePath);
-                    break;
+        if (downloaded) {
+            LOGGER.debug("Extracting WebProtege project ID {}.", projectId);
+            try (ZipFile zipFile = new ZipFile(downloadedZipAbsolutePath)) {
+                List<FileHeader> fileHeaders = zipFile.getFileHeaders();
+                for (FileHeader fileHeader : fileHeaders) {
+                    if ( fileHeader.getFileName()
+                            .endsWith("." + WEBPROTEGE_DOWNLOAD_FORMAT) ) {
+                        Path tempDir = Files.createTempDirectory(
+                                DOWNLOAD_TEMP_DIRECTORY_NAME_PREFIX);
+                        String owlFilename = revision != null ? 
+                                projectId + "_" + revision + ".owl" : 
+                                    projectId + "_" + "LATEST" + ".owl";
+                        zipFile.extractFile(fileHeader, 
+                                tempDir.toAbsolutePath().toString(), 
+                                owlFilename);
+                        extractedOwlAbsolutePath = tempDir.toAbsolutePath()
+                                .toString() + File.separator + owlFilename;
+                        LOGGER.info("Extracted WebProtege project ID {} "
+                                + "(revision number {}) to: {}", projectId, 
+                                revision, extractedOwlAbsolutePath);
+                        break;
+                    }
                 }
             }
         }
