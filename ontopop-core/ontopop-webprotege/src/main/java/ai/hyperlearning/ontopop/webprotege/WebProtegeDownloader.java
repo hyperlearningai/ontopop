@@ -125,8 +125,11 @@ public class WebProtegeDownloader {
         LOGGER.info("WebProtege download service started.");
         this.projectId = projectId;
         this.revision = revision;
-        if ( webDriverTimeout != null )
-            this.webDriverTimeout = webDriverTimeout;
+        this.downloadedZipAbsolutePath = null;
+        this.extractedOwlAbsolutePath = null;
+        this.downloaded = false;
+        this.webDriver = null;
+        this.webDriverTimeout = webDriverTimeout;
         
         // Run the download service
         try {
