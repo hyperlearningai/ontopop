@@ -298,3 +298,8 @@ plugins:
             scheduler:
                 enabled: true
                 cron: "0 0/10 * * * *"
+        authenticator:
+            enabled: true
+            scheduler:
+                enabled: true
+                cron: "0 0 0/1 * * *"
