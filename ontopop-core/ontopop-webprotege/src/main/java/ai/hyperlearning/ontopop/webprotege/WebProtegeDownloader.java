@@ -452,7 +452,7 @@ public class WebProtegeDownloader {
         downloadedZipAbsolutePath = downloadFilePath
                 .toAbsolutePath().toString();
         downloaded = true;
-        LOGGER.info("Downloaded WebProtege project ID {} (revision number {})"
+        LOGGER.info("Downloaded WebProtege project ID {} (revision number {}) "
                 + "to: {}", projectId, revision, downloadedZipAbsolutePath);
         
     }
