@@ -1,5 +1,7 @@
 package ai.hyperlearning.ontopop.webprotege;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +30,17 @@ public class WebProtegeAuthScheduler {
     @Autowired
     private WebProtegeDownloader webProtegeDownloader;
     
+    @PostConstruct
+    public void authenticateOnStartup() {
+        authenticate();
+    }
+    
     @Scheduled(cron = "${plugins.webprotege.authenticator.scheduler.cron}")
-    public void authenticate() {
+    public void authenticateOnCronSchedule() {
+        authenticate();
+    }
+    
+    private void authenticate() {
         if (System.getenv(WEBPROTEGE_DEFAULT_PROJECT_ID_ENV_KEY) != null) {
             try {
                 LOGGER.info("Checking WebProtege authentication status.");
@@ -37,8 +48,12 @@ public class WebProtegeAuthScheduler {
                         WEBPROTEGE_DEFAULT_PROJECT_ID_ENV_KEY), 
                         null, null);
                 LOGGER.info("WebProtege authentication status is OK.");
+                LOGGER.debug("WebProtege authenticated JSESSIONID cookie "
+                        + "value: {}", WebProtegeAuthSession
+                            .getJSessionIdCookieValue());
             } catch (Exception e) {
-                
+                LOGGER.warn("An error was encountered when attempting to "
+                        + "check the WebProtege authentication status.", e);
             }
         }
     }
