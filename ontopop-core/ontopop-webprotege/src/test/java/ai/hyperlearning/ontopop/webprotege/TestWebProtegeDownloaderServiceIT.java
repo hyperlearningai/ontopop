@@ -60,7 +60,7 @@ class TestWebProtegeDownloaderServiceIT {
                 System.getenv(WEBPROTEGE_PASSWORD_ENV_KEY) == null) {
             Exception exception = assertThrows(
                     WebProtegeMissingCredentials.class, () -> {
-                        webProtegeDownloader.run("abc-123", null, null, true);
+                        webProtegeDownloader.run("abc-123", null, null);
             });
             String expectedMessage = "WebProtege credentials have not been set "
                     + "as environment variables.";
@@ -80,7 +80,7 @@ class TestWebProtegeDownloaderServiceIT {
         if ( System.getenv(WEBPROTEGE_USERNAME_ENV_KEY) != null && 
                 System.getenv(WEBPROTEGE_PASSWORD_ENV_KEY) != null) {
             String downloadedOwlFilePath = webProtegeDownloader.run(
-                    WEBPROTEGE_PROJECT_ID_VALID, null, null, true);
+                    WEBPROTEGE_PROJECT_ID_VALID, null, null);
             Path path = Paths.get(downloadedOwlFilePath);
             String contents = Files.readString(path, StandardCharsets.UTF_8);
             assertTrue(Files.exists(path));

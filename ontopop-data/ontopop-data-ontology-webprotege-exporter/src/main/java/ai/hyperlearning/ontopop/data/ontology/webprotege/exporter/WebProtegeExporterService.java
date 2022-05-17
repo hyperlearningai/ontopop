@@ -164,8 +164,7 @@ public class WebProtegeExporterService {
                     webProtegeWebhook.getProjectId());
             extractedOwlAbsolutePath = webProtegeDownloader.run(
                     webProtegeWebhook.getProjectId(), 
-                    webProtegeWebhook.getRevisionNumber(), 
-                    30, true);
+                    webProtegeWebhook.getRevisionNumber(), 30);
         }
     }
     

@@ -199,7 +199,7 @@ class TestOntologyMappingControllerIT {
                     .param(REQUEST_PARAMETER_WEBPROTEGEID_NAME, 
                             invalidWebProtegeProjectId);
         given(webProtegeDownloader.run(
-                invalidWebProtegeProjectId, null, null, true))
+                invalidWebProtegeProjectId, null, null))
             .willThrow(WebProtegeInvalidProjectId.class);
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(
                 webApplicationContext).build();
@@ -218,7 +218,7 @@ class TestOntologyMappingControllerIT {
                     .param(REQUEST_PARAMETER_WEBPROTEGEID_NAME, 
                             invalidWebProtegeProjectId);
         given(webProtegeDownloader.run(
-                invalidWebProtegeProjectId, null, null, true))
+                invalidWebProtegeProjectId, null, null))
             .willThrow(WebProtegeInvalidProjectId.class);
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(
                 webApplicationContext).build();

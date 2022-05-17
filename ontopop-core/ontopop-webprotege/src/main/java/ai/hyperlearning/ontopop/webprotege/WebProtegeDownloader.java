@@ -98,7 +98,6 @@ public class WebProtegeDownloader {
     private static final boolean ENABLE_DO_NOT_TRACK = true;
     private static final int TIMEOUT_DEFAULT = 30;
     private Integer webDriverTimeout = null;
-    private Boolean webDriverQuitOnClose = true;
     
     // WebProtege authentication
     private static final String JSESSIONID_COOKIE_NAME = "JSESSIONID";
@@ -108,6 +107,7 @@ public class WebProtegeDownloader {
      * Run the end-to-end WebProtege downloader service
      * @param projectId
      * @param revision
+     * @param webDriverTimeout
      * @return
      * @throws IOException
      * @throws WebProtegeMissingCredentials
@@ -117,7 +117,7 @@ public class WebProtegeDownloader {
      */
     
     public String run(String projectId, Integer revision, 
-            Integer webDriverTimeout, Boolean webDriverQuitOnClose) 
+            Integer webDriverTimeout) 
             throws IOException, 
             WebProtegeMissingCredentials, 
             WebProtegeInvalidProjectId, 
@@ -130,8 +130,6 @@ public class WebProtegeDownloader {
         this.revision = revision;
         if ( webDriverTimeout != null )
             this.webDriverTimeout = webDriverTimeout;
-        if ( webDriverQuitOnClose != null )
-            this.webDriverQuitOnClose = webDriverQuitOnClose;
         
         // Run the download service
         try {
@@ -154,7 +152,7 @@ public class WebProtegeDownloader {
         } finally {
             
             // 6. Close the WebDriver
-            cleanup(this.webDriverQuitOnClose);
+            cleanup();
         
         }
         
@@ -462,13 +460,12 @@ public class WebProtegeDownloader {
      * Close all web clients
      */
     
-    private void cleanup(boolean quit) {
+    private void cleanup() {
         
         // Close the current window
         if ( webDriver != null ) {
             try {
-                if (quit)
-                    webDriver.quit();
+                webDriver.quit();
             } catch (Exception e) {
                 
             }
