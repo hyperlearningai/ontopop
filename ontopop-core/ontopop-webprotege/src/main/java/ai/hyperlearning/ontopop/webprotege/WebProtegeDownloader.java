@@ -89,6 +89,7 @@ public class WebProtegeDownloader {
     // WebProtege download local persistence
     private String downloadedZipAbsolutePath = null;
     private String extractedOwlAbsolutePath = null;
+    private boolean downloaded = false;
     
     // Selenium Web Driver
     private WebDriver webDriver = null;
@@ -98,10 +99,6 @@ public class WebProtegeDownloader {
     private static final boolean ENABLE_DO_NOT_TRACK = true;
     private static final int TIMEOUT_DEFAULT = 30;
     private Integer webDriverTimeout = null;
-    
-    // WebProtege authentication
-    private static final String JSESSIONID_COOKIE_NAME = "JSESSIONID";
-    private String jsessionIdCookieValue = null;
     
     /**
      * Run the end-to-end WebProtege downloader service
@@ -137,21 +134,27 @@ public class WebProtegeDownloader {
             // 1. WebProtege credentials and project ID validation
             validate();
             
-            // 2. WebDriver setup
-            setup();
+            // 2. Attempt immediate download
+            downloadIfAuthSessionExists();
+            if ( !downloaded ) {
+                
+                // 3. WebDriver setup
+                setup();
+                
+                // 4. WebProtege authentication
+                authenticate();
+                
+                // 5. RDF/XML OWL archive export and download
+                download();
+                
+            }
             
-            // 3. WebProtege authentication
-            authenticate();
-            
-            // 4. RDF/XML OWL archive export and download
-            download();
-            
-            // 5. OWL archive unzip
+            // 6. OWL archive unzip
             unzip();
             
         } finally {
             
-            // 6. Close the WebDriver
+            // 7. Close the WebDriver
             cleanup();
         
         }
@@ -195,6 +198,30 @@ public class WebProtegeDownloader {
     }
     
     /**
+     * Attempt an immediate download if a JSESSION cookie already exists
+     * @throws IOException
+     */
+    
+    private void downloadIfAuthSessionExists() throws IOException {
+        
+        // Attempt to download immediately using an existing 
+        // JSESSIONID cookie
+        LOGGER.info("Attempt an immediate download using the existing "
+                + "JSESSIONID cookie.");
+        if (WebProtegeAuthSession.getJSessionIdCookieValue() != null) {
+            try {
+                download();
+            } catch (WebProtegeProjectAccessException e) {
+                LOGGER.warn("An error was encountered when attempting an "
+                        + "immediate download using the existing "
+                        + "JSESSIONID cookie.");
+                LOGGER.info("Proceeding to authenticate instead.");
+            }
+        }
+        
+    }
+    
+    /**
      * Setup the WebDriver
      */
     
@@ -213,39 +240,21 @@ public class WebProtegeDownloader {
             }
         }
         
-        // Check if an existing web driver instance is available and active
-        LOGGER.info("Initializing the HtmlUnit headless web driver.");
-        boolean isAvailable = false;
-        if ( webDriver != null ) {
-            try {
-                webDriver.get(WEBPROTEGE_LOGIN_URL);
-                isAvailable = true;
-                LOGGER.info("HtmlUnit headless web driver already exists.");
-            } catch (Exception e) {
-                try {
-                    webDriver.quit();
-                } catch (Exception e2) {
-                    
-                }
-            }
-        }
-        
         // Instantiate and configure a new web driver instance
-        if ( webDriver == null || !isAvailable )
-            webDriver = new HtmlUnitDriver(ENABLE_JAVASCRIPT) {
-                
-                @Override
-                protected com.gargoylesoftware.htmlunit.WebClient modifyWebClient(
-                        com.gargoylesoftware.htmlunit.WebClient client) {
-                    final com.gargoylesoftware.htmlunit.WebClient htmlUnitWebClient = 
-                            super.modifyWebClient(client);
-                    htmlUnitWebClient.getOptions().setCssEnabled(ENABLE_CSS);
-                    htmlUnitWebClient.getOptions().setDownloadImages(DOWNLOAD_IMAGES);
-                    htmlUnitWebClient.getOptions().setDoNotTrackEnabled(ENABLE_DO_NOT_TRACK);
-                    return htmlUnitWebClient;
-                }
-                
-            };
+        webDriver = new HtmlUnitDriver(ENABLE_JAVASCRIPT) {
+            
+            @Override
+            protected com.gargoylesoftware.htmlunit.WebClient modifyWebClient(
+                    com.gargoylesoftware.htmlunit.WebClient client) {
+                final com.gargoylesoftware.htmlunit.WebClient htmlUnitWebClient = 
+                        super.modifyWebClient(client);
+                htmlUnitWebClient.getOptions().setCssEnabled(ENABLE_CSS);
+                htmlUnitWebClient.getOptions().setDownloadImages(DOWNLOAD_IMAGES);
+                htmlUnitWebClient.getOptions().setDoNotTrackEnabled(ENABLE_DO_NOT_TRACK);
+                return htmlUnitWebClient;
+            }
+            
+        };
         
     }
     
@@ -284,7 +293,8 @@ public class WebProtegeDownloader {
                 @Override
                 public Cookie apply(WebDriver webDriver) {
                     Cookie tokenCookie = webDriver.manage()
-                            .getCookieNamed(JSESSIONID_COOKIE_NAME);
+                            .getCookieNamed(WebProtegeAuthSession
+                                    .JSESSIONID_COOKIE_NAME);
                     if (tokenCookie != null) {
                         LOGGER.debug("Token Cookie added: {}", tokenCookie);
                         return tokenCookie;
@@ -299,10 +309,12 @@ public class WebProtegeDownloader {
             // Get the JSESSIONID cookie
             fluentWait.until(jsessionIdCookieEC);
             Cookie jsessionIdCookie = webDriver.manage()
-                    .getCookieNamed(JSESSIONID_COOKIE_NAME);
-            jsessionIdCookieValue = jsessionIdCookie.getValue();
+                    .getCookieNamed(WebProtegeAuthSession
+                            .JSESSIONID_COOKIE_NAME);
+            WebProtegeAuthSession.setJSessionIdCookieValue(
+                    jsessionIdCookie.getValue());
             LOGGER.info("JSESSIONID successfully obtained: {}", 
-                    jsessionIdCookieValue);
+                    WebProtegeAuthSession.getJSessionIdCookieValue());
             
         } catch (TimeoutException e) {
             
@@ -350,7 +362,8 @@ public class WebProtegeDownloader {
                 @Override
                 public Cookie apply(WebDriver webDriver) {
                     Cookie tokenCookie = webDriver.manage()
-                            .getCookieNamed(JSESSIONID_COOKIE_NAME);
+                            .getCookieNamed(WebProtegeAuthSession
+                                    .JSESSIONID_COOKIE_NAME);
                     if (tokenCookie != null) {
                         LOGGER.debug("Token Cookie added: {}", tokenCookie);
                         return tokenCookie;
@@ -365,15 +378,18 @@ public class WebProtegeDownloader {
             // Get the JSESSIONID cookie
             fluentWait.until(jsessionIdCookieEC);
             Cookie jsessionIdCookie = webDriver.manage()
-                    .getCookieNamed(JSESSIONID_COOKIE_NAME);
-            jsessionIdCookieValue = jsessionIdCookie.getValue();
+                    .getCookieNamed(WebProtegeAuthSession
+                            .JSESSIONID_COOKIE_NAME);
+            WebProtegeAuthSession.setJSessionIdCookieValue(
+                    jsessionIdCookie.getValue());
             LOGGER.info("JSESSIONID successfully obtained: {}", 
-                    jsessionIdCookieValue);
+                    WebProtegeAuthSession.getJSessionIdCookieValue());
             
         }
         
         // Validate that the JSESSIONID has been obtained
-        if ( StringUtils.isAllBlank(jsessionIdCookieValue) )
+        if ( StringUtils.isAllBlank(WebProtegeAuthSession
+                .getJSessionIdCookieValue()) )
             throw new WebProtegeAuthenticationException();
         
     }
@@ -395,7 +411,8 @@ public class WebProtegeDownloader {
                         .queryParamIfPresent(WEBPROTEGE_DOWNLOAD_PARAM_REVISION, Optional.ofNullable(revision))
                         .queryParam(WEBPROTEGE_DOWNLOAD_PARAM_FORMAT, WEBPROTEGE_DOWNLOAD_FORMAT)
                         .build())
-                .cookie(JSESSIONID_COOKIE_NAME, jsessionIdCookieValue)
+                .cookie(WebProtegeAuthSession.JSESSIONID_COOKIE_NAME, 
+                        WebProtegeAuthSession.getJSessionIdCookieValue())
                 .retrieve()
                 .onStatus(status -> status.equals(HttpStatus.UNAUTHORIZED),
                     error -> Mono.error(new WebProtegeProjectAccessException()))
@@ -410,14 +427,18 @@ public class WebProtegeDownloader {
                 downloadFilePath, StandardOpenOption.CREATE)
             .share()
             .doOnError(error -> {
-                if ( error.getMessage().contains(String.valueOf(HttpStatus.UNAUTHORIZED.value())) ||
-                        error.getMessage().contains(String.valueOf(HttpStatus.FORBIDDEN.value())) || 
-                        error.getMessage().contains(String.valueOf(HttpStatus.NOT_FOUND.value())) )
+                if ( error.getMessage().contains(
+                        String.valueOf(HttpStatus.UNAUTHORIZED.value())) ||
+                        error.getMessage().contains(
+                                String.valueOf(HttpStatus.FORBIDDEN.value())) || 
+                        error.getMessage().contains(
+                                String.valueOf(HttpStatus.NOT_FOUND.value())) )
                         throw new WebProtegeProjectAccessException();
                 })
             .block();
         downloadedZipAbsolutePath = downloadFilePath
                 .toAbsolutePath().toString();
+        downloaded = true;
         LOGGER.info("Downloaded WebProtege project ID {} (revision number {})"
                 + "to: {}", projectId, revision, downloadedZipAbsolutePath);
         
