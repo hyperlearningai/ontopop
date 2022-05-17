@@ -210,9 +210,10 @@ public class WebProtegeDownloader {
         
         // Attempt to download immediately using an existing 
         // JSESSIONID cookie
-        LOGGER.info("Attempting to immediately download the given WebProtege "
-                + "project using the existing JSESSIONID cookie.");
         if (WebProtegeAuthSession.getJSessionIdCookieValue() != null) {
+            LOGGER.info("Attempting to immediately download the given "
+                    + "WebProtege project using the existing "
+                    + "JSESSIONID cookie.");
             try {
                 download();
                 LOGGER.info("Successfully downloaded the given WebProtege "
