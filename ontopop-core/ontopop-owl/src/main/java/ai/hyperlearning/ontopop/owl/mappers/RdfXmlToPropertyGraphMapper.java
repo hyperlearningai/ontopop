@@ -14,6 +14,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
+import com.apicatalog.jsonld.StringUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -73,12 +74,6 @@ public class RdfXmlToPropertyGraphMapper {
             OntologyDataParsingException, 
             OntologyDataPropertyGraphModellingException {
         
-        // Validate the given RDF/XML OWL file semantically
-        if ( !isSemanticallyValid(owlFile) )
-            throw new OntologyMapperInvalidSourceOntologyDataException(
-                    "Invalid ontology data file provided - "
-                    + "file is semantically invalid.");
-        
         // Parse the RDF/XML contents of the given OWL file
         // into a SimpleOntology object
         SimpleOntology simpleOntology = toSimpleOntology(owlFile);
@@ -94,7 +89,20 @@ public class RdfXmlToPropertyGraphMapper {
                 .valueOfLabel(format.strip().toUpperCase());
         if ( targetFormat == null )
             throw new OntologyMapperInvalidTargetFormatException();
-        else return format(simpleOntologyPropertyGraph, targetFormat);
+        String formattedPropertyGraph = 
+                format(simpleOntologyPropertyGraph, targetFormat);
+        if ( !StringUtils.isBlank(formattedPropertyGraph) )
+            return formattedPropertyGraph;
+        else {
+            
+            // Validate the given RDF/XML OWL file semantically
+            if ( !isSemanticallyValid(owlFile) )
+                throw new OntologyMapperInvalidSourceOntologyDataException(
+                        "Invalid ontology data file provided - "
+                        + "file is semantically invalid.");
+            else throw new OntologyDataParsingException();
+            
+        }
         
     }
     
