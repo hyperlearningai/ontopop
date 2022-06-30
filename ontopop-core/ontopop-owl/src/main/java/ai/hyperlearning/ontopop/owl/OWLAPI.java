@@ -7,7 +7,9 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,6 +29,7 @@ import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLAnnotationValue;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDatatype;
@@ -34,6 +37,7 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
@@ -47,6 +51,7 @@ import org.semanticweb.owlapi.util.OWLAPIStreamUtils;
 
 import ai.hyperlearning.ontopop.model.owl.SimpleAnnotationProperty;
 import ai.hyperlearning.ontopop.model.owl.SimpleClass;
+import ai.hyperlearning.ontopop.model.owl.SimpleNamedIndividual;
 import ai.hyperlearning.ontopop.model.owl.SimpleObjectProperty;
 import ai.hyperlearning.ontopop.model.owl.diff.SimpleAnnotationPropertyDiff;
 import ai.hyperlearning.ontopop.model.owl.diff.SimpleClassDiff;
@@ -459,12 +464,152 @@ public class OWLAPI {
     }
 
     /**************************************************************************
-     * Individuals
+     * Named Individuals
      *************************************************************************/
 
-    public static Set<OWLNamedIndividual> getIndividuals(OWLOntology ontology) {
+    /**
+     * Get all named individuals
+     * @param ontology
+     * @return
+     */
+    
+    public static Set<OWLNamedIndividual> getNamedIndividuals(
+            OWLOntology ontology) {
         return ontology.getIndividualsInSignature();
     }
+    
+    /**
+     * Parse the ontology and generate a map of Named Individual IRI to 
+     * OntoPop Simple Named Individual objects
+     * @param ontology
+     * @return
+     */
+    
+    public static Map<String, SimpleNamedIndividual> parseNamedIndividuals(
+            OWLOntology ontology) {
+        
+        Map<String, SimpleNamedIndividual> simpleNamedIndividualsMap = 
+                new LinkedHashMap<>();
+        
+        // Iterate over all named individuals found in the OWL ontology
+        Set<OWLNamedIndividual> namedIndividuals = getNamedIndividuals(ontology);
+        for (OWLNamedIndividual namedIndividual : namedIndividuals) {
+            
+            // Get the named individual IRI
+            String namedIndividualIri = namedIndividual.getIRI().toString();
+            
+            // Extract the list of OWL annotations from this named individual
+            List<OWLAnnotation> owlAnnotations = OWLAPIStreamUtils
+                    .asList(EntitySearcher.getAnnotations(
+                            namedIndividual, ontology));
+            
+            // Get the named individual RDFS Label
+            String namedIndividualRDFSLabel = getRDFSLabel(owlAnnotations);
+            
+            // Generate a map of annotation IRI to annotation literal value
+            Map<String, String> annotations = new LinkedHashMap<>();
+            for (OWLAnnotation owlAnnotation : owlAnnotations) {
+                String iri = owlAnnotation.getProperty().getIRI().toString();
+                String literalValue = annotations.containsKey(iri) ? 
+                        annotations.get(iri) + " " + DELIMITER + " " + 
+                            getAnnotationValueLiteral(owlAnnotation) : 
+                                getAnnotationValueLiteral(owlAnnotation);
+                annotations.put(iri, literalValue);
+            }
+            
+            // Create a Simple Named Individual object
+            SimpleNamedIndividual simpleNamedIndividual = 
+                    new SimpleNamedIndividual();
+            simpleNamedIndividual.setIri(namedIndividualIri);
+            simpleNamedIndividual.setLabel(namedIndividualRDFSLabel);
+            simpleNamedIndividual.setAnnotations(annotations);
+            
+            // Get all axioms for this class
+            List<OWLAxiom> axioms = OWLAPI.getReferencingAxioms(ontology, 
+                    namedIndividual);
+            Set<String> instanceOfClassIris = new LinkedHashSet<>();
+            Map<String, String> linkedNamedIndividuals = new LinkedHashMap<>();
+            for (OWLAxiom axiom : axioms) {
+                
+                // Get the instance class types 
+                if (axiom.getAxiomType() == AxiomType.CLASS_ASSERTION) {
+                    OWLClassAssertionAxiom classAssertion =  
+                            (OWLClassAssertionAxiom) axiom;
+                    if ( classAssertion.getSignature().size() == 2 ) {
+                        Set<OWLClass> classes = classAssertion
+                                .getClassesInSignature();
+                        for (OWLClass owlClass : classes) {
+                            String classIri = owlClass.getIRI().toString();
+                            if (!namedIndividualIri.equals(classIri))
+                                instanceOfClassIris.add(
+                                        owlClass.getIRI().toString());
+                        }
+                    }
+                }
+                
+                // Get the linked named individuals
+                if (axiom.getAxiomType() == 
+                        AxiomType.OBJECT_PROPERTY_ASSERTION) {
+                    OWLObjectPropertyAssertionAxiom objectPropertyAssertion =  
+                            (OWLObjectPropertyAssertionAxiom) axiom;
+                    if ( objectPropertyAssertion.getSignature().size() == 3 ) {
+                        Set<OWLObjectProperty> axiomObjectProperties = 
+                                objectPropertyAssertion
+                                    .getObjectPropertiesInSignature();
+                        if ( axiomObjectProperties.size() == 1 ) {
+                            
+                            // Get the object property
+                            OWLObjectProperty axiomObjectProperty = 
+                                    axiomObjectProperties.iterator().next();
+                            Set<OWLNamedIndividual> axiomNamedIndividuals = 
+                                    objectPropertyAssertion
+                                        .getIndividualsInSignature();
+                            if ( axiomNamedIndividuals.size() == 2 ) {
+                                
+                                // Get the target named individual IRI
+                                String axiomTargetNamedIndividualIRI = null;
+                                Iterator<OWLNamedIndividual> iterator = 
+                                        axiomNamedIndividuals.iterator();
+                                while(iterator.hasNext()) {
+                                    axiomTargetNamedIndividualIRI = iterator
+                                            .next().getIRI().toString();
+                                }
+                                
+                                // Add to the map of linked named individuals
+                                if (axiomTargetNamedIndividualIRI != null &&
+                                        !namedIndividualIri.equals(
+                                                axiomTargetNamedIndividualIRI))
+                                    linkedNamedIndividuals.put(
+                                            axiomTargetNamedIndividualIRI, 
+                                            axiomObjectProperty.getIRI()
+                                            .toString());
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+            
+            // Set the class IRIs
+            simpleNamedIndividual.setInstanceOfClassIris(instanceOfClassIris);
+            
+            // Set the linked Named Individuals
+            simpleNamedIndividual.setLinkedNamedIndividuals(linkedNamedIndividuals);
+            
+            // Add the new Simple Named Individual object to the map of 
+            // Simple Named Individual objects
+            simpleNamedIndividualsMap.put(namedIndividualIri, 
+                    simpleNamedIndividual);
+            
+        }
+        
+        return simpleNamedIndividualsMap;
+        
+    }
+    
 
     /**************************************************************************
      * Classes

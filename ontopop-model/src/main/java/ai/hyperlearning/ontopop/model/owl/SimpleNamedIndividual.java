@@ -2,8 +2,10 @@ package ai.hyperlearning.ontopop.model.owl;
 
 import java.io.Serializable;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Simple OWL Model - Named Individual
@@ -22,8 +24,8 @@ public class SimpleNamedIndividual implements Serializable {
     // Named Individual Label
     private String label;
     
-    // Named Individual Direct Class Type (instance of)
-    private String instanceOfClassIri;
+    // Named Individual Class Types (instance of)
+    private Set<String> instanceOfClassIris = new LinkedHashSet<>();
     
     // Map between property IRI and property literal value
     private Map<String, String> annotations = new LinkedHashMap<>();
@@ -37,12 +39,12 @@ public class SimpleNamedIndividual implements Serializable {
 
     public SimpleNamedIndividual(String iri, 
             String label, 
-            String instanceOfClassIri,
+            Set<String> instanceOfClassIris,
             Map<String, String> annotations, 
             Map<String, String> linkedNamedIndividuals) {
         this.iri = iri;
         this.label = label;
-        this.instanceOfClassIri = instanceOfClassIri;
+        this.instanceOfClassIris = instanceOfClassIris;
         this.annotations = annotations;
         this.linkedNamedIndividuals = linkedNamedIndividuals;
     }
@@ -63,12 +65,12 @@ public class SimpleNamedIndividual implements Serializable {
         this.label = label;
     }
 
-    public String getInstanceOfClassIri() {
-        return instanceOfClassIri;
+    public Set<String> getInstanceOfClassIris() {
+        return instanceOfClassIris;
     }
 
-    public void setInstanceOfClassIri(String instanceOfClassIri) {
-        this.instanceOfClassIri = instanceOfClassIri;
+    public void setInstanceOfClassIris(Set<String> instanceOfClassIris) {
+        this.instanceOfClassIris = instanceOfClassIris;
     }
 
     public Map<String, String> getAnnotations() {
@@ -110,7 +112,7 @@ public class SimpleNamedIndividual implements Serializable {
         return "SimpleNamedIndividual ["
                 + "iri=" + iri + ", "
                 + "label=" + label + ", "
-                + "instanceOfClassIri=" + instanceOfClassIri + ", "
+                + "instanceOfClassIris=" + instanceOfClassIris + ", "
                 + "annotations=" + annotations + ", "
                 + "linkedNamedIndividuals=" + linkedNamedIndividuals 
                 + "]";
