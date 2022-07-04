@@ -4,6 +4,8 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,6 +41,9 @@ import ai.hyperlearning.ontopop.security.secrets.SecretsService;
         value = "security.secrets.service",
         havingValue = "aws-secrets-manager")
 public class AwsSecretsManagerSecretsService implements SecretsService {
+    
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(AwsSecretsManagerSecretsService.class);
 
     private static final ZoneId TIME_ZONE_UTC = ZoneId.of("UTC");
     
@@ -66,10 +71,11 @@ public class AwsSecretsManagerSecretsService implements SecretsService {
         AwsSecretsManagerGuestCredentials guestCredentials = 
                 mapper.readValue(credentials, 
                         AwsSecretsManagerGuestCredentials.class);
+        System.out.println(guestCredentials.toString());
         
         // Check that the credentials have not expired
         LocalDateTime expirationDateTime = Instant
-                .ofEpochMilli(guestCredentials.getExpiration())
+                .ofEpochSecond(guestCredentials.getExpiration())
                 .atZone(TIME_ZONE_UTC)
                 .toLocalDateTime();
         LocalDateTime currentDateTime = LocalDateTime.now(TIME_ZONE_UTC);
@@ -164,6 +170,8 @@ public class AwsSecretsManagerSecretsService implements SecretsService {
                     .getSecretValue(getSecretValueRequest(key))
                     .getSecretString();
         } catch (Exception e) {
+            LOGGER.error("Error encountered when attempting to retrieve a "
+                    + "secret using guest credentials.", e);
             return null;
         }
     }
