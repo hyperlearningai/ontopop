@@ -195,7 +195,7 @@ security:
                enabled: true
                engine: secrets
                guestCredentials:
-                  enabled: true
+                  enabled: false
 storage:
     object:
         service: local
