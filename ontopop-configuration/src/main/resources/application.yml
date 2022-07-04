@@ -1,7 +1,6 @@
 spring:
     application:
         name: ontopop
-        version: @project.version@
     cloud:
         stream:
             binders:
@@ -192,7 +191,13 @@ security:
     authentication:
         api:
             enabled: true
-            engine: secrets
+            guestCredentials:
+               enabled: true
+               mode: session
+               engine: secrets
+            apiKeyLookup:
+               enabled: true
+               engine: secrets
 storage:
     object:
         service: local
