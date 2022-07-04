@@ -33,6 +33,15 @@ public class AzureKeyVaultSecretsService implements SecretsService {
     private SecretClient secretClient;
 
     @Override
+    public SecretClient getTemporaryClient(String... credentials) {
+        return secretClient;
+    }
+    
+    /**
+     * Retrieve a secret
+     */
+    
+    @Override
     public String get(String key) {
         try {
             return secretClient.getSecret(key).getValue();
@@ -40,12 +49,36 @@ public class AzureKeyVaultSecretsService implements SecretsService {
             return null;
         }
     }
-
+    
     @Override
-    public void set(String key, Object value) throws Exception {
-        secretClient.setSecret(new KeyVaultSecret(key, value.toString()));
+    public String get(Object client, String key) {
+        try {
+            return ((SecretClient) client).getSecret(key).getValue();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
+    /**
+     * Set a secret
+     */
+    
+    @Override
+    public void set(String key, Object value) throws Exception {
+        secretClient.setSecret(
+                new KeyVaultSecret(key, value.toString()));
+    }
+    
+    @Override
+    public void set(Object client, String key, Object value) throws Exception {
+        ((SecretClient) client).setSecret(
+                new KeyVaultSecret(key, value.toString()));
+    }
+
+    /**
+     * Delete a scret
+     */
+    
     @Override
     public void delete(String key) throws Exception {
         SyncPoller<DeletedSecret, Void> deletedSecretPoller =
@@ -54,6 +87,20 @@ public class AzureKeyVaultSecretsService implements SecretsService {
         deletedSecretPoller.waitForCompletion();
         try {
             secretClient.purgeDeletedSecret(key);
+        } catch (Exception e) {
+            LOGGER.error("Error encountered when attempting to purge a "
+                    + "deleted secret.", e);
+        }
+    }
+    
+    @Override
+    public void delete(Object client, String key) throws Exception {
+        SyncPoller<DeletedSecret, Void> deletedSecretPoller =
+                ((SecretClient) client).beginDeleteSecret(key);
+        deletedSecretPoller.poll();
+        deletedSecretPoller.waitForCompletion();
+        try {
+            ((SecretClient) client).purgeDeletedSecret(key);
         } catch (Exception e) {
             LOGGER.error("Error encountered when attempting to purge a "
                     + "deleted secret.", e);
