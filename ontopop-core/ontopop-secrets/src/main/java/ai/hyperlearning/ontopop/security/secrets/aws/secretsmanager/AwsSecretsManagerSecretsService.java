@@ -71,7 +71,6 @@ public class AwsSecretsManagerSecretsService implements SecretsService {
         AwsSecretsManagerGuestCredentials guestCredentials = 
                 mapper.readValue(credentials, 
                         AwsSecretsManagerGuestCredentials.class);
-        System.out.println(guestCredentials.toString());
         
         // Check that the credentials have not expired
         LocalDateTime expirationDateTime = Instant
