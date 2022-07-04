@@ -1,6 +1,7 @@
 spring:
     application:
         name: ontopop
+        version: @project.version@
     cloud:
         stream:
             binders:
