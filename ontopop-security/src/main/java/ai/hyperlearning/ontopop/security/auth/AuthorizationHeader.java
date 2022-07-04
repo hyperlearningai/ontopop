@@ -3,6 +3,8 @@ package ai.hyperlearning.ontopop.security.auth;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Authorization Header Model
  *
@@ -10,6 +12,7 @@ import java.util.Objects;
  * @since 2.0.0
  */
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AuthorizationHeader implements Serializable {
 
     private static final long serialVersionUID = 4947371267484358985L;

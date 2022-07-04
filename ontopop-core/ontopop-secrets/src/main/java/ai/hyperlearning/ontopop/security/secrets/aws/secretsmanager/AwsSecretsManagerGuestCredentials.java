@@ -3,6 +3,8 @@ package ai.hyperlearning.ontopop.security.secrets.aws.secretsmanager;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * AWS Secrets Manager Guest Credentials Model
  *
@@ -10,6 +12,7 @@ import java.util.Objects;
  * @since 2.0.0
  */
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AwsSecretsManagerGuestCredentials implements Serializable {
 
     private static final long serialVersionUID = -1465227188567966714L;
