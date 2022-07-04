@@ -1,5 +1,9 @@
 package ai.hyperlearning.ontopop.security.secrets.aws.secretsmanager;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,8 +19,10 @@ import com.amazonaws.services.secretsmanager.AWSSecretsManagerClientBuilder;
 import com.amazonaws.services.secretsmanager.model.CreateSecretRequest;
 import com.amazonaws.services.secretsmanager.model.DeleteSecretRequest;
 import com.amazonaws.services.secretsmanager.model.GetSecretValueRequest;
+import com.amazonaws.services.secretsmanager.model.InternalServiceErrorException;
 import com.amazonaws.services.secretsmanager.model.ResourceExistsException;
 import com.amazonaws.services.secretsmanager.model.UpdateSecretRequest;
+import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ai.hyperlearning.ontopop.security.secrets.SecretsService;
@@ -34,6 +40,8 @@ import ai.hyperlearning.ontopop.security.secrets.SecretsService;
         havingValue = "aws-secrets-manager")
 public class AwsSecretsManagerSecretsService implements SecretsService {
 
+    private static final ZoneId TIME_ZONE_UTC = ZoneId.of("UTC");
+    
     @Autowired
     @Qualifier("awsSecretsManager")
     private AWSSecretsManager secretsManager;
@@ -53,9 +61,20 @@ public class AwsSecretsManagerSecretsService implements SecretsService {
         
         // Parse the credentials JSON object
         ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(JsonReadFeature.ALLOW_UNQUOTED_FIELD_NAMES
+                .mappedFeature());
         AwsSecretsManagerGuestCredentials guestCredentials = 
                 mapper.readValue(credentials, 
                         AwsSecretsManagerGuestCredentials.class);
+        
+        // Check that the credentials have not expired
+        LocalDateTime expirationDateTime = Instant
+                .ofEpochMilli(guestCredentials.getExpiration())
+                .atZone(TIME_ZONE_UTC)
+                .toLocalDateTime();
+        LocalDateTime currentDateTime = LocalDateTime.now(TIME_ZONE_UTC);
+        if ( expirationDateTime.isBefore(currentDateTime) )
+            throw new InternalServiceErrorException("Invalid Credentials");
         
         // Create a new AWS Secrets Manager client using the
         // temporary credentials.

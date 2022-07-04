@@ -30,6 +30,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -242,6 +243,8 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
     private String getApiKey(String decodedPrincipal) 
             throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(JsonReadFeature.ALLOW_UNQUOTED_FIELD_NAMES
+                .mappedFeature());
         AuthorizationHeader authorizationHeader = 
                 mapper.readValue(decodedPrincipal, 
                         AuthorizationHeader.class);
