@@ -5,17 +5,17 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 
 /**
- * API Key Authentication Filter
+ * Authentication Filter
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
-public class ApiKeyAuthenticationFilter extends AbstractPreAuthenticatedProcessingFilter {
+public class AuthenticationFilter extends AbstractPreAuthenticatedProcessingFilter {
     
     private String principalRequestHeader;
     
-    public ApiKeyAuthenticationFilter(String principalRequestHeader) {
+    public AuthenticationFilter(String principalRequestHeader) {
         this.principalRequestHeader = principalRequestHeader;
     }
 

@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.security.auth;
+package ai.hyperlearning.ontopop.security.auth.api;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,7 +29,11 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import ai.hyperlearning.ontopop.security.auth.model.ApiKey;
+import ai.hyperlearning.ontopop.security.auth.AuthenticationFilter;
+import ai.hyperlearning.ontopop.security.auth.api.apikey.ApiKeyAuthenticationService;
+import ai.hyperlearning.ontopop.security.auth.api.apikey.ApiKeyAuthenticationServiceFactory;
+import ai.hyperlearning.ontopop.security.auth.api.apikey.ApiKeyAuthenticationServiceEngine;
+import ai.hyperlearning.ontopop.security.auth.api.apikey.model.ApiKey;
 
 /**
  * API Web Security Configuration
@@ -66,8 +70,8 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
     
     @PostConstruct
     private void resolveApiKeyAuthenticationService() {
-        ApiKeyAuthenticationServiceType apiKeyAuthenticationServiceType =
-                ApiKeyAuthenticationServiceType
+        ApiKeyAuthenticationServiceEngine apiKeyAuthenticationServiceType =
+                ApiKeyAuthenticationServiceEngine
                         .valueOfLabel(apiAuthenticationEngine.toUpperCase());
         apiKeyAuthenticationService = apiKeyAuthenticationServiceFactory
                 .getApiKeyAuthenticationService(apiKeyAuthenticationServiceType);
@@ -81,7 +85,7 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
             resolveApiKeyAuthenticationService();
         
         // Custom authentication - API Key authentication
-        ApiKeyAuthenticationFilter filter = new ApiKeyAuthenticationFilter(
+        AuthenticationFilter filter = new AuthenticationFilter(
                 PRINCIPAL_REQUEST_HEADER_KEY);
         filter.setAuthenticationManager(new AuthenticationManager() {
             

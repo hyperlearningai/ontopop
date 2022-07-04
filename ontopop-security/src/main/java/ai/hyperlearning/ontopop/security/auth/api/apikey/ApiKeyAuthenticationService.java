@@ -1,8 +1,8 @@
-package ai.hyperlearning.ontopop.security.auth;
+package ai.hyperlearning.ontopop.security.auth.api.apikey;
 
 import java.util.Set;
 
-import ai.hyperlearning.ontopop.security.auth.model.ApiKey;
+import ai.hyperlearning.ontopop.security.auth.api.apikey.model.ApiKey;
 
 /**
  * API Key Authentication Service

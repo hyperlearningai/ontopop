@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.security.auth.engines;
+package ai.hyperlearning.ontopop.security.auth.api.apikey.engines;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -17,8 +17,8 @@ import org.springframework.vault.core.VaultTemplate;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ai.hyperlearning.ontopop.security.auth.ApiKeyAuthenticationService;
-import ai.hyperlearning.ontopop.security.auth.model.ApiKey;
+import ai.hyperlearning.ontopop.security.auth.api.apikey.ApiKeyAuthenticationService;
+import ai.hyperlearning.ontopop.security.auth.api.apikey.model.ApiKey;
 import ai.hyperlearning.ontopop.security.secrets.SecretsService;
 import ai.hyperlearning.ontopop.security.secrets.SecretsServiceFactory;
 import ai.hyperlearning.ontopop.security.secrets.SecretsServiceType;
@@ -33,7 +33,8 @@ import ai.hyperlearning.ontopop.security.secrets.hashicorp.vault.HashicorpVaultS
 
 @Service
 @ConditionalOnExpression("'${security.authentication.api.enabled}'.equals('true') and "
-        + "'${security.authentication.api.engine}'.equals('secrets')")
+        + "'${security.authentication.api.apiKeyLookup.enabled}'.equals('true') and "
+        + "'${security.authentication.api.apiKeyLookup.engine}'.equals('secrets')")
 public class SecretsEngineApiKeyAuthenticationService 
         implements ApiKeyAuthenticationService {
     

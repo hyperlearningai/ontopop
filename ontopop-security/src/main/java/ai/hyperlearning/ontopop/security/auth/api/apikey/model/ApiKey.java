@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.security.auth.model;
+package ai.hyperlearning.ontopop.security.auth.api.apikey.model;
 
 import java.io.Serializable;
 import java.util.HashSet;

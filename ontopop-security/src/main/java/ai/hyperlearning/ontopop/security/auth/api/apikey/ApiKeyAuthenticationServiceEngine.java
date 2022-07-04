@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.security.auth;
+package ai.hyperlearning.ontopop.security.auth.api.apikey;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,25 +10,25 @@ import java.util.Map;
  * @since 2.0.0
  */
 
-public enum ApiKeyAuthenticationServiceType {
+public enum ApiKeyAuthenticationServiceEngine {
     
     SECRETS("SECRETS");
 
     private final String label;
-    private static final Map<String, ApiKeyAuthenticationServiceType> LABEL_MAP =
+    private static final Map<String, ApiKeyAuthenticationServiceEngine> LABEL_MAP =
             new HashMap<>();
 
     static {
-        for (ApiKeyAuthenticationServiceType s : values()) {
+        for (ApiKeyAuthenticationServiceEngine s : values()) {
             LABEL_MAP.put(s.label, s);
         }
     }
 
-    private ApiKeyAuthenticationServiceType(final String label) {
+    private ApiKeyAuthenticationServiceEngine(final String label) {
         this.label = label;
     }
 
-    public static ApiKeyAuthenticationServiceType valueOfLabel(String label) {
+    public static ApiKeyAuthenticationServiceEngine valueOfLabel(String label) {
         return LABEL_MAP.get(label);
     }
 

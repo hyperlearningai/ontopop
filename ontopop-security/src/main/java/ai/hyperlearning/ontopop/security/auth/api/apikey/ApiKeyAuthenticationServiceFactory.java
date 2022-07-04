@@ -1,9 +1,9 @@
-package ai.hyperlearning.ontopop.security.auth;
+package ai.hyperlearning.ontopop.security.auth.api.apikey;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ai.hyperlearning.ontopop.security.auth.engines.SecretsEngineApiKeyAuthenticationService;
+import ai.hyperlearning.ontopop.security.auth.api.apikey.engines.SecretsEngineApiKeyAuthenticationService;
 
 /**
  * API Key Authentication Service Factory
@@ -25,11 +25,11 @@ public class ApiKeyAuthenticationServiceFactory {
      * @return
      */
 
-    public ApiKeyAuthenticationService getApiKeyAuthenticationService(String type) {
+    public ApiKeyAuthenticationService getApiKeyAuthenticationService(String engine) {
 
-        ApiKeyAuthenticationServiceType apiKeyAuthenticationServiceType =
-                ApiKeyAuthenticationServiceType.valueOfLabel(type.toUpperCase());
-        switch (apiKeyAuthenticationServiceType) {
+        ApiKeyAuthenticationServiceEngine apiKeyAuthenticationServiceEngine =
+                ApiKeyAuthenticationServiceEngine.valueOfLabel(engine.toUpperCase());
+        switch (apiKeyAuthenticationServiceEngine) {
             case SECRETS:
                 return secretsEngineApiKeyAuthenticationService;
             default:
@@ -39,9 +39,9 @@ public class ApiKeyAuthenticationServiceFactory {
     }
     
     public ApiKeyAuthenticationService getApiKeyAuthenticationService(
-            ApiKeyAuthenticationServiceType apiKeyAuthenticationServiceType) {
+            ApiKeyAuthenticationServiceEngine apiKeyAuthenticationServiceEngine) {
 
-        switch (apiKeyAuthenticationServiceType) {
+        switch (apiKeyAuthenticationServiceEngine) {
             case SECRETS:
                 return secretsEngineApiKeyAuthenticationService;
             default:

@@ -1,9 +1,9 @@
-package ai.hyperlearning.ontopop.security.auth;
+package ai.hyperlearning.ontopop.security.auth.api.apikey;
 
 import org.apache.commons.lang3.StringUtils;
 
 import ai.hyperlearning.ontopop.exceptions.security.InvalidClientNameException;
-import ai.hyperlearning.ontopop.security.auth.model.ApiKey;
+import ai.hyperlearning.ontopop.security.auth.api.apikey.model.ApiKey;
 
 /**
  * API Key Helper Methods
