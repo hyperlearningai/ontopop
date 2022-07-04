@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 
 /**
- * Authentication Filter
+ * Authentication Request Header Filter
  *
  * @author jillurquddus
  * @since 2.0.0

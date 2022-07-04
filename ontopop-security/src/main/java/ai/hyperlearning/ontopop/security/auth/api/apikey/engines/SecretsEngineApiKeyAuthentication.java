@@ -17,7 +17,7 @@ import org.springframework.vault.core.VaultTemplate;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ai.hyperlearning.ontopop.security.auth.api.apikey.ApiKeyAuthenticationService;
+import ai.hyperlearning.ontopop.security.auth.api.apikey.ApiKeyAuthentication;
 import ai.hyperlearning.ontopop.security.auth.api.apikey.model.ApiKey;
 import ai.hyperlearning.ontopop.security.secrets.SecretsService;
 import ai.hyperlearning.ontopop.security.secrets.SecretsServiceFactory;
@@ -35,8 +35,8 @@ import ai.hyperlearning.ontopop.security.secrets.hashicorp.vault.HashicorpVaultS
 @ConditionalOnExpression("'${security.authentication.api.enabled}'.equals('true') and "
         + "'${security.authentication.api.apiKeyLookup.enabled}'.equals('true') and "
         + "'${security.authentication.api.apiKeyLookup.engine}'.equals('secrets')")
-public class SecretsEngineApiKeyAuthenticationService 
-        implements ApiKeyAuthenticationService {
+public class SecretsEngineApiKeyAuthentication 
+        extends ApiKeyAuthentication {
     
     private static final DateTimeFormatter API_KEY_DEFAULT_DATE_TIME_FORMATTER = 
             DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
@@ -63,6 +63,11 @@ public class SecretsEngineApiKeyAuthenticationService
     private SecretsService secretsService = null;
     private boolean useVault = false;
 
+    /**
+     * Identify and instantiate the secrets service implementation client.
+     * For example a AWS Secrets Manager or Azure Key Vault client.
+     */
+    
     @PostConstruct
     public void init() {
 
@@ -78,6 +83,10 @@ public class SecretsEngineApiKeyAuthenticationService
 
     }
 
+    /**
+     * Retrieve a given API Key.
+     */
+    
     @Override
     public ApiKey get(String key) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
@@ -89,7 +98,47 @@ public class SecretsEngineApiKeyAuthenticationService
                     secretsService.get(API_KEY_PREFIX + key);
         return json != null ? mapper.readValue(json, ApiKey.class) : null;
     }
+    
+    /**
+     * Retrieve a given API Key using temporary credentials.
+     * @throws Exception 
+     */
+    
+    @Override
+    public ApiKey get(String temporaryCredentials, String key) 
+            throws Exception {
+        
+        ObjectMapper mapper = new ObjectMapper();
+        String json = null;
+        
+        // HashiCorp Vault
+        if (useVault) 
+            json = (String) HashicorpVaultSecretsService.get(
+                    vaultTemplate,
+                    springCloudVaultKvBackend, 
+                    springCloudVaultKvDefaultContext,  
+                    API_KEY_PREFIX + key);
+        
+        // Other secrets engines (e.g. AWS Secrets Manager or Azure Key Vault)
+        else {
+            
+            // Create a temporary client to the secrets engine
+            Object secretsEngineClient = secretsService
+                    .getTemporaryClient(temporaryCredentials);
+            json = secretsService.get(secretsEngineClient, 
+                    API_KEY_PREFIX + key);
+            
+        }
+        
+        // Return the parsed API Key object
+        return json != null ? mapper.readValue(json, ApiKey.class) : null;
+    
+    }
 
+    /**
+     * Create an API Key given an API Key object.
+     */
+    
     @Override
     public void create(ApiKey apiKey) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
@@ -102,6 +151,11 @@ public class SecretsEngineApiKeyAuthenticationService
                         json);
         else secretsService.set(API_KEY_PREFIX + apiKey.getKey(), json);
     }
+    
+    /**
+     * Create an API Key using default values and given the 
+     * client application name.
+     */
     
     @Override
     public void create(String client) throws Exception {
@@ -119,6 +173,11 @@ public class SecretsEngineApiKeyAuthenticationService
         create(apiKey);
     }
 
+    /**
+     * Create an API Key using default values but given the
+     * client application name and explicit set of authorities.
+     */
+    
     @Override
     public void create(String client, Set<String> roles) throws Exception {
         ApiKey apiKey = new ApiKey();
@@ -135,6 +194,11 @@ public class SecretsEngineApiKeyAuthenticationService
         apiKey.setRoles(roles);
         create(apiKey);
     }
+    
+    /**
+     * Create an API Key using default values but given the
+     * client application name, explicit set of authorities and duration.
+     */
     
     @Override
     public void create(String client, Set<String> roles, int durationDays) 
@@ -154,6 +218,10 @@ public class SecretsEngineApiKeyAuthenticationService
         create(apiKey);
     }
 
+    /**
+     * Delete a given API Key.
+     */
+    
     @Override
     public void delete(String key) throws Exception {
         if ( useVault )
@@ -164,6 +232,11 @@ public class SecretsEngineApiKeyAuthenticationService
         else secretsService.delete(API_KEY_PREFIX + key);
     }
 
+    /**
+     * Authenticate a given API Key by checking that it exists and that 
+     * the expiration date has not passed.
+     */
+    
     @Override
     public boolean authenticate(String key) throws JsonProcessingException {
         ApiKey apiKey = get(key);
@@ -176,6 +249,10 @@ public class SecretsEngineApiKeyAuthenticationService
         }
         return false;
     }
+    
+    /**
+     * Authenticate a given API Key object.
+     */
     
     @Override
     public boolean authenticate(ApiKey apiKey) throws JsonProcessingException {

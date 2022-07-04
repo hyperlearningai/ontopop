@@ -34,7 +34,7 @@ public class ApiKeyUtils {
      */
     
     public static String getClientName(Boolean apiAuthenticationEnabled, 
-            ApiKeyAuthenticationService apiKeyAuthenticationService, 
+            ApiKeyAuthentication apiKeyAuthenticationService, 
             String principalApiKey, String requestParameterClient) {
         
         // If API key authentication is enabled then get the client name

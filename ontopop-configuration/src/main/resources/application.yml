@@ -191,13 +191,11 @@ security:
     authentication:
         api:
             enabled: true
-            guestCredentials:
-               enabled: true
-               mode: session
-               engine: secrets
             apiKeyLookup:
                enabled: true
                engine: secrets
+               guestCredentials:
+                  enabled: true
 storage:
     object:
         service: local

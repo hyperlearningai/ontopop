@@ -9,7 +9,7 @@ package ai.hyperlearning.ontopop.security.secrets;
 
 public interface SecretsService {
     
-    public Object getTemporaryClient(String... credentials) throws Exception;
+    public Object getTemporaryClient(String credentials) throws Exception;
     
     public String get(String key);
     

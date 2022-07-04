@@ -10,25 +10,25 @@ import java.util.Map;
  * @since 2.0.0
  */
 
-public enum ApiKeyAuthenticationServiceEngine {
+public enum ApiKeyAuthenticationEngine {
     
     SECRETS("SECRETS");
 
     private final String label;
-    private static final Map<String, ApiKeyAuthenticationServiceEngine> LABEL_MAP =
+    private static final Map<String, ApiKeyAuthenticationEngine> LABEL_MAP =
             new HashMap<>();
 
     static {
-        for (ApiKeyAuthenticationServiceEngine s : values()) {
-            LABEL_MAP.put(s.label, s);
+        for (ApiKeyAuthenticationEngine e : values()) {
+            LABEL_MAP.put(e.label, e);
         }
     }
 
-    private ApiKeyAuthenticationServiceEngine(final String label) {
+    private ApiKeyAuthenticationEngine(final String label) {
         this.label = label;
     }
 
-    public static ApiKeyAuthenticationServiceEngine valueOfLabel(String label) {
+    public static ApiKeyAuthenticationEngine valueOfLabel(String label) {
         return LABEL_MAP.get(label);
     }
 

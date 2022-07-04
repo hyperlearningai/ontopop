@@ -33,7 +33,7 @@ public class AzureKeyVaultSecretsService implements SecretsService {
     private SecretClient secretClient;
 
     @Override
-    public SecretClient getTemporaryClient(String... credentials) {
+    public SecretClient getTemporaryClient(String credentials) {
         return secretClient;
     }
     

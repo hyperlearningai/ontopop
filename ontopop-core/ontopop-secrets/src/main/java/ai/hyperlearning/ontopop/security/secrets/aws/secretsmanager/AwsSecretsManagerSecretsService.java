@@ -17,6 +17,7 @@ import com.amazonaws.services.secretsmanager.model.DeleteSecretRequest;
 import com.amazonaws.services.secretsmanager.model.GetSecretValueRequest;
 import com.amazonaws.services.secretsmanager.model.ResourceExistsException;
 import com.amazonaws.services.secretsmanager.model.UpdateSecretRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ai.hyperlearning.ontopop.security.secrets.SecretsService;
 
@@ -47,16 +48,28 @@ public class AwsSecretsManagerSecretsService implements SecretsService {
      */
     
     @Override
-    public AWSSecretsManager getTemporaryClient(String... credentials) 
+    public AWSSecretsManager getTemporaryClient(String credentials) 
             throws Exception {
+        
+        // Parse the credentials JSON object
+        ObjectMapper mapper = new ObjectMapper();
+        AwsSecretsManagerGuestCredentials guestCredentials = 
+                mapper.readValue(credentials, 
+                        AwsSecretsManagerGuestCredentials.class);
+        
+        // Create a new AWS Secrets Manager client using the
+        // temporary credentials.
         AWSCredentials sessionCredentials = 
-                new BasicSessionCredentials(credentials[0], 
-                        credentials[1], credentials[2]);
+                new BasicSessionCredentials(
+                        guestCredentials.getAccessKeyId(), 
+                        guestCredentials.getSecretAccessKey(), 
+                        guestCredentials.getSessionToken());
         return AWSSecretsManagerClientBuilder.standard()
                 .withCredentials(new AWSStaticCredentialsProvider(
                         sessionCredentials))
                 .withRegion(Regions.fromName(region))
                 .build();
+        
     }
     
     /**
