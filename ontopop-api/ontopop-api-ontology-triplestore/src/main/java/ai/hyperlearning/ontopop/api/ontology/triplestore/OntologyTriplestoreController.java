@@ -52,10 +52,10 @@ import ai.hyperlearning.ontopop.model.owl.diff.SimpleOntologyLeftRightDiff;
 import ai.hyperlearning.ontopop.model.owl.diff.SimpleOntologyTimestampDiff;
 import ai.hyperlearning.ontopop.model.triplestore.OntologyTriplestoreSparqlQuery;
 import ai.hyperlearning.ontopop.owl.mappers.OntologyDataMapper;
-import ai.hyperlearning.ontopop.security.auth.ApiKeyAuthenticationService;
-import ai.hyperlearning.ontopop.security.auth.ApiKeyAuthenticationServiceFactory;
-import ai.hyperlearning.ontopop.security.auth.ApiKeyAuthenticationServiceType;
-import ai.hyperlearning.ontopop.security.auth.ApiKeyUtils;
+import ai.hyperlearning.ontopop.security.auth.api.apikey.ApiKeyAuthenticationEngine;
+import ai.hyperlearning.ontopop.security.auth.api.apikey.ApiKeyAuthentication;
+import ai.hyperlearning.ontopop.security.auth.api.apikey.ApiKeyAuthenticationFactory;
+import ai.hyperlearning.ontopop.security.auth.api.apikey.ApiKeyUtils;
 import ai.hyperlearning.ontopop.triplestore.TriplestoreService;
 import ai.hyperlearning.ontopop.triplestore.TriplestoreServiceFactory;
 import ai.hyperlearning.ontopop.triplestore.TriplestoreServiceType;
@@ -106,7 +106,7 @@ public class OntologyTriplestoreController {
     private OntologyDiffService ontologyDiffService;
     
     @Autowired
-    private ApiKeyAuthenticationServiceFactory apiKeyAuthenticationServiceFactory;
+    private ApiKeyAuthenticationFactory apiKeyAuthenticationServiceFactory;
     
     @Autowired
     private OntologyGitPushService ontologyGitPushService;
@@ -122,7 +122,7 @@ public class OntologyTriplestoreController {
     
     private TriplestoreService triplestoreService;
     
-    private ApiKeyAuthenticationService apiKeyAuthenticationService = null;
+    private ApiKeyAuthentication apiKeyAuthenticationService = null;
     
     @PostConstruct
     private void postConstruct() {
@@ -137,8 +137,8 @@ public class OntologyTriplestoreController {
         
         // Instantiate the API Key authentication service
         if ( Boolean.TRUE.equals(apiAuthenticationEnabled) ) {
-            ApiKeyAuthenticationServiceType apiKeyAuthenticationServiceType =
-                    ApiKeyAuthenticationServiceType
+            ApiKeyAuthenticationEngine apiKeyAuthenticationServiceType =
+                    ApiKeyAuthenticationEngine
                             .valueOfLabel(apiAuthenticationEngine.toUpperCase());
             apiKeyAuthenticationService = apiKeyAuthenticationServiceFactory
                     .getApiKeyAuthenticationService(apiKeyAuthenticationServiceType);
