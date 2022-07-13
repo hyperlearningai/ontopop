@@ -174,6 +174,9 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
                                         "Invalid Guest Credentials.");
                             
                         } catch (Exception e) {
+                            LOGGER.error("An error was encountered when "
+                                    + "generating an OpenID token for the "
+                                    + "given guest credentials.", e);
                             throw new BadCredentialsException(
                                     "Invalid Guest Credentials.");
                         }

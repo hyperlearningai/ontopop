@@ -36,8 +36,8 @@ public class AwsCognitoIamIdentity implements IamIdentity {
     
     private static final ZoneId TIME_ZONE_UTC = ZoneId.of("UTC");
     
-    @Value("${security.iam.aws-cognito.identity-pool-id}")
-    private String identityPoolId;
+    @Value("${security.iam.aws-cognito.region}")
+    private String region;
 
     @Override
     public String getOpenIdToken(String identity) 
@@ -71,12 +71,13 @@ public class AwsCognitoIamIdentity implements IamIdentity {
                 AmazonCognitoIdentityClientBuilder.standard()
                 .withCredentials(
                         new AWSStaticCredentialsProvider(sessionCredentials))
+                .withRegion(region)
                 .build();
         
         // Attempt to get an OpenID token using the guest credentials
         GetOpenIdTokenRequest getOpenIdTokenRequest = 
                 new GetOpenIdTokenRequest();
-        getOpenIdTokenRequest.setIdentityId(identityPoolId);
+        getOpenIdTokenRequest.setIdentityId(guestCredentials.getIdentityId());
         GetOpenIdTokenResult getOpenIdTokenResult = 
                 identityClient.getOpenIdToken(getOpenIdTokenRequest);
         return getOpenIdTokenResult.getToken();

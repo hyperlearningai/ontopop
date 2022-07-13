@@ -18,6 +18,7 @@ public class AwsCognitoGuestCredentials implements Serializable {
     private static final long serialVersionUID = -1465227188567966714L;
     private String accessKeyId;
     private String secretAccessKey;
+    private String identityId;
     private String sessionToken;
     private long expiration;
     
@@ -28,10 +29,12 @@ public class AwsCognitoGuestCredentials implements Serializable {
     public AwsCognitoGuestCredentials(String accessKeyId, 
             String secretAccessKey,
             String sessionToken, 
+            String identityId, 
             long expiration) {
         this.accessKeyId = accessKeyId;
         this.secretAccessKey = secretAccessKey;
         this.sessionToken = sessionToken;
+        this.identityId = identityId;
         this.expiration = expiration;
     }
 
@@ -49,6 +52,14 @@ public class AwsCognitoGuestCredentials implements Serializable {
 
     public void setSecretAccessKey(String secretAccessKey) {
         this.secretAccessKey = secretAccessKey;
+    }
+
+    public String getIdentityId() {
+        return identityId;
+    }
+
+    public void setIdentityId(String identityId) {
+        this.identityId = identityId;
     }
 
     public String getSessionToken() {
@@ -90,8 +101,7 @@ public class AwsCognitoGuestCredentials implements Serializable {
     @Override
     public String toString() {
         return "AwsCognitoGuestCredentials ["
-                + "accessKeyId=" + accessKeyId + ", "
-                + "secretAccessKey=" + secretAccessKey + ", "
+                + "identityId=" + identityId + ", "
                 + "sessionToken=" + sessionToken + ", "
                 + "expiration=" + expiration 
                 + "]";
