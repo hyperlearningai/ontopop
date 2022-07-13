@@ -1,4 +1,4 @@
-package ai.hyperlearning.ontopop.security.auth.iam.providers.aws.cognito;
+package ai.hyperlearning.ontopop.security.secrets.aws.secretsmanager;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -6,14 +6,14 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
- * AWS Cognito Guest Credentials Model
+ * AWS Secrets Manager Guest Credentials Model
  *
  * @author jillurquddus
  * @since 2.0.0
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AwsCognitoGuestCredentials implements Serializable {
+public class AwsSecretsManagerGuestCredentials implements Serializable {
 
     private static final long serialVersionUID = -1465227188567966714L;
     private String accessKeyId;
@@ -21,11 +21,11 @@ public class AwsCognitoGuestCredentials implements Serializable {
     private String sessionToken;
     private long expiration;
     
-    public AwsCognitoGuestCredentials() {
+    public AwsSecretsManagerGuestCredentials() {
         
     }
 
-    public AwsCognitoGuestCredentials(String accessKeyId, 
+    public AwsSecretsManagerGuestCredentials(String accessKeyId, 
             String secretAccessKey,
             String sessionToken, 
             long expiration) {
@@ -80,8 +80,8 @@ public class AwsCognitoGuestCredentials implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        AwsCognitoGuestCredentials other = 
-                (AwsCognitoGuestCredentials) obj;
+        AwsSecretsManagerGuestCredentials other = 
+                (AwsSecretsManagerGuestCredentials) obj;
         return Objects.equals(accessKeyId, other.accessKeyId)
                 && Objects.equals(secretAccessKey, other.secretAccessKey)
                 && Objects.equals(sessionToken, other.sessionToken);
@@ -89,7 +89,7 @@ public class AwsCognitoGuestCredentials implements Serializable {
 
     @Override
     public String toString() {
-        return "AwsCognitoGuestCredentials ["
+        return "AwsSecretsManagerGuestCredentials ["
                 + "accessKeyId=" + accessKeyId + ", "
                 + "secretAccessKey=" + secretAccessKey + ", "
                 + "sessionToken=" + sessionToken + ", "

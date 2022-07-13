@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,9 @@ import ai.hyperlearning.ontopop.security.auth.AuthorizationHeader;
 import ai.hyperlearning.ontopop.security.auth.api.apikey.ApiKeyAuthenticationEngine;
 import ai.hyperlearning.ontopop.security.auth.api.apikey.ApiKeyAuthentication;
 import ai.hyperlearning.ontopop.security.auth.api.apikey.ApiKeyAuthenticationFactory;
+import ai.hyperlearning.ontopop.security.auth.iam.IamIdentity;
+import ai.hyperlearning.ontopop.security.auth.iam.IamIdentityProvider;
+import ai.hyperlearning.ontopop.security.auth.iam.IamIdentityProviderFactory;
 
 /**
  * API Web Security Configuration
@@ -65,26 +69,36 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private ApiKeyAuthenticationFactory apiKeyAuthenticationFactory;
     
+    @Autowired
+    private IamIdentityProviderFactory iamIdentityProviderFactory;
+    
     @Value("${security.authentication.api.enabled:false}")
     private Boolean apiAuthenticationEnabled;
     
-    @Value("${security.authentication.api.apiKeyLookup.enabled:false}")
+    @Value("${security.authentication.api.guest-credentials.enabled:false}")
+    private Boolean apiGuestCredentialsEnabled;
+    
+    @Value("${security.authentication.api.guest-credentials.iam-provider}")
+    private String apiGuestCredentialsIamProvider;
+    
+    @Value("${security.authentication.api.api-key-lookup.enabled:false}")
     private Boolean apiKeyLookupEnabled;
     
-    @Value("${security.authentication.api.apiKeyLookup.engine:secrets}")
+    @Value("${security.authentication.api.api-key-lookup.engine:secrets}")
     private String apiKeyLookupEngine;
     
-    @Value("${security.authentication.api.apiKeyLookup.guestCredentials.enabled:false}")
-    private Boolean apiKeyLookupGuestCredentialsEnabled;
+    @Value("${security.authentication.api.apiKeyLookup.connect-with-guest-credentials:false}")
+    private Boolean apiKeyLookupConnectWithGuestCredentials;
     
     private ApiKeyAuthentication apiKeyAuthentication = null;
+    private IamIdentity iamIdentity = null;
     
     @PostConstruct
-    private void resolveApiAuthenticationEngines() {
+    private void resolveApiKeyAuthenticationEngine() {
         
         // API key lookup authentication engine
         if ( Boolean.TRUE.equals(apiAuthenticationEnabled) && 
-                Boolean.TRUE.equals(apiKeyLookupEnabled)) {
+                Boolean.TRUE.equals(apiKeyLookupEnabled) ) {
             
             ApiKeyAuthenticationEngine apiAuthenticationEngineType =
                     ApiKeyAuthenticationEngine.valueOfLabel(
@@ -99,10 +113,27 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
         
     }
     
+    @PostConstruct
+    private void resolveIamIdentityProvider() {
+        
+        // IAM identity service
+        if ( Boolean.TRUE.equals(apiAuthenticationEnabled) &&
+                Boolean.TRUE.equals(apiGuestCredentialsEnabled) ) {
+            
+                IamIdentityProvider iamIdentityProvider = 
+                        IamIdentityProvider.valueOfLabel(
+                                apiGuestCredentialsIamProvider.toUpperCase());
+                iamIdentity = iamIdentityProviderFactory
+                        .getIamIdentityService(iamIdentityProvider);
+                LOGGER.info("Using the '{}' IAM identity service.",
+                        apiGuestCredentialsIamProvider);
+            
+        }
+        
+    }
+    
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        if ( apiKeyAuthentication == null )
-            resolveApiAuthenticationEngines();
         
         // Custom authentication - Get the contents of the authorization header
         AuthenticationFilter filter = new AuthenticationFilter(
@@ -124,17 +155,46 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
                             .getCredentials();
                     String decodedPrincipal = decodeHeader(encodedPrincipal);
                     
+                    // Guest Credentials
+                    if ( Boolean.TRUE.equals(apiGuestCredentialsEnabled) ) {
+                        
+                        try {
+                            
+                            // Resolve the IAM identity provider
+                            if ( iamIdentity == null )
+                                resolveIamIdentityProvider();
+                            
+                            // Get the OpenID token using the guest credentials
+                            String openIdToken = iamIdentity
+                                    .getOpenIdToken(decodedPrincipal);
+                            
+                            // Verify the OpenID token
+                            if ( StringUtils.isBlank(openIdToken) )
+                                throw new BadCredentialsException(
+                                        "Invalid Guest Credentials.");
+                            
+                        } catch (Exception e) {
+                            throw new BadCredentialsException(
+                                    "Invalid Guest Credentials.");
+                        }
+                        
+                    }
+                    
                     // API Key Lookup Authentication
                     if ( Boolean.TRUE.equals(apiKeyLookupEnabled) ) {
                         
                         try {
+                            
+                            // Resolve the API Key authentication engine
+                            if ( apiKeyAuthentication == null )
+                                resolveApiKeyAuthenticationEngine();
                             
                             // Get the API Key from the Authorization header
                             String apiKey = getApiKey(decodedPrincipal);
                             
                             // Verify the API Key and get the granted authorities
                             String guestCredentials = Boolean.TRUE.equals(
-                                    apiKeyLookupGuestCredentialsEnabled) ? 
+                                    apiKeyLookupConnectWithGuestCredentials) ? 
                                             decodedPrincipal : null;
                             final List<GrantedAuthority> authorities = 
                                     apiKeyAuthentication.authorize(
@@ -157,7 +217,7 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
                     
                     }
                     
-                    // No authentication mechanism is enabled
+                    // If API Key lookup is disabled, grant all authorities
                     else return new UsernamePasswordAuthenticationToken(
                             decodedPrincipal, encodedCredentials, 
                             grantAllAuthorities());
