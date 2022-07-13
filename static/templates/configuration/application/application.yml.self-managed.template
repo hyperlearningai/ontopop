@@ -193,6 +193,7 @@ security:
        service: 
        aws-cognito:
           identity-pool-id: 
+          region: 
     authentication:
         api:
             enabled: true
