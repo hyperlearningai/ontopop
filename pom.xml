@@ -41,6 +41,7 @@
     <properties>
         <apache-jena-libs.version>4.5.0</apache-jena-libs.version>
         <aws-java-sdk.version>1.12.164</aws-java-sdk.version>
+        <aws-java-sdk-cognitoidentity.version>1.12.255</aws-java-sdk-cognitoidentity.version>
         <aws-java-sdk-s3.version>1.12.164</aws-java-sdk-s3.version>
         <aws-java-sdk-secretsmanager.version>1.12.164</aws-java-sdk-secretsmanager.version>
         <aws-lambda-java-core.version>1.2.1</aws-lambda-java-core.version>
@@ -195,6 +196,13 @@
                 <groupId>com.amazonaws</groupId>
                 <artifactId>aws-java-sdk</artifactId>
                 <version>${aws-java-sdk.version}</version>
+            </dependency>
+            
+            <!-- AWS Java SDK Cognito Identity -->
+            <dependency>
+                <groupId>com.amazonaws</groupId>
+                <artifactId>aws-java-sdk</artifactId>
+                <version>${aws-java-sdk-cognitoidentity.version}</version>
             </dependency>
             
             <!-- AWS Java SDK S3 -->

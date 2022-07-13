@@ -49,6 +49,12 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
+        
+        <!-- AWS Java SDK Cognito Identity -->
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk</artifactId>
+        </dependency>
 
         <!-- OntoPop -->
         <dependency>
