@@ -189,14 +189,20 @@ security:
             paths:
                 subpaths:
                     ontologies: /ontologies/
+    iam:
+       service: 
+       aws-cognito:
+          identity-pool-id: 
     authentication:
         api:
             enabled: true
-            apiKeyLookup:
+            guest-credentials:
+               enabled: false
+               provider: 
+            api-key-lookup:
                enabled: true
                engine: secrets
-               guestCredentials:
-                  enabled: false
+               connect-with-guest-credentials: false
 storage:
     object:
         service: azure-storage

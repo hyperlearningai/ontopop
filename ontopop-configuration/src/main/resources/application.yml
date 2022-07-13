@@ -11,13 +11,13 @@ spring:
                     environment:
                         spring:
                             rabbitmq:
-                                host: ${rabbitmq-host}
-                                port: ${rabbitmq-port}
-                                username: ${rabbitmq-username}
-                                password: ${rabbitmq-password}
+                                host: 
+                                port: 
+                                username: 
+                                password: 
                                 virtual-host: /
                                 ssl:
-                                    enabled: false
+                                    enabled: true
                 azure_service_bus:
                     type: servicebus-topic
                     default-candidate: false
@@ -26,7 +26,7 @@ spring:
                             cloud:
                                 azure:
                                     servicebus:
-                                        connection-string: ${azure-service-bus-connection-string}
+                                        connection-string:
             bindings:
                 webProtegeProjectUpdatedPublicationChannel:
                     destination: webprotege.project.updated
@@ -143,21 +143,21 @@ spring:
             default:
                 contentType: application/json
         vault:
-            enabled: true
-            host: localhost
-            port: 8200
-            scheme: http
-            authentication: TOKEN
-            token: ${VAULT_TOKEN}
+            enabled: false
+            host:
+            port:
+            scheme:
+            authentication:
+            token:
             kv:
-                enabled: true
-                backend: secret
-                default-context: ontopop/development
+                enabled:
+                backend:
+                default-context:
     datasource:
-        driver-class-name: ${spring-datasource-driver-class-name}
-        url: ${spring-datasource-url}
-        username: ${spring-datasource-username}
-        password: ${spring-datasource-password}
+        driver-class-name: 
+        url: 
+        username: 
+        password: 
     jackson:
         serialization:
             write_dates_as_timestamps: false
@@ -175,43 +175,49 @@ spring:
             max-request-size: 1024KB
 security:
     secrets:
-        service: hashicorp-vault
+        service: aws-secrets-manager
         aws-secrets-manager: 
             access-key-id: ${aws-secrets-manager-access-key-id}
             access-key-secret: ${aws-secrets-manager-access-key-secret}
             region: eu-west-2
         azure-key-vault:
-            url: ${azure-key-vault-url}
-            clientId: ${azure-key-vault-client-id}
-            clientSecret: ${azure-key-vault-client-secret}
-            tenantId: ${azure-key-vault-tenant-id}
+            url:
+            clientId:
+            clientSecret:
+            tenantId:
         hashicorp-vault:
             paths:
                 subpaths:
                     ontologies: /ontologies/
+    iam:
+       service: aws-cognito
+       aws-cognito:
+          identity-pool-id: ${aws-cognito-identity-pool-id}
     authentication:
         api:
             enabled: true
-            apiKeyLookup:
+            guest-credentials:
+               enabled: true
+               provider: iam
+            api-key-lookup:
                enabled: true
                engine: secrets
-               guestCredentials:
-                  enabled: false
+               connect-with-guest-credentials: false
 storage:
     object:
-        service: local
+        service: aws-s3
         local:
-            baseUri: ${local-storage-base-directory-path}
+            baseUri:
         aws-s3:
             access-key-id: ${aws-s3-access-key-id}
             access-key-secret: ${aws-s3-access-key-secret}
             region: eu-west-2
             bucket-name: ontopop-data
         azure-storage:
-            account-name: ${azure-storage-account-name}
-            account-key: ${azure-storage-account-key}
-            blob-endpoint: ${azure-storage-blob-endpoint}
-            container-name: ontopop-data
+            account-name:
+            account-key:
+            blob-endpoint:
+            container-name:
         containers:
             ingested: ingested
             validated: validated
@@ -227,53 +233,53 @@ storage:
         service: apache-jena
         apache-jena:
             fuseki:
-                url: ${jena-fuseki-url}
-                username: ${jena-fuseki-username}
-                password: ${jena-fuseki-password}
+                url: 
+                username: 
+                password: 
         ontotext-graphdb:
-            url: ${ontotext-graphdb-url}
+            url:
     graph:
         service: janusgraph-http
         engine:
-            supportsUserDefinedIds: false
-            supportsNonStringIds: true
-            supportsSchema: true
-            supportsTransactions: true
-            supportsGeoshape: true
+            supportsUserDefinedIds:
+            supportsNonStringIds:
+            supportsSchema:
+            supportsTransactions:
+            supportsGeoshape:
             supportsTraversals:
-                by: true
+                by:
         gremlin-graph:
-            configuration-filename: gremlin-graph.properties
+            configuration-filename:
         gremlin-server:
             url: 
-            host: ${gremlin-server-host}
-            port: ${gremlin-server-port}
-            username: ${gremlin-server-username}
-            password: ${gremlin-server-password}
-            enableSsl: false
-            remoteTraversalSourceName: g
+            host:
+            port:
+            username: 
+            password: 
+            enableSsl:
+            remoteTraversalSourceName:
             serializer:
-                className: org.apache.tinkerpop.gremlin.driver.ser.GraphBinaryMessageSerializerV1
-                ioRegistries: org.janusgraph.graphdb.tinkerpop.JanusGraphIoRegistry
-                serializeResultToString: false
+                className:
+                ioRegistries:
+                serializeResultToString:
             bulkExecutor:
                 rateLimiter:
-                    enabled: false
-                    actionsPerSecond: 100
-                    maximumAttempts: 10
+                    enabled: true
+                    actionsPerSecond: 50
+                    maximumAttempts:
     search:
         service: elasticsearch
         indexNamePrefix: ontopop
         elasticsearch:
-            url: ${elasticsearch-url}
-            username: ${elasticsearch-username}
-            password: ${elasticsearch-password}
+            url: 
+            username: 
+            password: 
             ssl: true
             shards: 1
             replicas: 0
         azure-search:
-            endpoint: ${azure-search-endpoint}
-            key: ${azure-search-key}
+            endpoint:
+            key:
 vcs:
     git:
         service: github
@@ -303,7 +309,7 @@ plugins:
                 enabled: true
                 cron: "0 0/10 * * * *"
         authenticator:
-            enabled: false
+            enabled: true
             scheduler:
-                enabled: false
+                enabled: true
                 cron: "0 0 0/1 * * *"
