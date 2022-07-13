@@ -75,11 +75,11 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${security.authentication.api.enabled:false}")
     private Boolean apiAuthenticationEnabled;
     
-    @Value("${security.authentication.api.guest-credentials.enabled:false}")
-    private Boolean apiGuestCredentialsEnabled;
+    @Value("${security.authentication.api.iam-guest-credentials.enabled:false}")
+    private Boolean apiIamGuestCredentialsEnabled;
     
-    @Value("${security.authentication.api.guest-credentials.iam-provider}")
-    private String apiGuestCredentialsIamProvider;
+    @Value("${security.iam.service}")
+    private String apiIamService;
     
     @Value("${security.authentication.api.api-key-lookup.enabled:false}")
     private Boolean apiKeyLookupEnabled;
@@ -87,7 +87,7 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${security.authentication.api.api-key-lookup.engine:secrets}")
     private String apiKeyLookupEngine;
     
-    @Value("${security.authentication.api.apiKeyLookup.connect-with-guest-credentials:false}")
+    @Value("${security.authentication.api.api-key-lookup.connect-with-guest-credentials:false}")
     private Boolean apiKeyLookupConnectWithGuestCredentials;
     
     private ApiKeyAuthentication apiKeyAuthentication = null;
@@ -118,15 +118,15 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
         
         // IAM identity service
         if ( Boolean.TRUE.equals(apiAuthenticationEnabled) &&
-                Boolean.TRUE.equals(apiGuestCredentialsEnabled) ) {
+                Boolean.TRUE.equals(apiIamGuestCredentialsEnabled) ) {
             
                 IamIdentityProvider iamIdentityProvider = 
                         IamIdentityProvider.valueOfLabel(
-                                apiGuestCredentialsIamProvider.toUpperCase());
+                                apiIamService.toUpperCase());
                 iamIdentity = iamIdentityProviderFactory
                         .getIamIdentityService(iamIdentityProvider);
                 LOGGER.info("Using the '{}' IAM identity service.",
-                        apiGuestCredentialsIamProvider);
+                        apiIamService);
             
         }
         
@@ -156,7 +156,7 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
                     String decodedPrincipal = decodeHeader(encodedPrincipal);
                     
                     // Guest Credentials
-                    if ( Boolean.TRUE.equals(apiGuestCredentialsEnabled) ) {
+                    if ( Boolean.TRUE.equals(apiIamGuestCredentialsEnabled) ) {
                         
                         try {
                             

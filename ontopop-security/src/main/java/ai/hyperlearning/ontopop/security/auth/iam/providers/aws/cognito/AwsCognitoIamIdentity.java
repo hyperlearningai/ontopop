@@ -30,8 +30,8 @@ import ai.hyperlearning.ontopop.security.auth.iam.IamIdentity;
 
 @Service
 @ConditionalOnExpression("'${security.authentication.api.enabled}'.equals('true') and "
-        + "'${security.authentication.api.guestCredentials.enabled}'.equals('true') and "
-        + "'${security.authentication.api.guestCredentials.iamProvider}'.equals('aws-cognito')")
+        + "'${security.authentication.api.iam-guest-credentials.enabled}'.equals('true') and "
+        + "'${security.iam.service}'.equals('aws-cognito')")
 public class AwsCognitoIamIdentity implements IamIdentity {
     
     private static final ZoneId TIME_ZONE_UTC = ZoneId.of("UTC");

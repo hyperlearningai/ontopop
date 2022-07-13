@@ -33,8 +33,8 @@ import ai.hyperlearning.ontopop.security.secrets.hashicorp.vault.HashicorpVaultS
 
 @Service
 @ConditionalOnExpression("'${security.authentication.api.enabled}'.equals('true') and "
-        + "'${security.authentication.api.apiKeyLookup.enabled}'.equals('true') and "
-        + "'${security.authentication.api.apiKeyLookup.engine}'.equals('secrets')")
+        + "'${security.authentication.api.api-key-lookup.enabled}'.equals('true') and "
+        + "'${security.authentication.api.api-key-lookup.engine}'.equals('secrets')")
 public class SecretsEngineApiKeyAuthentication 
         extends ApiKeyAuthentication {
     
