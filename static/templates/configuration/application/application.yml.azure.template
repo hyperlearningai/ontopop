@@ -196,9 +196,8 @@ security:
     authentication:
         api:
             enabled: true
-            guest-credentials:
+            iam-guest-credentials:
                enabled: false
-               provider: 
             api-key-lookup:
                enabled: true
                engine: secrets
