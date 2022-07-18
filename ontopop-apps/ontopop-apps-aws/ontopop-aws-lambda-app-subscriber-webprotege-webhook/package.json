@@ -9,12 +9,12 @@
   "author": "jillurquddus",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.1064.0", 
-    "mariadb": "^2.5.6",
+    "aws-sdk": "^2.1176.0", 
+    "mariadb": "^3.0.0",
     "mysql2": "^2.3.3",
     "pg": "^8.7.3",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.16.2",
-    "tedious": "^14.3.0"
+    "sequelize": "^6.21.3",
+    "tedious": "^14.7.0"
   }
 }
