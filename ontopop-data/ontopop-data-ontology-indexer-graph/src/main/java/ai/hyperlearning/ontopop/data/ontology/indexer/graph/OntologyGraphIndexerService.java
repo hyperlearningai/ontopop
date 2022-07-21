@@ -240,7 +240,8 @@ public class OntologyGraphIndexerService {
             SimpleOntologyVertex vertex = entry.getValue();
             vertex.preparePropertiesForLoading();
             SimpleIndexVertex simpleIndexVertex = new SimpleIndexVertex(
-                    vertex.getVertexId(), SimpleOntologyVertex.LABEL, 
+                    vertex.getVertexId(), 
+                    vertex.getLabel(), 
                     vertex.getProperties());
             vertices.add(simpleIndexVertex);
         }

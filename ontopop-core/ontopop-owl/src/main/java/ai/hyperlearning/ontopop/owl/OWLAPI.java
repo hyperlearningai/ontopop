@@ -48,6 +48,9 @@ import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLAPIStreamUtils;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
+
+import com.apicatalog.jsonld.StringUtils;
 
 import ai.hyperlearning.ontopop.model.owl.SimpleAnnotationProperty;
 import ai.hyperlearning.ontopop.model.owl.SimpleClass;
@@ -266,6 +269,17 @@ public class OWLAPI {
         }
         return null;
     }
+    
+    /**
+     * Generate a RDFS Label literal value using a given IRI
+     * @param iri
+     * @return
+     */
+    
+    public static String generateRDFSLabel(String iri) {
+        int indexOfHash = iri.lastIndexOf("#");
+        return indexOfHash > -1 ? iri.substring(indexOfHash + 1) : iri;
+    }
 
     /**************************************************************************
      * Annotation Properties
@@ -409,6 +423,9 @@ public class OWLAPI {
 
             // Get the OWL object property RDFS Label
             String objectPropertyRDFSLabel = getRDFSLabel(owlAnnotations);
+            if (StringUtils.isBlank(objectPropertyRDFSLabel)) 
+                objectPropertyRDFSLabel = 
+                    generateRDFSLabel(objectPropertyIri);
 
             // Generate a map of annotation IRI to annotation literal value
             Map<String, String> annotations = new LinkedHashMap<>();
@@ -420,6 +437,13 @@ public class OWLAPI {
                                 getAnnotationValueLiteral(owlAnnotation);
                 annotations.put(iri, literalValue);
             }
+            
+            // Check whether the label annotation exists as a minimum
+            String rdfsLabelAnnotationIri = 
+                    OWLRDFVocabulary.RDFS_LABEL.getIRI().toString();
+            if ( !annotations.containsKey(rdfsLabelAnnotationIri) )
+                annotations.put(rdfsLabelAnnotationIri, 
+                        objectPropertyRDFSLabel);
 
             // Create a Simple Object Property object
             SimpleObjectProperty simpleObjectProperty =
@@ -505,6 +529,9 @@ public class OWLAPI {
             
             // Get the named individual RDFS Label
             String namedIndividualRDFSLabel = getRDFSLabel(owlAnnotations);
+            if (StringUtils.isBlank(namedIndividualRDFSLabel)) 
+                    namedIndividualRDFSLabel = 
+                        generateRDFSLabel(namedIndividualIri);
             
             // Generate a map of annotation IRI to annotation literal value
             Map<String, String> annotations = new LinkedHashMap<>();
@@ -516,6 +543,13 @@ public class OWLAPI {
                                 getAnnotationValueLiteral(owlAnnotation);
                 annotations.put(iri, literalValue);
             }
+            
+            // Check whether the label annotation exists as a minimum
+            String rdfsLabelAnnotationIri = 
+                    OWLRDFVocabulary.RDFS_LABEL.getIRI().toString();
+            if ( !annotations.containsKey(rdfsLabelAnnotationIri) )
+                annotations.put(rdfsLabelAnnotationIri, 
+                        namedIndividualRDFSLabel);
             
             // Create a Simple Named Individual object
             SimpleNamedIndividual simpleNamedIndividual = 
@@ -663,6 +697,8 @@ public class OWLAPI {
 
             // Get the OWL class RDFS Label
             String classRDFSLabel = getRDFSLabel(owlAnnotations);
+            if (StringUtils.isBlank(classRDFSLabel)) 
+                classRDFSLabel = generateRDFSLabel(classIri);
 
             // Generate a map of annotation IRI to annotation literal value
             Map<String, String> annotations = new LinkedHashMap<>();
@@ -674,6 +710,12 @@ public class OWLAPI {
                                 getAnnotationValueLiteral(owlAnnotation);
                 annotations.put(iri, literalValue);
             }
+            
+            // Check whether the label annotation exists as a minimum
+            String rdfsLabelAnnotationIri = 
+                    OWLRDFVocabulary.RDFS_LABEL.getIRI().toString();
+            if ( !annotations.containsKey(rdfsLabelAnnotationIri) )
+                annotations.put(rdfsLabelAnnotationIri, classRDFSLabel);
 
             // Create a Simple Class object
             SimpleClass simpleClass = new SimpleClass();

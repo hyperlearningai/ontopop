@@ -6,14 +6,17 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringJoiner;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.CaseUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import ai.hyperlearning.ontopop.model.owl.SimpleAnnotationProperty;
 import ai.hyperlearning.ontopop.model.owl.SimpleClass;
+import ai.hyperlearning.ontopop.model.owl.SimpleNamedIndividual;
 import ai.hyperlearning.ontopop.model.owl.SimpleOntology;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -109,43 +112,110 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 						simpleOntology.getSimpleAnnotationPropertyMap());
 		simpleAnnotationPropertyMap.putAll(standardSchemaAnnotationProperties);
 		
-		// Iterate over the simple class map from the simple ontology
-		Map<String, SimpleClass> simpleClassMap = simpleOntology.getSimpleClassMap();
-		for (var simpleClassMapEntry : simpleClassMap.entrySet()) {
-			String owlClassIRI = simpleClassMapEntry.getKey();
-			SimpleClass owlClass = simpleClassMapEntry.getValue();
-			
-			// Create a new simple ontology vertex object for each OWL class
-			SimpleOntologyVertex vertex = new SimpleOntologyVertex();
-			vertex.setIri(owlClassIRI);
-			vertex.setOntologyId(this.id);
-			vertex.setLatestGitWebhookId(this.latestGitWebhookId);
-			Map<String, Object> vertexProperties = new LinkedHashMap<>();
-			
-			// Resolve annotations for this vertex
-			Map<String, String> owlClassAnnotations = owlClass.getAnnotations();
-			for (var owlClassAnnotationsEntry : owlClassAnnotations.entrySet()) {
-				String annotationIRI = owlClassAnnotationsEntry.getKey();
-				String annotationValue = owlClassAnnotationsEntry.getValue();
-				String annotationLabel = 
-						simpleAnnotationPropertyMap.containsKey(annotationIRI) ? 
-								CaseUtils.toCamelCase(
-										simpleAnnotationPropertyMap
-											.get(annotationIRI).getLabel(), 
-										false, ' ') :
-								annotationIRI;
-				vertexProperties.put(
-						annotationLabel != null ? 
-								annotationLabel : annotationIRI, 
-						annotationValue);
-			}
-			
-			// Add the new simple ontology vertex to the set of vertices
-			vertex.setProperties(vertexProperties);
-			this.vertices.put(vertex.getVertexKey(), vertex);
-			
-		}
+		// Resolve class vertices
+		resolveAndSetClassVertices(
+		        simpleOntology, simpleAnnotationPropertyMap);
 		
+		// Resolve named individual vertices
+		resolveAndSetNamedIndividualVertices(
+		        simpleOntology, simpleAnnotationPropertyMap);
+		
+	}
+	
+	@JsonIgnore
+    private void resolveAndSetClassVertices(SimpleOntology simpleOntology, 
+            Map<String, SimpleAnnotationProperty> simpleAnnotationPropertyMap) {
+	    
+	    // Iterate over the simple class map from the simple ontology
+        Map<String, SimpleClass> simpleClassMap = 
+                simpleOntology.getSimpleClassMap();
+        for (var simpleClassMapEntry : simpleClassMap.entrySet()) {
+            String owlClassIRI = simpleClassMapEntry.getKey();
+            SimpleClass owlClass = simpleClassMapEntry.getValue();
+            
+            // Create a new simple ontology vertex object for each OWL class
+            SimpleOntologyVertex vertex = new SimpleOntologyVertex();
+            vertex.setIri(owlClassIRI);
+            vertex.setLabel(SimpleOntologyVertexLabel.CLASS.toString());
+            vertex.setOntologyId(this.id);
+            vertex.setLatestGitWebhookId(this.latestGitWebhookId);
+            Map<String, Object> vertexProperties = new LinkedHashMap<>();
+            
+            // Resolve annotations for this vertex
+            Map<String, String> owlClassAnnotations = owlClass.getAnnotations();
+            for (var owlClassAnnotationsEntry : owlClassAnnotations.entrySet()) {
+                String annotationIRI = owlClassAnnotationsEntry.getKey();
+                String annotationValue = owlClassAnnotationsEntry.getValue();
+                String annotationLabel = 
+                        simpleAnnotationPropertyMap.containsKey(annotationIRI) ? 
+                                CaseUtils.toCamelCase(
+                                        simpleAnnotationPropertyMap
+                                            .get(annotationIRI).getLabel(), 
+                                        false, ' ') :
+                                annotationIRI;
+                vertexProperties.put(
+                        annotationLabel != null ? 
+                                annotationLabel : annotationIRI, 
+                        annotationValue);
+            }
+            
+            // Add the new simple ontology vertex to the set of vertices
+            vertex.setProperties(vertexProperties);
+            this.vertices.put(vertex.getVertexKey(), vertex);
+            
+        }
+        
+	}
+	
+	@JsonIgnore
+    private void resolveAndSetNamedIndividualVertices(
+            SimpleOntology simpleOntology, 
+            Map<String, SimpleAnnotationProperty> simpleAnnotationPropertyMap) {
+	    
+	    // Iterate over the simple named individual map from the simple ontology
+        Map<String, SimpleNamedIndividual> simpleNamedIndividualMap = 
+                simpleOntology.getSimpleNamedIndividualMap();
+        for (var simpleNamedIndividualMapEntry : 
+            simpleNamedIndividualMap.entrySet()) {
+            String namedIndividualIRI = 
+                    simpleNamedIndividualMapEntry.getKey();
+            SimpleNamedIndividual namedIndividual = 
+                    simpleNamedIndividualMapEntry.getValue();
+            
+            // Create a new simple ontology vertex object for each named individual
+            SimpleOntologyVertex vertex = new SimpleOntologyVertex();
+            vertex.setIri(namedIndividualIRI);
+            vertex.setLabel(SimpleOntologyVertexLabel.NAMED_INDIVIDUAL.toString());
+            vertex.setOntologyId(this.id);
+            vertex.setLatestGitWebhookId(this.latestGitWebhookId);
+            Map<String, Object> vertexProperties = new LinkedHashMap<>();
+            
+            // Resolve annotations for this named individual
+            Map<String, String> namedIndividualAnnotations = 
+                    namedIndividual.getAnnotations();
+            for (var namedIndividualAnnotationsEntry : 
+                namedIndividualAnnotations.entrySet()) {
+                String annotationIRI = namedIndividualAnnotationsEntry.getKey();
+                String annotationValue = namedIndividualAnnotationsEntry.getValue();
+                String annotationLabel = 
+                        simpleAnnotationPropertyMap.containsKey(annotationIRI) ? 
+                                CaseUtils.toCamelCase(
+                                        simpleAnnotationPropertyMap
+                                            .get(annotationIRI).getLabel(), 
+                                        false, ' ') :
+                                annotationIRI;
+                vertexProperties.put(
+                        annotationLabel != null ? 
+                                annotationLabel : annotationIRI, 
+                        annotationValue);
+            }
+            
+            // Add the new simple ontology vertex to the set of vertices
+            vertex.setProperties(vertexProperties);
+            this.vertices.put(vertex.getVertexKey(), vertex);
+            
+        }
+	    
 	}
 	
 	/**
@@ -157,83 +227,252 @@ public class SimpleOntologyPropertyGraph implements Serializable {
 	@JsonIgnore
 	public void resolveAndSetEdges(SimpleOntology simpleOntology) {
 		
-		// Iterate over the simple class map from the simple ontology
-		Map<String, SimpleClass> simpleClassMap = simpleOntology.getSimpleClassMap();
-		for (var simpleClassMapEntry : simpleClassMap.entrySet()) {
-			String owlClassIRI = simpleClassMapEntry.getKey();
-			SimpleClass owlClass = simpleClassMapEntry.getValue();
-			
-			// Get the previously resolved source vertex
-			String sourceVertexKey = owlClassIRI 
-					+ SimpleOntologyVertex.VERTEX_KEY_DELIMITER 
-					+ this.id;
-			SimpleOntologyVertex sourceVertex = this.vertices.containsKey(sourceVertexKey) ? 
-					vertices.get(sourceVertexKey) : null;
-			if ( sourceVertex != null ) {
-				
-				// Resolve relationships for this vertex
-				Map<String, String> owlClassParents = owlClass.getParentClasses();
-				for (var owlClassParentsEntry : owlClassParents.entrySet()) {
-					String parentClassIRI = owlClassParentsEntry.getKey();
-					String objectPropertyIRI = owlClassParentsEntry.getValue();
-					
-					// Get the previously resolved target vertex
-					String targetVertexKey = parentClassIRI 
-							+ SimpleOntologyVertex.VERTEX_KEY_DELIMITER 
-							+ this.id;
-					SimpleOntologyVertex targetVertex = this.vertices.containsKey(targetVertexKey) ? 
-							vertices.get(targetVertexKey) : null;
-					if ( targetVertex != null ) {
-						
-						// Create a new simple ontology edge object for each 
-						// OWL class parent relationship
-						SimpleOntologyEdge edge = new SimpleOntologyEdge();
-						edge.setSourceVertexKey(sourceVertex.getVertexKey());
-						edge.setSourceVertexId(sourceVertex.getVertexId());
-						edge.setTargetVertexKey(targetVertex.getVertexKey());
-						edge.setTargetVertexId(targetVertex.getVertexId());
-						edge.setOntologyId(id);
-						edge.setLatestGitWebhookId(latestGitWebhookId);
-						Map<String, Object> edgeProperties = new LinkedHashMap<>();
-						if ( objectPropertyIRI != null ) {
-							
-							// There may be many object property IRIs
-						    // delimited by the | symbol
-						    List<String> objectPropertyIRIs = 
-				                    Arrays.asList(objectPropertyIRI
-				                            .replace(" " + PARENT_CLASS_OBJECT_PROPERTY_DELIMITER + " ", 
-				                                    PARENT_CLASS_OBJECT_PROPERTY_DELIMITER)
-				                            .split("\\" + PARENT_CLASS_OBJECT_PROPERTY_DELIMITER));
-						    StringJoiner objectPropertyLabel = new StringJoiner(
-						            " " + PARENT_CLASS_OBJECT_PROPERTY_DELIMITER + " ");
-						    for (String currentObjectPropertyIRI : 
-						        objectPropertyIRIs) {
-						        objectPropertyLabel.add(simpleOntology
-	                                    .getSimpleObjectPropertyMap()
-	                                    .containsKey(currentObjectPropertyIRI) ? 
-	                                            simpleOntology
+		// Resolve class edges
+	    resolveAndSetClassEdges(simpleOntology);
+	    
+	    // Resolve named individual edges
+	    resolveAndSetNamedIndividualEdges(simpleOntology);
+		
+	}
+	
+	@JsonIgnore
+    private void resolveAndSetClassEdges(SimpleOntology simpleOntology) {
+	    
+	    // Iterate over the simple class map from the simple ontology
+        Map<String, SimpleClass> simpleClassMap = simpleOntology
+                .getSimpleClassMap();
+        for (var simpleClassMapEntry : simpleClassMap.entrySet()) {
+            String owlClassIRI = simpleClassMapEntry.getKey();
+            SimpleClass owlClass = simpleClassMapEntry.getValue();
+            
+            // Get the previously resolved source vertex
+            String sourceVertexKey = owlClassIRI 
+                    + SimpleOntologyVertex.VERTEX_KEY_DELIMITER 
+                    + this.id;
+            SimpleOntologyVertex sourceVertex = this.vertices
+                    .containsKey(sourceVertexKey) ? 
+                    vertices.get(sourceVertexKey) : null;
+            if ( sourceVertex != null ) {
+                
+                // Resolve relationships for this vertex
+                Map<String, String> owlClassParents = owlClass
+                        .getParentClasses();
+                for (var owlClassParentsEntry : owlClassParents.entrySet()) {
+                    String parentClassIRI = owlClassParentsEntry.getKey();
+                    String objectPropertyIRI = owlClassParentsEntry.getValue();
+                    
+                    // Get the previously resolved target vertex
+                    String targetVertexKey = parentClassIRI 
+                            + SimpleOntologyVertex.VERTEX_KEY_DELIMITER 
+                            + this.id;
+                    SimpleOntologyVertex targetVertex = this.vertices
+                            .containsKey(targetVertexKey) ? 
+                            vertices.get(targetVertexKey) : null;
+                    if ( targetVertex != null ) {
+                        
+                        // Create a new simple ontology edge object for each 
+                        // OWL class parent relationship
+                        SimpleOntologyEdge edge = new SimpleOntologyEdge();
+                        edge.setLabel(SimpleOntologyEdgeLabel.SUB_CLASS_OF.toString());
+                        edge.setSourceVertexKey(sourceVertex.getVertexKey());
+                        edge.setSourceVertexId(sourceVertex.getVertexId());
+                        edge.setTargetVertexKey(targetVertex.getVertexKey());
+                        edge.setTargetVertexId(targetVertex.getVertexId());
+                        edge.setOntologyId(id);
+                        edge.setLatestGitWebhookId(latestGitWebhookId);
+                        
+                        // Set a default relationship description
+                        Map<String, Object> edgeProperties = new LinkedHashMap<>();
+                        edgeProperties.put(
+                                SimpleOntologyEdge.RELATIONSHIP_TYPE_KEY, 
+                                SimpleOntologyEdgeLabel.SUB_CLASS_OF.toString());
+                        
+                        // Resolve the relationship description
+                        if ( objectPropertyIRI != null ) {
+                            
+                            // There may be many object property IRIs
+                            // delimited by the | symbol
+                            List<String> objectPropertyIRIs = 
+                                    Arrays.asList(objectPropertyIRI
+                                            .replace(" " + PARENT_CLASS_OBJECT_PROPERTY_DELIMITER + " ", 
+                                                    PARENT_CLASS_OBJECT_PROPERTY_DELIMITER)
+                                            .split("\\" + PARENT_CLASS_OBJECT_PROPERTY_DELIMITER));
+                            StringJoiner objectPropertyLabel = new StringJoiner(
+                                    " " + PARENT_CLASS_OBJECT_PROPERTY_DELIMITER + " ");
+                            for (String currentObjectPropertyIRI : 
+                                objectPropertyIRIs) {
+                                objectPropertyLabel.add(simpleOntology
+                                        .getSimpleObjectPropertyMap()
+                                        .containsKey(currentObjectPropertyIRI) ? 
+                                                simpleOntology
                                                 .getSimpleObjectPropertyMap()
                                                 .get(currentObjectPropertyIRI)
-                                                .getLabel() : currentObjectPropertyIRI);
-						    }
-							edgeProperties.put(
-									SimpleOntologyEdge.RELATIONSHIP_TYPE_KEY, 
-									objectPropertyLabel.toString());
-							
-						}
-						
-						// Add the new simple ontology edge to the set of edges
-						edge.setProperties(edgeProperties);
-						this.edges.add(edge);
-						
-					}
-					
-				}
-				
-			}
-			
-		}
-		
+                                                .getLabel() : 
+                                                    currentObjectPropertyIRI);
+                            }
+                            edgeProperties.put(
+                                    SimpleOntologyEdge.RELATIONSHIP_TYPE_KEY, 
+                                    objectPropertyLabel.toString());
+                            
+                        }
+                        
+                        // Add the new simple ontology edge to the set of edges
+                        edge.setProperties(edgeProperties);
+                        this.edges.add(edge);
+                        
+                    }
+                    
+                }
+                
+            }
+            
+        }
+	    
+	}
+	
+	@JsonIgnore
+    private void resolveAndSetNamedIndividualEdges(
+            SimpleOntology simpleOntology) {
+	    
+	    // Iterate over the simple named individual map from the simple ontology
+        Map<String, SimpleNamedIndividual> simpleNamedIndividualMap = 
+                simpleOntology.getSimpleNamedIndividualMap();
+        for (var simpleNamedIndividualMapEntry : 
+            simpleNamedIndividualMap.entrySet()) {
+            String namedIndividualIRI = 
+                    simpleNamedIndividualMapEntry.getKey();
+            SimpleNamedIndividual namedIndividual = 
+                    simpleNamedIndividualMapEntry.getValue();
+            
+            // Get the previously resolved source vertex
+            String sourceVertexKey = namedIndividualIRI 
+                    + SimpleOntologyVertex.VERTEX_KEY_DELIMITER 
+                    + this.id;
+            SimpleOntologyVertex sourceVertex = this.vertices
+                    .containsKey(sourceVertexKey) ? 
+                    vertices.get(sourceVertexKey) : null;
+            if ( sourceVertex != null ) {
+                
+                // Resolve named individual > instance of > class relationships
+                Set<String> instanceOfClassIris = namedIndividual
+                        .getInstanceOfClassIris();
+                for (String instanceOfClassIri : instanceOfClassIris) {
+                    
+                    // Get the previously resolved target vertex
+                    String targetVertexKey = instanceOfClassIri
+                            + SimpleOntologyVertex.VERTEX_KEY_DELIMITER 
+                            + this.id;
+                    SimpleOntologyVertex targetVertex = 
+                            this.vertices.containsKey(targetVertexKey) ? 
+                                    vertices.get(targetVertexKey) : null;
+                    if ( targetVertex != null ) {
+                        
+                        // Create a new simple ontology edge object for each 
+                        // instance of class relationship
+                        SimpleOntologyEdge edge = new SimpleOntologyEdge();
+                        edge.setLabel(SimpleOntologyEdgeLabel.INSTANCE_OF.toString());
+                        edge.setSourceVertexKey(sourceVertex.getVertexKey());
+                        edge.setSourceVertexId(sourceVertex.getVertexId());
+                        edge.setTargetVertexKey(targetVertex.getVertexKey());
+                        edge.setTargetVertexId(targetVertex.getVertexId());
+                        edge.setOntologyId(id);
+                        edge.setLatestGitWebhookId(latestGitWebhookId);
+                        
+                        // Set a default relationship description
+                        Map<String, Object> edgeProperties = new LinkedHashMap<>();
+                        edgeProperties.put(
+                                SimpleOntologyEdge.RELATIONSHIP_TYPE_KEY, 
+                                SimpleOntologyEdgeLabel.INSTANCE_OF.toString());
+                        
+                        // Add the new simple ontology edge to the set of edges
+                        edge.setProperties(edgeProperties);
+                        this.edges.add(edge);
+                    
+                    }
+                    
+                }
+                
+                // Resolve linked named individual relationships
+                Map<String, String> linkedNamedIndividuals = namedIndividual
+                        .getLinkedNamedIndividuals();
+                for (var linkedNamedIndividualsEntry : linkedNamedIndividuals
+                        .entrySet()) {
+                    String linkedTargetIndividualIri = 
+                            linkedNamedIndividualsEntry.getKey();
+                    String linkedTargetObjectPropertyIri = 
+                            linkedNamedIndividualsEntry.getValue();
+                    
+                    // Get the previously resolved target vertex
+                    String targetVertexKey = linkedTargetIndividualIri
+                            + SimpleOntologyVertex.VERTEX_KEY_DELIMITER 
+                            + this.id;
+                    SimpleOntologyVertex targetVertex = 
+                            this.vertices.containsKey(targetVertexKey) ? 
+                                    vertices.get(targetVertexKey) : null;
+                    if ( targetVertex != null ) {
+                        
+                        // Create a new simple ontology edge object for each 
+                        // linked individual relationship
+                        SimpleOntologyEdge edge = new SimpleOntologyEdge();
+                        edge.setLabel(SimpleOntologyEdgeLabel.LINKED_NAMED_INDIVIDUAL.toString());
+                        edge.setSourceVertexKey(sourceVertex.getVertexKey());
+                        edge.setSourceVertexId(sourceVertex.getVertexId());
+                        edge.setTargetVertexKey(targetVertex.getVertexKey());
+                        edge.setTargetVertexId(targetVertex.getVertexId());
+                        edge.setOntologyId(id);
+                        edge.setLatestGitWebhookId(latestGitWebhookId);
+                        
+                        // Set a default relationship description
+                        Map<String, Object> edgeProperties = new LinkedHashMap<>();
+                        edgeProperties.put(
+                                SimpleOntologyEdge.RELATIONSHIP_TYPE_KEY, 
+                                SimpleOntologyEdgeLabel.LINKED_NAMED_INDIVIDUAL.toString());
+                        
+                        // Resolve the relationship description
+                        if ( linkedTargetObjectPropertyIri != null ) {
+                            
+                            String linkedTargetObjectPropertyLabel = null;
+                            if ( simpleOntology.getSimpleObjectPropertyMap()
+                                    .containsKey(linkedTargetObjectPropertyIri) )
+                                linkedTargetObjectPropertyLabel = 
+                                    simpleOntology
+                                        .getSimpleObjectPropertyMap()
+                                        .get(linkedTargetObjectPropertyIri)
+                                        .getLabel();
+                            else {
+                                
+                                // Try to extract the relationship description
+                                // from the object property IRI
+                                int indexOfHash = linkedTargetObjectPropertyIri
+                                        .lastIndexOf("#");
+                                if ( indexOfHash > -1 )
+                                    linkedTargetObjectPropertyLabel = 
+                                                linkedTargetObjectPropertyIri
+                                                    .substring(indexOfHash + 1);
+                                
+                            }
+                            
+                            // Add the relationship to the edge properties
+                            if ( !StringUtils.isBlank(
+                                    linkedTargetObjectPropertyLabel) )
+                                edgeProperties.put(
+                                        SimpleOntologyEdge.RELATIONSHIP_TYPE_KEY, 
+                                        linkedTargetObjectPropertyLabel);
+                            
+                        }
+                        
+                        // Add the new simple ontology edge to the set of edges
+                        edge.setProperties(edgeProperties);
+                        this.edges.add(edge);
+                        
+                    }
+                    
+                }
+                
+            }
+            
+        }
+	    
 	}
 
 	public int getId() {

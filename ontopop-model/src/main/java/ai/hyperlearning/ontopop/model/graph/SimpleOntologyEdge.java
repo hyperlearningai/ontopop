@@ -21,8 +21,8 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 public class SimpleOntologyEdge implements Serializable {
 
 	private static final long serialVersionUID = 3796299067782280539L;
-	public static final String LABEL = "subClassOf";
 	public static final String RELATIONSHIP_TYPE_KEY = "relationship";
+	private String label;
 	private String sourceVertexKey;
 	private long sourceVertexId;
 	private String targetVertexKey;
@@ -41,6 +41,7 @@ public class SimpleOntologyEdge implements Serializable {
 	}
 
 	public SimpleOntologyEdge(
+	        String label, 
 			String sourceVertexKey, 
 			long sourceVertexId, 
 			String targetVertexKey, 
@@ -48,6 +49,7 @@ public class SimpleOntologyEdge implements Serializable {
 			int ontologyId,
 			long latestGitWebhookId, 
 			Map<String, Object> properties) {
+	    this.label = label;
 		this.sourceVertexKey = sourceVertexKey;
 		this.sourceVertexId = sourceVertexId;
 		this.targetVertexKey = targetVertexKey;
@@ -57,7 +59,15 @@ public class SimpleOntologyEdge implements Serializable {
 		this.properties = properties;
 	}
 
-	public String getSourceVertexKey() {
+	public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public String getSourceVertexKey() {
 		return sourceVertexKey;
 	}
 
@@ -133,7 +143,7 @@ public class SimpleOntologyEdge implements Serializable {
 	@Override
 	public String toString() {
 		return "SimpleOntologyEdge ["
-				+ "label=" + LABEL + ", "
+				+ "label=" + label + ", "
 				+ "sourceVertexKey=" + sourceVertexKey + ", "
 				+ "sourceVertexId=" + sourceVertexId + ", "
 				+ "targetVertexKey=" + targetVertexKey + ", "

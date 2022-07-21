@@ -32,6 +32,7 @@ import ai.hyperlearning.ontopop.model.graph.formats.graphson.GraphSONGraph;
 import ai.hyperlearning.ontopop.model.graph.formats.vis.VisDatasetGraph;
 import ai.hyperlearning.ontopop.model.owl.SimpleAnnotationProperty;
 import ai.hyperlearning.ontopop.model.owl.SimpleClass;
+import ai.hyperlearning.ontopop.model.owl.SimpleNamedIndividual;
 import ai.hyperlearning.ontopop.model.owl.SimpleObjectProperty;
 import ai.hyperlearning.ontopop.model.owl.SimpleOntology;
 import ai.hyperlearning.ontopop.owl.OWLAPI;
@@ -142,11 +143,14 @@ public class RdfXmlToPropertyGraphMapper {
                     OWLAPI.parseObjectProperties(ontology);
             Map<String, SimpleClass> simpleClassMap = 
                     OWLAPI.parseClasses(ontology);
+            Map<String, SimpleNamedIndividual> simpleNamedIndividualMap = 
+                    OWLAPI.parseNamedIndividuals(ontology);
             return new SimpleOntology(DEFAULT_ONTOLOGY_ID, 
                     DEFAULT_LATEST_GIT_WEBHOOK_ID,
                     simpleAnnotationPropertyMap, 
                     simpleObjectPropertyMap,
-                    simpleClassMap);
+                    simpleClassMap, 
+                    simpleNamedIndividualMap);
         } catch (Exception e) {
             throw new OntologyDataParsingException();
         }

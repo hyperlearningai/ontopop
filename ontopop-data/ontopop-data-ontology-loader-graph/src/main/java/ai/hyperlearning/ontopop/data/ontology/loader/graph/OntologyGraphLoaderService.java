@@ -7,6 +7,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,7 @@ import ai.hyperlearning.ontopop.messaging.processors.DataPipelineLoaderGraphSour
 import ai.hyperlearning.ontopop.model.graph.SimpleOntologyEdge;
 import ai.hyperlearning.ontopop.model.graph.SimpleOntologyPropertyGraph;
 import ai.hyperlearning.ontopop.model.graph.SimpleOntologyVertex;
+import ai.hyperlearning.ontopop.model.graph.SimpleOntologyVertexLabel;
 import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 import ai.hyperlearning.ontopop.storage.ObjectStorageService;
 import ai.hyperlearning.ontopop.storage.ObjectStorageServiceFactory;
@@ -239,12 +241,31 @@ public class OntologyGraphLoaderService {
         for (var entry : simpleOntologyPropertyGraph.getVertices().entrySet()) {
             SimpleOntologyVertex vertex = entry.getValue();
             vertex.preparePropertiesForLoading();
-            vertices.add(new SimpleGraphVertex(vertex.getVertexId(),
-                    SimpleOntologyVertex.LABEL, vertex.getProperties()));
+            vertices.add(new SimpleGraphVertex(
+                    vertex.getVertexId(),
+                    vertex.getLabel(), 
+                    vertex.getProperties()));
         }
 
-        // Bulk load the vertices/classes
-        graphDatabaseService.addVertices(SimpleOntologyVertex.LABEL, vertices);
+        // Bulk load the class vertices
+        String classLabel = SimpleOntologyVertexLabel.CLASS.toString();
+        graphDatabaseService.addVertices(
+                classLabel.toLowerCase().replace(" ", "_"), 
+                vertices.stream()
+                    .filter(v -> v.getLabel().equalsIgnoreCase(classLabel))
+                    .collect(Collectors.toSet()));
+        
+        // Bulk load the named individual vertices
+        String namedIndividualLabel = SimpleOntologyVertexLabel
+                .NAMED_INDIVIDUAL.toString();
+        graphDatabaseService.addVertices(
+                namedIndividualLabel.toLowerCase().replace(" ", "_"), 
+                vertices.stream()
+                    .filter(v -> v.getLabel()
+                            .equalsIgnoreCase(namedIndividualLabel))
+                    .collect(Collectors.toSet()));
+        
+        // Commit the bulk vertex load
         graphDatabaseService.commit();
         LOGGER.debug("Loaded {} vertices.", vertices.size());
 
@@ -259,8 +280,10 @@ public class OntologyGraphLoaderService {
         List<SimpleGraphEdge> edges = new ArrayList<>();
         for (SimpleOntologyEdge edge : simpleOntologyPropertyGraph.getEdges()) {
             edge.preparePropertiesForLoading();
-            edges.add(new SimpleGraphEdge(SimpleOntologyEdge.LABEL,
-                    edge.getSourceVertexId(), edge.getTargetVertexId(),
+            edges.add(new SimpleGraphEdge(
+                    edge.getLabel().toLowerCase().replace(" ", "_"), 
+                    edge.getSourceVertexId(), 
+                    edge.getTargetVertexId(),
                     edge.getProperties()));
         }
 

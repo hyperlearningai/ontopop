@@ -25,6 +25,7 @@ import ai.hyperlearning.ontopop.messaging.processors.DataPipelineParserSource;
 import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 import ai.hyperlearning.ontopop.model.owl.SimpleAnnotationProperty;
 import ai.hyperlearning.ontopop.model.owl.SimpleClass;
+import ai.hyperlearning.ontopop.model.owl.SimpleNamedIndividual;
 import ai.hyperlearning.ontopop.model.owl.SimpleObjectProperty;
 import ai.hyperlearning.ontopop.model.owl.SimpleOntology;
 import ai.hyperlearning.ontopop.owl.OWLAPI;
@@ -204,14 +205,21 @@ public class OntologyParserService {
                 OWLAPI.parseObjectProperties(ontology);
 
         // Get all classes
-        Map<String, SimpleClass> simpleClassMap = OWLAPI.parseClasses(ontology);
+        Map<String, SimpleClass> simpleClassMap = 
+                OWLAPI.parseClasses(ontology);
+        
+        // Get all named individuals
+        Map<String, SimpleNamedIndividual> simpleNamedIndividualMap = 
+                OWLAPI.parseNamedIndividuals(ontology);
 
         // Create a Simple Ontology object as a container for the
         // parsed ontological components
         simpleOntology = new SimpleOntology(ontologyMessage.getOntologyId(),
                 ontologyMessage.getGitWebhookId(),
-                simpleAnnotationPropertyMap, simpleObjectPropertyMap,
-                simpleClassMap);
+                simpleAnnotationPropertyMap, 
+                simpleObjectPropertyMap,
+                simpleClassMap, 
+                simpleNamedIndividualMap);
 
         // Count the number of relationships for debugging purposes
         int relationshipCount = 0;
@@ -246,7 +254,7 @@ public class OntologyParserService {
         Path temporaryFile = Files.createTempFile("", jsonFilename);
         File file = new File(temporaryFile.toAbsolutePath().toString());
         ObjectMapper mapper =
-                new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);;
+                new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
         mapper.writeValue(file, simpleOntology);
 
         // Upload the serialized JSON file to persistent object storage

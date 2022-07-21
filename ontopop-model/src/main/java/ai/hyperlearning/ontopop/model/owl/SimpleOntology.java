@@ -22,14 +22,17 @@ public class SimpleOntology implements Serializable {
 	private int id;
 	private long latestGitWebhookId;
 	
-	// Map between annotation property IRI and Simple Annotation Property objects
+	// Map between annotation property IRI and SimpleAnnotationProperty objects
 	private Map<String, SimpleAnnotationProperty> simpleAnnotationPropertyMap = new LinkedHashMap<>();
 	
-	// Map between object property IRI and Simple Object Property objects
+	// Map between object property IRI and SimpleObjectProperty objects
 	private Map<String, SimpleObjectProperty> simpleObjectPropertyMap = new LinkedHashMap<>();
 	
-	// Map between class IRI and Simple Class objects
+	// Map between class IRI and SimpleClass objects
 	private Map<String, SimpleClass> simpleClassMap = new LinkedHashMap<>();
+	
+	// Map between named individual IRI and SimpleNamedIndividual objects
+	private Map<String, SimpleNamedIndividual> simpleNamedIndividualMap = new LinkedHashMap<>();
 	
 	public SimpleOntology() {
 		
@@ -40,12 +43,14 @@ public class SimpleOntology implements Serializable {
 			long latestGitWebhookId, 
 			Map<String, SimpleAnnotationProperty> simpleAnnotationPropertyMap,
 			Map<String, SimpleObjectProperty> simpleObjectPropertyMap, 
-			Map<String, SimpleClass> simpleClassMap) {
+			Map<String, SimpleClass> simpleClassMap, 
+			Map<String, SimpleNamedIndividual> simpleNamedIndividualMap) {
 		this.id = id;
 		this.latestGitWebhookId = latestGitWebhookId;
 		this.simpleAnnotationPropertyMap = simpleAnnotationPropertyMap;
 		this.simpleObjectPropertyMap = simpleObjectPropertyMap;
 		this.simpleClassMap = simpleClassMap;
+		this.simpleNamedIndividualMap = simpleNamedIndividualMap;
 	}
 
 	public int getId() {
@@ -90,7 +95,16 @@ public class SimpleOntology implements Serializable {
 		this.simpleClassMap = simpleClassMap;
 	}
 	
-	@JsonIgnore
+	public Map<String, SimpleNamedIndividual> getSimpleNamedIndividualMap() {
+        return simpleNamedIndividualMap;
+    }
+
+    public void setSimpleNamedIndividualMap(
+            Map<String, SimpleNamedIndividual> simpleNamedIndividualMap) {
+        this.simpleNamedIndividualMap = simpleNamedIndividualMap;
+    }
+
+    @JsonIgnore
 	public Set<String> getUniqueSimpleAnnotationPropertyLabels() {
 	    Set<String> uniqueSimpleAnnotationPropertyLabels = new HashSet<>();
 	    for (SimpleAnnotationProperty simpleAnnotationProperty : 
@@ -174,7 +188,8 @@ public class SimpleOntology implements Serializable {
 				+ "latestGitWebhookId=" + latestGitWebhookId + ", "
 				+ "simpleAnnotationPropertyMap=" + simpleAnnotationPropertyMap + ", "
 				+ "simpleObjectPropertyMap=" + simpleObjectPropertyMap + ", "
-				+ "simpleClassMap=" + simpleClassMap 
+				+ "simpleClassMap=" + simpleClassMap + ", "
+				+ "simpleNamedIndividualMap=" + simpleNamedIndividualMap + ", "
 				+ "]";
 	}
 	

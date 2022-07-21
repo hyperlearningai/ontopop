@@ -12,7 +12,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 /**
- * Simple Property Graph model representation of an OWL Class
+ * Simple Property Graph model representation of an OWL Class and Named Individual
  *
  * @author jillurquddus
  * @since 2.0.0
@@ -24,8 +24,8 @@ public class SimpleOntologyVertex implements Serializable {
 	protected static final String VERTEX_KEY_DELIMITER = "_";
 	protected static final String VERTEX_ID_ONTOLOGY_ID_PADDING = "0";
 	
-	public static final String LABEL = "class";
 	private String iri;
+	private String label;
 	private Integer ontologyId;
 	private String vertexKey;
 	private long vertexId;
@@ -43,10 +43,12 @@ public class SimpleOntologyVertex implements Serializable {
 
 	public SimpleOntologyVertex(
 			String iri, 
+			String label, 
 			int ontologyId, 
 			long latestGitWebhookId, 
 			Map<String, Object> properties) {
 		this.iri = iri;
+		this.label = label;
 		this.ontologyId = ontologyId;
 		this.vertexKey = iri + VERTEX_KEY_DELIMITER + ontologyId;
 		this.latestGitWebhookId = latestGitWebhookId;
@@ -70,7 +72,15 @@ public class SimpleOntologyVertex implements Serializable {
 			
 	}
 
-	public int getOntologyId() {
+	public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public int getOntologyId() {
 		return ontologyId;
 	}
 
@@ -161,8 +171,8 @@ public class SimpleOntologyVertex implements Serializable {
 	@Override
 	public String toString() {
 		return "SimpleOntologyVertex ["
-				+ "label=" + LABEL + ", "
 				+ "iri=" + iri + ", "
+				+ "label=" + label + ", "
 				+ "ontologyId=" + ontologyId + ", "
 				+ "vertexKey=" + vertexKey + ", "
 				+ "vertexId=" + vertexId + ", "
