@@ -244,7 +244,9 @@ public class RdfXmlToPropertyGraphMapper {
             for (SimpleOntologyVertex simpleOntologyVertex : 
                     simpleOntologyPropertyGraph.getVertices().values()) {
                 simpleOntologyVertex.preparePropertiesForModelling();
-                propertyGraphFormat.addVertex(simpleOntologyVertex.getVertexId(), 
+                propertyGraphFormat.addVertex(
+                        simpleOntologyVertex.getVertexId(), 
+                        simpleOntologyVertex.getLabel(), 
                         simpleOntologyVertex.getProperties());
             }
             
@@ -252,7 +254,9 @@ public class RdfXmlToPropertyGraphMapper {
             long edgeId = 1;
             for (SimpleOntologyEdge simpleOntologyEdge : 
                     simpleOntologyPropertyGraph.getEdges()) {
-                propertyGraphFormat.addEdge(edgeId, 
+                propertyGraphFormat.addEdge(
+                        edgeId, 
+                        simpleOntologyEdge.getLabel(), 
                         simpleOntologyEdge.getSourceVertexId(), 
                         simpleOntologyEdge.getTargetVertexId(), 
                         simpleOntologyEdge.getProperties());

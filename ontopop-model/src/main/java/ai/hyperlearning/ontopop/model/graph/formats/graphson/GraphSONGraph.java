@@ -31,10 +31,7 @@ public class GraphSONGraph extends PropertyGraphFormat implements Serializable  
     
     // Internal property key values
     private static final String VERTEX_PROPERTY_VALUE_TYPE = "vertex";
-    private static final String VERTEX_PROPERTY_VALUE_LABEL = "class";
     private static final String EDGE_PROPERTY_VALUE_TYPE = "edge";
-    private static final String EDGE_PROPERTY_VALUE_LABEL = "subclassOf";
-    private static final String EDGE_PROPERTY_VALUE_RELATIONSHIP = "Subclass of";
     private static final int EDGE_PROPERTY_VALUE_WEIGHT = 1;
     
     private String mode = "NORMAL";
@@ -57,13 +54,14 @@ public class GraphSONGraph extends PropertyGraphFormat implements Serializable  
         this.mode = mode;
     }
     
-    public void addVertex(long vertexId, Map<String, Object> properties) {
+    public void addVertex(long vertexId, String label, 
+            Map<String, Object> properties) {
         
         // Add vertex properties
         Map<String, Object> propertyMap = new LinkedHashMap<>();
         propertyMap.put(COMMON_PROPERTY_KEY_ID, String.valueOf(vertexId));
         propertyMap.put(COMMON_PROPERTY_KEY_TYPE, VERTEX_PROPERTY_VALUE_TYPE);
-        propertyMap.put(COMMON_PROPERTY_KEY_LABEL, VERTEX_PROPERTY_VALUE_LABEL);
+        propertyMap.put(COMMON_PROPERTY_KEY_LABEL, label);
         propertyMap.putAll(properties);
         
         // Explicitly generate the name property
@@ -79,14 +77,15 @@ public class GraphSONGraph extends PropertyGraphFormat implements Serializable  
         
     }
     
-    public void addEdge(long edgeId, long sourceVertexId, long targetVertexId, 
+    public void addEdge(long edgeId, String label, 
+            long sourceVertexId, long targetVertexId, 
             Map<String, Object> properties) {
         
         // Add edge properties
         Map<String, Object> propertyMap = new LinkedHashMap<>();
         propertyMap.put(COMMON_PROPERTY_KEY_ID, String.valueOf(edgeId));
         propertyMap.put(COMMON_PROPERTY_KEY_TYPE, EDGE_PROPERTY_VALUE_TYPE);
-        propertyMap.put(COMMON_PROPERTY_KEY_LABEL, EDGE_PROPERTY_VALUE_LABEL);
+        propertyMap.put(COMMON_PROPERTY_KEY_LABEL, label);
         propertyMap.put(EDGE_PROPERTY_KEY_OUT_V, String.valueOf(sourceVertexId));
         propertyMap.put(EDGE_PROPERTY_KEY_IN_V, String.valueOf(targetVertexId));
         propertyMap.put(EDGE_PROPERTY_KEY_WEIGHT, EDGE_PROPERTY_VALUE_WEIGHT);
@@ -94,8 +93,7 @@ public class GraphSONGraph extends PropertyGraphFormat implements Serializable  
         
         // Explicitly generate the relationship property if required
         if ( !propertyMap.containsKey(EDGE_PROPERTY_KEY_RELATIONSHIP) )
-            propertyMap.put(EDGE_PROPERTY_KEY_RELATIONSHIP, 
-                    EDGE_PROPERTY_VALUE_RELATIONSHIP);
+            propertyMap.put(EDGE_PROPERTY_KEY_RELATIONSHIP, label);
         
         // Add the edge to the list of edges
         this.edges.add(propertyMap);

@@ -36,7 +36,9 @@ public class RdfXmlVisDatasetMapper {
         for (SimpleOntologyVertex simpleOntologyVertex : 
                 simpleOntologyPropertyGraph.getVertices().values()) {
             simpleOntologyVertex.preparePropertiesForModelling();
-            graph.addVertex(simpleOntologyVertex.getVertexId(), 
+            graph.addVertex(
+                    simpleOntologyVertex.getVertexId(), 
+                    simpleOntologyVertex.getLabel(), 
                     simpleOntologyVertex.getProperties());
         }
         
@@ -44,7 +46,9 @@ public class RdfXmlVisDatasetMapper {
         long edgeId = 1;
         for (SimpleOntologyEdge simpleOntologyEdge : 
                 simpleOntologyPropertyGraph.getEdges()) {
-            graph.addEdge(edgeId, 
+            graph.addEdge(
+                    edgeId, 
+                    simpleOntologyEdge.getLabel(), 
                     simpleOntologyEdge.getSourceVertexId(), 
                     simpleOntologyEdge.getTargetVertexId(), 
                     simpleOntologyEdge.getProperties());

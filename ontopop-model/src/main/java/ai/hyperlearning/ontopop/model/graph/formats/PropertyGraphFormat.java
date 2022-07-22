@@ -36,10 +36,11 @@ public abstract class PropertyGraphFormat implements Serializable {
     }
     
     public abstract void addVertex(
-            long vertexId, Map<String, Object> properties);
+            long vertexId, String label, Map<String, Object> properties);
     
     public abstract void addEdge(
-            long edgeId, long sourceVertexId, long targetVertexId, 
+            long edgeId, String label, long sourceVertexId, 
+            long targetVertexId, 
             Map<String, Object> properties);
 
     @Override

@@ -13,6 +13,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.riot.RDFDataMgr;
@@ -76,12 +78,30 @@ public class OWLAPI {
     private static final OWLDataFactory SHARED_OWL_DATA_FACTORY =
             SHARED_OWL_ONTOLOGY_MANAGER.getOWLDataFactory();
     private static final String DELIMITER = "|";
+    private static final Pattern CAPITAL_LETTER_PATTERN = 
+            Pattern.compile("([A-Z])");
     
     private OWLAPI() {
         throw new IllegalStateException("The OWLAPI "
                 + "utility class cannot be instantiated.");
     }
+    
+    /**************************************************************************
+     * String Formatters
+     *************************************************************************/
 
+    private static String sentenceCase(String text) {
+        if ( StringUtils.isBlank(text) ) 
+            return text;
+        Matcher matcher = CAPITAL_LETTER_PATTERN.matcher(text);
+        String result = matcher
+                .replaceAll(" $1")
+                .strip()
+                .replaceAll(" +", " ");
+        return result.substring(0, 1).toUpperCase() 
+                + result.substring(1).toLowerCase();
+    }
+    
     /**************************************************************************
      * Loaders
      *************************************************************************/
@@ -277,8 +297,33 @@ public class OWLAPI {
      */
     
     public static String generateRDFSLabel(String iri) {
+        
+        String rdfsLabel = null;
+        
+        // Use the substring after the last # symbol
         int indexOfHash = iri.lastIndexOf("#");
-        return indexOfHash > -1 ? iri.substring(indexOfHash + 1) : iri;
+        if ( indexOfHash > -1 )
+            rdfsLabel = sentenceCase(iri
+                            .substring(indexOfHash + 1)
+                            .replace("_", " ")
+                            .strip());
+        
+        // Use the substring after the last / symbol
+        if ( StringUtils.isBlank(rdfsLabel) ) {
+            int indexOfForwardSlash = iri.lastIndexOf("/");
+            if ( indexOfForwardSlash > -1 )
+                rdfsLabel = sentenceCase(iri
+                                .substring(indexOfForwardSlash + 1)
+                                .replace("_", " ")
+                                .strip());
+        }
+        
+        // Use the IRI
+        if ( StringUtils.isBlank(rdfsLabel) )
+            rdfsLabel = iri;
+        
+        return rdfsLabel;
+        
     }
 
     /**************************************************************************
