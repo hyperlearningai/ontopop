@@ -1,5 +1,7 @@
 package ai.hyperlearning.ontopop.exceptions.git;
 
+import ai.hyperlearning.ontopop.exceptions.OntoPopException;
+
 /**
  * Git Webhook Event Model - Not Found Custom Exception
  *
@@ -7,16 +9,14 @@ package ai.hyperlearning.ontopop.exceptions.git;
  * @since 2.0.0
  */
 
-public class GitWebhookNotFoundException extends RuntimeException {
+public class GitWebhookNotFoundException extends OntoPopException {
 
     private static final long serialVersionUID = 2035416804413039332L;
-
-    public GitWebhookNotFoundException(long id) {
-        super("Git Webhook with ID " + id + " not found.");
-    }
+    private static final String CLASS_NAME = 
+            GitWebhookNotFoundException.class.getSimpleName();
     
     public GitWebhookNotFoundException() {
-        super("Git Webhook not found.");
+        super(CLASS_NAME);
     }
 
 }

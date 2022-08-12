@@ -388,7 +388,7 @@ public class OntologyTriplestoreController {
             GitWebhook gitWebhook = ( gitWebhookId == -1 ) ? 
                     ontologyDownloaderService.getLatestGitWebhook(id) : 
                         gitWebhookRepository.findById(gitWebhookId)
-                            .orElseThrow(() -> new GitWebhookNotFoundException(id));
+                            .orElseThrow(() -> new GitWebhookNotFoundException());
             if ( gitWebhook != null ) {
                 
                 // Download the OWL file from persistent storage
@@ -611,7 +611,7 @@ public class OntologyTriplestoreController {
         
         // Get the ontology
         Ontology ontology = ontologyRepository.findById(id)
-                .orElseThrow(() -> new OntologyNotFoundException(id));
+                .orElseThrow(() -> new OntologyNotFoundException());
         
         // Get the client name
         String clientName = ApiKeyUtils.getClientName(

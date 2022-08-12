@@ -116,7 +116,7 @@ public class OntologyDiffService {
             
         } catch (OntologyNotFoundException e) {
             LOGGER.error("Ontology Diff Service encountered an error.", e);
-            throw new OntologyNotFoundException(ontologyId);
+            throw new OntologyNotFoundException();
         } catch (Exception e) {
             LOGGER.error("Ontology Diff Service encountered an error.", e);
             throw new OntologyDiffProcessingException(
@@ -163,7 +163,7 @@ public class OntologyDiffService {
             
         } catch (OntologyNotFoundException e) {
             LOGGER.error("Ontology Diff Service encountered an error.", e);
-            throw new OntologyNotFoundException(ontologyId);
+            throw new OntologyNotFoundException();
         } catch (GitWebhookNotFoundException e) {
             LOGGER.error("Ontology Diff Service encountered an error.", e);
             throw new GitWebhookNotFoundException();
@@ -214,7 +214,7 @@ public class OntologyDiffService {
             
         } catch (OntologyNotFoundException e) {
             LOGGER.error("Ontology Diff Service encountered an error.", e);
-            throw new OntologyNotFoundException(ontologyId);
+            throw new OntologyNotFoundException();
         } catch (GitWebhookNotFoundException e) {
             LOGGER.error("Ontology Diff Service encountered an error.", e);
             throw new GitWebhookNotFoundException();
@@ -255,19 +255,17 @@ public class OntologyDiffService {
                     simpleOntologyLeftRightDiff.getId();
         ontology = ontologyRepository
                 .findById(ontologyId)
-                .orElseThrow(() -> new OntologyNotFoundException(ontologyId));
+                .orElseThrow(() -> new OntologyNotFoundException());
         
         if ( !timestampDiff ) {
             gitWebhookRepository.findByOntologyIdAndGitWebhookId(
                     ontologyId, 
                     simpleOntologyLeftRightDiff.getLeftGitWebhookId())
-            .orElseThrow(() -> new GitWebhookNotFoundException(
-                    simpleOntologyLeftRightDiff.getLeftGitWebhookId()));
+            .orElseThrow(() -> new GitWebhookNotFoundException());
             gitWebhookRepository.findByOntologyIdAndGitWebhookId(
                     ontologyId, 
                     simpleOntologyLeftRightDiff.getRightGitWebhookId())
-            .orElseThrow(() -> new GitWebhookNotFoundException(
-                    simpleOntologyLeftRightDiff.getRightGitWebhookId()));
+            .orElseThrow(() -> new GitWebhookNotFoundException());
         }
 
     }
@@ -299,9 +297,7 @@ public class OntologyDiffService {
                             simpleOntologyTimestampDiff.getId(), 
                             simpleOntologyTimestampDiff
                                 .getLatestGitWebhookIdBeforeRequestedTimestamp())
-                    .orElseThrow(() -> new GitWebhookNotFoundException(
-                            simpleOntologyTimestampDiff
-                                .getLatestGitWebhookIdBeforeRequestedTimestamp()));
+                    .orElseThrow(() -> new GitWebhookNotFoundException());
                     if ( latestGitWebhook.getId() != requestedGitWebhook.getId() )
                         throw new GitWebhookNotFoundException();
                     else
@@ -351,9 +347,7 @@ public class OntologyDiffService {
                             simpleOntologyTimestampDiff.getId(), 
                             simpleOntologyTimestampDiff
                                 .getLatestGitWebhookIdBeforeRequestedTimestamp())
-                    .orElseThrow(() -> new GitWebhookNotFoundException(
-                            simpleOntologyTimestampDiff
-                                .getLatestGitWebhookIdBeforeRequestedTimestamp()));
+                    .orElseThrow(() -> new GitWebhookNotFoundException());
                     
                     // Update the diff object
                     simpleOntologyTimestampDiff

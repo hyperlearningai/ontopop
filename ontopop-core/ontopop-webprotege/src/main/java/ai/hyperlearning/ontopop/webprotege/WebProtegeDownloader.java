@@ -189,15 +189,18 @@ public class WebProtegeDownloader {
         
         // Validate the WebProtege project ID - emptiness
         if ( StringUtils.isAllBlank(projectId) )
-            throw new WebProtegeInvalidProjectId();
+            throw new WebProtegeInvalidProjectId(
+                    WebProtegeInvalidProjectId.ErrorKey.IS_EMPTY);
         
         // Validate the WebProtege project ID - characters
         if ( !StringUtils.isAlphanumeric(projectId.replace("-", "")) )
-            throw new WebProtegeInvalidProjectId();
+            throw new WebProtegeInvalidProjectId(
+                    WebProtegeInvalidProjectId.ErrorKey.INVALID_CHARACTER);
         
         // Validate the WebProtege project ID - length
         if ( projectId.length() != WEBPROTEGE_PROJECT_ID_LENGTH )
-            throw new WebProtegeInvalidProjectId();
+            throw new WebProtegeInvalidProjectId(
+                    WebProtegeInvalidProjectId.ErrorKey.INVALID_LENGTH);
         
     }
     

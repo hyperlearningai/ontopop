@@ -58,6 +58,11 @@ public class OntologyMappingController {
     
     /**************************************************************************
      * 1. POST - Ontology Data Mapper
+     * @throws IOException 
+     * @throws WebProtegeProjectAccessException 
+     * @throws WebProtegeAuthenticationException 
+     * @throws WebProtegeMissingCredentials 
+     * @throws WebProtegeInvalidProjectId 
      *************************************************************************/
     
     @Operation(
@@ -106,9 +111,18 @@ public class OntologyMappingController {
             @RequestParam(required = false) MultipartFile file, 
             @Parameter(description = "WebProtege project ID", required = false)
             @RequestParam(name = "webProtegeId", required = false) String webProtegeId) 
-                    throws IOException, 
+                    throws OntologyMapperInvalidSourceFormatException, 
+                    OntologyMapperInvalidSourceOntologyDataException, 
+                    OntologyMapperInvalidTargetFormatException, 
+                    OntologyDataParsingException, 
+                    OntologyDataPropertyGraphModellingException, 
                     OWLOntologyCreationException, 
-                    OWLOntologyStorageException {
+                    OWLOntologyStorageException, 
+                    WebProtegeInvalidProjectId, 
+                    WebProtegeMissingCredentials, 
+                    WebProtegeAuthenticationException, 
+                    WebProtegeProjectAccessException, 
+                    IOException {
         
         LOGGER.debug("New HTTP POST request - Map ontology data from {} to {}.", 
                 source, target);
@@ -118,20 +132,8 @@ public class OntologyMappingController {
         if ( webProtegeId != null ) {
             
             // Run the WebProtege downloader service
-            try {
-                webProtegeDownloadedOwlFile = webProtegeDownloader.run(
-                        webProtegeId, null, null);
-            } catch ( WebProtegeMissingCredentials |
-                    WebProtegeAuthenticationException e) {
-                return new ResponseEntity<>(e.getMessage(), 
-                        HttpStatus.INTERNAL_SERVER_ERROR);
-            } catch ( WebProtegeInvalidProjectId e ) {
-                return new ResponseEntity<>(e.getMessage(), 
-                        HttpStatus.BAD_REQUEST);
-            } catch ( WebProtegeProjectAccessException e ) {
-                return new ResponseEntity<>(e.getMessage(), 
-                        HttpStatus.FORBIDDEN);
-            }
+            webProtegeDownloadedOwlFile = webProtegeDownloader.run(
+                    webProtegeId, null, null);
             
         }
         
@@ -162,15 +164,6 @@ public class OntologyMappingController {
                 // Return the mapping result
                 return new ResponseEntity<>(mapped, HttpStatus.OK);
             
-            } catch (OntologyMapperInvalidSourceFormatException | 
-                    OntologyMapperInvalidSourceOntologyDataException | 
-                    OntologyMapperInvalidTargetFormatException e) {
-                return new ResponseEntity<>(e.getMessage(), 
-                        HttpStatus.BAD_REQUEST);
-            } catch (OntologyDataParsingException | 
-                    OntologyDataPropertyGraphModellingException e) {
-                return new ResponseEntity<>(e.getMessage(), 
-                        HttpStatus.INTERNAL_SERVER_ERROR);
             } finally {
                 
                 // Delete the OWL file

@@ -113,7 +113,7 @@ public class OntologyManagementService {
 
         // Get the current ontology
         Ontology ontology = ontologyRepository.findById(id)
-                .orElseThrow(() -> new OntologyNotFoundException(id));
+                .orElseThrow(() -> new OntologyNotFoundException());
 
         // Persist the partially updated ontology
         ontologyNonSecretData.setId(id);

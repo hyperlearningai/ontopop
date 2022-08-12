@@ -202,7 +202,7 @@ public class OntologyManagementController {
             @PathVariable(required = true) int id) {
         LOGGER.debug("New HTTP GET request: Get ontology by ID.");
         return ontologyRepository.findById(id)
-                .orElseThrow(() -> new OntologyNotFoundException(id));
+                .orElseThrow(() -> new OntologyNotFoundException());
     }
 
     /**************************************************************************
@@ -439,8 +439,7 @@ public class OntologyManagementController {
         LOGGER.debug("New HTTP GET request: Get ontology Git webhooks.");
         return gitWebhookRepository
                 .findByOntologyIdAndGitWebhookId(id, gitWebhookId)
-                .orElseThrow(() -> new GitWebhookNotFoundException(
-                        gitWebhookId));
+                .orElseThrow(() -> new GitWebhookNotFoundException());
     }
     
     /**************************************************************************
@@ -484,7 +483,7 @@ public class OntologyManagementController {
         LOGGER.debug("New HTTP GET request: Get all WebProtege webhooks "
                 + "for ontology ID: {}.", id);
         Ontology ontology = ontologyRepository.findById(id)
-                .orElseThrow(() -> new OntologyNotFoundException(id));
+                .orElseThrow(() -> new OntologyNotFoundException());
         if ( !StringUtils.isBlank(ontology.getWebProtegeProjectId()) ) {
             return webProtegeWebhookRepository.findByWebProtegeProjectId(
                     ontology.getWebProtegeProjectId());
@@ -538,16 +537,15 @@ public class OntologyManagementController {
             @PathVariable(required = true) long webProtegeWebhookId) {
         LOGGER.debug("New HTTP GET request: Get Ontology WebProtege webhook by ID.");
         Ontology ontology = ontologyRepository.findById(id)
-                .orElseThrow(() -> new OntologyNotFoundException(id));
+                .orElseThrow(() -> new OntologyNotFoundException());
         if ( !StringUtils.isBlank(ontology.getWebProtegeProjectId()) ) {
             return webProtegeWebhookRepository
                     .findByWebProtegeProjectIdAndWebProtegeWebhookId(
                             ontology.getWebProtegeProjectId(), 
                             webProtegeWebhookId)
-                    .orElseThrow(() -> new WebProtegeWebhookNotFoundException(
-                            webProtegeWebhookId));
+                    .orElseThrow(() -> new WebProtegeWebhookNotFoundException());
         } else {
-            throw new WebProtegeWebhookNotFoundException(webProtegeWebhookId);
+            throw new WebProtegeWebhookNotFoundException();
         }
     }
 
