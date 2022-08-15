@@ -170,7 +170,7 @@ public class OntologyMappingController {
                     else
                         Files.deleteIfExists(temporaryFile);
                 } catch (Exception e) {
-                    
+                    LOGGER.warn("Could not delete the ontology data file.", e);
                 }
                 
             }
