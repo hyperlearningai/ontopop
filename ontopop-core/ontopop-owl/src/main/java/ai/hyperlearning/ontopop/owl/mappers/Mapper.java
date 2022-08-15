@@ -10,17 +10,17 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.jena.riot.RDFFormat;
 import org.apache.tika.Tika;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataParsingException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPropertyGraphModellingException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidSourceFormatException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidSourceOntologyDataException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidTargetFormatException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPipelineException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidRequestException;
 import ai.hyperlearning.ontopop.owl.OWLAPI;
 
 /**
@@ -89,7 +89,7 @@ public class Mapper {
      * @param target
      * @param ontologyFile
      * @return
-     * @throws OntologyMapperInvalidSourceFormatException
+     * @throws OntologyMapperInvalidRequestException
      * @throws OntologyMapperInvalidSourceOntologyDataException
      * @throws OntologyMapperInvalidTargetFormatException
      * @throws OntologyDataParsingException
@@ -101,11 +101,9 @@ public class Mapper {
     
     public static String map(String source, String target, 
             String ontologyFile) throws 
-        OntologyMapperInvalidSourceFormatException, 
-        OntologyMapperInvalidSourceOntologyDataException, 
-        OntologyMapperInvalidTargetFormatException, 
+        OntologyMapperInvalidRequestException, 
         OntologyDataParsingException, 
-        OntologyDataPropertyGraphModellingException, 
+        OntologyDataPipelineException, 
         IOException, 
         OWLOntologyCreationException, 
         OWLOntologyStorageException {
@@ -129,11 +127,13 @@ public class Mapper {
             
         // Any other source format to OWL/XML
         else if ( targetFormat.equals(MapperTargetFormat.OWL_XML) )
-            throw new OntologyMapperInvalidSourceFormatException();
+            throw new OntologyMapperInvalidRequestException();
         
         // OWL/XML to any other target format
         else if ( sourceFormat.equals(MapperSourceFormat.OWL_XML) )
-            throw new OntologyMapperInvalidTargetFormatException();
+            throw new OntologyMapperInvalidRequestException(
+                    OntologyMapperInvalidRequestException
+                        .ErrorKey.INVALID_TARGET_FORMAT);
         
         // Non-graph target formats
         else if ( !TARGET_GRAPH_FORMATS.contains(targetFormat) ) {
@@ -159,7 +159,9 @@ public class Mapper {
                     return OWLAPI.toRdfFormat(ontologyFile, 
                             RDFFormat.TURTLE_PRETTY);
                 default:
-                    throw new OntologyMapperInvalidTargetFormatException();
+                    throw new OntologyMapperInvalidRequestException(
+                            OntologyMapperInvalidRequestException
+                                .ErrorKey.INVALID_TARGET_FORMAT);
             }
             
         }
@@ -181,7 +183,9 @@ public class Mapper {
             
         }
         
-        else throw new OntologyMapperInvalidTargetFormatException();
+        else throw new OntologyMapperInvalidRequestException(
+                OntologyMapperInvalidRequestException
+                    .ErrorKey.INVALID_TARGET_FORMAT);
         
     }
     
@@ -190,7 +194,7 @@ public class Mapper {
      * @param source
      * @param target
      * @param ontologyFile
-     * @throws OntologyMapperInvalidSourceFormatException
+     * @throws OntologyMapperInvalidRequestException
      * @throws OntologyMapperInvalidSourceOntologyDataException
      * @throws OntologyMapperInvalidTargetFormatException
      * @throws OntologyDataParsingException
@@ -200,60 +204,60 @@ public class Mapper {
     
     public static void validate(String source, String target, 
             String ontologyFile) throws 
-        OntologyMapperInvalidSourceFormatException, 
-        OntologyMapperInvalidSourceOntologyDataException, 
-        OntologyMapperInvalidTargetFormatException, 
+        OntologyMapperInvalidRequestException, 
         OntologyDataParsingException, 
-        OntologyDataPropertyGraphModellingException, 
+        OntologyDataPipelineException, 
         IOException {
         
         // Validate the source format
         MapperSourceFormat sourceFormat = MapperSourceFormat
                 .valueOfLabel(source.strip().toUpperCase());
         if ( sourceFormat == null )
-            throw new OntologyMapperInvalidSourceFormatException();
+            throw new OntologyMapperInvalidRequestException();
         
         // Validate the target format
         MapperTargetFormat targetFormat = MapperTargetFormat
                 .valueOfLabel(target.strip().toUpperCase());
         if ( targetFormat == null )
-            throw new OntologyMapperInvalidTargetFormatException();
+            throw new OntologyMapperInvalidRequestException(
+                    OntologyMapperInvalidRequestException
+                        .ErrorKey.INVALID_TARGET_FORMAT);
         
         // Validate that the given source ontology file exists
         if ( !exists(ontologyFile) )
-            throw new OntologyMapperInvalidSourceOntologyDataException(
-                    "Invalid ontology data file provided - "
-                    + "file does not exist.");
+            throw new OntologyMapperInvalidRequestException(
+                    OntologyMapperInvalidRequestException
+                        .ErrorKey.INVALID_ONTOLOGY_DATA_FILE_DOES_NOT_EXIST);
         
         // Validate the source ontology file extension
         if ( !isValidFileExtension(ontologyFile, sourceFormat) )
-            throw new OntologyMapperInvalidSourceOntologyDataException(
-                    "Invalid ontology data file provided - "
-                    + "file extension does not match the specified "
-                    + "source format.");
+            throw new OntologyMapperInvalidRequestException(
+                    OntologyMapperInvalidRequestException
+                        .ErrorKey.INVALID_ONTOLOGY_DATA_FILE_EXTENSION);
         
         // Validate the size of the given source ontology file
         if ( !isValidFileSize(ontologyFile) )
-            throw new OntologyMapperInvalidSourceOntologyDataException(
-                    "Invalid ontology data file provided - "
-                    + "file size limit exceeded.");
+            throw new OntologyMapperInvalidRequestException(
+                    OntologyMapperInvalidRequestException
+                        .ErrorKey.INVALID_ONTOLOGY_DATA_FILE_SIZE);
         
         // Validate the source file MIME type
         if ( !isValidMimeType(ontologyFile, sourceFormat) )
-            throw new OntologyMapperInvalidSourceOntologyDataException(
-                    "Invalid ontology data file provided - "
-                    + "MIME type does not match the specified "
-                    + "source format.");
+            throw new OntologyMapperInvalidRequestException(
+                    OntologyMapperInvalidRequestException
+                        .ErrorKey.INVALID_ONTOLOGY_DATA_FILE_MIME_TYPE);
         
         // Validate that the given source ontology file is not blank
         if ( isBlank(ontologyFile) )
-            throw new OntologyMapperInvalidSourceOntologyDataException(
-                    "Invalid ontology data file provided - "
-                    + "file is blank.");
+            throw new OntologyMapperInvalidRequestException(
+                    OntologyMapperInvalidRequestException
+                        .ErrorKey.INVALID_ONTOLOGY_DATA_FILE_BLANK);
         
         // Source format equals the target format
         if ( source.equalsIgnoreCase(target) )
-            throw new OntologyMapperInvalidTargetFormatException();
+            throw new OntologyMapperInvalidRequestException(
+                    OntologyMapperInvalidRequestException
+                        .ErrorKey.INVALID_TARGET_FORMAT);
         
     }
     

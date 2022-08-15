@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ai.hyperlearning.ontopop.data.jpa.repositories.GitWebhookRepository;
 import ai.hyperlearning.ontopop.data.jpa.repositories.OntologyRepository;
 import ai.hyperlearning.ontopop.exceptions.git.GitWebhookNotFoundException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffProcessingException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyNotFoundException;
 import ai.hyperlearning.ontopop.model.git.GitWebhook;
 import ai.hyperlearning.ontopop.model.ontology.Ontology;
@@ -82,7 +82,7 @@ public class OntologyDiffService {
      * @param ontologyId
      * @param requestedTimestamp
      * @return
-     * @throws OntologyDiffProcessingException
+     * @throws OntologyDiffException
      */
     
     public SimpleOntologyTimestampDiff run(
@@ -119,8 +119,7 @@ public class OntologyDiffService {
             throw new OntologyNotFoundException();
         } catch (Exception e) {
             LOGGER.error("Ontology Diff Service encountered an error.", e);
-            throw new OntologyDiffProcessingException(
-                    "Ontology Diff Service encountered an error: " + e);
+            throw new OntologyDiffException();
         }
         
     }
@@ -169,8 +168,7 @@ public class OntologyDiffService {
             throw new GitWebhookNotFoundException();
         } catch (Exception e) {
             LOGGER.error("Ontology Diff Service encountered an error.", e);
-            throw new OntologyDiffProcessingException(
-                    "Ontology Diff Service encountered an error: " + e);
+            throw new OntologyDiffException();
         }
         
     }
@@ -220,8 +218,7 @@ public class OntologyDiffService {
             throw new GitWebhookNotFoundException();
         } catch (Exception e) {
             LOGGER.error("Ontology Diff Service encountered an error.", e);
-            throw new OntologyDiffProcessingException(
-                    "Ontology Diff Service encountered an error: " + e);
+            throw new OntologyDiffException();
         }
         
     }
@@ -255,17 +252,21 @@ public class OntologyDiffService {
                     simpleOntologyLeftRightDiff.getId();
         ontology = ontologyRepository
                 .findById(ontologyId)
-                .orElseThrow(() -> new OntologyNotFoundException());
+                .orElseThrow(OntologyNotFoundException::new);
         
         if ( !timestampDiff ) {
-            gitWebhookRepository.findByOntologyIdAndGitWebhookId(
-                    ontologyId, 
-                    simpleOntologyLeftRightDiff.getLeftGitWebhookId())
-            .orElseThrow(() -> new GitWebhookNotFoundException());
-            gitWebhookRepository.findByOntologyIdAndGitWebhookId(
-                    ontologyId, 
-                    simpleOntologyLeftRightDiff.getRightGitWebhookId())
-            .orElseThrow(() -> new GitWebhookNotFoundException());
+            GitWebhook gitWebhookLeft = gitWebhookRepository
+                    .findByOntologyIdAndGitWebhookId(
+                            ontologyId, 
+                            simpleOntologyLeftRightDiff.getLeftGitWebhookId())
+                    .orElseThrow(GitWebhookNotFoundException::new);
+            LOGGER.debug("Found left Git webhook: {}", gitWebhookLeft);
+            GitWebhook gitWebhookRight = gitWebhookRepository
+                    .findByOntologyIdAndGitWebhookId(
+                            ontologyId, 
+                            simpleOntologyLeftRightDiff.getRightGitWebhookId())
+                    .orElseThrow(GitWebhookNotFoundException::new);
+            LOGGER.debug("Found right Git webhook: {}", gitWebhookRight);
         }
 
     }
@@ -297,7 +298,7 @@ public class OntologyDiffService {
                             simpleOntologyTimestampDiff.getId(), 
                             simpleOntologyTimestampDiff
                                 .getLatestGitWebhookIdBeforeRequestedTimestamp())
-                    .orElseThrow(() -> new GitWebhookNotFoundException());
+                    .orElseThrow(GitWebhookNotFoundException::new);
                     if ( latestGitWebhook.getId() != requestedGitWebhook.getId() )
                         throw new GitWebhookNotFoundException();
                     else
@@ -347,7 +348,7 @@ public class OntologyDiffService {
                             simpleOntologyTimestampDiff.getId(), 
                             simpleOntologyTimestampDiff
                                 .getLatestGitWebhookIdBeforeRequestedTimestamp())
-                    .orElseThrow(() -> new GitWebhookNotFoundException());
+                    .orElseThrow(GitWebhookNotFoundException::new);
                     
                     // Update the diff object
                     simpleOntologyTimestampDiff

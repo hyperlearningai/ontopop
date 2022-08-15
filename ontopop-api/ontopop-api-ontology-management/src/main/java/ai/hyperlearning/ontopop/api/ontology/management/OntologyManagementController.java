@@ -27,17 +27,18 @@ import ai.hyperlearning.ontopop.data.jpa.repositories.OntologyRepository;
 import ai.hyperlearning.ontopop.data.jpa.repositories.WebProtegeWebhookRepository;
 import ai.hyperlearning.ontopop.data.ontology.management.OntologyManagementService;
 import ai.hyperlearning.ontopop.exceptions.git.GitWebhookNotFoundException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreationAlreadyExistsException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreationException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDeletionException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreateConflictException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreateException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDeleteException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyNotFoundException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyUpdateSecretDataException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyUpdateException;
 import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeWebhookNotFoundException;
 import ai.hyperlearning.ontopop.model.git.GitWebhook;
 import ai.hyperlearning.ontopop.model.ontology.Ontology;
 import ai.hyperlearning.ontopop.model.ontology.OntologyNonSecretData;
 import ai.hyperlearning.ontopop.model.webprotege.WebProtegeWebhook;
 import ai.hyperlearning.ontopop.security.secrets.model.OntologySecretData;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -120,14 +121,14 @@ public class OntologyManagementController {
         LOGGER.debug("New HTTP POST request: Create a new ontology.");
         try {
             return ontologyManagementService.create(ontology);
-        } catch (OntologyCreationAlreadyExistsException e) {
+        } catch (OntologyCreateConflictException e) {
             LOGGER.error("An error was encountered when attempting to "
                     + "create a new ontology.", e);
-            throw e;
+            throw new OntologyCreateConflictException();
         } catch (Exception e) {
             LOGGER.error("An error was encountered when attempting to "
                     + "create a new ontology.", e);
-            throw new OntologyCreationException();
+            throw new OntologyCreateException();
         }
     }
 
@@ -202,7 +203,7 @@ public class OntologyManagementController {
             @PathVariable(required = true) int id) {
         LOGGER.debug("New HTTP GET request: Get ontology by ID.");
         return ontologyRepository.findById(id)
-                .orElseThrow(() -> new OntologyNotFoundException());
+                .orElseThrow(OntologyNotFoundException::new);
     }
 
     /**************************************************************************
@@ -300,7 +301,8 @@ public class OntologyManagementController {
         } catch (Exception e) {
             LOGGER.error("An error was encountered when attempting to update "
                     + "the secrets for this ontology.", e);
-            throw new OntologyUpdateSecretDataException(id);
+            throw new OntologyUpdateException(
+                    OntologyUpdateException.ErrorKey.SENSITIVE);
         }
     }
 
@@ -347,7 +349,7 @@ public class OntologyManagementController {
         } catch (Exception e) {
             LOGGER.error("An error was encountered when attempting to "
                     + "delete this ontology.", e);
-            throw new OntologyDeletionException(id);
+            throw new OntologyDeleteException();
         }
     }
     
@@ -439,7 +441,7 @@ public class OntologyManagementController {
         LOGGER.debug("New HTTP GET request: Get ontology Git webhooks.");
         return gitWebhookRepository
                 .findByOntologyIdAndGitWebhookId(id, gitWebhookId)
-                .orElseThrow(() -> new GitWebhookNotFoundException());
+                .orElseThrow(GitWebhookNotFoundException::new);
     }
     
     /**************************************************************************
@@ -483,7 +485,7 @@ public class OntologyManagementController {
         LOGGER.debug("New HTTP GET request: Get all WebProtege webhooks "
                 + "for ontology ID: {}.", id);
         Ontology ontology = ontologyRepository.findById(id)
-                .orElseThrow(() -> new OntologyNotFoundException());
+                .orElseThrow(OntologyNotFoundException::new);
         if ( !StringUtils.isBlank(ontology.getWebProtegeProjectId()) ) {
             return webProtegeWebhookRepository.findByWebProtegeProjectId(
                     ontology.getWebProtegeProjectId());
@@ -537,16 +539,14 @@ public class OntologyManagementController {
             @PathVariable(required = true) long webProtegeWebhookId) {
         LOGGER.debug("New HTTP GET request: Get Ontology WebProtege webhook by ID.");
         Ontology ontology = ontologyRepository.findById(id)
-                .orElseThrow(() -> new OntologyNotFoundException());
-        if ( !StringUtils.isBlank(ontology.getWebProtegeProjectId()) ) {
-            return webProtegeWebhookRepository
-                    .findByWebProtegeProjectIdAndWebProtegeWebhookId(
-                            ontology.getWebProtegeProjectId(), 
-                            webProtegeWebhookId)
-                    .orElseThrow(() -> new WebProtegeWebhookNotFoundException());
-        } else {
+                .orElseThrow(OntologyNotFoundException::new);
+        if ( StringUtils.isBlank(ontology.getWebProtegeProjectId()) )
             throw new WebProtegeWebhookNotFoundException();
-        }
+        return webProtegeWebhookRepository
+                .findByWebProtegeProjectIdAndWebProtegeWebhookId(
+                        ontology.getWebProtegeProjectId(), 
+                        webProtegeWebhookId)
+                .orElseThrow(WebProtegeWebhookNotFoundException::new);       
     }
 
 }

@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ai.hyperlearning.ontopop.data.jpa.repositories.OntologyRepository;
 import ai.hyperlearning.ontopop.data.jpa.repositories.WebProtegeWebhookRepository;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPipelineProcessingException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPipelineException;
 import ai.hyperlearning.ontopop.model.ontology.Ontology;
 import ai.hyperlearning.ontopop.model.webprotege.WebProtegeWebhook;
 import ai.hyperlearning.ontopop.webprotege.WebProtegeDownloader;
@@ -59,7 +59,7 @@ public class WebProtegeExporterService {
      */
     
     public void run(WebProtegeWebhook webProtegeWebhook) 
-            throws OntologyDataPipelineProcessingException {
+            throws OntologyDataPipelineException {
         
         LOGGER.info("WebProtege export service started.");
         this.webProtegeWebhook = webProtegeWebhook;
@@ -87,8 +87,9 @@ public class WebProtegeExporterService {
             
         } catch (Exception e) {
             LOGGER.error("WebProtege export service encountered an error.", e);
-            throw new OntologyDataPipelineProcessingException(
-                    "WebProtege export service encountered an error: " + e);
+            throw new OntologyDataPipelineException(
+                    OntologyDataPipelineException
+                        .ErrorKey.EXPORTER_FROM_WEBPROTEGE);
         }
         
         LOGGER.info("WebProtege export service finished.");

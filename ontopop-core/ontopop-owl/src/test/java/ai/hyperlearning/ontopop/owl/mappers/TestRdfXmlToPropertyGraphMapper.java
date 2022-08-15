@@ -14,9 +14,8 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataParsingException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPropertyGraphModellingException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidSourceOntologyDataException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidTargetFormatException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPipelineException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidRequestException;
 
 /**
  * Unit Tests - RDF/XML to target graph-based format mapper
@@ -55,9 +54,9 @@ class TestRdfXmlToPropertyGraphMapper {
      *************************************************************************/
     
     @Test
-    void testMapGraphSon() throws OntologyMapperInvalidSourceOntologyDataException, 
-        OntologyMapperInvalidTargetFormatException, OntologyDataParsingException, 
-        OntologyDataPropertyGraphModellingException, IOException, JSONException {
+    void testMapGraphSon() throws OntologyMapperInvalidRequestException, 
+        OntologyDataParsingException, OntologyDataPipelineException, 
+        IOException, JSONException {
         
         // Format and parse the GraphSON string
         String graphSonString = RdfXmlToPropertyGraphMapper.map(
@@ -80,9 +79,9 @@ class TestRdfXmlToPropertyGraphMapper {
      *************************************************************************/
     
     @Test
-    void testMapVis() throws OntologyMapperInvalidSourceOntologyDataException, 
-        OntologyMapperInvalidTargetFormatException, OntologyDataParsingException, 
-        OntologyDataPropertyGraphModellingException, IOException, JSONException {
+    void testMapVis() throws OntologyMapperInvalidRequestException, 
+        OntologyDataParsingException, OntologyDataPipelineException, 
+        IOException, JSONException {
         
         // Format and parse the Vis Dataset string
         String visString = RdfXmlToPropertyGraphMapper.map(

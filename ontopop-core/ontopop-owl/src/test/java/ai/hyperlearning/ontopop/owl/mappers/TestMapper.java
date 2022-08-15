@@ -19,10 +19,8 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataParsingException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPropertyGraphModellingException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidSourceFormatException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidSourceOntologyDataException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidTargetFormatException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPipelineException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidRequestException;
 
 /**
  * Unit Tests - Ontology data (e.g. RDF/XML) to target format (e.g. GRAPHSON) mapper
@@ -86,7 +84,7 @@ class TestMapper {
     @Test
     void testMapInvalidSourceFormat() {
         Exception exception = assertThrows(
-                OntologyMapperInvalidSourceFormatException.class, () -> {
+                OntologyMapperInvalidRequestException.class, () -> {
             Mapper.map("json", "graphson", testOntologyFilePathValid);
         });
         String expectedMessage = "Invalid source format provided.";
@@ -97,7 +95,7 @@ class TestMapper {
     @Test
     void testMapOwlXmlInvalidSourceFormat() {
         Exception exception = assertThrows(
-                OntologyMapperInvalidSourceFormatException.class, () -> {
+                OntologyMapperInvalidRequestException.class, () -> {
             Mapper.map("turtle", "owl-xml", testOntologyFilePathTtl);
         });
         String expectedMessage = "Invalid source format provided.";
@@ -112,7 +110,7 @@ class TestMapper {
     @Test
     void testMapInvalidTargetFormat() {
         Exception exception = assertThrows(
-                OntologyMapperInvalidTargetFormatException.class, () -> {
+                OntologyMapperInvalidRequestException.class, () -> {
             Mapper.map("rdf-xml", "json", testOntologyFilePathValid);
         });
         String expectedMessage = "Invalid target format provided.";
@@ -127,7 +125,7 @@ class TestMapper {
     @Test
     void testMapInvalidExistence() {
         Exception exception = assertThrows(
-                OntologyMapperInvalidSourceOntologyDataException.class, () -> {
+                OntologyMapperInvalidRequestException.class, () -> {
             Mapper.map("rdf-xml", "graphson", "/tmp/i-do-not-exist.owl");
         });
         String expectedMessage = "Invalid ontology data file provided - "
@@ -143,7 +141,7 @@ class TestMapper {
     @Test
     void testMapInvalidFileExtension() {
         Exception exception = assertThrows(
-                OntologyMapperInvalidSourceOntologyDataException.class, () -> {
+                OntologyMapperInvalidRequestException.class, () -> {
             Mapper.map("rdf-xml", "graphson", 
                     testOntologyFilePathInvalidFileExtension);
         });
@@ -160,7 +158,7 @@ class TestMapper {
     @Test
     void testMapInvalidFileSize() {
         Exception exception = assertThrows(
-                OntologyMapperInvalidSourceOntologyDataException.class, () -> {
+                OntologyMapperInvalidRequestException.class, () -> {
             Mapper.map("rdf-xml", "graphson", 
                     testOntologyFilePathInvalidFileSize);
         });
@@ -177,7 +175,7 @@ class TestMapper {
     @Test
     void testMapInvalidBlank() {
         Exception exception = assertThrows(
-                OntologyMapperInvalidSourceOntologyDataException.class, () -> {
+                OntologyMapperInvalidRequestException.class, () -> {
             Mapper.map("rdf-xml", "graphson", 
                     testOntologyFilePathInvalidBlank);
         });
@@ -194,7 +192,7 @@ class TestMapper {
     @Test
     void testMapInvalidSourceTargetFormat() {
         Exception exception = assertThrows(
-                OntologyMapperInvalidTargetFormatException.class, () -> {
+                OntologyMapperInvalidRequestException.class, () -> {
             Mapper.map("rdf-xml", "rdf-xml", 
                     testOntologyFilePathValid);
         });
@@ -208,11 +206,9 @@ class TestMapper {
      *************************************************************************/
     
     @Test
-    void testMapGrapSon() throws OntologyMapperInvalidSourceFormatException, 
-        OntologyMapperInvalidSourceOntologyDataException, 
-        OntologyMapperInvalidTargetFormatException, 
+    void testMapGrapSon() throws OntologyMapperInvalidRequestException, 
         OntologyDataParsingException, 
-        OntologyDataPropertyGraphModellingException, 
+        OntologyDataPipelineException, 
         OWLOntologyCreationException, 
         OWLOntologyStorageException, 
         IOException, JSONException {
@@ -234,11 +230,9 @@ class TestMapper {
     }
     
     @Test
-    void testMapVis() throws OntologyMapperInvalidSourceFormatException, 
-        OntologyMapperInvalidSourceOntologyDataException, 
-        OntologyMapperInvalidTargetFormatException, 
+    void testMapVis() throws OntologyMapperInvalidRequestException, 
         OntologyDataParsingException, 
-        OntologyDataPropertyGraphModellingException, 
+        OntologyDataPipelineException, 
         OWLOntologyCreationException, 
         OWLOntologyStorageException, 
         IOException, JSONException {

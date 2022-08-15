@@ -15,7 +15,7 @@ import ai.hyperlearning.ontopop.data.ontology.loader.triplestore.OntologyTriples
 import ai.hyperlearning.ontopop.data.ontology.modeller.graph.OntologyGraphModellerService;
 import ai.hyperlearning.ontopop.data.ontology.parser.OntologyParserService;
 import ai.hyperlearning.ontopop.data.ontology.validator.OntologyValidatorService;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPipelineProcessingException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPipelineException;
 import ai.hyperlearning.ontopop.model.ontology.OntologyMessage;
 
 /**
@@ -94,7 +94,7 @@ public class OntologyPipelineAwsLambdaAmazonMqMessageConsumer
                  // Run the Ontology Graph Indexer Service
                 ontologyGraphIndexerService.run(ontologyMessage);
                 
-            } catch (OntologyDataPipelineProcessingException e) {
+            } catch (OntologyDataPipelineException e) {
                 
                 LOGGER.error("The Ontology Data Pipeline encountered "
                         + "an error.", e);

@@ -19,23 +19,18 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 
 import ai.hyperlearning.ontopop.exceptions.git.GitWebhookNotFoundException;
 import ai.hyperlearning.ontopop.exceptions.graph.InvalidGremlinQueryException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreationAlreadyExistsException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreationException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataInvalidAuthorException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataInvalidFormatException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreateConflictException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreateException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataInvalidException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataParsingException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPropertyGraphModellingException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPutException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDeletionException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffInvalidRequestParametersException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffInvalidTimestampException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffProcessingException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPipelineException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDeleteException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffInvalidRequestException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDownloadException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidTargetFormatException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidSourceOntologyDataException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidSourceFormatException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidRequestException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyNotFoundException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyUpdateSecretDataException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyUpdateException;
 import ai.hyperlearning.ontopop.exceptions.search.InvalidSearchQueryException;
 import ai.hyperlearning.ontopop.exceptions.security.InvalidClientNameException;
 import ai.hyperlearning.ontopop.exceptions.triplestore.InvalidSparqlQueryException;
@@ -127,13 +122,9 @@ public class OntoPopExceptionHandler extends ResponseEntityExceptionHandler {
         InvalidSearchQueryException.class, 
         InvalidSparqlQueryException.class, 
         OntoKaiOntologyInvalidPayloadException.class, 
-        OntologyDiffInvalidTimestampException.class, 
-        OntologyDiffInvalidRequestParametersException.class, 
-        OntologyDataInvalidFormatException.class, 
-        OntologyDataInvalidAuthorException.class, 
-        OntologyMapperInvalidSourceFormatException.class, 
-        OntologyMapperInvalidTargetFormatException.class, 
-        OntologyMapperInvalidSourceOntologyDataException.class, 
+        OntologyDataInvalidException.class, 
+        OntologyDiffInvalidRequestException.class, 
+        OntologyMapperInvalidRequestException.class, 
         WebProtegeInvalidProjectId.class })
     protected ResponseEntity<Object> handleBadRequest(
             OntoPopException exception, WebRequest request) {
@@ -178,7 +169,7 @@ public class OntoPopExceptionHandler extends ResponseEntityExceptionHandler {
      */
     
     @ExceptionHandler({
-        OntologyCreationAlreadyExistsException.class })
+        OntologyCreateConflictException.class })
     protected ResponseEntity<Object> handleConflict(
             OntoPopException exception, WebRequest request) {
         return handleException(exception, request, HttpStatus.CONFLICT);
@@ -193,14 +184,13 @@ public class OntoPopExceptionHandler extends ResponseEntityExceptionHandler {
     
     @ExceptionHandler({
         OntoKaiOntologyPayloadMappingException.class, 
-        OntologyCreationException.class,
-        OntologyUpdateSecretDataException.class, 
-        OntologyDeletionException.class, 
-        OntologyDownloadException.class, 
-        OntologyDiffProcessingException.class, 
-        OntologyDataPutException.class, 
+        OntologyCreateException.class,
         OntologyDataParsingException.class, 
-        OntologyDataPropertyGraphModellingException.class, 
+        OntologyDataPipelineException.class, 
+        OntologyDeleteException.class, 
+        OntologyDiffException.class, 
+        OntologyDownloadException.class, 
+        OntologyUpdateException.class, 
         WebProtegeAuthenticationException.class, 
         WebProtegeMissingCredentials.class })
     protected ResponseEntity<Object> handleInternalServerError(

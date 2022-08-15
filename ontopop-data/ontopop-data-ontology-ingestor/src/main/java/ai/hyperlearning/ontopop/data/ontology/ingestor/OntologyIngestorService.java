@@ -26,7 +26,7 @@ import com.google.common.base.Strings;
 
 import ai.hyperlearning.ontopop.data.jpa.repositories.GitWebhookRepository;
 import ai.hyperlearning.ontopop.data.jpa.repositories.OntologyRepository;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPipelineProcessingException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPipelineException;
 import ai.hyperlearning.ontopop.git.GitService;
 import ai.hyperlearning.ontopop.git.GitServiceFactory;
 import ai.hyperlearning.ontopop.messaging.processors.DataPipelineIngestorSource;
@@ -94,7 +94,7 @@ public class OntologyIngestorService {
      */
 
     public void run(Map<String, String> headers, String payload) 
-            throws OntologyDataPipelineProcessingException {
+            throws OntologyDataPipelineException {
 
         LOGGER.info("Ontology Ingestion Service started.");
         this.headers = headers;
@@ -120,8 +120,8 @@ public class OntologyIngestorService {
 
         } catch (Exception e) {
             LOGGER.error("Ontology Ingestion Service encountered an error.", e);
-            throw new OntologyDataPipelineProcessingException(
-                    "Ontology Ingestion Service encountered an error: " + e);
+            throw new OntologyDataPipelineException(
+                    OntologyDataPipelineException.ErrorKey.INGESTOR);
         }
 
         LOGGER.info("Ontology Ingestion Service finished.");

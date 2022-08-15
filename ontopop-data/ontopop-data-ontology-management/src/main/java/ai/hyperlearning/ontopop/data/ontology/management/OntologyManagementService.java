@@ -15,7 +15,7 @@ import com.google.common.base.Strings;
 
 import ai.hyperlearning.ontopop.data.jpa.repositories.GitWebhookRepository;
 import ai.hyperlearning.ontopop.data.jpa.repositories.OntologyRepository;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreationAlreadyExistsException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreateConflictException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyNotFoundException;
 import ai.hyperlearning.ontopop.mappers.OntologyMapper;
 import ai.hyperlearning.ontopop.model.git.GitWebhook;
@@ -88,15 +88,8 @@ public class OntologyManagementService {
             LOGGER.debug("Created a new ontology: {}", newOntology);
             return newOntology;
             
-        } else
-            
-            throw new OntologyCreationAlreadyExistsException(String.format(
-                    "This ontology already exists. Please change "
-                    + "the repository URL, branch and/or the resource "
-                    + "path. Repository URL: %s, Repository Branch: %s, "
-                    + "Repository Resource Path: %s.", 
-                    ontology.getRepoUrl(),ontology.getRepoBranch(), 
-                    ontology.getRepoResourcePath()));
+        } else 
+            throw new OntologyCreateConflictException();
 
     }
 
@@ -113,7 +106,7 @@ public class OntologyManagementService {
 
         // Get the current ontology
         Ontology ontology = ontologyRepository.findById(id)
-                .orElseThrow(() -> new OntologyNotFoundException());
+                .orElseThrow(OntologyNotFoundException::new);
 
         // Persist the partially updated ontology
         ontologyNonSecretData.setId(id);

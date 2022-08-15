@@ -21,10 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataParsingException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPropertyGraphModellingException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidSourceFormatException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidSourceOntologyDataException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidTargetFormatException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPipelineException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidRequestException;
 import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeAuthenticationException;
 import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeInvalidProjectId;
 import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeMissingCredentials;
@@ -111,11 +109,9 @@ public class OntologyMappingController {
             @RequestParam(required = false) MultipartFile file, 
             @Parameter(description = "WebProtege project ID", required = false)
             @RequestParam(name = "webProtegeId", required = false) String webProtegeId) 
-                    throws OntologyMapperInvalidSourceFormatException, 
-                    OntologyMapperInvalidSourceOntologyDataException, 
-                    OntologyMapperInvalidTargetFormatException, 
+                    throws OntologyMapperInvalidRequestException, 
                     OntologyDataParsingException, 
-                    OntologyDataPropertyGraphModellingException, 
+                    OntologyDataPipelineException, 
                     OWLOntologyCreationException, 
                     OWLOntologyStorageException, 
                     WebProtegeInvalidProjectId, 

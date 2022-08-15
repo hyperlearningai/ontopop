@@ -11,7 +11,7 @@ import org.xml.sax.SAXException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataInvalidFormatException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataInvalidException;
 import ai.hyperlearning.ontopop.exceptions.security.InvalidClientNameException;
 import ai.hyperlearning.ontopop.exceptions.vendors.OntoKaiOntologyInvalidPayloadException;
 import ai.hyperlearning.ontopop.exceptions.vendors.OntoKaiOntologyPayloadMappingException;
@@ -119,7 +119,8 @@ public class OntologyDataMapper {
         
         // Invalid format
         else
-            throw new OntologyDataInvalidFormatException();
+            throw new OntologyDataInvalidException(
+                    OntologyDataInvalidException.ErrorKey.FORMAT);
         
     }
 

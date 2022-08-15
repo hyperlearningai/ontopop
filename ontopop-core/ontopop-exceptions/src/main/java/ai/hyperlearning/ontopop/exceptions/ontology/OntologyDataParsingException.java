@@ -1,5 +1,7 @@
 package ai.hyperlearning.ontopop.exceptions.ontology;
 
+import ai.hyperlearning.ontopop.exceptions.OntoPopException;
+
 /**
  * Ontology Data Parsing Custom Exception
  *
@@ -7,17 +9,14 @@ package ai.hyperlearning.ontopop.exceptions.ontology;
  * @since 2.0.0
  */
 
-public class OntologyDataParsingException extends RuntimeException {
+public class OntologyDataParsingException extends OntoPopException {
 
     private static final long serialVersionUID = 2883984532509572567L;
+    private static final String CLASS_NAME = 
+            OntologyDataParsingException.class.getSimpleName();
     
     public OntologyDataParsingException() {
-        super("An error was encountered when attempting to parse the "
-                + "ontology file.");
-    }
-    
-    public OntologyDataParsingException(String message) {
-        super(message);
+        super(CLASS_NAME);
     }
 
 }

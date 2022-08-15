@@ -20,9 +20,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataParsingException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPropertyGraphModellingException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidTargetFormatException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidSourceOntologyDataException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPipelineException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidRequestException;
 import ai.hyperlearning.ontopop.model.graph.SimpleOntologyEdge;
 import ai.hyperlearning.ontopop.model.graph.SimpleOntologyPropertyGraph;
 import ai.hyperlearning.ontopop.model.graph.SimpleOntologyVertex;
@@ -70,10 +69,8 @@ public class RdfXmlToPropertyGraphMapper {
     
     public static String map(String owlFile, String format) 
             throws IOException, 
-            OntologyMapperInvalidSourceOntologyDataException, 
-            OntologyMapperInvalidTargetFormatException, 
             OntologyDataParsingException, 
-            OntologyDataPropertyGraphModellingException {
+            OntologyDataPipelineException {
         
         // Parse the RDF/XML contents of the given OWL file
         // into a SimpleOntology object
@@ -89,7 +86,9 @@ public class RdfXmlToPropertyGraphMapper {
         MapperTargetFormat targetFormat = MapperTargetFormat
                 .valueOfLabel(format.strip().toUpperCase());
         if ( targetFormat == null )
-            throw new OntologyMapperInvalidTargetFormatException();
+            throw new OntologyMapperInvalidRequestException(
+                    OntologyMapperInvalidRequestException
+                        .ErrorKey.INVALID_TARGET_FORMAT);
         String formattedPropertyGraph = 
                 format(simpleOntologyPropertyGraph, targetFormat);
         if ( !StringUtils.isBlank(formattedPropertyGraph) )
@@ -98,9 +97,9 @@ public class RdfXmlToPropertyGraphMapper {
             
             // Validate the given RDF/XML OWL file semantically
             if ( !isSemanticallyValid(owlFile) )
-                throw new OntologyMapperInvalidSourceOntologyDataException(
-                        "Invalid ontology data file provided - "
-                        + "file is semantically invalid.");
+                throw new OntologyMapperInvalidRequestException(
+                        OntologyMapperInvalidRequestException
+                            .ErrorKey.INVALID_ONTOLOGY_DATA_FILE_SEMANTICS);
             else throw new OntologyDataParsingException();
             
         }
@@ -200,7 +199,8 @@ public class RdfXmlToPropertyGraphMapper {
                     standardSchemaAnnotationProperties);
             
         } catch (Exception e) {
-            throw new OntologyDataPropertyGraphModellingException();
+            throw new OntologyDataPipelineException(
+                    OntologyDataPipelineException.ErrorKey.MODELLER_GRAPH);
         }
         
     }
@@ -227,7 +227,6 @@ public class RdfXmlToPropertyGraphMapper {
         else {
             
             // Get the property graph format
-            
             PropertyGraphFormat propertyGraphFormat = null;
             switch (targetFormat) {
                 case GRAPHSON:
@@ -237,7 +236,9 @@ public class RdfXmlToPropertyGraphMapper {
                     propertyGraphFormat = new VisDatasetGraph();
                     break;
                 default:
-                    throw new OntologyMapperInvalidTargetFormatException();
+                    throw new OntologyMapperInvalidRequestException(
+                            OntologyMapperInvalidRequestException
+                                .ErrorKey.INVALID_TARGET_FORMAT);
             }
             
             // Generate the vertices

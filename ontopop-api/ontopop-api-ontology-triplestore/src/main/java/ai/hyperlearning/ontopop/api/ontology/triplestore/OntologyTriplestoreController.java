@@ -41,8 +41,7 @@ import ai.hyperlearning.ontopop.data.ontology.downloader.OntologyDownloaderServi
 import ai.hyperlearning.ontopop.data.ontology.git.OntologyGitPushService;
 import ai.hyperlearning.ontopop.data.ontology.management.OntologyManagementService;
 import ai.hyperlearning.ontopop.exceptions.git.GitWebhookNotFoundException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffInvalidRequestParametersException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffInvalidTimestampException;
+import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffInvalidRequestException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDownloadException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyNotFoundException;
 import ai.hyperlearning.ontopop.exceptions.triplestore.InvalidSparqlQueryException;
@@ -472,9 +471,9 @@ public class OntologyTriplestoreController {
                         timestamp, DIFF_TIMESTAMP_DATE_TIME_FORMATTER);
                 return ontologyDiffService.run(id, requestedTimestamp);
             } catch (DateTimeParseException e) {
-                throw new OntologyDiffInvalidTimestampException(
-                        "Invalid timestamp. Timestamp should be of the format "
-                        + "yyyy-MM-dd HH:mm:ss.");
+                throw new OntologyDiffInvalidRequestException(
+                        OntologyDiffInvalidRequestException
+                            .ErrorKey.INVALID_TIMESTAMP);
             }
         } 
         
@@ -487,9 +486,9 @@ public class OntologyTriplestoreController {
         
         // Invalid request parameters
         else
-            throw new OntologyDiffInvalidRequestParametersException(
-                    "Invalid request parameters. Please provide either a "
-                    + "timestamp or a Git webhook ID.");
+            throw new OntologyDiffInvalidRequestException(
+                    OntologyDiffInvalidRequestException
+                        .ErrorKey.MISSING_PARAMETER);
         
     }
     
