@@ -18,6 +18,7 @@ public enum GitServiceType {
         this.text = text;
     }
 
+    @Override
     public String toString() {
         return text;
     }
