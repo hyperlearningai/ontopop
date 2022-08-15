@@ -1,5 +1,7 @@
 package ai.hyperlearning.ontopop.exceptions.graph;
 
+import ai.hyperlearning.ontopop.exceptions.OntoPopException;
+
 /**
  * Custom Exception - Invalid Gremlin query
  *
@@ -7,12 +9,14 @@ package ai.hyperlearning.ontopop.exceptions.graph;
  * @since 2.0.0
  */
 
-public class InvalidGremlinQueryException extends RuntimeException {
+public class InvalidGremlinQueryException extends OntoPopException {
 
     private static final long serialVersionUID = -7230432565242085128L;
+    private static final String CLASS_NAME = 
+            InvalidGremlinQueryException.class.getSimpleName();
     
-    public InvalidGremlinQueryException(String message) {
-        super(message);
+    public InvalidGremlinQueryException() {
+        super(CLASS_NAME);
     }
 
 }

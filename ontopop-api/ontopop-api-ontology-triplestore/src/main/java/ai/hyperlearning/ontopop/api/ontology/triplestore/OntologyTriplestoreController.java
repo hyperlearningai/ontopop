@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,7 @@ import ai.hyperlearning.ontopop.security.auth.api.apikey.ApiKeyUtils;
 import ai.hyperlearning.ontopop.triplestore.TriplestoreService;
 import ai.hyperlearning.ontopop.triplestore.TriplestoreServiceFactory;
 import ai.hyperlearning.ontopop.triplestore.TriplestoreServiceType;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -204,20 +206,16 @@ public class OntologyTriplestoreController {
                     required = true, 
                     schema = @Schema(implementation = OntologyTriplestoreSparqlQuery.class))
             @Valid @RequestBody(required = true) OntologyTriplestoreSparqlQuery ontologyTriplestoreSparqlQuery) {
-        String sparqlQuery = null;
         
-        // JSON Request Body
-        if ( ontologyTriplestoreSparqlQuery != null ) {
-            if ( !ontologyTriplestoreSparqlQuery.getQuery().isBlank() ) 
-                sparqlQuery = ontologyTriplestoreSparqlQuery.getQuery();
-        }
-        
-        // Otherwise throw an invalid SPARQL exception
-        if ( sparqlQuery == null )
-            throw new InvalidSparqlQueryException("Invalid SPARQL query.");
-        
+        // Parse the JSON request body and get the SPARQL query
+        if ( ontologyTriplestoreSparqlQuery == null || 
+                StringUtils.isBlank(ontologyTriplestoreSparqlQuery.getQuery()) )
+            throw new InvalidSparqlQueryException();
+        String sparqlQuery = ontologyTriplestoreSparqlQuery.getQuery();
         LOGGER.debug("New HTTP POST request - SPARQL query request for "
                 + "ontology ID {}: {}", id, sparqlQuery);
+        
+        // Execute the SPARQL query
         response.addHeader(RESPONSE_HEADER_LATEST_GIT_WEBHOOK_ID, 
                 String.valueOf(ontologyManagementService
                         .getLatestGitWebhookId(id)));
@@ -272,21 +270,16 @@ public class OntologyTriplestoreController {
                     description = "SPARQL query.", 
                     required = true)
             @RequestBody(required = true) MultiValueMap<String, String> formData) {
-        String sparqlQuery = null;
         
-        // Form Data
-        if ( formData != null ) {
-            if ( formData.containsKey("query") && 
-                    !formData.getFirst("query").isBlank() )
-                sparqlQuery = formData.getFirst("query");
-        }
-        
-        // Otherwise throw an invalid SPARQL exception
-        if ( sparqlQuery == null )
-            throw new InvalidSparqlQueryException("Invalid SPARQL query.");
-        
+        // Parse the form data and get the SPARQL query
+        if ( formData == null || !formData.containsKey("query") || 
+                StringUtils.isBlank(formData.getFirst("query")) )
+            throw new InvalidSparqlQueryException();
+        String sparqlQuery = formData.getFirst("query");
         LOGGER.debug("New HTTP POST request - SPARQL query request for "
                 + "ontology ID {}: {}", id, sparqlQuery);
+        
+        // Execute the SPARQL query
         response.addHeader(RESPONSE_HEADER_LATEST_GIT_WEBHOOK_ID, 
                 String.valueOf(ontologyManagementService
                         .getLatestGitWebhookId(id)));
@@ -388,7 +381,7 @@ public class OntologyTriplestoreController {
             GitWebhook gitWebhook = ( gitWebhookId == -1 ) ? 
                     ontologyDownloaderService.getLatestGitWebhook(id) : 
                         gitWebhookRepository.findById(gitWebhookId)
-                            .orElseThrow(() -> new GitWebhookNotFoundException());
+                            .orElseThrow(GitWebhookNotFoundException::new);
             if ( gitWebhook != null ) {
                 
                 // Download the OWL file from persistent storage
@@ -404,9 +397,8 @@ public class OntologyTriplestoreController {
                                 new File(downloadedUri), StandardCharsets.UTF_8), 
                         HttpStatus.OK);
                 
-            } else {
+            } else 
                 throw new OntologyDownloadException();
-            }
             
         } catch (Exception e) {
             
@@ -611,7 +603,7 @@ public class OntologyTriplestoreController {
         
         // Get the ontology
         Ontology ontology = ontologyRepository.findById(id)
-                .orElseThrow(() -> new OntologyNotFoundException());
+                .orElseThrow(OntologyNotFoundException::new);
         
         // Get the client name
         String clientName = ApiKeyUtils.getClientName(

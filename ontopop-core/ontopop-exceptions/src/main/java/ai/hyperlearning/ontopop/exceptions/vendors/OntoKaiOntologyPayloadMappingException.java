@@ -1,5 +1,7 @@
 package ai.hyperlearning.ontopop.exceptions.vendors;
 
+import ai.hyperlearning.ontopop.exceptions.OntoPopException;
+
 /**
  * OntoKai Ontology Payload Mapping Custom Exception
  *
@@ -7,17 +9,14 @@ package ai.hyperlearning.ontopop.exceptions.vendors;
  * @since 2.0.0
  */
 
-public class OntoKaiOntologyPayloadMappingException extends RuntimeException {
+public class OntoKaiOntologyPayloadMappingException extends OntoPopException {
 
     private static final long serialVersionUID = -4661079657140803812L;
+    private static final String CLASS_NAME = 
+            OntoKaiOntologyPayloadMappingException.class.getSimpleName();
     
     public OntoKaiOntologyPayloadMappingException() {
-        super("An error was encountered when attempting to mapp the OntoKai "
-                + "ontology payload.");
-    }
-    
-    public OntoKaiOntologyPayloadMappingException(String message) {
-        super(message);
+        super(CLASS_NAME);
     }
 
 }

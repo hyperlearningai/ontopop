@@ -36,9 +36,10 @@ import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidSourceO
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidSourceFormatException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyNotFoundException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyUpdateSecretDataException;
+import ai.hyperlearning.ontopop.exceptions.search.InvalidSearchQueryException;
 import ai.hyperlearning.ontopop.exceptions.security.InvalidClientNameException;
 import ai.hyperlearning.ontopop.exceptions.triplestore.InvalidSparqlQueryException;
-import ai.hyperlearning.ontopop.exceptions.vendors.OntoKaiInvalidOntologyPayloadException;
+import ai.hyperlearning.ontopop.exceptions.vendors.OntoKaiOntologyInvalidPayloadException;
 import ai.hyperlearning.ontopop.exceptions.vendors.OntoKaiOntologyPayloadMappingException;
 import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeAuthenticationException;
 import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeInvalidProjectId;
@@ -121,14 +122,15 @@ public class OntoPopExceptionHandler extends ResponseEntityExceptionHandler {
      */
     
     @ExceptionHandler({
-        InvalidSparqlQueryException.class, 
+        InvalidClientNameException.class, 
         InvalidGremlinQueryException.class, 
+        InvalidSearchQueryException.class, 
+        InvalidSparqlQueryException.class, 
+        OntoKaiOntologyInvalidPayloadException.class, 
         OntologyDiffInvalidTimestampException.class, 
         OntologyDiffInvalidRequestParametersException.class, 
         OntologyDataInvalidFormatException.class, 
         OntologyDataInvalidAuthorException.class, 
-        InvalidClientNameException.class, 
-        OntoKaiInvalidOntologyPayloadException.class, 
         OntologyMapperInvalidSourceFormatException.class, 
         OntologyMapperInvalidTargetFormatException.class, 
         OntologyMapperInvalidSourceOntologyDataException.class, 
@@ -160,8 +162,8 @@ public class OntoPopExceptionHandler extends ResponseEntityExceptionHandler {
      */
     
     @ExceptionHandler({
-        OntologyNotFoundException.class,
         GitWebhookNotFoundException.class, 
+        OntologyNotFoundException.class,
         WebProtegeWebhookNotFoundException.class })
     protected ResponseEntity<Object> handleNotFound(
             OntoPopException exception, WebRequest request) {
@@ -190,17 +192,17 @@ public class OntoPopExceptionHandler extends ResponseEntityExceptionHandler {
      */
     
     @ExceptionHandler({
+        OntoKaiOntologyPayloadMappingException.class, 
         OntologyCreationException.class,
         OntologyUpdateSecretDataException.class, 
         OntologyDeletionException.class, 
         OntologyDownloadException.class, 
         OntologyDiffProcessingException.class, 
         OntologyDataPutException.class, 
-        OntoKaiOntologyPayloadMappingException.class, 
         OntologyDataParsingException.class, 
         OntologyDataPropertyGraphModellingException.class, 
-        WebProtegeMissingCredentials.class, 
-        WebProtegeAuthenticationException.class })
+        WebProtegeAuthenticationException.class, 
+        WebProtegeMissingCredentials.class })
     protected ResponseEntity<Object> handleInternalServerError(
             OntoPopException exception, WebRequest request) {
         return handleException(exception, request, 

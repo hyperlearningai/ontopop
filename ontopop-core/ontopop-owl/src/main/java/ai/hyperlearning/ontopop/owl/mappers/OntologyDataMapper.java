@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataInvalidFormatException;
 import ai.hyperlearning.ontopop.exceptions.security.InvalidClientNameException;
-import ai.hyperlearning.ontopop.exceptions.vendors.OntoKaiInvalidOntologyPayloadException;
+import ai.hyperlearning.ontopop.exceptions.vendors.OntoKaiOntologyInvalidPayloadException;
 import ai.hyperlearning.ontopop.exceptions.vendors.OntoKaiOntologyPayloadMappingException;
 import ai.hyperlearning.ontopop.model.ontokai.OntoKaiOntologyNode;
 import ai.hyperlearning.ontopop.model.ontokai.OntoKaiOntologyPayload;
@@ -78,14 +78,14 @@ public class OntologyDataMapper {
                     ontokaiOntologyPayload = mapper.readValue(ontologyData, 
                             OntoKaiOntologyPayload.class);
                     if ( !ontokaiOntologyPayload.isValid() )
-                        throw new OntoKaiInvalidOntologyPayloadException();
+                        throw new OntoKaiOntologyInvalidPayloadException();
                     for ( OntoKaiOntologyNode node : 
                         ontokaiOntologyPayload.getNodes() ) {
                         if ( !node.isValid() )
-                            throw new OntoKaiInvalidOntologyPayloadException();
+                            throw new OntoKaiOntologyInvalidPayloadException();
                     }
                 } catch (JsonProcessingException e) {
-                    throw new OntoKaiInvalidOntologyPayloadException();
+                    throw new OntoKaiOntologyInvalidPayloadException();
                 }
                 
                 // Generate the RDF/XML string

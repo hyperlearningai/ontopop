@@ -188,7 +188,7 @@ public class WebProtegeDownloader {
             throw new WebProtegeMissingCredentials();
         
         // Validate the WebProtege project ID - emptiness
-        if ( StringUtils.isAllBlank(projectId) )
+        if ( StringUtils.isBlank(projectId) )
             throw new WebProtegeInvalidProjectId(
                     WebProtegeInvalidProjectId.ErrorKey.IS_EMPTY);
         
@@ -247,7 +247,8 @@ public class WebProtegeDownloader {
                     webDriverTimeout = Integer.valueOf(System.getenv(
                             WEBPROTEGE_WEBDRIVER_TIMEOUT_ENV_KEY));
                 } catch (Exception e) {
-                    
+                    LOGGER.warn("Could not set the WebDriver timeout. "
+                            + "Reverting to the default timeout value.");
                 }
             }
         }
@@ -407,7 +408,7 @@ public class WebProtegeDownloader {
         }
         
         // Validate that the JSESSIONID has been obtained
-        if ( StringUtils.isAllBlank(WebProtegeAuthSession
+        if ( StringUtils.isBlank(WebProtegeAuthSession
                 .getJSessionIdCookieValue()) )
             throw new WebProtegeAuthenticationException();
         
@@ -512,7 +513,7 @@ public class WebProtegeDownloader {
                 LOGGER.debug("Closing the headless WebDriver.");
                 webDriver.quit();
             } catch (Exception e) {
-                
+                LOGGER.warn("Could not close the headless WebDriver.");
             }
         }
         

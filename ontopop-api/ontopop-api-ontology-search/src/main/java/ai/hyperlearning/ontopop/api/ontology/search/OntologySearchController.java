@@ -3,6 +3,7 @@ package ai.hyperlearning.ontopop.api.ontology.search;
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,47 +107,43 @@ public class OntologySearchController {
         
         LOGGER.debug("New HTTP GET request - Search query request for "
                 + "ontology ID {}: {}", id, ontologySearchQuery);
-        if ( ontologySearchQuery != null && 
-                !ontologySearchQuery.getQuery().isBlank() ) {
+        if ( ontologySearchQuery == null || 
+                StringUtils.isBlank(ontologySearchQuery.getQuery()) )
+            throw new InvalidSearchQueryException();
             
-            // Execute the search query using the 
-            // Spring Data High-Level REST client
-            String indexName = searchIndexNamePrefix + id;
+        // Execute the search query using the 
+        // Spring Data High-Level REST client
+        String indexName = searchIndexNamePrefix + id;
+        
+        // At least one field to search has been provided
+        if ( !ontologySearchQuery.getFields().isEmpty() ) {
             
-            // At least one field to search has been provided
-            if ( !ontologySearchQuery.getFields().isEmpty() ) {
-                
-                // Prefix the search fields to match the nested properties
-                // map as defined in the SimpleIndexVertex.class model
-                if (searchServiceType.equals(SearchServiceType.ELASTICSEARCH)) {
-                    ontologySearchQuery.prefixFields();
-                    LOGGER.debug("Transformed search query request for "
-                            + "Elasticsearch: {}", ontologySearchQuery);
-                }
-                
-                // Execute a multi-match search
-                return ontologySearchQuery.getFields().size() > 1 ? 
-                        searchService.search(indexName, 
-                            ontologySearchQuery.getFields(), 
-                            ontologySearchQuery.getQuery(), 
-                            ontologySearchQuery.isAnd()) :
-                                searchService.search(indexName, 
-                                    ontologySearchQuery.getFields().get(0), 
-                                    ontologySearchQuery.getQuery(), 
-                                    ontologySearchQuery.isExact(), 
-                                    ontologySearchQuery.isAnd());
-                
+            // Prefix the search fields to match the nested properties
+            // map as defined in the SimpleIndexVertex.class model
+            if (searchServiceType.equals(SearchServiceType.ELASTICSEARCH)) {
+                ontologySearchQuery.prefixFields();
+                LOGGER.debug("Transformed search query request for "
+                        + "Elasticsearch: {}", ontologySearchQuery);
             }
             
-            // No fields have been provided, in which case search
-            // across all the fields
-            else return searchService.search(indexName, 
-                    ontologySearchQuery.getQuery());
+            // Execute a multi-match search
+            return ontologySearchQuery.getFields().size() > 1 ? 
+                    searchService.search(indexName, 
+                        ontologySearchQuery.getFields(), 
+                        ontologySearchQuery.getQuery(), 
+                        ontologySearchQuery.isAnd()) :
+                            searchService.search(indexName, 
+                                ontologySearchQuery.getFields().get(0), 
+                                ontologySearchQuery.getQuery(), 
+                                ontologySearchQuery.isExact(), 
+                                ontologySearchQuery.isAnd());
             
         }
         
-        // Throw an invalid search query exception
-        throw new InvalidSearchQueryException("Invalid Search query.");
+        // No fields have been provided, in which case search
+        // across all the fields
+        else return searchService.search(indexName, 
+                ontologySearchQuery.getQuery());
         
     }
 

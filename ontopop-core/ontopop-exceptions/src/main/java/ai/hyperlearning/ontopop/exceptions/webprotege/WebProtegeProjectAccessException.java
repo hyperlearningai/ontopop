@@ -1,5 +1,7 @@
 package ai.hyperlearning.ontopop.exceptions.webprotege;
 
+import ai.hyperlearning.ontopop.exceptions.OntoPopException;
+
 /**
  * WebProtege Project Access Custom Exception
  *
@@ -7,18 +9,14 @@ package ai.hyperlearning.ontopop.exceptions.webprotege;
  * @since 2.0.0
  */
 
-public class WebProtegeProjectAccessException extends RuntimeException {
+public class WebProtegeProjectAccessException extends OntoPopException {
 
     private static final long serialVersionUID = -8904849874968126154L;
+    private static final String CLASS_NAME = 
+            WebProtegeProjectAccessException.class.getSimpleName();
     
     public WebProtegeProjectAccessException() {
-        super("Access to the specified WebProtege project ID is forbidden. "
-                + "Please share the WebProtege project with "
-                + "service@ontopop.com and try again.");
-    }
-    
-    public WebProtegeProjectAccessException(String message) {
-        super(message);
+        super(CLASS_NAME);
     }
 
 }

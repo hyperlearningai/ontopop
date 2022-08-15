@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nimbusds.oauth2.sdk.util.StringUtils;
 
 import ai.hyperlearning.ontopop.data.jpa.repositories.GitWebhookRepository;
 import ai.hyperlearning.ontopop.data.ontology.downloader.OntologyDownloaderService;
@@ -139,7 +140,7 @@ public class OntologyGraphController {
             GitWebhook gitWebhook = ( gitWebhookId == -1 ) ? 
                     ontologyDownloaderService.getLatestGitWebhook(id) : 
                         gitWebhookRepository.findById(gitWebhookId)
-                            .orElseThrow(() -> new GitWebhookNotFoundException());
+                            .orElseThrow(GitWebhookNotFoundException::new);
             if ( gitWebhook != null ) {
                 
                 // Download the property graph file from persistent storage
@@ -151,9 +152,8 @@ public class OntologyGraphController {
                 return mapper.readValue(new File(downloadedUri),
                         SimpleOntologyPropertyGraph.class);
                 
-            } else {
+            } else 
                 throw new OntologyDownloadException();
-            }
             
         } catch (Exception e) {
             
@@ -202,20 +202,17 @@ public class OntologyGraphController {
                     schema = @Schema(implementation = OntologyPropertyGraphGremlinQuery.class))
             @Valid @RequestBody(required = true) OntologyPropertyGraphGremlinQuery ontologyPropertyGraphGremlinQuery) 
                     throws ScriptException, InterruptedException, ExecutionException {
-        String gremlinQuery = null;
         
-        // JSON Request Body
-        if ( ontologyPropertyGraphGremlinQuery != null ) {
-            if ( !ontologyPropertyGraphGremlinQuery.getGremlin().isBlank() ) 
-                gremlinQuery = ontologyPropertyGraphGremlinQuery.getGremlin();
-        }
-        
-        // Otherwise throw an invalid Gremllin query exception
-        if ( gremlinQuery == null )
-            throw new InvalidGremlinQueryException("Invalid Gremlin query.");
-        
+        // Pase the JSON request body and get the Gremlin query
+        if ( ontologyPropertyGraphGremlinQuery == null || 
+                StringUtils.isBlank(
+                        ontologyPropertyGraphGremlinQuery.getGremlin()) )
+            throw new InvalidGremlinQueryException();
+        String gremlinQuery = ontologyPropertyGraphGremlinQuery.getGremlin();
         LOGGER.debug("New HTTP POST request - Gremlin query request for "
                 + "ontology ID {}: {}", id, gremlinQuery);
+        
+        // Execute the Gremlin query
         try {
             
             if ( graphDatabaseService instanceof 
@@ -228,7 +225,7 @@ public class OntologyGraphController {
             }
             
         } catch (ExecutionException e) {
-            throw new InvalidGremlinQueryException("Invalid Gremlin query.");
+            throw new InvalidGremlinQueryException();
         }
         
     }
