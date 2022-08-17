@@ -58,14 +58,9 @@ class TestWebProtegeDownloaderServiceIT {
     void whenMissingCredentials_thenReturnsWebProtegeMissingCredentials() {
         if ( System.getenv(WEBPROTEGE_USERNAME_ENV_KEY) == null || 
                 System.getenv(WEBPROTEGE_PASSWORD_ENV_KEY) == null) {
-            Exception exception = assertThrows(
-                    WebProtegeMissingCredentials.class, () -> {
-                        webProtegeDownloader.run("abc-123", null, null);
+            assertThrows(WebProtegeMissingCredentials.class, () -> {
+                webProtegeDownloader.run("abc-123", null, null);
             });
-            String expectedMessage = "WebProtege credentials have not been set "
-                    + "as environment variables.";
-            String actualMessage = exception.getMessage();
-            assertTrue(actualMessage.contains(expectedMessage));
         }
     }
     
