@@ -189,10 +189,20 @@ security:
             paths:
                 subpaths:
                     ontologies: /ontologies/
+    iam:
+       service: aws-cognito
+       aws-cognito:
+          identity-pool-id: 
+          region: eu-west-2
     authentication:
         api:
             enabled: true
-            engine: secrets
+            iam-guest-credentials:
+               enabled: false
+            api-key-lookup:
+               enabled: true
+               engine: secrets
+               connect-with-guest-credentials: false
 storage:
     object:
         service: aws-s3
@@ -292,9 +302,9 @@ springdoc:
 plugins:
     webprotege:
         exporter:
-            enabled: true
+            enabled: false
             http:
                 enabled: false
             scheduler:
-                enabled: true
+                enabled: false
                 cron: "0 0/10 * * * *"

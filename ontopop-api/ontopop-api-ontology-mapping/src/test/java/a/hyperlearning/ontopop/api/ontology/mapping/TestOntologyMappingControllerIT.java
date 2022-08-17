@@ -26,7 +26,6 @@ import ai.hyperlearning.ontopop.webprotege.WebProtegeDownloader;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -138,8 +137,7 @@ class TestOntologyMappingControllerIT {
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(
                 webApplicationContext).build();
         mockMvc.perform(requestBuilder)
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string("Invalid source format provided."));
+                .andExpect(status().isBadRequest());
     }
     
     @Test
@@ -152,8 +150,7 @@ class TestOntologyMappingControllerIT {
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(
                 webApplicationContext).build();
         mockMvc.perform(requestBuilder)
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string("Invalid target format provided."));
+                .andExpect(status().isBadRequest());
     }
     
     @Test
@@ -166,10 +163,7 @@ class TestOntologyMappingControllerIT {
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(
                 webApplicationContext).build();
         mockMvc.perform(requestBuilder)
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string(
-                        "Invalid ontology data file provided - "
-                        + "file is blank."));
+                .andExpect(status().isBadRequest());
     }
     
     @Test
@@ -182,11 +176,7 @@ class TestOntologyMappingControllerIT {
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(
                 webApplicationContext).build();
         mockMvc.perform(requestBuilder)
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string(
-                        "Invalid ontology data file provided - "
-                        + "file extension does not match the specified "
-                        + "source format."));
+                .andExpect(status().isBadRequest());
     }
     
     @Test
