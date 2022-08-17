@@ -45,7 +45,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/mapping")
-@Tag(name = "Mapping API", description = "API for undertaking common mapping operations")
+@Tag(name = "Mapping API", description = "API for undertaking common ontology mapping operations")
 public class OntologyMappingController {
     
     private static final Logger LOGGER =
@@ -178,9 +178,9 @@ public class OntologyMappingController {
         }
         
         // If neither a WebProtege project ID or ontology file is provided
-        else return new ResponseEntity<>("Neither a WebProtege project ID nor "
-                + "an ontology data file were provided.", 
-                HttpStatus.BAD_REQUEST);
+        else throw new OntologyMapperInvalidRequestException(
+                OntologyMapperInvalidRequestException
+                    .ErrorKey.MISSING_REQUEST_PARAMETER_SOURCE_DATA);
         
     }
 

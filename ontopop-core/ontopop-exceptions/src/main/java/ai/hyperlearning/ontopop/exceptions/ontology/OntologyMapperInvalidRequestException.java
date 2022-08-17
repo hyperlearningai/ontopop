@@ -24,7 +24,8 @@ public class OntologyMapperInvalidRequestException extends OntoPopException {
         INVALID_ONTOLOGY_DATA_FILE_SEMANTICS("InvalidOntologyDataFileSemantics"), 
         INVALID_ONTOLOGY_DATA_FILE_SIZE("InvalidOntologyDataFileSize"), 
         INVALID_SOURCE_FORMAT("InvalidSourceFormat"), 
-        INVALID_TARGET_FORMAT("InvalidTargetFormat");
+        INVALID_TARGET_FORMAT("InvalidTargetFormat"), 
+        MISSING_REQUEST_PARAMETER_SOURCE_DATA("MissingRequestParameterSourceData");
         
         private final String key;
         
