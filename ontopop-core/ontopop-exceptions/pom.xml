@@ -51,5 +51,25 @@
         </dependency>
 
     </dependencies>
+    
+    <!-- Module Build -->
+    <build>
+
+        <!-- Resources -->
+        <resources>
+
+            <!-- Resource Bundle - Error Messages -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>ErrorMessages.properties</include>
+                    <include>ErrorMessages_en.properties</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+
+        </resources>
+
+    </build>
 
 </project>
