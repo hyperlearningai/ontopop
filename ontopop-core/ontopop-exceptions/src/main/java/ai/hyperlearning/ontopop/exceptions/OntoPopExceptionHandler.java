@@ -11,6 +11,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -129,6 +130,18 @@ public class OntoPopExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleBadRequest(
             OntoPopException exception, WebRequest request) {
         return handleException(exception, request, HttpStatus.BAD_REQUEST);
+    }
+    
+    @ExceptionHandler({
+        MaxUploadSizeExceededException.class })
+    protected ResponseEntity<Object> handleMaxUploadSizeExceeded(
+        MaxUploadSizeExceededException exception, WebRequest request) {
+        OntoPopException ontoPopMaxUploadSizeExceededException = 
+                new OntologyMapperInvalidRequestException(
+                        OntologyMapperInvalidRequestException
+                            .ErrorKey.INVALID_ONTOLOGY_DATA_FILE_SIZE);
+        return handleException(ontoPopMaxUploadSizeExceededException, 
+                request, HttpStatus.BAD_REQUEST);
     }
     
     /**
