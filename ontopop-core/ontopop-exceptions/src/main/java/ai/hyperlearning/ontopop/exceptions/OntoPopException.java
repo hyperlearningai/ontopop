@@ -17,21 +17,21 @@ public abstract class OntoPopException extends RuntimeException {
             "ErrorMessages";
     private static final ResourceBundle DEFAULT_BUNDLE = ResourceBundle
             .getBundle(RESOURCE_BUNDLE_FILE_NAME_PREFIX, Locale.ROOT);
-    private static final String DEFAULT_I18N_KEY = "Default";
-    private final String i18nKey;
+    private static final String DEFAULT_ERROR_KEY_SUFFIX = "Default";
+    private final String errorKey;
     
     protected OntoPopException(String className) {
-        super(DEFAULT_BUNDLE.getString(className + DEFAULT_I18N_KEY));
-        this.i18nKey = className + DEFAULT_I18N_KEY;
+        super(DEFAULT_BUNDLE.getString(className + DEFAULT_ERROR_KEY_SUFFIX));
+        this.errorKey = className + DEFAULT_ERROR_KEY_SUFFIX;
     }
     
-    protected OntoPopException(String className, String i18nKey) {
-        super(DEFAULT_BUNDLE.getString(className + i18nKey));
-        this.i18nKey = className + i18nKey;
+    protected OntoPopException(String className, String errorKey) {
+        super(DEFAULT_BUNDLE.getString(className + errorKey));
+        this.errorKey = className + errorKey;
     }
     
-    public String getI18nKey() {
-        return i18nKey;
+    public String getErrorKey() {
+        return errorKey;
     }
 
 }

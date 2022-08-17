@@ -12,10 +12,17 @@ import java.io.Serializable;
 public class OntoPopExceptionResponseBody implements Serializable {
 
     private static final long serialVersionUID = -6791529013463816400L;
+    private String errorKey;
     private String errorDisplayMessage;
     
-    public OntoPopExceptionResponseBody(String errorDisplayMessage) {
+    public OntoPopExceptionResponseBody(String errorKey, 
+            String errorDisplayMessage) {
+        this.errorKey = errorKey;
         this.errorDisplayMessage = errorDisplayMessage;
+    }
+    
+    public String getErrorKey() {
+        return errorKey;
     }
 
     public String getErrorDisplayMessage() {
@@ -25,6 +32,7 @@ public class OntoPopExceptionResponseBody implements Serializable {
     @Override
     public String toString() {
         return "OntoPopExceptionResponseBody ["
+                + "errorKey=" + errorKey + ", "
                 + "errorDisplayMessage=" + errorDisplayMessage 
                 + "]";
     }

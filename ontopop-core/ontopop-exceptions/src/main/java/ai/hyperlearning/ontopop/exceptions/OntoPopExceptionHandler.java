@@ -72,10 +72,11 @@ public class OntoPopExceptionHandler extends ResponseEntityExceptionHandler {
             WebRequest request, HttpStatus httpStatus) {
         
         // Construct the response body
-        String localisedErrorMessage = getI18nErrorMessage(
-                request, exception.getI18nKey());
+        String localisedErrorMessage = getErrorMessage(
+                request, exception.getErrorKey());
         OntoPopExceptionResponseBody ontoPopExceptionResponseBody = 
-                new OntoPopExceptionResponseBody(localisedErrorMessage);
+                new OntoPopExceptionResponseBody(exception.getErrorKey(), 
+                        localisedErrorMessage);
         HttpHeaders headers = new HttpHeaders();
         String responseBody = null;
         try {
@@ -96,18 +97,18 @@ public class OntoPopExceptionHandler extends ResponseEntityExceptionHandler {
     /**
      * Get the localised error message for this exception
      * @param request
-     * @param i18nKey
+     * @param errorKey
      * @return
      */
     
-    private String getI18nErrorMessage(WebRequest request, String i18nKey) {
+    private String getErrorMessage(WebRequest request, String errorKey) {
         String lang = request.getParameter(LANG_REQUEST_PARAMETER_NAME);
         ResourceBundle bundle = StringUtils.hasText(lang) ? 
                 ResourceBundle.getBundle(RESOURCE_BUNDLE_FILE_NAME_PREFIX, 
                         new Locale(lang)) : 
                     ResourceBundle.getBundle(RESOURCE_BUNDLE_FILE_NAME_PREFIX, 
                             Locale.ROOT);
-        return bundle.getString(i18nKey);
+        return bundle.getString(errorKey);
     }
     
     /**
