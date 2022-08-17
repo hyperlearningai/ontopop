@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
@@ -21,11 +22,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import ai.hyperlearning.ontopop.api.ontology.mapping.OntologyMappingController;
-import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeInvalidProjectId;
+import ai.hyperlearning.ontopop.exceptions.OntoPopExceptionHandler;
 import ai.hyperlearning.ontopop.webprotege.WebProtegeDownloader;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -37,6 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ContextConfiguration(classes = { OntologyMappingController.class })
 @WebMvcTest(controllers = OntologyMappingController.class)
+@ImportAutoConfiguration(OntoPopExceptionHandler.class)
 @ActiveProfiles("integration-test-mapping-api")
 class TestOntologyMappingControllerIT {
     
@@ -134,8 +135,9 @@ class TestOntologyMappingControllerIT {
                     .file(testSmallOntologyFile)
                     .param(REQUEST_PARAMETER_SOURCE_NAME, "json")
                     .param(REQUEST_PARAMETER_TARGET_NAME, "graphson");
-        MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(
-                webApplicationContext).build();
+        MockMvc mockMvc = MockMvcBuilders
+                .webAppContextSetup(webApplicationContext)
+                .build();
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isBadRequest());
     }
@@ -147,8 +149,9 @@ class TestOntologyMappingControllerIT {
                     .file(testSmallOntologyFile)
                     .param(REQUEST_PARAMETER_SOURCE_NAME, "rdf-xml")
                     .param(REQUEST_PARAMETER_TARGET_NAME, "json");
-        MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(
-                webApplicationContext).build();
+        MockMvc mockMvc = MockMvcBuilders
+                .webAppContextSetup(webApplicationContext)
+                .build();
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isBadRequest());
     }
@@ -160,8 +163,9 @@ class TestOntologyMappingControllerIT {
                     .file(testBlankOntologyFile)
                     .param(REQUEST_PARAMETER_SOURCE_NAME, "rdf-xml")
                     .param(REQUEST_PARAMETER_TARGET_NAME, "graphson");
-        MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(
-                webApplicationContext).build();
+        MockMvc mockMvc = MockMvcBuilders
+                .webAppContextSetup(webApplicationContext)
+                .build();
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isBadRequest());
     }
@@ -173,8 +177,9 @@ class TestOntologyMappingControllerIT {
                     .file(testInvalidFileExtensionOntologyFile)
                     .param(REQUEST_PARAMETER_SOURCE_NAME, "rdf-xml")
                     .param(REQUEST_PARAMETER_TARGET_NAME, "graphson");
-        MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(
-                webApplicationContext).build();
+        MockMvc mockMvc = MockMvcBuilders
+                .webAppContextSetup(webApplicationContext)
+                .build();
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isBadRequest());
     }
@@ -188,11 +193,9 @@ class TestOntologyMappingControllerIT {
                     .param(REQUEST_PARAMETER_TARGET_NAME, "graphson")
                     .param(REQUEST_PARAMETER_WEBPROTEGEID_NAME, 
                             invalidWebProtegeProjectId);
-        given(webProtegeDownloader.run(
-                invalidWebProtegeProjectId, null, null))
-            .willThrow(WebProtegeInvalidProjectId.class);
-        MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(
-                webApplicationContext).build();
+        MockMvc mockMvc = MockMvcBuilders
+                .webAppContextSetup(webApplicationContext)
+                .build();
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isBadRequest());
     }
@@ -207,11 +210,9 @@ class TestOntologyMappingControllerIT {
                     .param(REQUEST_PARAMETER_TARGET_NAME, "graphson")
                     .param(REQUEST_PARAMETER_WEBPROTEGEID_NAME, 
                             invalidWebProtegeProjectId);
-        given(webProtegeDownloader.run(
-                invalidWebProtegeProjectId, null, null))
-            .willThrow(WebProtegeInvalidProjectId.class);
-        MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(
-                webApplicationContext).build();
+        MockMvc mockMvc = MockMvcBuilders
+                .webAppContextSetup(webApplicationContext)
+                .build();
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isBadRequest());
     }
@@ -229,8 +230,9 @@ class TestOntologyMappingControllerIT {
                     .file(testFullOntologyFile)
                     .param(REQUEST_PARAMETER_SOURCE_NAME, "rdf-xml")
                     .param(REQUEST_PARAMETER_TARGET_NAME, "graphson");
-        MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(
-                webApplicationContext).build();
+        MockMvc mockMvc = MockMvcBuilders
+                .webAppContextSetup(webApplicationContext)
+                .build();
         MvcResult result = mockMvc.perform(requestBuilder)
                 .andExpect(status().isOk())
                 .andReturn();
@@ -251,8 +253,9 @@ class TestOntologyMappingControllerIT {
                     .file(testFullOntologyFile)
                     .param(REQUEST_PARAMETER_SOURCE_NAME, "rdf-xml")
                     .param(REQUEST_PARAMETER_TARGET_NAME, "vis");
-        MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(
-                webApplicationContext).build();
+        MockMvc mockMvc = MockMvcBuilders
+                .webAppContextSetup(webApplicationContext)
+                .build();
         MvcResult result = mockMvc.perform(requestBuilder)
                 .andExpect(status().isOk())
                 .andReturn();
