@@ -302,11 +302,11 @@ springdoc:
 plugins:
     webprotege:
         exporter:
-            enabled: true
+            enabled: false
             http:
                 enabled: false
             scheduler:
-                enabled: true
+                enabled: false
                 cron: "0 0/10 * * * *"
         authenticator:
             enabled: true

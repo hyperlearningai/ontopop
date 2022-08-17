@@ -3,7 +3,6 @@ package ai.hyperlearning.ontopop.owl.mappers;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 
@@ -83,24 +82,16 @@ class TestMapper {
     
     @Test
     void testMapInvalidSourceFormat() {
-        Exception exception = assertThrows(
-                OntologyMapperInvalidRequestException.class, () -> {
+        assertThrows(OntologyMapperInvalidRequestException.class, () -> {
             Mapper.map("json", "graphson", testOntologyFilePathValid);
         });
-        String expectedMessage = "Invalid source format provided.";
-        String actualMessage = exception.getMessage();
-        assertTrue(actualMessage.contains(expectedMessage));
     }
     
     @Test
     void testMapOwlXmlInvalidSourceFormat() {
-        Exception exception = assertThrows(
-                OntologyMapperInvalidRequestException.class, () -> {
+        assertThrows(OntologyMapperInvalidRequestException.class, () -> {
             Mapper.map("turtle", "owl-xml", testOntologyFilePathTtl);
         });
-        String expectedMessage = "Invalid source format provided.";
-        String actualMessage = exception.getMessage();
-        assertTrue(actualMessage.contains(expectedMessage));
     }
     
     /**************************************************************************
@@ -109,13 +100,9 @@ class TestMapper {
     
     @Test
     void testMapInvalidTargetFormat() {
-        Exception exception = assertThrows(
-                OntologyMapperInvalidRequestException.class, () -> {
+        assertThrows(OntologyMapperInvalidRequestException.class, () -> {
             Mapper.map("rdf-xml", "json", testOntologyFilePathValid);
         });
-        String expectedMessage = "Invalid target format provided.";
-        String actualMessage = exception.getMessage();
-        assertTrue(actualMessage.contains(expectedMessage));
     }
     
     /**************************************************************************
@@ -124,14 +111,9 @@ class TestMapper {
     
     @Test
     void testMapInvalidExistence() {
-        Exception exception = assertThrows(
-                OntologyMapperInvalidRequestException.class, () -> {
+        assertThrows(OntologyMapperInvalidRequestException.class, () -> {
             Mapper.map("rdf-xml", "graphson", "/tmp/i-do-not-exist.owl");
         });
-        String expectedMessage = "Invalid ontology data file provided - "
-                + "file does not exist.";
-        String actualMessage = exception.getMessage();
-        assertTrue(actualMessage.contains(expectedMessage));
     }
     
     /**************************************************************************
@@ -140,15 +122,10 @@ class TestMapper {
     
     @Test
     void testMapInvalidFileExtension() {
-        Exception exception = assertThrows(
-                OntologyMapperInvalidRequestException.class, () -> {
+        assertThrows(OntologyMapperInvalidRequestException.class, () -> {
             Mapper.map("rdf-xml", "graphson", 
                     testOntologyFilePathInvalidFileExtension);
         });
-        String expectedMessage = "Invalid ontology data file provided - "
-                + "file extension does not match the specified source format.";
-        String actualMessage = exception.getMessage();
-        assertTrue(actualMessage.contains(expectedMessage));
     }
     
     /**************************************************************************
@@ -157,15 +134,10 @@ class TestMapper {
     
     @Test
     void testMapInvalidFileSize() {
-        Exception exception = assertThrows(
-                OntologyMapperInvalidRequestException.class, () -> {
+        assertThrows(OntologyMapperInvalidRequestException.class, () -> {
             Mapper.map("rdf-xml", "graphson", 
                     testOntologyFilePathInvalidFileSize);
         });
-        String expectedMessage = "Invalid ontology data file provided - "
-                + "file size limit exceeded.";
-        String actualMessage = exception.getMessage();
-        assertTrue(actualMessage.contains(expectedMessage));
     }
     
     /**************************************************************************
@@ -174,15 +146,10 @@ class TestMapper {
     
     @Test
     void testMapInvalidBlank() {
-        Exception exception = assertThrows(
-                OntologyMapperInvalidRequestException.class, () -> {
+        assertThrows(OntologyMapperInvalidRequestException.class, () -> {
             Mapper.map("rdf-xml", "graphson", 
                     testOntologyFilePathInvalidBlank);
         });
-        String expectedMessage = "Invalid ontology data file provided - "
-                + "file is blank.";
-        String actualMessage = exception.getMessage();
-        assertTrue(actualMessage.contains(expectedMessage));
     }
     
     /**************************************************************************
@@ -191,14 +158,10 @@ class TestMapper {
     
     @Test
     void testMapInvalidSourceTargetFormat() {
-        Exception exception = assertThrows(
-                OntologyMapperInvalidRequestException.class, () -> {
+        assertThrows(OntologyMapperInvalidRequestException.class, () -> {
             Mapper.map("rdf-xml", "rdf-xml", 
                     testOntologyFilePathValid);
         });
-        String expectedMessage = "Invalid target format provided.";
-        String actualMessage = exception.getMessage();
-        assertTrue(actualMessage.contains(expectedMessage));
     }
     
     /**************************************************************************
