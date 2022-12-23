@@ -13,7 +13,7 @@
     <artifactId>ontopop-apps-spring</artifactId>
     <name>ontopop-apps-spring</name>
     <packaging>pom</packaging>
-    <description>OntoPop - Spring Boot Applications POM</description>
+    <description>OntoPop Spring Boot Applications</description>
     <url>https://ontopop.com</url>
     <organization>
         <name>HyperLearning AI</name>
@@ -51,20 +51,6 @@
 
     <!-- Child Modules -->
     <modules>
-        <module>ontopop-app-data-ontology-ingestor</module>
-        <module>ontopop-app-data-ontology-validator</module>
-        <module>ontopop-app-data-ontology-loader-triplestore</module>
-        <module>ontopop-app-data-ontology-parser</module>
-        <module>ontopop-app-data-ontology-modeller-graph</module>
-        <module>ontopop-app-data-ontology-loader-graph</module>
-        <module>ontopop-app-data-ontology-indexer-graph</module>
-        <module>ontopop-app-data-ontology-pipeline</module>
-        <module>ontopop-app-data-ontology-webprotege-exporter-messaging</module>
-        <module>ontopop-app-data-ontology-webprotege-exporter-scheduler</module>
-        <module>ontopop-app-api-ontology-management</module>
-        <module>ontopop-app-api-ontology-triplestore</module>
-        <module>ontopop-app-api-ontology-search</module>
-        <module>ontopop-app-api-ontology-graph</module>
         <module>ontopop-app-api-ontology-mapping</module>
     </modules>
 

@@ -13,7 +13,7 @@
     <artifactId>ontopop-apps</artifactId>
     <name>ontopop-apps</name>
     <packaging>pom</packaging>
-    <description>OntoPop - Applications POM</description>
+    <description>OntoPop Applications</description>
     <url>https://ontopop.com</url>
     <organization>
         <name>HyperLearning AI</name>
@@ -52,7 +52,6 @@
             <modules>
                 <module>ontopop-apps-spring</module>
                 <module>ontopop-apps-aws</module>
-                <module>ontopop-apps-azure</module>
             </modules>
         </profile>
         
@@ -77,18 +76,6 @@
             </activation>
             <modules>
                 <module>ontopop-apps-aws</module>
-            </modules>
-        </profile>
-    
-        <!-- Build Profile - Microsoft Azure apps for deployment to 
-        Azure Function instances and Azure Web Apps respectively -->
-        <profile>
-            <id>apps-azure</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <modules>
-                <module>ontopop-apps-azure</module>
             </modules>
         </profile>
     

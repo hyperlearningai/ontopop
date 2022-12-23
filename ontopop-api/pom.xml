@@ -13,7 +13,7 @@
     <artifactId>ontopop-api</artifactId>
     <name>ontopop-api</name>
     <packaging>pom</packaging>
-    <description>OntoPop - API Services POM</description>
+    <description>OntoPop APIs</description>
     <url>https://ontopop.com</url>
     <organization>
         <name>HyperLearning AI</name>
@@ -42,10 +42,6 @@
 
     <!-- Child Modules -->
     <modules>
-        <module>ontopop-api-ontology-management</module>
-        <module>ontopop-api-ontology-triplestore</module>
-        <module>ontopop-api-ontology-search</module>
-        <module>ontopop-api-ontology-graph</module>
         <module>ontopop-api-ontology-mapping</module>
     </modules>
 

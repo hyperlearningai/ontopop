@@ -13,7 +13,7 @@
     <artifactId>ontopop-apps-aws</artifactId>
     <name>ontopop-apps-aws</name>
     <packaging>pom</packaging>
-    <description>OntoPop - AWS Cloud Applications POM</description>
+    <description>OntoPop AWS Cloud Applications</description>
     <url>https://ontopop.com</url>
     <organization>
         <name>HyperLearning AI</name>
@@ -56,21 +56,6 @@
 
     <!-- Child Modules -->
     <modules>
-        <module>ontopop-aws-utils</module>
-        <module>ontopop-aws-lambda-app-data-ontology-ingestor</module>
-        <module>ontopop-aws-lambda-app-data-ontology-validator</module>
-        <module>ontopop-aws-lambda-app-data-ontology-loader-triplestore</module>
-        <module>ontopop-aws-lambda-app-data-ontology-parser</module>
-        <module>ontopop-aws-lambda-app-data-ontology-modeller-graph</module>
-        <module>ontopop-aws-lambda-app-data-ontology-loader-graph</module>
-        <module>ontopop-aws-lambda-app-data-ontology-indexer-graph</module>
-        <module>ontopop-aws-lambda-app-data-ontology-pipeline</module>
-        <module>ontopop-aws-lambda-app-data-ontology-webprotege-exporter-http</module>
-        <module>ontopop-aws-lambda-app-data-ontology-webprotege-exporter-scheduler</module>
-        <module>ontopop-aws-beanstalk-app-api-ontology-management</module>
-        <module>ontopop-aws-beanstalk-app-api-ontology-triplestore</module>
-        <module>ontopop-aws-beanstalk-app-api-ontology-search</module>
-        <module>ontopop-aws-beanstalk-app-api-ontology-graph</module>
         <module>ontopop-aws-beanstalk-app-api-ontology-mapping</module>
     </modules>
 

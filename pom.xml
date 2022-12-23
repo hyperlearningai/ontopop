@@ -492,26 +492,6 @@
             </dependency>
             <dependency>
                 <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-api-ontology-management</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-api-ontology-triplestore</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-api-ontology-search</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-api-ontology-graph</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
                 <artifactId>ontopop-api-ontology-mapping</artifactId>
                 <version>${revision}</version>
             </dependency>
