@@ -34,42 +34,41 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.2</version>
+        <version>2.6.14</version>
     </parent>
 
     <!-- Properties and Dependency Versions -->
     <properties>
-        <apache-jena-libs.version>4.5.0</apache-jena-libs.version>
-        <aws-java-sdk.version>1.12.262</aws-java-sdk.version>
-        <aws-java-sdk-s3.version>1.12.262</aws-java-sdk-s3.version>
-        <aws-sdk-bom.version>2.17.102</aws-sdk-bom.version>
+        <apache-jena-libs.version>4.6.1</apache-jena-libs.version>
+        <aws-java-sdk.version>1.12.370</aws-java-sdk.version>
+        <aws-sdk-bom.version>2.19.2</aws-sdk-bom.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <commons-io.version>2.11.0</commons-io.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
-        <commons-text.version>1.9</commons-text.version>
+        <commons-text.version>1.10.0</commons-text.version>
         <conf.application-properties.filename>application.yml</conf.application-properties.filename>
-        <guava.version>31.0.1-jre</guava.version>
+        <guava.version>31.1-jre</guava.version>
         <java.version>11</java.version>
         <javax.activation.version>1.1.1</javax.activation.version>
         <jjwt.version>0.11.5</jjwt.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <org.semanticweb.hermit.version>1.4.5.519</org.semanticweb.hermit.version>
-        <owlapi-distribution.version>5.1.19</owlapi-distribution.version>
+        <owlapi-distribution.version>5.1.20</owlapi-distribution.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <revision>3.0.0</revision>
         <schema.rdf-dublin-core-elements.filename>dublin_core_elements.rdf</schema.rdf-dublin-core-elements.filename>
         <schema.rdf-schema.filename>rdf-schema.ttl</schema.rdf-schema.filename>
         <schema.rdf-skos.filename>skos.rdf</schema.rdf-skos.filename>
-        <selenium-api.version>4.1.2</selenium-api.version>
-        <selenium-java.version>4.1.2</selenium-java.version>
-        <selenium-htmlunit-driver.version>3.58.0</selenium-htmlunit-driver.version>
+        <selenium-api.version>4.1.4</selenium-api.version>
+        <selenium-java.version>4.1.4</selenium-java.version>
+        <selenium-htmlunit-driver.version>3.64.0</selenium-htmlunit-driver.version>
         <spring-boot-thin-layout.version>1.0.28.RELEASE</spring-boot-thin-layout.version>
-        <spring-cloud-dependencies.version>2021.0.0</spring-cloud-dependencies.version>
-        <springdoc-openapi-ui.version>1.5.12</springdoc-openapi-ui.version>
-        <swagger-annotations.version>2.1.11</swagger-annotations.version>
-        <tika-core.version>2.4.0</tika-core.version>
-        <zip4j.version>2.10.0</zip4j.version>
+        <spring-cloud-dependencies.version>2021.0.5</spring-cloud-dependencies.version>
+        <springdoc-openapi-ui.version>1.6.14</springdoc-openapi-ui.version>
+        <swagger-annotations.version>2.2.7</swagger-annotations.version>
+        <tika-core.version>2.6.0</tika-core.version>
+        <zip4j.version>2.11.2</zip4j.version>
     </properties>
 
     <!-- Project Dependencies -->
@@ -149,13 +148,6 @@
                 <groupId>com.amazonaws</groupId>
                 <artifactId>aws-java-sdk</artifactId>
                 <version>${aws-java-sdk.version}</version>
-            </dependency>
-            
-            <!-- AWS Java SDK S3 -->
-            <dependency>
-                <groupId>com.amazonaws</groupId>
-                <artifactId>aws-java-sdk-s3</artifactId>
-                <version>${aws-java-sdk-s3.version}</version>
             </dependency>
 
             <!-- AWS SDK BOM -->
