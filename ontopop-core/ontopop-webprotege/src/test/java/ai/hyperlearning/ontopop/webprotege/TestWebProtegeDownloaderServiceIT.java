@@ -14,13 +14,12 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import com.nimbusds.oauth2.sdk.util.StringUtils;
 
 import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeAuthenticationException;
 import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeInvalidProjectId;
