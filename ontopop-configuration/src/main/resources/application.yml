@@ -14,13 +14,15 @@ spring:
             max-file-size: 1024KB
             max-request-size: 1024KB
 security:
-    authentication:
-        api:
-            enabled: true
-            jwt:
-                secretKey: ${JWT_SECRET_KEY}
-                username: ${JWT_USERNAME}
-                issuer: ${JWT_ISSUER}
+    api:
+        enabled: true
+        jwt:
+            secretKey: ${JWT_SECRET_KEY}
+            username: ${JWT_USERNAME}
+            issuer: ${JWT_ISSUER}
+    cors:
+        enabled: true
+        allowedOrigins: ${CORS_ALLOWED_ORIGINS}
 web:
     client:
         codecs:

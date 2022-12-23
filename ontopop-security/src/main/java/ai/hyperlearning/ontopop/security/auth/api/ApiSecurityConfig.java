@@ -43,16 +43,16 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
     
     private static final String PRINCIPAL_REQUEST_HEADER_KEY = "Authorization";
     
-    @Value("${security.authentication.api.enabled:false}")
-    private Boolean apiAuthenticationEnabled;
+    @Value("${security.api.enabled:true}")
+    private Boolean apiSecurityEnabled;
     
-    @Value("${security.authentication.api.jwt.secretKey}")
+    @Value("${security.api.jwt.secretKey}")
     private String jwtSecretKey;
     
-    @Value("${security.authentication.api.jwt.username}")
+    @Value("${security.api.jwt.username}")
     private String jwtUsername;
     
-    @Value("${security.authentication.api.jwt.issuer}")
+    @Value("${security.api.jwt.issuer}")
     private String jwtIssuer;
     
     @Override
@@ -68,7 +68,7 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
                     throws AuthenticationException {
                 
                 // API Authentication
-                if ( Boolean.TRUE.equals(apiAuthenticationEnabled) ) {
+                if ( Boolean.TRUE.equals(apiSecurityEnabled) ) {
                     
                     // Get the Authorization header
                     String principal = (String) 
