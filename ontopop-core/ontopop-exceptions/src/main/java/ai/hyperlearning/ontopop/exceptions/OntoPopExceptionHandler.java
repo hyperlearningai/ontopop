@@ -25,7 +25,6 @@ import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffInvalidRequestEx
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDownloadException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidRequestException;
-import ai.hyperlearning.ontopop.exceptions.security.InvalidClientNameException;
 import ai.hyperlearning.ontopop.exceptions.vendors.OntoKaiOntologyInvalidPayloadException;
 import ai.hyperlearning.ontopop.exceptions.vendors.OntoKaiOntologyPayloadMappingException;
 import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeAuthenticationException;
@@ -109,7 +108,6 @@ public class OntoPopExceptionHandler extends ResponseEntityExceptionHandler {
      */
     
     @ExceptionHandler({
-        InvalidClientNameException.class, 
         OntoKaiOntologyInvalidPayloadException.class, 
         OntologyDataInvalidException.class, 
         OntologyDiffInvalidRequestException.class, 
