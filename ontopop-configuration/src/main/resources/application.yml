@@ -18,9 +18,9 @@ security:
         api:
             enabled: true
             jwt:
-                secretKey: ''
-                username: ''
-                issuer: ''
+                secretKey: ${JWT_SECRET_KEY}
+                username: ${JWT_USERNAME}
+                issuer: ${JWT_ISSUER}
 web:
     client:
         codecs:

@@ -18,10 +18,19 @@ public class OntologyMappingWebConfig implements WebMvcConfigurer {
     
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
+        
+        // Route - health check
+        registry.addMapping("/")
             .allowedOrigins("*")
-            .allowedMethods("*")
+            .allowedMethods("GET")
             .allowedHeaders("*");
+        
+        // Route - all mapping API endpoints
+        registry.addMapping("/mapping/**")
+            .allowedOrigins("*")
+            .allowedMethods("OPTIONS", "POST")
+            .allowedHeaders("*");
+    
     }
 
 }
