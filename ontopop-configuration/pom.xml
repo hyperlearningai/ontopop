@@ -74,7 +74,6 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <includes>
-                    <include>${conf.bootstrap-properties.filename}</include>
                     <include>${conf.application-properties.filename}</include>
                 </includes>
                 <filtering>true</filtering>
