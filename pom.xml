@@ -41,40 +41,17 @@
     <properties>
         <apache-jena-libs.version>4.5.0</apache-jena-libs.version>
         <aws-java-sdk.version>1.12.262</aws-java-sdk.version>
-        <aws-java-sdk-cognitoidentity.version>1.12.262</aws-java-sdk-cognitoidentity.version>
         <aws-java-sdk-s3.version>1.12.262</aws-java-sdk-s3.version>
-        <aws-java-sdk-secretsmanager.version>1.12.262</aws-java-sdk-secretsmanager.version>
-        <aws-lambda-java-core.version>1.2.1</aws-lambda-java-core.version>
-        <aws-lambda-java-events.version>3.11.0</aws-lambda-java-events.version>
-        <aws-lambda-java-runtime-interface-client.version>2.1.0</aws-lambda-java-runtime-interface-client.version>
         <aws-sdk-bom.version>2.17.102</aws-sdk-bom.version>
-        <aws-secretsmanager.version>2.17.102</aws-secretsmanager.version>
-        <azure-functions-java-library.version>1.4.2</azure-functions-java-library.version>
-        <azure-functions-maven-plugin.version>1.15.0</azure-functions-maven-plugin.version>
-        <azure-sdk-bom.version>1.0.6</azure-sdk-bom.version>
-        <azure-spring-boot-bom.version>3.12.0</azure-spring-boot-bom.version>
-        <azure-spring-boot-starter-storage.version>3.11.0</azure-spring-boot-starter-storage.version>
-        <azure-spring-cloud-stream-binder-servicebus-topic.version>2.12.0</azure-spring-cloud-stream-binder-servicebus-topic.version>
-        <azure-webapp-maven-plugin.version>2.3.0</azure-webapp-maven-plugin.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <commons-io.version>2.11.0</commons-io.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <commons-text.version>1.9</commons-text.version>
         <conf.bootstrap-properties.filename>bootstrap.yml</conf.bootstrap-properties.filename>
         <conf.application-properties.filename>application.yml</conf.application-properties.filename>
-        <conf.gremlin-graph-properties.filename>gremlin-graph.properties</conf.gremlin-graph-properties.filename>
-        <graphdb-free-runtime.version>9.10.1</graphdb-free-runtime.version>
-        <gremlin-core.version>3.5.1</gremlin-core.version>
-        <gremlin-driver.version>3.5.1</gremlin-driver.version>
-        <gremlin-groovy.version>3.5.1</gremlin-groovy.version>
         <guava.version>31.0.1-jre</guava.version>
-        <janusgraph-all.version>0.6.0</janusgraph-all.version>
-        <janusgraph-core.version>0.6.0</janusgraph-core.version>
-        <janusgraph-driver.version>0.6.0</janusgraph-driver.version>
         <java.version>11</java.version>
         <javax.activation.version>1.1.1</javax.activation.version>
-        <mapstruct.version>1.4.2.Final</mapstruct.version>
-        <mapstruct-processor.version>1.4.2.Final</mapstruct-processor.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <org.semanticweb.hermit.version>1.4.5.519</org.semanticweb.hermit.version>
@@ -89,11 +66,9 @@
         <selenium-htmlunit-driver.version>3.58.0</selenium-htmlunit-driver.version>
         <spring-boot-thin-layout.version>1.0.28.RELEASE</spring-boot-thin-layout.version>
         <spring-cloud-dependencies.version>2021.0.0</spring-cloud-dependencies.version>
-        <spring-cloud-starter-aws-secrets-manager-config.version>2.2.6.RELEASE</spring-cloud-starter-aws-secrets-manager-config.version>
         <springdoc-openapi-ui.version>1.5.12</springdoc-openapi-ui.version>
         <swagger-annotations.version>2.1.11</swagger-annotations.version>
         <tika-core.version>2.4.0</tika-core.version>
-        <tinkergraph-gremlin.version>3.5.1</tinkergraph-gremlin.version>
         <zip4j.version>2.10.0</zip4j.version>
     </properties>
 
@@ -169,40 +144,11 @@
                 <version>${tika-core.version}</version>
             </dependency>
 
-            <!-- Apache TinkerPop -->
-            <dependency>
-                <groupId>org.apache.tinkerpop</groupId>
-                <artifactId>gremlin-core</artifactId>
-                <version>${gremlin-core.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.tinkerpop</groupId>
-                <artifactId>gremlin-driver</artifactId>
-                <version>${gremlin-driver.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.tinkerpop</groupId>
-                <artifactId>gremlin-groovy</artifactId>
-                <version>${gremlin-groovy.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.tinkerpop</groupId>
-                <artifactId>tinkergraph-gremlin</artifactId>
-                <version>${tinkergraph-gremlin.version}</version>
-            </dependency>
-
             <!-- AWS Java SDK -->
             <dependency>
                 <groupId>com.amazonaws</groupId>
                 <artifactId>aws-java-sdk</artifactId>
                 <version>${aws-java-sdk.version}</version>
-            </dependency>
-            
-            <!-- AWS Java SDK Cognito Identity -->
-            <dependency>
-                <groupId>com.amazonaws</groupId>
-                <artifactId>aws-java-sdk</artifactId>
-                <version>${aws-java-sdk-cognitoidentity.version}</version>
             </dependency>
             
             <!-- AWS Java SDK S3 -->
@@ -211,34 +157,6 @@
                 <artifactId>aws-java-sdk-s3</artifactId>
                 <version>${aws-java-sdk-s3.version}</version>
             </dependency>
-            
-            <!-- AWS Java SDK Secrets Manager -->
-            <dependency>
-                <groupId>com.amazonaws</groupId>
-                <artifactId>aws-java-sdk-secretsmanager</artifactId>
-                <version>${aws-java-sdk-secretsmanager.version}</version>
-            </dependency>
-            
-            <!-- AWS Lambda Core -->
-            <dependency>
-                <groupId>com.amazonaws</groupId>
-                <artifactId>aws-lambda-java-core</artifactId>
-                <version>${aws-lambda-java-core.version}</version>
-            </dependency>
-            
-            <!-- AWS Lambda Events -->
-            <dependency>
-                <groupId>com.amazonaws</groupId>
-                <artifactId>aws-lambda-java-events</artifactId>
-                <version>${aws-lambda-java-events.version}</version>
-            </dependency>
-            
-            <!-- AWS Lambda Java Runtime Interface Client -->
-            <dependency>
-                <groupId>com.amazonaws</groupId>
-                <artifactId>aws-lambda-java-runtime-interface-client</artifactId>
-                <version>${aws-lambda-java-runtime-interface-client.version}</version>
-            </dependency>
 
             <!-- AWS SDK BOM -->
             <dependency>
@@ -246,52 +164,6 @@
                 <artifactId>bom</artifactId>
                 <version>${aws-sdk-bom.version}</version>
                 <type>pom</type>
-            </dependency>
-
-            <!-- AWS Secrets Manager -->
-            <dependency>
-                <groupId>software.amazon.awssdk</groupId>
-                <artifactId>secretsmanager</artifactId>
-                <version>${aws-secretsmanager.version}</version>
-            </dependency>
-
-            <!-- Azure Functions Java Library -->
-            <dependency>
-                <groupId>com.microsoft.azure.functions</groupId>
-                <artifactId>azure-functions-java-library</artifactId>
-                <version>${azure-functions-java-library.version}</version>
-            </dependency>
-
-            <!-- Azure SDK BOM (Azure client libraries e.g. storage client) -->
-            <dependency>
-                <groupId>com.azure</groupId>
-                <artifactId>azure-sdk-bom</artifactId>
-                <version>${azure-sdk-bom.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-            <!-- Azure Spring Boot BOM -->
-            <dependency>
-                <groupId>com.azure.spring</groupId>
-                <artifactId>azure-spring-boot-bom</artifactId>
-                <version>${azure-spring-boot-bom.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-            <!-- Azure Spring Boot Starter Storage -->
-            <dependency>
-                <groupId>com.azure.spring</groupId>
-                <artifactId>azure-spring-boot-starter-storage</artifactId>
-                <version>${azure-spring-boot-starter-storage.version}</version>
-            </dependency>
-
-            <!-- Azure Spring Cloud Stream Binder Service Bus -->
-            <dependency>
-                <groupId>com.azure.spring</groupId>
-                <artifactId>azure-spring-cloud-stream-binder-servicebus-topic</artifactId>
-                <version>${azure-spring-cloud-stream-binder-servicebus-topic.version}</version>
             </dependency>
 
             <!-- Guava -->
@@ -308,40 +180,11 @@
                 <version>${org.semanticweb.hermit.version}</version>
             </dependency>
 
-            <!-- JanusGraph -->
-            <dependency>
-                <groupId>org.janusgraph</groupId>
-                <artifactId>janusgraph-all</artifactId>
-                <version>${janusgraph-all.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.janusgraph</groupId>
-                <artifactId>janusgraph-core</artifactId>
-                <version>${janusgraph-core.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.janusgraph</groupId>
-                <artifactId>janusgraph-driver</artifactId>
-                <version>${janusgraph-driver.version}</version>
-            </dependency>
-
             <!-- JavaBeans Activation Framework for JAXB-API Implementation -->
             <dependency>
                 <groupId>javax.activation</groupId>
                 <artifactId>activation</artifactId>
                 <version>${javax.activation.version}</version>
-            </dependency>
-
-            <!-- MapStruct -->
-            <dependency>
-                <groupId>org.mapstruct</groupId>
-                <artifactId>mapstruct</artifactId>
-                <version>${mapstruct.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.mapstruct</groupId>
-                <artifactId>mapstruct-processor</artifactId>
-                <version>${mapstruct-processor.version}</version>
             </dependency>
 
             <!-- OntoPop -->
@@ -384,13 +227,6 @@
                 <groupId>ai.hyperlearning.ontopop</groupId>
                 <artifactId>ontopop-api-ontology-mapping</artifactId>
                 <version>${revision}</version>
-            </dependency>
-
-            <!-- Ontotext GraphDB -->
-            <dependency>
-                <groupId>com.ontotext.graphdb</groupId>
-                <artifactId>graphdb-free-runtime</artifactId>
-                <version>${graphdb-free-runtime.version}</version>
             </dependency>
 
             <!-- OWL API -->
@@ -442,13 +278,6 @@
                 <scope>import</scope>
             </dependency>
             
-            <!-- Spring Cloud Starter AWS Secrets Manager  -->
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-aws-secrets-manager-config</artifactId>
-                <version>${spring-cloud-starter-aws-secrets-manager-config.version}</version>
-            </dependency>
-            
             <!-- Swagger Annotations -->
             <dependency>
                 <groupId>io.swagger.core.v3</groupId>
@@ -472,7 +301,6 @@
         <module>ontopop-model</module>
         <module>ontopop-core</module>
         <module>ontopop-security</module>
-        <module>ontopop-data</module>
         <module>ontopop-api</module>
     </modules>
     
@@ -508,27 +336,6 @@
             </resource>
 
         </resources>
-
-        <!-- Project Plugin Management -->
-        <pluginManagement>
-            <plugins>
-
-                <!-- Microsoft Azure Functions Maven Plugin -->
-                <plugin>
-                    <groupId>com.microsoft.azure</groupId>
-                    <artifactId>azure-functions-maven-plugin</artifactId>
-                    <version>${azure-functions-maven-plugin.version}</version>
-                </plugin>
-
-                <!-- Microsoft Azure Webapp Maven Plugin -->
-                <plugin>
-                    <groupId>com.microsoft.azure</groupId>
-                    <artifactId>azure-webapp-maven-plugin</artifactId>
-                    <version>${azure-webapp-maven-plugin.version}</version>
-                </plugin>
-
-            </plugins>
-        </pluginManagement>
 
         <!-- Project Plugins -->
         <plugins>
