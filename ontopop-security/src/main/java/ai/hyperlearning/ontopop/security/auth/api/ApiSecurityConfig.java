@@ -1,16 +1,11 @@
 package ai.hyperlearning.ontopop.security.auth.api;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,24 +20,15 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.json.JsonReadFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import ai.hyperlearning.ontopop.security.auth.AuthenticationFilter;
-import ai.hyperlearning.ontopop.security.auth.AuthorizationHeader;
-import ai.hyperlearning.ontopop.security.auth.api.apikey.ApiKeyAuthenticationEngine;
-import ai.hyperlearning.ontopop.security.auth.api.apikey.ApiKeyAuthentication;
-import ai.hyperlearning.ontopop.security.auth.api.apikey.ApiKeyAuthenticationFactory;
-import ai.hyperlearning.ontopop.security.auth.iam.IamIdentity;
-import ai.hyperlearning.ontopop.security.auth.iam.IamIdentityProvider;
-import ai.hyperlearning.ontopop.security.auth.iam.IamIdentityProviderFactory;
+import ai.hyperlearning.ontopop.security.auth.utils.AuthorizationUtils;
+import ai.hyperlearning.ontopop.security.auth.utils.JWTUtils;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 
 /**
  * API Web Security Configuration
@@ -59,83 +45,23 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
             LoggerFactory.getLogger(ApiSecurityConfig.class);
     
     private static final String PRINCIPAL_REQUEST_HEADER_KEY = "Authorization";
-    private static final String ROLE_NAME_PREFIX = "ROLE_";
-    private static final String MANAGEMENT_API_ROLE_NAME = "ONTOPOP_MANAGEMENT_API";
-    private static final String TRIPLESTORE_API_ROLE_NAME = "ONTOPOP_TRIPLESTORE_API";
-    private static final String SEARCH_API_ROLE_NAME = "ONTOPOP_SEARCH_API";
-    private static final String GRAPH_API_ROLE_NAME = "ONTOPOP_GRAPH_API";
-    private static final String MAPPING_API_ROLE_NAME = "ONTOPOP_MAPPING_API";
-    
-    @Autowired
-    private ApiKeyAuthenticationFactory apiKeyAuthenticationFactory;
-    
-    @Autowired
-    private IamIdentityProviderFactory iamIdentityProviderFactory;
     
     @Value("${security.authentication.api.enabled:false}")
     private Boolean apiAuthenticationEnabled;
     
-    @Value("${security.authentication.api.iam-guest-credentials.enabled:false}")
-    private Boolean apiIamGuestCredentialsEnabled;
+    @Value("${security.authentication.api.jwt.secretKey}")
+    private String jwtSecretKey;
     
-    @Value("${security.iam.service}")
-    private String apiIamService;
+    @Value("${security.authentication.api.jwt.username}")
+    private String jwtUsername;
     
-    @Value("${security.authentication.api.api-key-lookup.enabled:false}")
-    private Boolean apiKeyLookupEnabled;
-    
-    @Value("${security.authentication.api.api-key-lookup.engine:secrets}")
-    private String apiKeyLookupEngine;
-    
-    @Value("${security.authentication.api.api-key-lookup.connect-with-guest-credentials:false}")
-    private Boolean apiKeyLookupConnectWithGuestCredentials;
-    
-    private ApiKeyAuthentication apiKeyAuthentication = null;
-    private IamIdentity iamIdentity = null;
-    
-    @PostConstruct
-    private void resolveApiKeyAuthenticationEngine() {
-        
-        // API key lookup authentication engine
-        if ( Boolean.TRUE.equals(apiAuthenticationEnabled) && 
-                Boolean.TRUE.equals(apiKeyLookupEnabled) ) {
-            
-            ApiKeyAuthenticationEngine apiAuthenticationEngineType =
-                    ApiKeyAuthenticationEngine.valueOfLabel(
-                            apiKeyLookupEngine.toUpperCase());
-            apiKeyAuthentication = apiKeyAuthenticationFactory
-                    .getApiKeyAuthenticationService(
-                            apiAuthenticationEngineType);
-            LOGGER.info("Using the '{}' API authentication engine.",
-                    apiKeyLookupEngine);
-            
-        }
-        
-    }
-    
-    @PostConstruct
-    private void resolveIamIdentityProvider() {
-        
-        // IAM identity service
-        if ( Boolean.TRUE.equals(apiAuthenticationEnabled) &&
-                Boolean.TRUE.equals(apiIamGuestCredentialsEnabled) ) {
-            
-                IamIdentityProvider iamIdentityProvider = 
-                        IamIdentityProvider.valueOfLabel(
-                                apiIamService.toUpperCase());
-                iamIdentity = iamIdentityProviderFactory
-                        .getIamIdentityService(iamIdentityProvider);
-                LOGGER.info("Using the '{}' IAM identity service.",
-                        apiIamService);
-            
-        }
-        
-    }
+    @Value("${security.authentication.api.jwt.issuer}")
+    private String jwtIssuer;
     
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         
-        // Custom authentication - Get the contents of the authorization header
+        // Custom authentication - get the contents of the authorization header
         AuthenticationFilter filter = new AuthenticationFilter(
                 PRINCIPAL_REQUEST_HEADER_KEY);
         filter.setAuthenticationManager(new AuthenticationManager() {
@@ -147,90 +73,50 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
                 // API Authentication
                 if ( Boolean.TRUE.equals(apiAuthenticationEnabled) ) {
                     
-                    // Get and decode the Base64 encoded credentials 
-                    // from the Authorization header
-                    String encodedPrincipal = (String) authentication
-                            .getPrincipal();
-                    String encodedCredentials = (String) authentication
-                            .getCredentials();
-                    String decodedPrincipal = decodeHeader(encodedPrincipal);
+                    // Get the Authorization header
+                    String principal = (String) 
+                            authentication.getPrincipal();
+                    String credentials = (String) 
+                            authentication.getCredentials();
                     
-                    // Guest Credentials
-                    if ( Boolean.TRUE.equals(apiIamGuestCredentialsEnabled) ) {
+                    // JWT verification
+                    try {
                         
-                        try {
-                            
-                            // Resolve the IAM identity provider
-                            if ( iamIdentity == null )
-                                resolveIamIdentityProvider();
-                            
-                            // Get the OpenID token using the guest credentials
-                            String openIdToken = iamIdentity
-                                    .getOpenIdToken(decodedPrincipal);
-                            
-                            // Verify the OpenID token
-                            if ( StringUtils.isBlank(openIdToken) )
-                                throw new BadCredentialsException(
-                                        "Invalid Guest Credentials.");
-                            
-                        } catch (Exception e) {
-                            LOGGER.error("An error was encountered when "
-                                    + "generating an OpenID token for the "
-                                    + "given guest credentials.", e);
-                            throw new BadCredentialsException(
-                                    "Invalid Guest Credentials.");
-                        }
+                        // Get the JWT from the Authorization header
+                        String token = AuthorizationUtils.getToken(principal);
+                        LOGGER.debug("JWT: {}", token);
                         
+                        // Decode and verify the JWT
+                        Jws<Claims> claims = JWTUtils.decodeJWT(
+                                token, jwtSecretKey, jwtUsername, jwtIssuer);
+                        
+                        // Get the granted authorities
+                        String roles = JWTUtils.getRoles(claims);
+                        final List<GrantedAuthority> authorities = 
+                                AuthorizationUtils.getGrantedAuthorities(roles);
+                        
+                        // Return a new authentication object
+                        // Note that the UsernamePasswordAuthenticationToken 
+                        // constructor automatically sets authenticated to true.
+                        // Therefore we do not have to explicitly call 
+                        // setAuthenticated(). If we do, then an illegal
+                        // argument exception will be thrown.
+                        return new UsernamePasswordAuthenticationToken(
+                                principal, credentials, authorities);
+                        
+                        
+                    } catch (Exception e) {
+                        LOGGER.error("Invalid JWT");
+                        throw new BadCredentialsException(
+                                "Invalid JWT.");
                     }
-                    
-                    // API Key Lookup Authentication
-                    if ( Boolean.TRUE.equals(apiKeyLookupEnabled) ) {
-                        
-                        try {
-                            
-                            // Resolve the API Key authentication engine
-                            if ( apiKeyAuthentication == null )
-                                resolveApiKeyAuthenticationEngine();
-                            
-                            // Get the API Key from the Authorization header
-                            String apiKey = getApiKey(decodedPrincipal);
-                            
-                            // Verify the API Key and get the granted authorities
-                            String guestCredentials = Boolean.TRUE.equals(
-                                    apiKeyLookupConnectWithGuestCredentials) ? 
-                                            decodedPrincipal : null;
-                            final List<GrantedAuthority> authorities = 
-                                    apiKeyAuthentication.authorize(
-                                            apiKey, guestCredentials);
-                            
-                            // Return a new authentication object
-                            // Note that the UsernamePasswordAuthenticationToken 
-                            // constructor automatically sets authenticated to true.
-                            // Therefore we do not have to explicitly call 
-                            // setAuthenticated(). If we do, then an illegal
-                            // argument exception will be thrown.
-                            return new UsernamePasswordAuthenticationToken(
-                                        decodedPrincipal, encodedCredentials, 
-                                        authorities);
-                            
-                        } catch (JsonProcessingException e) {
-                            throw new BadCredentialsException(
-                                    "Invalid Credentials.");
-                        }  
-                    
-                    }
-                    
-                    // If API Key lookup is disabled, grant all authorities
-                    else return new UsernamePasswordAuthenticationToken(
-                            decodedPrincipal, encodedCredentials, 
-                            grantAllAuthorities());
                     
                 } else {
                     
                     // If API authentication is disabled entirely, 
                     // then grant all authorities automatically
-                    return new UsernamePasswordAuthenticationToken(
-                            null, null, grantAllAuthorities());
+                    return new UsernamePasswordAuthenticationToken(null, null, 
+                            AuthorizationUtils.grantAllAuthorities());
                     
                 }  
                 
@@ -247,7 +133,8 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
             .addFilter(filter)
             .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/mapping/**").hasRole(MAPPING_API_ROLE_NAME)
+                .antMatchers("/mapping/**").hasRole(
+                        AuthorizationUtils.MAPPING_API_ROLE_NAME)
                 .anyRequest().authenticated()
                 .and()
             .sessionManagement()
@@ -258,7 +145,7 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
                     (request, response, ex) ->
                         response.sendError(
                                 HttpStatus.UNAUTHORIZED.value(), 
-                                "Invalid Credentials.")
+                                "Invalid credentials.")
                     );
         
     }
@@ -278,57 +165,6 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
                 new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
-    }
-    
-    /**
-     * Decode a Base64 encoded request header
-     * @param encodedPrincipal
-     * @return
-     */
-    
-    private String decodeHeader(String encodedPrincipal) {
-        byte[] decodedPrincipalBytes = Base64.getDecoder()
-                .decode(encodedPrincipal);
-        return new String(decodedPrincipalBytes);
-    }
-    
-    /**
-     * Extract the API Key from the request header
-     * @return
-     * @throws JsonProcessingException 
-     * @throws JsonMappingException 
-     */
-    
-    private String getApiKey(String decodedPrincipal) 
-            throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(JsonReadFeature.ALLOW_UNQUOTED_FIELD_NAMES
-                .mappedFeature());
-        AuthorizationHeader authorizationHeader = 
-                mapper.readValue(decodedPrincipal, 
-                        AuthorizationHeader.class);
-        return authorizationHeader.getAppId();
-    }
-    
-    /**
-     * Grant all authorities automatically
-     * @return
-     */
-    
-    private List<GrantedAuthority> grantAllAuthorities() {
-        final List<GrantedAuthority> grantedAuthorities = 
-                new ArrayList<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority(
-                ROLE_NAME_PREFIX + MANAGEMENT_API_ROLE_NAME));
-        grantedAuthorities.add(new SimpleGrantedAuthority(
-                ROLE_NAME_PREFIX + TRIPLESTORE_API_ROLE_NAME));
-        grantedAuthorities.add(new SimpleGrantedAuthority(
-                ROLE_NAME_PREFIX + SEARCH_API_ROLE_NAME));
-        grantedAuthorities.add(new SimpleGrantedAuthority(
-                ROLE_NAME_PREFIX + GRAPH_API_ROLE_NAME));
-        grantedAuthorities.add(new SimpleGrantedAuthority(
-                ROLE_NAME_PREFIX + MAPPING_API_ROLE_NAME));
-        return grantedAuthorities;
     }
 
 }

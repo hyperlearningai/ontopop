@@ -23,7 +23,7 @@ public class OntologyMappingOpenApiConfig {
                 .components(new Components())
                 .info(new Info()
                         .title("Mapping API")
-                        .description("API for undertaking common mapping operations"));
+                        .description("API for undertaking common mapping operations."));
     }
 
 }

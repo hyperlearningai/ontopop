@@ -27,7 +27,7 @@ import io.jsonwebtoken.security.SignatureException;
 public class JWTUtils {
     
     private JWTUtils() {
-        throw new IllegalStateException("The HWTUtils utility class "
+        throw new IllegalStateException("The JWTUtils utility class "
                 + "cannot be instantiated.");
     }
     
@@ -56,6 +56,15 @@ public class JWTUtils {
                 .setSigningKey(hmacKey)
                 .build()
                 .parseClaimsJws(token);
+    }
+    
+    /**
+     * Get the authorized roles from the JWT
+     * @param claims
+     * @return
+     */
+    public static String getRoles(Jws<Claims> claims) {
+        return claims.getBody().get("roles", String.class);
     }
 
 }
