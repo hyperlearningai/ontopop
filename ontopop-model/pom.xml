@@ -86,12 +86,6 @@
             <artifactId>jaxb-runtime</artifactId>
         </dependency>
 
-        <!-- Spring Boot Starter Data JPA -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-
         <!-- Spring Boot Starter Validation (Bean Validation API Implementation) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

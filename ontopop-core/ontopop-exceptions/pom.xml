@@ -14,7 +14,7 @@
     <artifactId>ontopop-exceptions</artifactId>
     <name>ontopop-exceptions</name>
     <packaging>jar</packaging>
-    <description>OntoPop - Custom Exception Handling</description>
+    <description>OntoPop Custom Exceptions</description>
     <url>https://ontopop.com</url>
     <organization>
         <name>HyperLearning AI</name>

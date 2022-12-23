@@ -14,7 +14,7 @@
     <artifactId>ontopop-logging</artifactId>
     <name>ontopop-logging</name>
     <packaging>jar</packaging>
-    <description>OntoPop - Custom Logging</description>
+    <description>OntoPop Custom Logging Configuration</description>
     <url>https://ontopop.com</url>
     <organization>
         <name>HyperLearning AI</name>

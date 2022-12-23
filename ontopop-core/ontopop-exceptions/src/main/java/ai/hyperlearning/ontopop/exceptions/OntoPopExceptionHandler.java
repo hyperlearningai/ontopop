@@ -18,18 +18,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreateConflictException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreateException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataInvalidException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataParsingException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataPipelineException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDeleteException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffInvalidRequestException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDiffException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDownloadException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidRequestException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyNotFoundException;
-import ai.hyperlearning.ontopop.exceptions.ontology.OntologyUpdateException;
 import ai.hyperlearning.ontopop.exceptions.security.InvalidClientNameException;
 import ai.hyperlearning.ontopop.exceptions.vendors.OntoKaiOntologyInvalidPayloadException;
 import ai.hyperlearning.ontopop.exceptions.vendors.OntoKaiOntologyPayloadMappingException;
@@ -37,7 +32,6 @@ import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeAuthenticationEx
 import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeInvalidProjectId;
 import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeMissingCredentials;
 import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeProjectAccessException;
-import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeWebhookNotFoundException;
 
 /**
  * OntoPop Exception Handler
@@ -151,35 +145,6 @@ public class OntoPopExceptionHandler extends ResponseEntityExceptionHandler {
             OntoPopException exception, WebRequest request) {
         return handleException(exception, request, HttpStatus.FORBIDDEN);
     }
-    
-    /**
-     * Handler - Not Found (404)
-     * @param exception
-     * @param request
-     * @return
-     */
-    
-    @ExceptionHandler({
-        OntologyNotFoundException.class,
-        WebProtegeWebhookNotFoundException.class })
-    protected ResponseEntity<Object> handleNotFound(
-            OntoPopException exception, WebRequest request) {
-        return handleException(exception, request, HttpStatus.NOT_FOUND);
-    }
-    
-    /**
-     * Handler - Conflict (409)
-     * @param exception
-     * @param request
-     * @return
-     */
-    
-    @ExceptionHandler({
-        OntologyCreateConflictException.class })
-    protected ResponseEntity<Object> handleConflict(
-            OntoPopException exception, WebRequest request) {
-        return handleException(exception, request, HttpStatus.CONFLICT);
-    }
 
     /**
      * Handler - Internal Server Error (500)
@@ -190,13 +155,10 @@ public class OntoPopExceptionHandler extends ResponseEntityExceptionHandler {
     
     @ExceptionHandler({
         OntoKaiOntologyPayloadMappingException.class, 
-        OntologyCreateException.class,
         OntologyDataParsingException.class, 
         OntologyDataPipelineException.class, 
-        OntologyDeleteException.class, 
         OntologyDiffException.class, 
         OntologyDownloadException.class, 
-        OntologyUpdateException.class, 
         WebProtegeAuthenticationException.class, 
         WebProtegeMissingCredentials.class })
     protected ResponseEntity<Object> handleInternalServerError(

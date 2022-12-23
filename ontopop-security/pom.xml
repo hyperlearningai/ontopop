@@ -14,7 +14,7 @@
     <artifactId>ontopop-security</artifactId>
     <name>ontopop-security</name>
     <packaging>jar</packaging>
-    <description>OntoPop - Authentication and Authorization Services</description>
+    <description>OntoPop Authentication and Authorization Services</description>
     <url>https://ontopop.com</url>
     <organization>
         <name>HyperLearning AI</name>
@@ -49,12 +49,6 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
-        
-        <!-- AWS Java SDK Cognito Identity -->
-        <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk</artifactId>
-        </dependency>
 
         <!-- OntoPop -->
         <dependency>
@@ -64,10 +58,6 @@
         <dependency>
             <groupId>ai.hyperlearning.ontopop</groupId>
             <artifactId>ontopop-exceptions</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ai.hyperlearning.ontopop</groupId>
-            <artifactId>ontopop-secrets</artifactId>
         </dependency>
         
         <!-- Spring Boot Starter Security -->
