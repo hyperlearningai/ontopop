@@ -362,42 +362,12 @@
             </dependency>
             <dependency>
                 <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-mappers</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
                 <artifactId>ontopop-logging</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>ai.hyperlearning.ontopop</groupId>
                 <artifactId>ontopop-exceptions</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-git</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-storage</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-triplestore</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-graph</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-messaging</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
@@ -412,82 +382,7 @@
             </dependency>
             <dependency>
                 <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-jpa</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-search</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
                 <artifactId>ontopop-security</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-data-ontology-management</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-data-ontology-ingestor</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-data-ontology-validator</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-data-ontology-loader-triplestore</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-data-ontology-parser</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-data-ontology-modeller-graph</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-data-ontology-loader-graph</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-data-ontology-indexer-graph</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-data-ontology-pipeline</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-data-ontology-downloader</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-data-ontology-webprotege-exporter</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-data-ontology-diff</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-data-ontology-git</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>

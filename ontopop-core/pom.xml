@@ -13,7 +13,7 @@
     <artifactId>ontopop-core</artifactId>
     <name>ontopop-core</name>
     <packaging>pom</packaging>
-    <description>OntoPop - Core Services POM</description>
+    <description>OntoPop Core Services</description>
     <url>https://ontopop.com</url>
     <organization>
         <name>HyperLearning AI</name>
@@ -43,19 +43,10 @@
     <!-- Child Modules -->
     <modules>
         <module>ontopop-secrets</module>
-        <module>ontopop-mappers</module>
         <module>ontopop-logging</module>
         <module>ontopop-exceptions</module>
-        <module>ontopop-git</module>
-        <module>ontopop-storage</module>
-        <module>ontopop-triplestore</module>
-        <module>ontopop-graph</module>
-        <module>ontopop-messaging</module>
         <module>ontopop-owl</module>
         <module>ontopop-webprotege</module>
-        <module>ontopop-jpa</module>
-        <module>ontopop-search</module>
-        <module>ontopop-utils</module> 
     </modules>
 
 </project>
