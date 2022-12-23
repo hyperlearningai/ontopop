@@ -60,9 +60,9 @@
         <schema.rdf-dublin-core-elements.filename>dublin_core_elements.rdf</schema.rdf-dublin-core-elements.filename>
         <schema.rdf-schema.filename>rdf-schema.ttl</schema.rdf-schema.filename>
         <schema.rdf-skos.filename>skos.rdf</schema.rdf-skos.filename>
-        <selenium-api.version>4.1.4</selenium-api.version>
-        <selenium-java.version>4.1.4</selenium-java.version>
-        <selenium-htmlunit-driver.version>3.64.0</selenium-htmlunit-driver.version>
+        <selenium-api.version>4.1.2</selenium-api.version>
+        <selenium-java.version>4.1.2</selenium-java.version>
+        <selenium-htmlunit-driver.version>3.58.0</selenium-htmlunit-driver.version>
         <spring-boot-thin-layout.version>1.0.28.RELEASE</spring-boot-thin-layout.version>
         <spring-cloud-dependencies.version>2021.0.5</spring-cloud-dependencies.version>
         <springdoc-openapi-ui.version>1.6.14</springdoc-openapi-ui.version>
