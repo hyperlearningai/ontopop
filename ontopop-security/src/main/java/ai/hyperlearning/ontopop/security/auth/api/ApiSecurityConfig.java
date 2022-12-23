@@ -89,7 +89,6 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
                         
                         // Get the JWT from the Authorization header
                         String token = AuthorizationUtils.getToken(principal);
-                        LOGGER.debug("JWT: {}", token);
                         
                         // Decode and verify the JWT
                         Jws<Claims> claims = JWTUtils.decodeJWT(
@@ -111,7 +110,7 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
                         
                         
                     } catch (Exception e) {
-                        LOGGER.error("Invalid JWT.");
+                        LOGGER.error("Invalid JWT.", e);
                         throw new BadCredentialsException(
                                 "Invalid JWT.");
                     }

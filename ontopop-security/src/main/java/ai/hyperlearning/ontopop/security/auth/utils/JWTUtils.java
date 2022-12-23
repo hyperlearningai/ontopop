@@ -1,7 +1,6 @@
 package ai.hyperlearning.ontopop.security.auth.utils;
 
 import java.security.Key;
-import java.util.Base64;
 
 import javax.crypto.spec.SecretKeySpec;
 
@@ -48,7 +47,7 @@ public class JWTUtils {
         ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, 
         SignatureException, InvalidClaimException, MissingClaimException, 
         IncorrectClaimException, IllegalArgumentException {
-        Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(secretKey), 
+        Key hmacKey = new SecretKeySpec(secretKey.getBytes(),
                 SignatureAlgorithm.HS256.getJcaName());
         return Jwts.parserBuilder()
                 .require("userName", username)
