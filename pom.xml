@@ -48,7 +48,7 @@
         <commons-text.version>1.10.0</commons-text.version>
         <conf.application-properties.filename>application.yml</conf.application-properties.filename>
         <guava.version>31.1-jre</guava.version>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <javax.activation.version>1.1.1</javax.activation.version>
         <jjwt.version>0.11.5</jjwt.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
