@@ -357,11 +357,6 @@
             </dependency>
             <dependency>
                 <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-secrets</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
                 <artifactId>ontopop-logging</artifactId>
                 <version>${revision}</version>
             </dependency>

@@ -44,13 +44,6 @@
     <dependencyManagement>
         <dependencies>
 
-            <!-- OntoPop Cloud AWS -->
-            <dependency>
-                <groupId>ai.hyperlearning.ontopop</groupId>
-                <artifactId>ontopop-aws-utils</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
         </dependencies>
     </dependencyManagement>
 

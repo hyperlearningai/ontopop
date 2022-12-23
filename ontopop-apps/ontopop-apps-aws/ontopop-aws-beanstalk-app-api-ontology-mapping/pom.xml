@@ -14,7 +14,7 @@
     <artifactId>ontopop-aws-beanstalk-app-api-ontology-mapping</artifactId>
     <name>ontopop-aws-beanstalk-app-api-ontology-mapping</name>
     <packaging>jar</packaging>
-    <description>OntoPop - AWS Beanstalk Ontology Mapping API Service Web Application</description>
+    <description>OntoPop AWS Beanstalk Ontology Mapping API Web Application</description>
     <url>https://ontopop.com</url>
     <organization>
         <name>HyperLearning AI</name>

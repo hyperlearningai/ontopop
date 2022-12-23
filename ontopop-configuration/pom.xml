@@ -14,7 +14,7 @@
     <artifactId>ontopop-configuration</artifactId>
     <name>ontopop-configuration</name>
     <packaging>jar</packaging>
-    <description>OntoPop - Global Configuration</description>
+    <description>OntoPop Common Configuration</description>
     <url>https://ontopop.com</url>
     <organization>
         <name>HyperLearning AI</name>
@@ -44,13 +44,6 @@
     <!-- Module Dependencies -->
     <dependencies>
 
-        <!-- Microsoft Azure Key Vault Secrets Spring Boot Starter -->
-        <!-- Bootstrap configuration stored in Microsoft Azure Key Vault -->
-        <dependency>
-            <groupId>com.azure.spring</groupId>
-            <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
-        </dependency>
-
         <!-- Spring Boot Starter Validation -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -62,25 +55,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        
-        <!-- Spring Cloud Starter AWS Secrets Manager -->
-        <!-- Bootstrap configuration stored in AWS Secrets Manager -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-aws-secrets-manager-config</artifactId>
-        </dependency>
 
         <!-- Spring Cloud Starter Bootstrap -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
-        </dependency>
-
-        <!-- Spring Cloud Starter Vault Config -->
-        <!-- Bootstrap configuration stored in Hashicorp Vault -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-vault-config</artifactId>
         </dependency>
 
     </dependencies>
@@ -97,7 +76,6 @@
                 <includes>
                     <include>${conf.bootstrap-properties.filename}</include>
                     <include>${conf.application-properties.filename}</include>
-                    <include>${conf.gremlin-graph-properties.filename}</include>
                 </includes>
                 <filtering>true</filtering>
             </resource>

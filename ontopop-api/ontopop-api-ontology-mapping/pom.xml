@@ -14,7 +14,7 @@
     <artifactId>ontopop-api-ontology-mapping</artifactId>
     <name>ontopop-api-ontology-mapping</name>
     <packaging>jar</packaging>
-    <description>OntoPop - Ontology Mapping API Service</description>
+    <description>OntoPop Ontology Mapping API</description>
     <url>https://ontopop.com</url>
     <organization>
         <name>HyperLearning AI</name>
