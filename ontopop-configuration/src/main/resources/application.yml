@@ -31,10 +31,3 @@ web:
 springdoc:
     api-docs:
         path: /docs
-plugins:
-    webprotege:
-        authenticator:
-            enabled: true
-            scheduler:
-                enabled: true
-                cron: "0 0 0/1 * * *"

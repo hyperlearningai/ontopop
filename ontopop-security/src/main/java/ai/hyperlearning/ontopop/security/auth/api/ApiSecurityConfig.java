@@ -3,6 +3,7 @@ package ai.hyperlearning.ontopop.security.auth.api;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +28,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import ai.hyperlearning.ontopop.security.auth.AuthenticationFilter;
 import ai.hyperlearning.ontopop.security.auth.utils.AuthorizationUtils;
 import ai.hyperlearning.ontopop.security.auth.utils.JWTUtils;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 
@@ -79,6 +81,14 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
                     String credentials = (String) 
                             authentication.getCredentials();
                     
+                    // If the Authorization header is empty then
+                    // throw a BadCredentialsException
+                    if ( StringUtils.isBlank(principal) ) {
+                        LOGGER.error("Missing JWT.");
+                        throw new BadCredentialsException(
+                                "Missing JWT.");
+                    }
+                    
                     // JWT verification
                     try {
                         
@@ -106,7 +116,7 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
                         
                         
                     } catch (Exception e) {
-                        LOGGER.error("Invalid JWT");
+                        LOGGER.error("Invalid JWT.");
                         throw new BadCredentialsException(
                                 "Invalid JWT.");
                     }
@@ -151,7 +161,7 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
     }
     
     /**
-     * CORS Configuration
+     * CORS configuration
      * @return
      */
     

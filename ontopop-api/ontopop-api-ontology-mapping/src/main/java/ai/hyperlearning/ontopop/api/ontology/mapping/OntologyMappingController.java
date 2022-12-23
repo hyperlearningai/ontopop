@@ -37,7 +37,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
- * Ontology Mapping API Service - Mapping Controller
+ * Ontology Mapping API Controller
  *
  * @author jillurquddus
  * @since 2.0.0
@@ -45,7 +45,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/mapping")
-@Tag(name = "Mapping API", description = "API for undertaking common ontology mapping operations")
+@Tag(name = "Mapping API", description = "API for undertaking common ontology mapping operations.")
 public class OntologyMappingController {
     
     private static final Logger LOGGER =
@@ -54,17 +54,28 @@ public class OntologyMappingController {
     @Autowired
     private WebProtegeDownloader webProtegeDownloader;
     
-    /**************************************************************************
-     * 1. POST - Ontology Data Mapper
-     * @throws IOException 
-     * @throws WebProtegeProjectAccessException 
-     * @throws WebProtegeAuthenticationException 
-     * @throws WebProtegeMissingCredentials 
-     * @throws WebProtegeInvalidProjectId 
-     *************************************************************************/
-    
+    /**
+     * Ontology Mapper.
+     * Map given ontology data from a given source format
+     * e.g. RDF/XML to a given target format e.g. GRAPHSON.
+     * @param source
+     * @param target
+     * @param file
+     * @param webProtegeId
+     * @return
+     * @throws OntologyMapperInvalidRequestException
+     * @throws OntologyDataParsingException
+     * @throws OntologyDataPipelineException
+     * @throws OWLOntologyCreationException
+     * @throws OWLOntologyStorageException
+     * @throws WebProtegeInvalidProjectId
+     * @throws WebProtegeMissingCredentials
+     * @throws WebProtegeAuthenticationException
+     * @throws WebProtegeProjectAccessException
+     * @throws IOException
+     */
     @Operation(
-            summary = "Ontology Data Mapper",
+            summary = "Ontology Mapper",
             description = "Map given ontology data from a given source format "
                     + "(e.g. RDF/XML) to a given target format (e.g. GRAPHSON).",
             tags = {"ontology", "mapping", "rdfxml", "graphson"})
@@ -162,7 +173,7 @@ public class OntologyMappingController {
             
             } finally {
                 
-                // Delete the OWL file
+                // Delete the OWL file in all cases
                 try {
                     if ( webProtegeDownloadedOwlFile != null )
                         Files.deleteIfExists(
