@@ -4,12 +4,16 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -119,7 +123,8 @@ public class OntologyMappingController {
             @Parameter(description = "Source ontology file", required = false)
             @RequestParam(required = false) MultipartFile file, 
             @Parameter(description = "WebProtege project ID", required = false)
-            @RequestParam(name = "webProtegeId", required = false) String webProtegeId) 
+            @RequestParam(name = "webProtegeId", required = false) String webProtegeId,
+            HttpServletRequest request) 
                     throws OntologyMapperInvalidRequestException, 
                     OntologyDataParsingException, 
                     OntologyDataPipelineException, 
@@ -131,8 +136,10 @@ public class OntologyMappingController {
                     WebProtegeProjectAccessException, 
                     IOException {
         
-        LOGGER.debug("New HTTP POST request - Map ontology data from {} to {}.", 
+        LOGGER.debug("HTTP POST request - Map ontology data from {} to {}.", 
                 source, target);
+        LOGGER.debug("HTTP POST request origin: {}", 
+                request.getHeader(HttpHeaders.ORIGIN));
         
         // Download and map a RDF/XML OWL file exported from WebProtege
         String webProtegeDownloadedOwlFile = null;
