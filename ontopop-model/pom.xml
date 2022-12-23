@@ -14,7 +14,7 @@
     <artifactId>ontopop-model</artifactId>
     <name>ontopop-model</name>
     <packaging>jar</packaging>
-    <description>OntoPop - Ontology Model</description>
+    <description>OntoPop Ontology Model</description>
     <url>https://ontopop.com</url>
     <organization>
         <name>HyperLearning AI</name>

@@ -18,8 +18,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
-import ai.hyperlearning.ontopop.exceptions.git.GitWebhookNotFoundException;
-import ai.hyperlearning.ontopop.exceptions.graph.InvalidGremlinQueryException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreateConflictException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyCreateException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDataInvalidException;
@@ -32,9 +30,7 @@ import ai.hyperlearning.ontopop.exceptions.ontology.OntologyDownloadException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyMapperInvalidRequestException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyNotFoundException;
 import ai.hyperlearning.ontopop.exceptions.ontology.OntologyUpdateException;
-import ai.hyperlearning.ontopop.exceptions.search.InvalidSearchQueryException;
 import ai.hyperlearning.ontopop.exceptions.security.InvalidClientNameException;
-import ai.hyperlearning.ontopop.exceptions.triplestore.InvalidSparqlQueryException;
 import ai.hyperlearning.ontopop.exceptions.vendors.OntoKaiOntologyInvalidPayloadException;
 import ai.hyperlearning.ontopop.exceptions.vendors.OntoKaiOntologyPayloadMappingException;
 import ai.hyperlearning.ontopop.exceptions.webprotege.WebProtegeAuthenticationException;
@@ -120,9 +116,6 @@ public class OntoPopExceptionHandler extends ResponseEntityExceptionHandler {
     
     @ExceptionHandler({
         InvalidClientNameException.class, 
-        InvalidGremlinQueryException.class, 
-        InvalidSearchQueryException.class, 
-        InvalidSparqlQueryException.class, 
         OntoKaiOntologyInvalidPayloadException.class, 
         OntologyDataInvalidException.class, 
         OntologyDiffInvalidRequestException.class, 
@@ -167,7 +160,6 @@ public class OntoPopExceptionHandler extends ResponseEntityExceptionHandler {
      */
     
     @ExceptionHandler({
-        GitWebhookNotFoundException.class, 
         OntologyNotFoundException.class,
         WebProtegeWebhookNotFoundException.class })
     protected ResponseEntity<Object> handleNotFound(
