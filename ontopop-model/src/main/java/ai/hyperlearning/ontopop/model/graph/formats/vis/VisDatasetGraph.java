@@ -5,6 +5,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import ai.hyperlearning.ontopop.model.graph.formats.PropertyGraphFormat;
 
 /**
@@ -21,9 +23,10 @@ public class VisDatasetGraph extends PropertyGraphFormat implements Serializable
     // Internal property keys
     private static final String COMMON_PROPERTY_KEY_ID = "id";
     private static final String COMMON_PROPERTY_KEY_LABEL = "type";
+    private static final String NODE_PROPERTY_KEY_GROUP = "group";
     private static final String EDGE_PROPERTY_KEY_OUT_V = "from";
     private static final String EDGE_PROPERTY_KEY_IN_V = "to";
-    private static final String EDGE_PROPERTY_KEY_RELATIONSHIP = "relationship";
+    private static final String EDGE_PROPERTY_KEY_RELATIONSHIP = "label";
     private static final String EDGE_PROPERTY_KEY_WEIGHT = "weight";
     
     // Internal property key values
@@ -43,9 +46,11 @@ public class VisDatasetGraph extends PropertyGraphFormat implements Serializable
             Map<String, Object> properties) {
         
         // Add vertex properties
+        String group = StringUtils.deleteWhitespace(label.toLowerCase());
         Map<String, Object> propertyMap = new LinkedHashMap<>();
         propertyMap.put(COMMON_PROPERTY_KEY_ID, String.valueOf(vertexId));
         propertyMap.put(COMMON_PROPERTY_KEY_LABEL, label);
+        propertyMap.put(NODE_PROPERTY_KEY_GROUP, group);
         propertyMap.putAll(properties);
         
         // Add the vertex to the list of vertices
