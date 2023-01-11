@@ -136,7 +136,7 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
             .addFilter(filter)
             .authorizeRequests()
-                .antMatchers("/").permitAll()
+                .antMatchers("/", "/health").permitAll()
                 .antMatchers("/mapping/**").hasRole(
                         AuthorizationUtils.MAPPING_API_ROLE_NAME)
                 .anyRequest().authenticated()

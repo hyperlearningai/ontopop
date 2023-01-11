@@ -77,12 +77,6 @@
             <artifactId>ontopop-webprotege</artifactId>
         </dependency>
 
-        <!-- Springdoc OpenAPI UI -->
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
-        </dependency>
-
     </dependencies>
     
     <!-- Module Build -->

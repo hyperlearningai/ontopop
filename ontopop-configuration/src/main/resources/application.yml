@@ -30,6 +30,3 @@ web:
     aws:
         beanstalk:
             port: 5000
-springdoc:
-    api-docs:
-        path: /docs

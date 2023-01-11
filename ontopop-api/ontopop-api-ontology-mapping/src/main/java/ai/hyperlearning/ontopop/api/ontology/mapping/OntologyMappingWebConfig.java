@@ -31,6 +31,10 @@ public class OntologyMappingWebConfig implements WebMvcConfigurer {
             .allowedOrigins("*")
             .allowedMethods("GET")
             .allowedHeaders("*");
+        registry.addMapping("/health")
+            .allowedOrigins("*")
+            .allowedMethods("GET")
+            .allowedHeaders("*");
         
         // CORS enabled
         if ( Boolean.TRUE.equals(corsEnabled) ) {
