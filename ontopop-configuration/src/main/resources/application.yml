@@ -15,13 +15,13 @@ spring:
             max-request-size: 1024KB
 security:
     api:
-        enabled: true
+        enabled: ${API_AUTH_ENABLED}
         jwt:
             secretKey: ${JWT_SECRET_KEY}
             username: ${JWT_USERNAME}
             issuer: ${JWT_ISSUER}
     cors:
-        enabled: true
+        enabled: ${CORS_ENABLED}
         allowedOrigins: ${CORS_ALLOWED_ORIGINS}
 web:
     client:
