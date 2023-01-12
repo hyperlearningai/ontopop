@@ -42,7 +42,6 @@
 
     <!-- Child Modules -->
     <modules>
-        <module>ontopop-secrets</module>
         <module>ontopop-logging</module>
         <module>ontopop-exceptions</module>
         <module>ontopop-owl</module>
