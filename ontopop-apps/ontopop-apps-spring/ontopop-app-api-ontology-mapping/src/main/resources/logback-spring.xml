@@ -2,7 +2,7 @@
 <configuration>
  
     <!-- Persist logs relative to the application -->
-    <property name="LOGS" value="../logs" />
+    <property name="LOGS" value="${LOGS_DIRECTORY}" />
  
     <!-- Console Appender -->
     <appender name="Console"
@@ -48,18 +48,18 @@
     </root>
     
     <!-- Spring Request Logger -->
-    <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" level="DEBUG">
+    <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" level="INFO">
         <appender-ref ref="RollingFile" />
     </logger>
     
     <!-- OntoPop Security Logger -->
-    <logger name="ai.hyperlearning.ontopop.security" level="DEBUG" additivity="false">
+    <logger name="ai.hyperlearning.ontopop.security" level="INFO" additivity="false">
         <appender-ref ref="RollingFile" />
         <appender-ref ref="Console" />
     </logger>
  
     <!-- OntoPop Logger -->
-    <logger name="ai.hyperlearning.ontopop" level="DEBUG" additivity="false">
+    <logger name="ai.hyperlearning.ontopop" level="INFO" additivity="false">
         <appender-ref ref="RollingFile" />
         <appender-ref ref="Console" />
     </logger>
