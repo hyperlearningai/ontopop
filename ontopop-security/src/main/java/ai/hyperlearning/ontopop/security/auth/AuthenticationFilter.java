@@ -21,7 +21,8 @@ public class AuthenticationFilter extends AbstractPreAuthenticatedProcessingFilt
 
     @Override
     protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
-        return request.getHeader(principalRequestHeader);
+        return request.getHeader(principalRequestHeader) != null ? 
+        		request.getHeader(principalRequestHeader) : "";
     }
 
     @Override
