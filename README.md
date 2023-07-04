@@ -12,7 +12,7 @@
 </p>
 <br/>
 
-|![OntoPop](https://docs.ontopop.com/en/ontopop-network-view-with-logo-v3.jpg "OntoPop")|
+|![OntoPop](https://hlaicdn.com/sites/docs.ontopop.com/images/docs/home/ontopop-network-view-with-logo-v3-v3-2a19d6bab9.jpg "OntoPop")|
 |:---:|
 |The OntoPop app|
 <br/>
@@ -87,7 +87,7 @@ The OntoPop backend is primarily written in [Java 11](https://jdk.java.net/java-
 The OntoPop backend is a collection of event-driven services that enable the visualisation, search, exploration and management of version-controlled ontologies. The following diagram illustrates the event-driven microservices available in OntoPop.
 <br/><br/>
 
-|![OntoPop's event-driven microservices](https://docs.ontopop.com/en/technical-architecture/microservices/event-driven-microservices.jpg "OntoPop's event-driven microservices")|
+|![OntoPop's event-driven microservices](https://hlaicdn.com/sites/docs.ontopop.com/images/docs/technical-architecture/microservices/event-driven-microservices-v3-8e9d48cf6a.jpg "OntoPop's event-driven microservices")|
 |:---:|
 |OntoPop's event-driven microservices|
 <br/>
@@ -148,7 +148,7 @@ Given that OntoPop is a collection of event-driven services, each service may be
 
 The following diagram describes the high-level logical system architecture of OntoPop when deployed as a single logical service.
 
-|![OntoPop logical system architecture](https://docs.ontopop.com/en/technical-architecture/system-architecture/logical-system-architecture.webp "OntoPop logical system architecture")|
+|![OntoPop logical system architecture](https://hlaicdn.com/sites/docs.ontopop.com/images/docs/technical-architecture/system-architecture/logical-system-architecture-v3-9150eb2bc4.webp "OntoPop logical system architecture")|
 |:---:|
 |OntoPop logical system architecture|
 <br/>
