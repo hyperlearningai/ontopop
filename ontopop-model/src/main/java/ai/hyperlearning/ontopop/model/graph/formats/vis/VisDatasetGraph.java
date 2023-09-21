@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-
+import ai.hyperlearning.ontopop.model.graph.SimpleOntologyEdge;
 import ai.hyperlearning.ontopop.model.graph.formats.PropertyGraphFormat;
 
 /**
@@ -71,7 +71,15 @@ public class VisDatasetGraph extends PropertyGraphFormat implements Serializable
         propertyMap.put(EDGE_PROPERTY_KEY_WEIGHT, EDGE_PROPERTY_VALUE_WEIGHT);
         propertyMap.putAll(properties);
         
-        // Explicitly generate the relationship property if required
+        // If the "relationship" property exists then set this as the Vis.js edge label property
+        if ( propertyMap.containsKey(SimpleOntologyEdge.RELATIONSHIP_TYPE_KEY) ) {
+            String relationship = (String) propertyMap.get(
+                    SimpleOntologyEdge.RELATIONSHIP_TYPE_KEY);
+            propertyMap.put(EDGE_PROPERTY_KEY_RELATIONSHIP, relationship);
+        }
+        
+        // If the Vis.js edge label property does not yet exist, then explicitly create it
+        // and set it as the Edge label
         if ( !propertyMap.containsKey(EDGE_PROPERTY_KEY_RELATIONSHIP) )
             propertyMap.put(EDGE_PROPERTY_KEY_RELATIONSHIP, label);
         
