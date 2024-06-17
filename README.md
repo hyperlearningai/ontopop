@@ -1,7 +1,7 @@
 <br/>
 <p align="center">
   <a href="https://ontopop.com" target="_blank">
-    <img src="https://hlaicdn.com/sites/docs.ontopop.com/images/logo/ontopop-logo-v3-6d6f44404a.png" alt="OntoPop" height="120">
+    <img src="static/assets/images/logos/ontopop-logo.png" alt="OntoPop" height="120">
   </a>
   <p align="center">
     OntoPop is a collection of event-driven data pipelines and APIs that enable the visualisation, search, exploration and management of version-controlled ontologies. The OntoPop backend, which includes its event-driven data pipelines and APIs, is an open-source software project (the source code of which is available in this repository). The OntoPop frontend app is a proprietary closed-source software project.
@@ -12,7 +12,7 @@
 </p>
 <br/>
 
-|![OntoPop](https://hlaicdn.com/sites/docs.ontopop.com/images/docs/home/ontopop-network-view-with-logo-v3-v3-2a19d6bab9.jpg "OntoPop")|
+|![OntoPop](static/assets/images/screenshots/ontopop-screenshot.jpg "OntoPop")|
 |:---:|
 |The OntoPop app|
 <br/>
@@ -87,7 +87,7 @@ The OntoPop backend is primarily written in [Java 11](https://jdk.java.net/java-
 The OntoPop backend is a collection of event-driven services that enable the visualisation, search, exploration and management of version-controlled ontologies. The following diagram illustrates the event-driven microservices available in OntoPop.
 <br/><br/>
 
-|![OntoPop's event-driven microservices](https://hlaicdn.com/sites/docs.ontopop.com/images/docs/technical-architecture/microservices/event-driven-microservices-v3-8e9d48cf6a.jpg "OntoPop's event-driven microservices")|
+|![OntoPop's event-driven microservices](static/assets/images/architecture/event-driven-microservices.jpg "OntoPop's event-driven microservices")|
 |:---:|
 |OntoPop's event-driven microservices|
 <br/>
